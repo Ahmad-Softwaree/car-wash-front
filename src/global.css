@@ -1,0 +1,169 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "bukra";
+  src: url("/fonts/UNIQAIDAR_BUKRA 002.woff2") format("woff2"),
+    url("/fonts/UNIQAIDAR_BUKRA 002.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "bukra_bold";
+  src: url("/fonts/UNIQAIDAR_BUKRA 003.woff2") format("woff2"),
+    url("/fonts/UNIQAIDAR_BUKRA 003.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "speda";
+  src: url("/fonts/Speda.woff2") format("woff2"),
+    url("/fonts/Speda.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "speda_bold";
+  src: url("/fonts/Speda-Bold.woff2") format("woff2"),
+    url("/fonts/Speda-Bold.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "rabar007";
+  src: url("/fonts/rudawregular2.woff2") format("woff2"),
+    url("/fonts/rudawregular2.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "rabar007";
+  src: url("/fonts/rudawbold.woff2") format("woff2"),
+    url("/fonts/rudawbold.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "rabar007";
+  src: url("/fonts/rabar_007.woff2") format("woff2"),
+    url("/fonts/rabar_007.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "rabar007";
+  src: url("/fonts/rabar_034.woff2") format("woff2"),
+    url("/fonts/rabar_034.ttf") format("truetype");
+  font-display: swap;
+}
+body {
+  font-family: "rabar007";
+  box-sizing: border-box;
+}
+
+.tableDiv::-webkit-scrollbar {
+  display: none;
+}
+
+@layer components {
+  section:not(.auth).home {
+    @apply mb-20 p-5 md:p-10 lg:p-10 xl:!px-40;
+  }
+  section {
+    @apply overflow-hidden min-h-screen bg-white;
+  }
+  section.out {
+    @apply mb-20 p-5 md:p-10 lg:p-10;
+  }
+  header {
+    @apply p-5 md:p-10 lg:p-10 xl:!px-40;
+  }
+  .input_error {
+    @apply text-red-500 text-sm;
+  }
+
+  .text-input {
+    @apply border-2 border-solid  border-gray-200  rounded-md  p-3  flex  flex-row  justify-center  items-center  gap-3;
+  }
+
+  .checkbox-input {
+    @apply flex flex-row justify-center items-center gap-2;
+  }
+  .checkbox-input input {
+    @apply w-[20px] h-[20px] !rounded-full;
+  }
+
+  input {
+    @apply bg-transparent;
+  }
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+}
+.blue-liner {
+  background: rgb(0, 167, 238);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 167, 238, 1) 0%,
+    rgb(1, 71, 177) 77%
+  );
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.switch input:checked + .slider {
+  background-color: #088608;
+}
+
+.switch input:focus + .slider {
+  box-shadow: 0 0 1px #088608;
+}
+
+.switch input:checked + .slider:before {
+  -webkit-transform: translateX(22px);
+  -ms-transform: translateX(22px);
+  transform: translateX(22px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
