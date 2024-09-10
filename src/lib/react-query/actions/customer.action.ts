@@ -2,14 +2,13 @@ import { authApi } from "@/lib/config/api.config";
 import { generateNestErrors } from "@/lib/functions";
 import { URLs } from "@/lib/url";
 import {
-  AddClientF,
-  AddClientQ,
-  AddClientWithFirebaseImage,
-  DeleteClientQ,
-  GetClientsQ,
-  UpdateClientQ,
-  UpdateClientWithFirebaseImage,
-} from "@/types/client";
+  AddCustomerF,
+  AddCustomerQ,
+  DeleteCustomerQ,
+  GetCustomersQ,
+  UpdateCustomerF,
+  UpdateCustomerQ,
+} from "@/types/customer";
 import {
   Id,
   Limit,
@@ -18,14 +17,14 @@ import {
   ToastType,
 } from "@/types/global";
 
-export const getClients = async (
+export const getCustomers = async (
   toast: ToastType,
   page: Page,
   limit: Limit
-): Promise<PaginationReturnType<GetClientsQ>> => {
+): Promise<PaginationReturnType<GetCustomersQ>> => {
   try {
     const { data, status } = await authApi.get<
-      PaginationReturnType<GetClientsQ>
+      PaginationReturnType<GetCustomersQ>
     >(`${URLs.GET_CLIENTS}?page=${page}&limit=${limit}`);
     return data;
   } catch (error: any) {
@@ -33,11 +32,11 @@ export const getClients = async (
   }
 };
 
-export const addClient = async (
-  form: AddClientWithFirebaseImage
-): Promise<AddClientQ> => {
+export const addCustomer = async (
+  form: AddCustomerF
+): Promise<AddCustomerQ> => {
   try {
-    const { data, status } = await authApi.post<AddClientQ>(
+    const { data, status } = await authApi.post<AddCustomerQ>(
       `${URLs.ADD_CLIENT}`,
       form
     );
@@ -46,12 +45,12 @@ export const addClient = async (
     throw error;
   }
 };
-export const updateClient = async (
-  form: UpdateClientWithFirebaseImage,
+export const updateCustomer = async (
+  form: UpdateCustomerF,
   id: Id
-): Promise<UpdateClientQ> => {
+): Promise<UpdateCustomerQ> => {
   try {
-    const { data, status } = await authApi.put<UpdateClientQ>(
+    const { data, status } = await authApi.put<UpdateCustomerQ>(
       `${URLs.UPDATE_CLIENT}/${id}`,
       form
     );
@@ -60,9 +59,9 @@ export const updateClient = async (
     throw error;
   }
 };
-export const deleteClient = async (id: Id): Promise<DeleteClientQ> => {
+export const deleteCustomer = async (id: Id): Promise<DeleteCustomerQ> => {
   try {
-    const { data, status } = await authApi.delete<DeleteClientQ>(
+    const { data, status } = await authApi.delete<DeleteCustomerQ>(
       `${URLs.DELETE_CLIENT}/${id}`
     );
     return data;

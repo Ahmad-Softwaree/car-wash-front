@@ -25,10 +25,10 @@ const Users = () => {
         <div className="w-full flex flex-row justify-between">
           <Return>بەکارهێنەران</Return>
           <button
-            title="newSpend"
+            title="newExpense"
             type="button"
             onClick={openDialog}
-            name="newSpend"
+            name="newExpense"
             className="flex flex-row gap-2 p-3 bg-black-500 text-white rounded-sm px-5">
             <CircleFadingPlus />
             <p>زیادکردن</p>
@@ -59,7 +59,7 @@ const Users = () => {
                 </div>
 
                 {!isFetchingNextPage && hasNextPage && (
-                  <div title="spendButton" id="spendButton" ref={ref}>
+                  <div title="expenseButton" id="expenseButton" ref={ref}>
                     <Loading>
                       <TailSpin />
                     </Loading>

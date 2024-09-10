@@ -67,7 +67,7 @@ export const getReportMoneyData = async (
     const data: ReportMoney = {
       id: 1,
       money: null,
-      spend: null,
+      expense: null,
       dept: null,
       dept_psula: 12,
       naqd_psula: 12,

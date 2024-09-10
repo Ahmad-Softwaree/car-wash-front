@@ -1,5 +1,5 @@
 import { formatDateToDDMMYY } from "@/lib/functions";
-import { SpendCardProps } from "@/types/spend";
+import { ExpenseCardProps } from "@/types/expense";
 import Typography from "../shared/Typography";
 import FormatMoney from "../shared/FormatMoney";
 import { PenLine } from "lucide-react";
@@ -7,17 +7,16 @@ import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 import { useState } from "react";
 import Dialog from "../shared/Dialog";
-import SpendForm from "../forms/SpendForm";
+import ExpenseForm from "../forms/ExpenseForm";
 import MyButton from "../ui/MyButton";
-const SpendCard = ({
+const ExpenseCard = ({
   onClick,
-  title,
+  price,
+  note,
+  type,
   id,
-  amount,
-  spend_by,
-  employee,
   date,
-}: SpendCardProps) => {
+}: ExpenseCardProps) => {
   const { dispatch } = useGlobalContext();
   const [update, setUpdate] = useState<boolean>(false);
 
@@ -36,19 +35,18 @@ const SpendCard = ({
         <div className="w-full flex flex-row justify-between items-start">
           <div className="flex flex-col justify-start items-start gap-2">
             <div className="flex flex-row justify-start items-center gap-2">
-              <Typography text={title}>
-                <p className="font-bold text-lg text-nowrap">{title}</p>
+              <Typography text={type}>
+                <p className="font-bold text-lg text-nowrap">{type}</p>
               </Typography>
               <PenLine
                 onClick={() => {
                   dispatch({
                     type: CONTEXT_TYPEs.SET_OLD_DATA,
                     payload: {
-                      title,
+                      price,
+                      note,
+                      type,
                       id,
-                      amount,
-                      spend_by,
-                      employee,
                       date,
                     },
                   });
@@ -71,7 +69,7 @@ const SpendCard = ({
             <span className="opacity-50 text-black text-md">بڕی خەرجکراو</span>
             <div className="w-full flex flex-row gap-2 justify-end">
               <FormatMoney className="text-primary-500 font-bold font-rabar007 text-lg text-nowrap">
-                {amount}
+                {price}
               </FormatMoney>
               <p className="text-primary-500 font-bold font-rabar007 text-lg text-nowrap">
                 د.ع
@@ -89,29 +87,6 @@ const SpendCard = ({
               {formatDateToDDMMYY(date.toLocaleString())}
             </p>
           </div>
-
-          <div className="flex flex-col justify-start items-start gap-2">
-            <div className="flex flex-row justify-center items-center gap-1">
-              <p className="text-sm text-nowrap font-rabar007 opacity-50 text-black">
-                لەلایەن :
-              </p>
-              <Typography text={spend_by}>
-                <p className="text-sm text-nowrap font-poppins opacity-50 text-black">
-                  {spend_by}
-                </p>
-              </Typography>
-            </div>
-            <div className="flex flex-row justify-center items-center gap-1">
-              <p className="text-sm text-nowrap font-rabar007 opacity-50 text-black">
-                کارمەند :
-              </p>
-              <Typography text={employee}>
-                <p className="text-sm text-nowrap font-poppins opacity-50 text-black">
-                  {employee}
-                </p>
-              </Typography>
-            </div>
-          </div>
         </div>
       </article>
       {update && (
@@ -121,7 +96,7 @@ const SpendCard = ({
           maxHeight={`90%`}
           isOpen={update}
           onClose={updateOnClose}>
-          <SpendForm state="update" onClose={updateOnClose} />
+          <ExpenseForm state="update" onClose={updateOnClose} />
 
           <button
             name="closeUserFormButton"
@@ -136,4 +111,4 @@ const SpendCard = ({
   );
 };
 
-export default SpendCard;
+export default ExpenseCard;

@@ -100,7 +100,7 @@ const Header = () => {
     <>
       <Container
         as={`header`}
-        className="w-full flex flex-row bg-transparent justify-between items-center gap-10">
+        className="w-full flex flex-row  justify-between items-center gap-10">
         <h1 className="font-bold text-lg lg:text-[26px] text-black-500 text-nowrap">
           {import.meta.env.VITE_COMPANY_NAME}
         </h1>
@@ -131,8 +131,8 @@ const Header = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex flex-row gap-2 !font-poppins focus:outline-none">
                   <ChevronDown />{" "}
-                  <Typography text={user.full_name}>
-                    <p className="text-sm md:text-md">{user.full_name}</p>
+                  <Typography text={user.name}>
+                    <p className="text-sm md:text-md">{user.name}</p>
                   </Typography>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="!font-rabar007 !text-right mt-5">
@@ -181,11 +181,11 @@ const Header = () => {
                 className="object-cover"
                 height={30}
                 width={30}
-                alt={user.full_name}
+                alt={user.name}
                 src={`/images/logo.jpg`}
               />
               <AvatarFallback>
-                {user.full_name.charAt(0).toUpperCase()}
+                {user.name.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
           </div>

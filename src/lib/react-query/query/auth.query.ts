@@ -35,7 +35,7 @@ export const useGetAuth = () => {
 };
 export const useLogin = () => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
   const { dispatch } = useAuthContext();
   const navigate = useNavigate();
 
@@ -50,7 +50,7 @@ export const useLogin = () => {
         type: CONTEXT_TYPEs.SET_USER,
         payload: data,
       });
-      queryClient.setQueryData([QUERY_KEYs.AUTH], data.user);
+      queryCustomer.setQueryData([QUERY_KEYs.AUTH], data.user);
       return navigate("/home");
     },
     onError: (error: NestError) => {
@@ -62,7 +62,7 @@ export const useLogin = () => {
 
 export const useLogout = () => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
   const { dispatch } = useAuthContext();
   const navigate = useNavigate();
 
@@ -77,7 +77,7 @@ export const useLogout = () => {
         type: CONTEXT_TYPEs.REMOVE_USER,
       });
 
-      queryClient.setQueryData([QUERY_KEYs.AUTH], null);
+      queryCustomer.setQueryData([QUERY_KEYs.AUTH], null);
       return navigate("/login");
     },
     onError: (error: NestError) => {
@@ -88,7 +88,7 @@ export const useLogout = () => {
 
 export const useChangeName = () => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
   const { dispatch } = useAuthContext();
 
   return useMutation({
@@ -102,7 +102,7 @@ export const useChangeName = () => {
         type: CONTEXT_TYPEs.SET_USER,
         payload: { user: data },
       });
-      return queryClient.setQueryData([QUERY_KEYs.AUTH], data);
+      return queryCustomer.setQueryData([QUERY_KEYs.AUTH], data);
     },
     onError: (error: NestError) => {
       return generateNestErrors(error, toast);
@@ -111,7 +111,7 @@ export const useChangeName = () => {
 };
 export const useChangePassword = () => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
   const { dispatch } = useAuthContext();
 
   return useMutation({
@@ -130,7 +130,7 @@ export const useChangePassword = () => {
         type: CONTEXT_TYPEs.SET_USER,
         payload: { user: data },
       });
-      return queryClient.setQueryData([QUERY_KEYs.AUTH], data);
+      return queryCustomer.setQueryData([QUERY_KEYs.AUTH], data);
     },
     onError: (error: NestError) => {
       return generateNestErrors(error, toast);

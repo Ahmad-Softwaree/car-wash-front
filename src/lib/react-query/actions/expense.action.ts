@@ -9,30 +9,30 @@ import {
   ToastType,
 } from "@/types/global";
 import {
-  AddSpendF,
-  AddSpendQ,
-  GetSpendsQ,
-  UpdateSpendF,
-  UpdateSpendQ,
-} from "@/types/spend";
+  AddExpenseF,
+  AddExpenseQ,
+  GetExpensesQ,
+  UpdateExpenseF,
+  UpdateExpenseQ,
+} from "@/types/expense";
 
-export const getSpends = async (
+export const getExpenses = async (
   toast: ToastType,
   page: Page,
   limit: Limit
-): Promise<PaginationReturnType<GetSpendsQ>> => {
+): Promise<PaginationReturnType<GetExpensesQ>> => {
   try {
     const { data, status } = await authApi.get<
-      PaginationReturnType<GetSpendsQ>
+      PaginationReturnType<GetExpensesQ>
     >(`${URLs.GET_SPENDS}?page=${page}&limit=${limit}`);
     return data;
   } catch (error: any) {
     throw generateNestErrors(error, toast);
   }
 };
-export const addSpend = async (form: AddSpendF): Promise<AddSpendQ> => {
+export const addExpense = async (form: AddExpenseF): Promise<AddExpenseQ> => {
   try {
-    const { data, status } = await authApi.post<AddSpendQ>(
+    const { data, status } = await authApi.post<AddExpenseQ>(
       URLs.ADD_SPEND,
       form
     );
@@ -41,12 +41,12 @@ export const addSpend = async (form: AddSpendF): Promise<AddSpendQ> => {
     throw error;
   }
 };
-export const updateSpend = async (
-  form: UpdateSpendF,
+export const updateExpense = async (
+  form: UpdateExpenseF,
   id: Id
-): Promise<UpdateSpendQ> => {
+): Promise<UpdateExpenseQ> => {
   try {
-    const { data, status } = await authApi.put<UpdateSpendQ>(
+    const { data, status } = await authApi.put<UpdateExpenseQ>(
       `${URLs.UPDATE_SPEND}/${id}`,
       form
     );

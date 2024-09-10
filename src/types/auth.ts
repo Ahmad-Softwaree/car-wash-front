@@ -4,7 +4,7 @@ import { Part } from "./part";
 
 export type User = {
   id: Id;
-  full_name: string;
+  name: string;
   username: string;
   password: string;
   phone: string;
@@ -20,7 +20,7 @@ export type LoginInputs = {
   password: string;
 };
 export type ChangeNameInputs = {
-  full_name: string;
+  name: string;
 };
 
 export type ChangePasswordInputs = {
@@ -54,11 +54,10 @@ export type AddUserInputs = {
   role_id: Id;
   street?: string;
   phone?: string;
-  full_name?: string;
+  name?: string;
 };
 
 export type AddUserF = AddUserInputs & {
-  employee_id: Id;
   part_ids: Id[];
 };
 

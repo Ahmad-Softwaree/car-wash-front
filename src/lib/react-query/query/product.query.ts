@@ -97,7 +97,7 @@ export const useGetProductById = (id: Id | null) => {
 
 export const useAddProduct = () => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
 
   return useMutation({
     mutationFn: async (form: AddProductF): Promise<AddProductQ> => {
@@ -132,7 +132,7 @@ export const useAddProduct = () => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
       });
-      return queryClient.invalidateQueries({
+      return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.PRODUCTS_IN_ADD],
       });
     },
@@ -143,7 +143,7 @@ export const useAddProduct = () => {
 };
 export const useUpdateProduct = (id: Id) => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
 
   return useMutation({
     mutationFn: async (form: UpdateProductF): Promise<UpdateProductQ> => {
@@ -195,10 +195,10 @@ export const useUpdateProduct = (id: Id) => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
       });
-      queryClient.invalidateQueries({
+      queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.PRODUCT_BY_ID, id],
       });
-      return queryClient.invalidateQueries({
+      return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.PRODUCTS_IN_ADD],
       });
     },
@@ -209,7 +209,7 @@ export const useUpdateProduct = (id: Id) => {
 };
 export const useCountProduct = (id: Id) => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
 
   return useMutation({
     mutationFn: async (form: CountProductF): Promise<CountProductQ> =>
@@ -219,7 +219,7 @@ export const useCountProduct = (id: Id) => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
       });
-      return queryClient.invalidateQueries({
+      return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.LESS_PRODUCTS],
       });
     },
@@ -230,7 +230,7 @@ export const useCountProduct = (id: Id) => {
 };
 export const useDeleteProduct = (id: Id) => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
 
   return useMutation({
     mutationFn: async (): Promise<DeleteProductQ> => deleteProduct(id),
@@ -239,10 +239,10 @@ export const useDeleteProduct = (id: Id) => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
       });
-      queryClient.invalidateQueries({
+      queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.PRODUCT_BY_ID, id],
       });
-      return queryClient.invalidateQueries({
+      return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.PRODUCTS_IN_ADD],
       });
     },

@@ -92,7 +92,7 @@ const Report = () => {
               {reportMoney?.money}
             </CreditCard>
             <CreditCard title="خەرجی" color="purple">
-              {reportMoney?.spend}
+              {reportMoney?.expense}
             </CreditCard>
             <CreditCard title="بڕی پارەی قەرز" color="pink">
               {reportMoney?.dept}

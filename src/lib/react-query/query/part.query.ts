@@ -29,7 +29,7 @@ export const useGetParts = () => {
 
 export const useAddPart = () => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
   return useMutation({
     mutationFn: (form: AddPartF): Promise<AddPartQ> => addPart(form),
     onSuccess: (data: AddPartQ) => {
@@ -37,7 +37,7 @@ export const useAddPart = () => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بە سەرکەوتوویی ئەنجامدرا",
       });
-      return queryClient.invalidateQueries({
+      return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.PARTS],
       });
     },
@@ -49,7 +49,7 @@ export const useAddPart = () => {
 
 export const useUpdatePart = (id: Id) => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
   return useMutation({
     mutationFn: (form: UpdatePartF): Promise<UpdatePartQ> =>
       updatePart(form, id),
@@ -58,7 +58,7 @@ export const useUpdatePart = (id: Id) => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بە سەرکەوتوویی ئەنجامدرا",
       });
-      return queryClient.invalidateQueries({
+      return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.PARTS],
       });
     },
@@ -70,7 +70,7 @@ export const useUpdatePart = (id: Id) => {
 
 export const useDeletePart = (id: Id) => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
   return useMutation({
     mutationFn: (): Promise<DeletePartQ> => deletePart(id),
     onSuccess: (data: DeletePartQ) => {
@@ -78,7 +78,7 @@ export const useDeletePart = (id: Id) => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بە سەرکەوتوویی ئەنجامدرا",
       });
-      return queryClient.invalidateQueries({
+      return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.PARTS],
       });
     },

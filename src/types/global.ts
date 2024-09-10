@@ -16,7 +16,7 @@ import {
   ProductInformation,
   ProductLess,
 } from "./products";
-import { Spend } from "./spend";
+import { Expense } from "./expense";
 import {
   FetchNextPageOptions,
   InfiniteData,
@@ -26,7 +26,7 @@ import {
 import { AxiosError } from "axios";
 import { Employee } from "./employee";
 import { Toast, ToasterToast } from "@/components/ui/use-toast";
-import { Client } from "./client";
+import { Customer } from "./customer";
 
 export type GlobalFormProps = {
   state?: "update" | "insert";
@@ -67,7 +67,7 @@ export type QueryResult<T extends DataTypes> = {
 };
 export type DataTypes =
   | Product[]
-  | Spend[]
+  | Expense[]
   | CaseHistory[]
   | GetAuthQ
   | ChangeNameQ
@@ -77,7 +77,7 @@ export type DataTypes =
   | Product[]
   | ProductInformation[]
   | ProductLess[]
-  | Client[];
+  | Customer[];
 
 export type PaginationChildrenProps<T extends DataTypes> = {
   isFetchingNextPage: boolean;
@@ -94,7 +94,7 @@ export type PaginationChildrenProps<T extends DataTypes> = {
   ) => Promise<InfiniteQueryObserverResult>;
 };
 
-export type PaginationPages = "products" | "spends";
+export type PaginationPages = "products" | "expenses";
 
 export type PaginationProps<T extends DataTypes> = {
   page?: PaginationPages;

@@ -1,23 +1,27 @@
 import { useToast } from "@/components/ui/use-toast";
 import {
-  AddSpendF,
-  AddSpendQ,
-  GetSpendsQ,
-  UpdateSpendF,
-  UpdateSpendQ,
-} from "@/types/spend";
+  AddExpenseF,
+  AddExpenseQ,
+  GetExpensesQ,
+  UpdateExpenseF,
+  UpdateExpenseQ,
+} from "@/types/expense";
 import {
   useInfiniteQuery,
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
 import { QUERY_KEYs } from "../key";
-import { addSpend, getSpends, updateSpend } from "../actions/spend.action";
+import {
+  addExpense,
+  getExpenses,
+  updateExpense,
+} from "../actions/expense.action";
 import { Id, NestError, Page, PaginationReturnType } from "@/types/global";
 import { ENUMs } from "@/lib/enum";
 import { generateNestErrors } from "@/lib/functions";
 
-export const useGetSpends = () => {
+export const useGetExpenses = () => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.SPENDS],
@@ -25,26 +29,26 @@ export const useGetSpends = () => {
       pageParam,
     }: {
       pageParam: Page;
-    }): Promise<PaginationReturnType<GetSpendsQ>> =>
-      getSpends(toast, pageParam, ENUMs.LIMIT as number),
+    }): Promise<PaginationReturnType<GetExpensesQ>> =>
+      getExpenses(toast, pageParam, ENUMs.LIMIT as number),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
   });
 };
-export const useAddSpend = () => {
+export const useAddExpense = () => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
 
   return useMutation({
-    mutationFn: (form: AddSpendF) => addSpend(form),
-    onSuccess: (data: AddSpendQ) => {
+    mutationFn: (form: AddExpenseF) => addExpense(form),
+    onSuccess: (data: AddExpenseQ) => {
       toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
       });
-      return queryClient.invalidateQueries({
+      return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.SPENDS],
       });
     },
@@ -53,18 +57,18 @@ export const useAddSpend = () => {
     },
   });
 };
-export const useUpdateSpend = (id: Id) => {
+export const useUpdateExpense = (id: Id) => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
 
   return useMutation({
-    mutationFn: (form: UpdateSpendF) => updateSpend(form, id),
-    onSuccess: (data: UpdateSpendQ) => {
+    mutationFn: (form: UpdateExpenseF) => updateExpense(form, id),
+    onSuccess: (data: UpdateExpenseQ) => {
       toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
       });
-      return queryClient.invalidateQueries({
+      return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.SPENDS],
       });
     },

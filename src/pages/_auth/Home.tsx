@@ -1,4 +1,5 @@
 import HomeCard from "@/components/cards/HomeCard";
+import { Table, Tbody, THead } from "@/components/ui";
 import Container from "@/components/ui/Container";
 import { homeBoxes } from "@/constants";
 import { useAuthContext } from "@/context/AuthContext";

@@ -29,7 +29,7 @@ export const useGetRoles = () => {
 
 export const useAddRole = () => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
   return useMutation({
     mutationFn: (form: AddRoleF): Promise<AddRoleQ> => addRole(form),
     onSuccess: (data: AddRoleQ) => {
@@ -37,7 +37,7 @@ export const useAddRole = () => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بە سەرکەوتوویی ئەنجامدرا",
       });
-      return queryClient.invalidateQueries({
+      return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.ROLES],
       });
     },
@@ -49,7 +49,7 @@ export const useAddRole = () => {
 
 export const useUpdateRole = (id: Id) => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
   return useMutation({
     mutationFn: (form: UpdateRoleF): Promise<UpdateRoleQ> =>
       updateRole(form, id),
@@ -58,7 +58,7 @@ export const useUpdateRole = (id: Id) => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بە سەرکەوتوویی ئەنجامدرا",
       });
-      return queryClient.invalidateQueries({
+      return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.ROLES],
       });
     },
@@ -70,7 +70,7 @@ export const useUpdateRole = (id: Id) => {
 
 export const useDeleteRole = (id: Id) => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
   return useMutation({
     mutationFn: (): Promise<DeleteRoleQ> => deleteRole(id),
     onSuccess: (data: DeleteRoleQ) => {
@@ -78,7 +78,7 @@ export const useDeleteRole = (id: Id) => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بە سەرکەوتوویی ئەنجامدرا",
       });
-      return queryClient.invalidateQueries({
+      return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.ROLES],
       });
     },

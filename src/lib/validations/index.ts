@@ -61,7 +61,7 @@ const partSchema = yup.object({
       "employee",
       "users",
       "customers",
-      "spend",
+      "expense",
       "report",
       "case",
       "setting",

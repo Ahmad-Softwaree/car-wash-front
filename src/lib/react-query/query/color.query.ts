@@ -29,7 +29,7 @@ export const useGetColors = () => {
 
 export const useAddColor = () => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
   return useMutation({
     mutationFn: (form: AddColorF): Promise<AddColorQ> => addColor(form),
     onSuccess: (data: AddColorQ) => {
@@ -37,7 +37,7 @@ export const useAddColor = () => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بە سەرکەوتوویی ئەنجامدرا",
       });
-      return queryClient.invalidateQueries({
+      return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.COLORS],
       });
     },
@@ -49,7 +49,7 @@ export const useAddColor = () => {
 
 export const useUpdateColor = (id: Id) => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
   return useMutation({
     mutationFn: (form: UpdateColorF): Promise<UpdateColorQ> =>
       updateColor(form, id),
@@ -58,7 +58,7 @@ export const useUpdateColor = (id: Id) => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بە سەرکەوتوویی ئەنجامدرا",
       });
-      return queryClient.invalidateQueries({
+      return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.COLORS],
       });
     },
@@ -70,7 +70,7 @@ export const useUpdateColor = (id: Id) => {
 
 export const useDeleteColor = (id: Id) => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
   return useMutation({
     mutationFn: (): Promise<DeleteColorQ> => deleteColor(id),
     onSuccess: (data: DeleteColorQ) => {
@@ -78,7 +78,7 @@ export const useDeleteColor = (id: Id) => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بە سەرکەوتوویی ئەنجامدرا",
       });
-      return queryClient.invalidateQueries({
+      return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.COLORS],
       });
     },

@@ -4,15 +4,17 @@ import "./global.css";
 import { QueryProvider } from "./lib/react-query/QueryProvider.jsx";
 import Context from "./context/Context.js";
 import { Toaster } from "./components/ui/toaster.js";
+import { ThemeProvider } from "./components/ui/theme-provider.js";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   //<React.StrictMode>
-  <QueryProvider>
-    {/* <ChakraUIProvider> */}
-    <Context>
-      <Toaster />
-      <App />
-    </Context>
-    {/* </ChakraUIProvider> */}
-  </QueryProvider>
+  <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <QueryProvider>
+      <Context>
+        <Toaster />
+        <App />
+      </Context>
+    </QueryProvider>
+  </ThemeProvider>
+
   //</React.StrictMode>
 );

@@ -36,7 +36,7 @@ export const getUsers = async (
 export const addUser = async (form: AddUserF): Promise<AddUserQ> => {
   try {
     const { data, status } = await authApi.post<AddUserQ>(
-      `${URLs.ADD_USER}/${form.employee_id}`,
+      `${URLs.ADD_USER}`,
       form
     );
     return data;
@@ -45,7 +45,7 @@ export const addUser = async (form: AddUserF): Promise<AddUserQ> => {
   }
 };
 export const updateUser = async (
-  form: UpdateUserWithFirebaseImage,
+  form: UpdateUserF,
   id: Id
 ): Promise<UpdateUserQ> => {
   try {

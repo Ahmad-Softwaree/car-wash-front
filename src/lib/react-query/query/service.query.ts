@@ -29,7 +29,7 @@ export const useGetServices = () => {
 
 export const useAddService = () => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
   return useMutation({
     mutationFn: (form: AddServiceF): Promise<AddServiceQ> => addService(form),
     onSuccess: (data: AddServiceQ) => {
@@ -37,7 +37,7 @@ export const useAddService = () => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بە سەرکەوتوویی ئەنجامدرا",
       });
-      return queryClient.invalidateQueries({
+      return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.SERVICES],
       });
     },
@@ -49,7 +49,7 @@ export const useAddService = () => {
 
 export const useUpdateService = (id: Id) => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
   return useMutation({
     mutationFn: (form: UpdateServiceF): Promise<UpdateServiceQ> =>
       updateService(form, id),
@@ -58,7 +58,7 @@ export const useUpdateService = (id: Id) => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بە سەرکەوتوویی ئەنجامدرا",
       });
-      return queryClient.invalidateQueries({
+      return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.SERVICES],
       });
     },
@@ -70,7 +70,7 @@ export const useUpdateService = (id: Id) => {
 
 export const useDeleteService = (id: Id) => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
   return useMutation({
     mutationFn: (): Promise<DeleteServiceQ> => deleteService(id),
     onSuccess: (data: DeleteServiceQ) => {
@@ -78,7 +78,7 @@ export const useDeleteService = (id: Id) => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بە سەرکەوتوویی ئەنجامدرا",
       });
-      return queryClient.invalidateQueries({
+      return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.SERVICES],
       });
     },

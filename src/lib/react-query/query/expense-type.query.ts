@@ -29,7 +29,7 @@ export const useGetExpenseTypes = () => {
 
 export const useAddExpenseType = () => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
   return useMutation({
     mutationFn: (form: AddExpenseTypeF): Promise<AddExpenseTypeQ> =>
       addExpenseType(form),
@@ -38,7 +38,7 @@ export const useAddExpenseType = () => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بە سەرکەوتوویی ئەنجامدرا",
       });
-      return queryClient.invalidateQueries({
+      return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.EXPENSE_TYPES],
       });
     },
@@ -50,7 +50,7 @@ export const useAddExpenseType = () => {
 
 export const useUpdateExpenseType = (id: Id) => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
   return useMutation({
     mutationFn: (form: UpdateExpenseTypeF): Promise<UpdateExpenseTypeQ> =>
       updateExpenseType(form, id),
@@ -59,7 +59,7 @@ export const useUpdateExpenseType = (id: Id) => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بە سەرکەوتوویی ئەنجامدرا",
       });
-      return queryClient.invalidateQueries({
+      return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.EXPENSE_TYPES],
       });
     },
@@ -71,7 +71,7 @@ export const useUpdateExpenseType = (id: Id) => {
 
 export const useDeleteExpenseType = (id: Id) => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
   return useMutation({
     mutationFn: (): Promise<DeleteExpenseTypeQ> => deleteExpenseType(id),
     onSuccess: (data: DeleteExpenseTypeQ) => {
@@ -79,7 +79,7 @@ export const useDeleteExpenseType = (id: Id) => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بە سەرکەوتوویی ئەنجامدرا",
       });
-      return queryClient.invalidateQueries({
+      return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.EXPENSE_TYPES],
       });
     },

@@ -2,7 +2,7 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
 const colors = require("tailwindcss/colors");
 module.exports = {
-  darkMode: ["class"],
+  darkMode: ["class", "selector"],
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -91,15 +91,15 @@ module.exports = {
 
       colors: {
         primary: {
-          100: "#cee7ff",
-          200: "#9dd0ff",
-          300: "#6bb8ff",
-          400: "#3aa1ff",
-          500: "#0989ff",
-          600: "#076ecc",
-          700: "#055299",
-          800: "#043766",
-          900: "#021b33",
+          100: "#d3d5d7",
+          200: "#a6aaae",
+          300: "#7a8086",
+          400: "#4d555d",
+          500: "#212b35",
+          600: "#1a222a",
+          700: "#141a20",
+          800: "#0d1115",
+          900: "#07090b",
         },
         secondary: {
           100: "#cfebce",

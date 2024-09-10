@@ -1,6 +1,5 @@
-import Clients from "@/pages/_auth/Clients";
+import Customers from "@/pages/_auth/Customers";
 import CreatePsula from "@/pages/_auth/CreatePsula";
-import Less from "@/pages/_auth/Less";
 import CheckPart from "@/providers/CheckPart";
 import { lazy } from "react";
 
@@ -23,7 +22,7 @@ const Error = lazy(() => import("@/pages/Error"));
 const Case = lazy(() => import("@/pages/_auth/Case"));
 const Setting = lazy(() => import("@/pages/_auth/Setting"));
 const Report = lazy(() => import("@/pages/_auth/Report"));
-const Spend = lazy(() => import("@/pages/_auth/Spend"));
+const Expense = lazy(() => import("@/pages/_auth/Expense"));
 const Users = lazy(() => import("@/pages/_auth/Users"));
 
 const Home = lazy(() => import("@/pages/_auth/Home"));
@@ -79,9 +78,9 @@ const router = createBrowserRouter(
             element={<CheckPart part="ڕاپۆرت" Component={Report} />}
           />
           <Route
-            path="spend"
+            path="expense"
             errorElement={<Error />}
-            element={<CheckPart part="خەرجی" Component={Spend} />}
+            element={<CheckPart part="خەرجی" Component={Expense} />}
           />
           <Route
             path="users"
@@ -89,15 +88,11 @@ const router = createBrowserRouter(
             element={<CheckPart part="بەکارهێنەران" Component={Users} />}
           />
           <Route
-            path="clients"
+            path="customers"
             errorElement={<Error />}
-            element={<CheckPart part="کڕیارەکان" Component={Clients} />}
+            element={<CheckPart part="کڕیارەکان" Component={Customers} />}
           />
-          <Route
-            path="less"
-            errorElement={<Error />}
-            element={<CheckPart part="موادی کەمبوو" Component={Less} />}
-          />
+
           <Route
             path="create-psula"
             errorElement={<Error />}

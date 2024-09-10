@@ -1,33 +1,28 @@
-import { UserCardProps } from "@/types/auth";
+import { CustomerCardProps } from "@/types/customer";
 import { FormFinalOperation } from "@/types/global";
 import { Fingerprint } from "lucide-react";
 
-const UserDetailCard = ({
-  name,
-  role_id,
-  role_name,
+const CustomerDetailCard = ({
+  first_name,
+  last_name,
   id,
   phone,
-  username,
-}: FormFinalOperation & UserCardProps) => {
+}: FormFinalOperation & CustomerCardProps) => {
   return (
-    <div className="w-full  overflow-hidden bg-white rounded-lg  ">
+    <div
+      id={id.toLocaleString()}
+      className="w-full  overflow-hidden bg-white rounded-lg  ">
       <div className="flex items-center px-3 py-1 bg-gray-900">
         <Fingerprint className="text-white text-md" />
-        <h1 className="mx-3 text-md font-semibold text-white">{role_name}</h1>
+        <h1 className="mx-3 text-md font-semibold text-white">کڕیار</h1>
       </div>
 
       <div className="px-6 py-4 space-y-2">
         <div className="w-full flex flex-row justify-start items-center gap-2">
           <h1 className="text-md font-semibold text-gray-800 ">ناو:</h1>
-          <p className="text-sm font-poppins">{name}</p>
-        </div>
-
-        <div className="w-full flex flex-row justify-start items-center gap-2">
-          <h1 className="text-md font-semibold text-gray-800 ">
-            ناوی بەکارهێنەر:
-          </h1>
-          <p className="text-sm font-poppins">{username}</p>
+          <p className="text-sm font-poppins">
+            {first_name} {last_name}
+          </p>
         </div>
 
         <div className="w-full flex flex-row justify-start items-center gap-2">
@@ -41,4 +36,4 @@ const UserDetailCard = ({
   );
 };
 
-export default UserDetailCard;
+export default CustomerDetailCard;

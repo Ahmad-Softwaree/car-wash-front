@@ -91,7 +91,7 @@ export const partName = (part: Part): string => {
   if (part.name == "employee") return "کارمەندەکان";
   if (part.name == "users") return "بەکارهێنەران";
   if (part.name == "customers") return "کڕیارەکان";
-  if (part.name == "spend") return "خەرجی";
+  if (part.name == "expense") return "خەرجی";
   if (part.name == "report") return "ڕاپۆرت";
   if (part.name == "case") return "قاسە";
   if (part.name == "setting") return "ڕێخکستن";

@@ -37,13 +37,13 @@ const ChangeNameForm = ({ onClose }: FormFinalOperation) => {
       onSubmit={handleSubmit(onSubmit)}
       id="login-form">
       <p className="font-bold font-rabar007 text-lg">گۆڕینی ناو</p>
-      <InputGroup error={errors.full_name} className="w-full text-input">
+      <InputGroup error={errors.name} className="w-full text-input">
         <Input
           type="text"
-          id="full_name"
+          id="name"
           placeholder="ناو"
           className="w-full"
-          {...register("full_name", { required: true })}
+          {...register("name", { required: true })}
         />
       </InputGroup>
 

@@ -1,6 +1,4 @@
-import useScreenSize from "@/hooks/useScreenSize";
 import { UserCardProps } from "@/types/auth";
-import Image from "../ui/Image";
 import { PenLine, Trash2 } from "lucide-react";
 import MyButton from "../ui/MyButton";
 import { useState } from "react";
@@ -15,15 +13,12 @@ import { Badge } from "../ui/badge";
 import Typography from "../shared/Typography";
 
 const UserCard = ({
-  image_name,
-  image_url,
   name,
   role_id,
   role_name,
   id,
   ...others
 }: UserCardProps) => {
-  const { size } = useScreenSize();
   const [detail, setDetail] = useState<boolean>(false);
   const [update, setUpdate] = useState<boolean>(false);
   const [isDelete, setIsDelete] = useState<boolean>(false);
@@ -43,15 +38,6 @@ const UserCard = ({
         id={id.toLocaleString()}
         className="w-[330px] md:w-[420px] h-[140px] rounded-lg bg-white shadow-md border-[1.2px] border-solid border-opacity-50 border-gray-400 flex flex-row justify-between items-center p-3  gap-5">
         <div className="flex flex-row justify-start items-center gap-5">
-          <Image
-            preview={name.charAt(0)}
-            className="object-cover relative rounded-full"
-            image={image_url}
-            divClassName="text-lg capitalize"
-            alt={name}
-            height={size === "sm" || size === "xs" ? 50 : 80}
-            width={size === "sm" || size === "xs" ? 50 : 80}
-          />
           <div className="flex flex-col justify-center items-start gap-1">
             <span className="opacity-50 text-black text-sm">ناو</span>
 
@@ -79,8 +65,6 @@ const UserCard = ({
                 dispatch({
                   type: CONTEXT_TYPEs.SET_OLD_DATA,
                   payload: {
-                    image_name,
-                    image_url,
                     name,
                     role_id,
                     role_name,
@@ -111,8 +95,6 @@ const UserCard = ({
           isOpen={detail}
           onClose={() => setDetail(false)}>
           <UserDetailCard
-            image_name={image_name}
-            image_url={image_url}
             id={id}
             name={name}
             role_id={role_id}

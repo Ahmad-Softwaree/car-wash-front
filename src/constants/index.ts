@@ -2,13 +2,6 @@ import { HomeBox } from "@/types/global";
 
 export const homeBoxes: HomeBox[] = [
   {
-    id: 1,
-    image: "/images/sell.svg",
-    name: "فرۆشتن",
-    link: "/selling",
-    part: "selling",
-  },
-  {
     id: 2,
     image: "/images/koga.svg",
     name: "کۆگا",
@@ -48,12 +41,12 @@ export const homeBoxes: HomeBox[] = [
     id: 11,
     image: "/images/customers.svg",
     name: "کڕیارەکان",
-    link: "/clients",
-    part: "clients",
+    link: "/customers",
+    part: "customers",
   },
   {
     id: 12,
-    image: "/images/spend.svg",
+    image: "/images/expense.svg",
     name: "خەرجی",
     link: "/expense",
     part: "expense",
@@ -65,13 +58,7 @@ export const homeBoxes: HomeBox[] = [
     link: "/report",
     part: "report",
   },
-  {
-    id: 14,
-    image: "/images/case.svg",
-    name: "قاصە",
-    link: "/case",
-    part: "case",
-  },
+
   {
     id: 15,
     image: "/images/setting.svg",

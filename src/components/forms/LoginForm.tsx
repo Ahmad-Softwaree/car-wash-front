@@ -7,9 +7,8 @@ import { useLogin } from "@/lib/react-query/query/auth.query";
 import InputGroup from "@/components/ui/InputGroup";
 import InputAddon from "@/components/ui/InputAddon";
 import MyButton from "@/components/ui/MyButton";
-import Image from "../ui/Image";
 import { LoginInputs } from "@/types/auth";
-import { Lock, Phone, User } from "lucide-react";
+import { Lock, User } from "lucide-react";
 
 const LoginForm = () => {
   const { mutateAsync, isPending } = useLogin();

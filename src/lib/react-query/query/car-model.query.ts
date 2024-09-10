@@ -29,7 +29,7 @@ export const useGetCarModels = () => {
 
 export const useAddCarModel = () => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
   return useMutation({
     mutationFn: (form: AddCarModelF): Promise<AddCarModelQ> =>
       addCarModel(form),
@@ -38,7 +38,7 @@ export const useAddCarModel = () => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بە سەرکەوتوویی ئەنجامدرا",
       });
-      return queryClient.invalidateQueries({
+      return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.CAR_MODELS],
       });
     },
@@ -50,7 +50,7 @@ export const useAddCarModel = () => {
 
 export const useUpdateCarModel = (id: Id) => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
   return useMutation({
     mutationFn: (form: UpdateCarModelF): Promise<UpdateCarModelQ> =>
       updateCarModel(form, id),
@@ -59,7 +59,7 @@ export const useUpdateCarModel = (id: Id) => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بە سەرکەوتوویی ئەنجامدرا",
       });
-      return queryClient.invalidateQueries({
+      return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.CAR_MODELS],
       });
     },
@@ -71,7 +71,7 @@ export const useUpdateCarModel = (id: Id) => {
 
 export const useDeleteCarModel = (id: Id) => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryCustomer = useQueryClient();
   return useMutation({
     mutationFn: (): Promise<DeleteCarModelQ> => deleteCarModel(id),
     onSuccess: (data: DeleteCarModelQ) => {
@@ -79,7 +79,7 @@ export const useDeleteCarModel = (id: Id) => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بە سەرکەوتوویی ئەنجامدرا",
       });
-      return queryClient.invalidateQueries({
+      return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.CAR_MODELS],
       });
     },

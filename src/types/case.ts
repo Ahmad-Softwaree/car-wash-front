@@ -6,12 +6,12 @@ export type CaseHistory = {
   date: Date | Id;
   money: string;
   id: Id;
-  type: "revenue" | "spend";
+  type: "revenue" | "expense";
   case_id: Id;
 };
 
 export type CaseChart = {
-  type: "revenue" | "spend";
+  type: "revenue" | "expense";
   value: number;
   label: "خەرجی" | "داهات";
 };
@@ -25,13 +25,13 @@ export type CaseMoney<T> = {
 };
 
 export type CaseRevenue = CaseMoney<"revenue">;
-export type CaseSpend = CaseMoney<"spend">;
+export type CaseExpense = CaseMoney<"expense">;
 export type CaseDept = CaseMoney<"dept">;
 
 export type ReportMoney = {
   id: Id;
   money: Money;
-  spend: Money;
+  expense: Money;
   dept: Money;
   dept_psula: ReportData;
   naqd_psula: ReportData;

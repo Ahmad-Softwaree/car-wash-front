@@ -1,33 +1,31 @@
 import useScreenSize from "@/hooks/useScreenSize";
-import { ClientCardProps } from "@/types/client";
+import { CustomerCardProps } from "@/types/customer";
 import Image from "../ui/Image";
 import { PenLine, Trash2 } from "lucide-react";
 import MyButton from "../ui/MyButton";
 import { useState } from "react";
 import Dialog from "../shared/Dialog";
-import ClientDetailCard from "./ClientDetailCard";
+import CustomerDetailCard from "./CustomerDetailCard";
 import DeleteModal from "../ui/DeleteModal";
-import { useDeleteClient } from "@/lib/react-query/query/client.query";
-import ClientForm from "../forms/ClientForm";
+import { useDeleteCustomer } from "@/lib/react-query/query/customer.query";
+import CustomerForm from "../forms/CustomerForm";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 import Typography from "../shared/Typography";
 
-const ClientCard = ({
-  image_name,
-  image_url,
+const CustomerCard = ({
   first_name,
   last_name,
   phone,
   id,
   ...others
-}: ClientCardProps) => {
+}: CustomerCardProps) => {
   const { size } = useScreenSize();
   const [detail, setDetail] = useState<boolean>(false);
   const [update, setUpdate] = useState<boolean>(false);
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const { dispatch } = useGlobalContext();
-  const { mutateAsync, isPending } = useDeleteClient(id);
+  const { mutateAsync, isPending } = useDeleteCustomer(id);
 
   const updateOnClose = () => {
     dispatch({
@@ -42,15 +40,6 @@ const ClientCard = ({
         id={id.toLocaleString()}
         className="w-[320px] md:w-[420px] h-[140px] rounded-lg bg-white shadow-md border-[1.2px] border-solid border-opacity-50 border-gray-400 flex flex-row justify-between items-center p-3  gap-5">
         <div className="flex flex-row justify-start items-center gap-5">
-          <Image
-            preview={first_name.charAt(0)}
-            className="object-cover relative rounded-full"
-            image={image_url}
-            divClassName="text-lg capitalize"
-            alt={first_name}
-            height={size === "sm" || size === "xs" ? 50 : 80}
-            width={size === "sm" || size === "xs" ? 50 : 80}
-          />
           <div className="flex flex-col justify-center items-start gap-1">
             <span className="opacity-50 text-black text-sm">ناو</span>
 
@@ -79,8 +68,6 @@ const ClientCard = ({
                 dispatch({
                   type: CONTEXT_TYPEs.SET_OLD_DATA,
                   payload: {
-                    image_name,
-                    image_url,
                     first_name,
                     last_name,
                     phone,
@@ -95,9 +82,9 @@ const ClientCard = ({
           </div>{" "}
           <MyButton
             onClick={() => setDetail(true)}
-            id="showClientDataButton"
+            id="showCustomerDataButton"
             type="button"
-            name="showClientDataButton"
+            name="showCustomerDataButton"
             className="px-2 md:px-4 text-sm md:text-md py-1 font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
             زانیاری
           </MyButton>
@@ -110,9 +97,7 @@ const ClientCard = ({
           maxHeight={`90%`}
           isOpen={detail}
           onClose={() => setDetail(false)}>
-          <ClientDetailCard
-            image_name={image_name}
-            image_url={image_url}
+          <CustomerDetailCard
             id={id}
             first_name={first_name}
             last_name={last_name}
@@ -121,7 +106,7 @@ const ClientCard = ({
             onClose={() => setDetail(false)}
           />
           <button
-            name="closeClientFormButton"
+            name="closeCustomerFormButton"
             onClick={() => setDetail(false)}
             type="button"
             className="w-full  my-2 bg-black-600 rounded-sm p-2 text-white flex flex-row justify-center items-center gap-2">
@@ -150,10 +135,10 @@ const ClientCard = ({
           maxHeight={`90%`}
           isOpen={update}
           onClose={updateOnClose}>
-          <ClientForm state="update" onClose={updateOnClose} />
+          <CustomerForm state="update" onClose={updateOnClose} />
 
           <button
-            name="closeClientFormButton"
+            name="closeCustomerFormButton"
             onClick={updateOnClose}
             type="button"
             className="w-full  my-2 bg-red-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
@@ -165,4 +150,4 @@ const ClientCard = ({
   );
 };
 
-export default ClientCard;
+export default CustomerCard;

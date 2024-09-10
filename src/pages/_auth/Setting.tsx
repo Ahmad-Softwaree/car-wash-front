@@ -17,7 +17,6 @@ import Dialog from "@/components/shared/Dialog";
 import RoleForm from "@/components/forms/RoleForm";
 
 import { useGetConfigs } from "@/lib/react-query/query/config.query";
-import ConfigCard from "@/components/cards/ConfigCard";
 import { useGetCarModels } from "@/lib/react-query/query/car-model.query";
 import { useGetCarTypes } from "@/lib/react-query/query/car-type.query";
 import { useGetColors } from "@/lib/react-query/query/color.query";
@@ -44,8 +43,6 @@ const Setting = () => {
   const { data: services, isLoading: servicesLoading } = useGetServices();
   const { data: expenseTypes, isLoading: expenseTypesLoading } =
     useGetExpenseTypes();
-
-  const { data: config, isLoading: configLoading } = useGetConfigs();
 
   const [isAddRole, setIsAddRole] = useState<boolean>(false);
   const [isAddCarModel, setIsAddCarModel] = useState<boolean>(false);
@@ -74,7 +71,6 @@ const Setting = () => {
           </Loading>
         ) : roles &&
           parts &&
-          config &&
           carTypes &&
           carModels &&
           colors &&
@@ -207,13 +203,6 @@ const Setting = () => {
                   <PartCard key={val.id} {...val} />
                 ))}
               </div>
-            </div>
-
-            <div className="space-y-5">
-              <h2 className="space-y-5  text-md md:text-lg font-rabar007 font-bold">
-                هەندێ ڕێکخستن
-              </h2>
-              <ConfigCard {...config} />
             </div>
           </>
         ) : null}
