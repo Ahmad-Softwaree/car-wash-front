@@ -1,7 +1,7 @@
 import { lazy, useEffect, useMemo, useState } from "react";
 
-import AddProductCard from "@/components/cards/AddProductCard";
-import ProductForm from "@/components/forms/ProductForm";
+import AddItemCard from "@/components/cards/AddItemCard";
+import ItemForm from "@/components/forms/ItemForm";
 const Dialog = lazy(() => import("@/components/shared/Dialog"));
 import Return from "@/components/shared/Return";
 import Container from "@/components/ui/Container";
@@ -10,17 +10,17 @@ import { CONTEXT_TYPEs } from "@/context/types";
 
 import { CirclePlus, PencilLine, Trash2 } from "lucide-react";
 import {
-  useDeleteProduct,
-  useGetProductById,
-  useGetProductsInAdd,
-} from "@/lib/react-query/query/product.query";
+  useDeleteItem,
+  useGetItemById,
+  useGetItemsInAdd,
+} from "@/lib/react-query/query/item.query";
 import Loading from "@/components/ui/Loading";
 import { TailSpin } from "react-loader-spinner";
 import Image from "@/components/ui/Image";
 import DeleteModal from "@/components/ui/DeleteModal";
 import Pagination from "@/components/providers/Pagination";
 import { GlobalFormProps, InfoTypeProps } from "@/types/global";
-import { Product, ProductCard, ProductInformation } from "@/types/products";
+import { Item, ItemCard, ItemInformation } from "@/types/items";
 import MyButton from "@/components/ui/MyButton";
 import Typography from "@/components/shared/Typography";
 
@@ -39,18 +39,19 @@ const InfoLine = ({ title, body }: InfoTypeProps) => (
   </div>
 );
 
-const AddProduct = () => {
+const AddItem = () => {
   const { dispatch } = useGlobalContext();
-  const [active, setActive] = useState<ProductCard | null>(null);
-  const { mutateAsync: deleteProduct, isPending: deleteLoading } =
-    useDeleteProduct(active?.id || 0);
+  const [active, setActive] = useState<ItemCard | null>(null);
+  const { mutateAsync: deleteItem, isPending: deleteLoading } = useDeleteItem(
+    active?.id || 0
+  );
 
   const {
-    data: product,
-    isLoading: productLoading,
+    data: item,
+    isLoading: itemLoading,
     refetch,
-  } = useGetProductById(active?.id || null);
-  const [proInfo, setProInfo] = useState<ProductInformation | null>(null);
+  } = useGetItemById(active?.id || null);
+  const [proInfo, setProInfo] = useState<ItemInformation | null>(null);
   const [state, setState] = useState<GlobalFormProps>({
     state: "insert",
   });
@@ -71,16 +72,16 @@ const AddProduct = () => {
   }, [active]);
 
   useEffect(() => {
-    if (product) {
+    if (item) {
       let { withoutBarcode, id, frosh, sold, image_name, image_url, ...rest } =
-        product;
+        item;
       setProInfo(rest);
     }
-  }, [product]);
+  }, [item]);
 
   return (
     <>
-      <Pagination<Product[]> queryFn={() => useGetProductsInAdd()}>
+      <Pagination<Item[]> queryFn={() => useGetItemsInAdd()}>
         {({ isFetchingNextPage, data, hasNextPage, isLoading, ref }) => {
           const allData = useMemo(
             () =>
@@ -102,19 +103,19 @@ const AddProduct = () => {
                 ) : (
                   <div className="col-span-full xl:col-span-3  flex flex-row justify-start items-start gap-5   flex-wrap h-full content-start overflow-x-auto px-4 xl:px-0 overflow-y-scroll max-h-[300px] md:max-h-[800px]">
                     <MyButton
-                      name="addProduct"
+                      name="addItem"
                       className="w-[120px] md:w-[150px] h-[140px] md:h-[196px] rounded-xl flex flex-col justify-center items-center gap-4 bg-blue-100 text-blue border-2 border-solid border-blue-500 bg-opacity-20 text-sm md:text-md"
                       onClick={() => {
                         setState({ state: "insert" });
                         openDialog();
                       }}>
                       <CirclePlus color="blue" />
-                      <p className="text-md text-blue-500 font-rabar007 font-bold">
+                      <p className="text-md text-blue-500 font-bukra font-bold">
                         زیادکردنی مواد
                       </p>
                     </MyButton>
                     {allData.length > 0 &&
-                      allData.map((val: ProductCard, _index: number) => (
+                      allData.map((val: ItemCard, _index: number) => (
                         <article
                           key={val.id}
                           className={`w-[120px] md:w-[150px] h-[140px] md:h-[196px] rounded-xl border-[3px] border-solid cursor-pointer ${
@@ -122,7 +123,7 @@ const AddProduct = () => {
                               ? "border-yellow-500"
                               : "border-white"
                           }`}>
-                          <AddProductCard
+                          <AddItemCard
                             onClick={() => setActive(val)}
                             {...val}
                           />
@@ -140,63 +141,60 @@ const AddProduct = () => {
                 )}
 
                 <div className="col-span-full xl:col-span-2 flex flex-col justify-between items-start gap-5 w-full border-t-2 xl:border-t-0 xl:border-r-2 border-solid border-gray-300 pt-3 xl:pr-3 h-full ">
-                  {productLoading ? (
+                  {itemLoading ? (
                     <Loading>
                       <TailSpin />
                     </Loading>
-                  ) : active && product && proInfo ? (
+                  ) : active && item && proInfo ? (
                     <>
                       <div className="flex flex-col xl:flex-row justify-between items-start gap-5 w-full">
                         <div className="w-full xl:w-2/3 flex flex-col justify-start items-start gap-5">
-                          <p className="font-bold font-rabar007 text-lg">
+                          <p className="font-bold font-bukra text-lg">
                             بینینی وردەکاری
                           </p>
-                          <InfoLine title="بارکۆد" body={product.barcode} />
-                          <InfoLine title="ناوی مواد" body={product.title} />
-                          <InfoLine
-                            title="کۆی پاکەت"
-                            body={product.cartoonSum}
-                          />
-                          <InfoLine title="کۆی دانە" body={product.oneSum} />
+                          <InfoLine title="بارکۆد" body={item.barcode} />
+                          <InfoLine title="ناوی مواد" body={item.title} />
+                          <InfoLine title="کۆی پاکەت" body={item.cartoonSum} />
+                          <InfoLine title="کۆی دانە" body={item.oneSum} />
                           <InfoLine
                             title="بڕی تێچوو"
-                            body={product.oneDollarPrice}
+                            body={item.oneDollarPrice}
                           />
                           <InfoLine
                             title="نرخی فرۆشتن پاکەت"
-                            body={product.cartoonSellPrice}
+                            body={item.cartoonSellPrice}
                           />
                           <InfoLine
                             title="نرخی فرۆشتن دانە"
-                            body={product.oneSellPrice}
+                            body={item.oneSellPrice}
                           />
                           <InfoLine
                             title="نرخی جوملە پاکەت"
-                            body={product.cartoonJumlaPrice}
+                            body={item.cartoonJumlaPrice}
                           />
                           <InfoLine
                             title="نرخی جوملە دانە"
-                            body={product.oneJumlaPrice}
+                            body={item.oneJumlaPrice}
                           />
 
-                          <InfoLine title="تێبینی" body={product.note} />
+                          <InfoLine title="تێبینی" body={item.note} />
                         </div>
                         <Image
                           height={`170px`}
                           width={`170px`}
-                          image={product?.image_url}
-                          alt={product?.image_name}
+                          image={item?.image_url}
+                          alt={item?.image_name}
                           className="rounded-xl"
                         />
                       </div>
 
                       <div className="space-y-2 w-full mt-10">
                         <button
-                          name="changeProductButton"
+                          name="changeItemButton"
                           onClick={() => {
                             dispatch({
                               type: CONTEXT_TYPEs.SET_OLD_DATA,
-                              payload: product,
+                              payload: item,
                             });
                             setState({ state: "update" });
                             openDialog();
@@ -204,17 +202,17 @@ const AddProduct = () => {
                           type="submit"
                           className="w-full bg-black-600 rounded-sm p-3 text-white flex flex-row justify-center items-center gap-2">
                           <PencilLine />
-                          <p className="font-bold font-rabar007">گۆڕانکاری</p>
+                          <p className="font-bold font-bukra">گۆڕانکاری</p>
                         </button>
                         <button
-                          name="deleteProductButton"
+                          name="deleteItemButton"
                           onClick={() => {
                             setDeleteDialog(true);
                           }}
                           type="button"
                           className="w-full bg-red-500 rounded-sm p-3 text-white flex flex-row justify-center items-center gap-2">
                           <Trash2 />
-                          <p className="font-bold font-rabar007">سڕینەوە</p>
+                          <p className="font-bold font-bukra">سڕینەوە</p>
                         </button>
                       </div>
                     </>
@@ -235,13 +233,13 @@ const AddProduct = () => {
           maxHeight={`90%`}
           isOpen={isDialogOpen}
           onClose={closeDialog}>
-          <ProductForm onClose={closeDialog} state={state.state} />
+          <ItemForm onClose={closeDialog} state={state.state} />
           <button
-            name="closeProductFormButton"
+            name="closeItemFormButton"
             onClick={closeDialog}
             type="button"
             className="w-full  my-2 bg-red-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
-            <p className="font-bold font-rabar007">هەڵوەشاندنەوە</p>
+            <p className="font-bold font-bukra">هەڵوەشاندنەوە</p>
           </button>
         </Dialog>
       )}
@@ -253,7 +251,7 @@ const AddProduct = () => {
           onClose={() => setDeleteDialog(false)}>
           <DeleteModal
             loading={deleteLoading}
-            deleteFunction={() => deleteProduct()}
+            deleteFunction={() => deleteItem()}
             onClose={() => setDeleteDialog(false)}
             finalOperator={() => setActive(null)}
           />
@@ -263,4 +261,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default AddItem;

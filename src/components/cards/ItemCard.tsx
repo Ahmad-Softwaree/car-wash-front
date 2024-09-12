@@ -1,11 +1,7 @@
-import { UserCardProps } from "@/types/auth";
 import { Info, PenTool, Trash2, X } from "lucide-react";
 import { useState } from "react";
 import Dialog from "../shared/Dialog";
-import UserDetailCard from "./UserDetailCard";
 import DeleteModal from "../ui/DeleteModal";
-import { useDeleteUser } from "@/lib/react-query/query/user.query";
-import UserForm from "../forms/UserForm";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 import { Td, Tr } from "../ui";
@@ -13,17 +9,26 @@ import InputGroup from "../ui/InputGroup";
 import Input from "../ui/Input";
 import Tooltip from "@mui/joy/Tooltip";
 import Chip from "@mui/joy/Chip";
+import { ItemCardProps } from "@/types/items";
+import FormatMoney from "../shared/FormatMoney";
+import ItemDetailCard from "./ItemDetailCard";
+import ItemForm from "../forms/ItemForm";
+import { useDeleteItem } from "@/lib/react-query/query/item.query";
 
-const UserCard = ({
+const ItemCard = ({
   name,
-  role_id,
-  role_name,
-  username,
-  phone,
+  quantity,
+  image_name,
+  image_url,
+  barcode,
+  type,
+  item_purchase_price,
+  item_sell_price,
+  note,
   id,
   index = -1,
   ...others
-}: UserCardProps) => {
+}: ItemCardProps) => {
   const [detail, setDetail] = useState<boolean>(false);
   const [update, setUpdate] = useState<boolean>(false);
   const [isDelete, setIsDelete] = useState<boolean>(false);
@@ -31,7 +36,7 @@ const UserCard = ({
     dispatch,
     state: { checked },
   } = useGlobalContext();
-  const { mutateAsync, isPending } = useDeleteUser();
+  const { mutateAsync, isPending } = useDeleteItem();
 
   const updateOnClose = () => {
     dispatch({
@@ -79,22 +84,33 @@ const UserCard = ({
         <Td className="!p-3">
           <p className="text-right font-light font-rabar007 text-sm">{name}</p>
         </Td>
+
         <Td className="!p-3">
           <p className="text-right font-light font-rabar007 text-sm">
-            {username}
+            {barcode}
+          </p>
+        </Td>
+
+        <Td className="!p-3">
+          <p className="text-right font-light font-rabar007 text-sm">{type}</p>
+        </Td>
+
+        <Td className="!p-3">
+          <Chip variant="soft" color={quantity < 30 ? "danger" : "neutral"}>
+            <p className="!font-bukra text-right font-light font-rabar007 text-xs">
+              {quantity}
+            </p>
+          </Chip>
+        </Td>
+        <Td className="!p-3">
+          <p className="text-right font-light font-rabar007 text-sm">
+            <FormatMoney>{item_sell_price}</FormatMoney>
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-rabar007 text-sm">{phone}</p>
-        </Td>
-        <Td className="!p-3">
-          <Chip
-            variant="soft"
-            color={role_name == "ئەدمین" ? "danger" : "neutral"}>
-            <p className="!font-bukra text-right font-light font-rabar007 text-xs">
-              {role_name}
-            </p>
-          </Chip>
+          <p className="text-right font-light font-rabar007 text-sm">
+            <FormatMoney>{item_purchase_price}</FormatMoney>
+          </p>
         </Td>
         <Td className="!p-3 cup flex flex-row gap-2">
           <Tooltip
@@ -120,10 +136,14 @@ const UserCard = ({
                   type: CONTEXT_TYPEs.SET_OLD_DATA,
                   payload: {
                     name,
-                    role_id,
-                    role_name,
-                    username,
-                    phone,
+                    quantity,
+                    image_name,
+                    image_url,
+                    barcode,
+                    type,
+                    item_purchase_price,
+                    item_sell_price,
+                    note,
                     id,
                     ...others,
                   },
@@ -152,7 +172,7 @@ const UserCard = ({
       {detail && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={500}
+          maxWidth={1000}
           maxHeight={`90%`}
           isOpen={detail}
           onClose={() => setDetail(false)}>
@@ -160,13 +180,17 @@ const UserCard = ({
             onClick={() => setDetail(false)}
             className="cursor-pointer p-1 w-8 h-8 border-2 border-solid border-primary-400 border-opacity-40 rounded-lg mb-2 transition-all duration-200 hover:bg-red-400"
           />
-          <UserDetailCard
+          <ItemDetailCard
             id={id}
             name={name}
-            role_id={role_id}
-            role_name={role_name}
-            username={username}
-            phone={phone}
+            quantity={quantity}
+            barcode={barcode}
+            type={type}
+            item_purchase_price={item_purchase_price}
+            item_sell_price={item_sell_price}
+            image_url={image_url}
+            image_name={image_name}
+            note={note}
             {...others}
             onClose={() => setDetail(false)}
           />
@@ -189,7 +213,7 @@ const UserCard = ({
       {update && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={800}
+          maxWidth={1500}
           maxHeight={`90%`}
           isOpen={update}
           onClose={updateOnClose}>
@@ -197,11 +221,11 @@ const UserCard = ({
             onClick={updateOnClose}
             className="cursor-pointer p-1 w-8 h-8 border-2 border-solid border-primary-400 border-opacity-40 rounded-lg mb-2 transition-all duration-200 hover:bg-red-400"
           />
-          <UserForm state="update" onClose={updateOnClose} />
+          <ItemForm state="update" onClose={updateOnClose} />
         </Dialog>
       )}
     </>
   );
 };
 
-export default UserCard;
+export default ItemCard;

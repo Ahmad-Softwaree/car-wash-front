@@ -7,7 +7,7 @@ const Label = forwardRef<HTMLLabelElement, LabelProps>(
     return (
       <label
         className={cn(
-          "cursor-pointer text-md text-nowrap md:text-lg font-bold font-rabar007",
+          "cursor-pointer text-md text-nowrap md:text-lg font-bold font-bukra",
           props.className
         )}
         {...props}>

@@ -1,5 +1,5 @@
 import { Id } from "./global";
-import { Product } from "./products";
+import { Item } from "./items";
 
 export type CaseHistory = {
   situation: string;
@@ -61,6 +61,6 @@ export type GetCaseChartQ = CaseChart[];
 
 export type GetReportMoneyDataQ = ReportMoney;
 
-export type GetReportMostProductQ = Product[];
+export type GetReportMostItemQ = Item[];
 
 export type GetReportMostOrderQ = ReportChart[];

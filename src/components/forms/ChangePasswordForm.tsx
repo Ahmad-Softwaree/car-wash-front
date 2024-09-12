@@ -28,7 +28,7 @@ const ChangePasswordForm = ({ onClose }: FormFinalOperation) => {
       ref={form}
       onSubmit={handleSubmit(onSubmit)}
       id="login-form">
-      <p className="font-bold font-rabar007 text-lg">گۆڕینی ووشەی نهێنی</p>
+      <p className="font-bold font-bukra text-lg">گۆڕینی ووشەی نهێنی</p>
       <InputGroup className="w-full text-input" error={errors.oldPassword}>
         <Input
           type="password"
@@ -63,7 +63,7 @@ const ChangePasswordForm = ({ onClose }: FormFinalOperation) => {
         name="changePasswordButton"
         type="submit"
         className="w-full bg-black-600 rounded-sm p-3 text-white flex flex-row justify-center items-center gap-2">
-        <p className="font-bold font-rabar007">جێبەجێکردن</p>
+        <p className="font-bold font-bukra">جێبەجێکردن</p>
       </MyButton>
     </Form>
   );

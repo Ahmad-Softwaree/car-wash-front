@@ -2,7 +2,7 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
 const colors = require("tailwindcss/colors");
 module.exports = {
-  darkMode: ["class", "selector"],
+  darkMode: "class",
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -91,15 +91,15 @@ module.exports = {
 
       colors: {
         primary: {
-          100: "#d3d5d7",
-          200: "#a6aaae",
-          300: "#7a8086",
-          400: "#4d555d",
-          500: "#212b35",
-          600: "#1a222a",
-          700: "#141a20",
-          800: "#0d1115",
-          900: "#07090b",
+          100: "#cdcfd1",
+          200: "#9c9fa3",
+          300: "#6a6f76",
+          400: "#393f48",
+          500: "#070f1a",
+          600: "#060c15",
+          700: "#040910",
+          800: "#03060a",
+          900: "#010305",
         },
         secondary: {
           100: "#cfebce",
@@ -135,6 +135,10 @@ module.exports = {
         speda_bold: "speda_bold",
         bukra: "bukra",
         bukra_bold: "bukra_bold",
+
+        rabar_bold: "rabar034",
+        rabar: "rabar007",
+
         sans: ["Graphik", "sans-serif"],
         serif: ["Merriweather", "serif"],
         poppins: ["Poppins", "sans-serif"],

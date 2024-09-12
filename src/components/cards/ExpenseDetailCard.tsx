@@ -9,7 +9,7 @@ const ExpenseDetailCard = ({ price, note, type, id, date }: Expense) => {
       id={id.toLocaleString()}
       className="w-full flex flex-col justify-center items-start gap-10 min-w-none ">
       <div className="w-full flex flex-row justify-between items-center">
-        <p className="font-bold font-rabar007 text-lg text-nowrap">خەرجی</p>
+        <p className="font-bold font-bukra text-lg text-nowrap">خەرجی</p>
       </div>
       <div className="w-full space-y-4">
         <InputGroup className="w-full text-input">

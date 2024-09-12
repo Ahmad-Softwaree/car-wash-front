@@ -1,5 +1,5 @@
 import CreditCard from "@/components/cards/CreditCard";
-import MostProductCard from "@/components/cards/MostProductCard";
+import MostItemCard from "@/components/cards/MostItemCard";
 import Return from "@/components/shared/Return";
 import Container from "@/components/ui/Container";
 import Input from "@/components/ui/Input";
@@ -9,9 +9,9 @@ import useWindowSize from "@/hooks/useWindowSize";
 import {
   useGetReportMoneyData,
   useGetReportMostOrder,
-  useGetReportMostProduct,
+  useGetReportMostItem,
 } from "@/lib/react-query/query/case.query";
-import { Product } from "@/types";
+import { Item } from "@/types";
 import { pieArcLabelClasses, PieChart } from "@mui/x-charts/PieChart";
 import { RefreshCcw } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
@@ -29,10 +29,10 @@ const Report = () => {
   } = useGetReportMoneyData(from || "", to || "");
 
   const {
-    refetch: reportMostProductRefetch,
-    data: reportProduct,
-    isLoading: reportProductLoading,
-  } = useGetReportMostProduct(from || "", to || "");
+    refetch: reportMostItemRefetch,
+    data: reportItem,
+    isLoading: reportItemLoading,
+  } = useGetReportMostItem(from || "", to || "");
 
   const {
     refetch: reportMostOrderRefetch,
@@ -42,7 +42,7 @@ const Report = () => {
 
   useEffect(() => {
     reportMoneyRefetch();
-    reportMostProductRefetch();
+    reportMostItemRefetch();
     reportMostOrderRefetch();
   }, [from, to]);
   const { windowX } = useWindowSize();
@@ -51,9 +51,9 @@ const Report = () => {
     <Container
       as={`div`}
       className="w-full gap-10 flex flex-col justify-start items-start ">
-      <Return>ڕاپۆرت</Return>
+      <Return>ڕاپۆرتەکان</Return>
       <div className="w-full flex flex-row justify-start items-center gap-4 flex-wrap">
-        <p className="text-md font-rabar007">بەروار</p>
+        <p className="text-md font-bukra">بەروار</p>
         <InputGroup className="!p-1 md:!p-3 text-input">
           <Input
             value={from !== "" ? from.toLocaleString() : defaultDate}
@@ -63,7 +63,7 @@ const Report = () => {
           />
         </InputGroup>
 
-        <p className="text-md font-rabar007">بۆ</p>
+        <p className="text-md font-bukra">بۆ</p>
         <InputGroup className="!p-1 md:!p-3 text-input">
           <Input
             value={to !== "" ? to.toLocaleString() : defaultDate}
@@ -119,22 +119,22 @@ const Report = () => {
         </>
       ) : null}
       <div className="my-10 w-full h-[2px] rounded-full bg-gray-500 bg-opacity-50"></div>
-      <p className="font-bold text-md md:text-xl font-rabar007 whitespace-nowrap">
+      <p className="font-bold text-md md:text-xl font-bukra whitespace-nowrap">
         زۆرترین کاڵای فرۆشراو
       </p>
-      {reportProductLoading ? (
+      {reportItemLoading ? (
         <Loading>
           <TailSpin />
         </Loading>
-      ) : reportProduct ? (
+      ) : reportItem ? (
         <div className="w-full flex flex-row justify-start items-start gap-4 flex-wrap">
-          {reportProduct.map((val: Product, index: number) => (
-            <MostProductCard key={val.id} {...val} />
+          {reportItem.map((val: Item, index: number) => (
+            <MostItemCard key={val.id} {...val} />
           ))}
         </div>
       ) : null}
       <div className="my-10 w-full h-[2px] rounded-full bg-gray-500 bg-opacity-50"></div>
-      <p className="font-bold text-md md:text-xl font-rabar007 whitespace-nowrap">
+      <p className="font-bold text-md md:text-xl font-bukra whitespace-nowrap">
         ١٠ زۆرترین داواکاری
       </p>
 

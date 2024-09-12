@@ -1,4 +1,4 @@
-import { LessProductCardProps } from "@/types/products";
+import { LessItemCardProps } from "@/types/items";
 import Image from "../ui/Image";
 import useScreenSize from "@/hooks/useScreenSize";
 import { BadgeMinus, BadgePlus } from "lucide-react";
@@ -6,11 +6,11 @@ import Input from "../ui/Input";
 import InputGroup from "../ui/InputGroup";
 import { useState } from "react";
 import MyButton from "../ui/MyButton";
-import { useCountProduct } from "@/lib/react-query/query/product.query";
+import { useCountItem } from "@/lib/react-query/query/item.query";
 import Typography from "../shared/Typography";
 import FormatMoney from "../shared/FormatMoney";
 
-const LessProductCard = ({
+const LessItemCard = ({
   id,
   image_url,
   image_name,
@@ -18,10 +18,10 @@ const LessProductCard = ({
   cost,
   count,
   frosh,
-}: LessProductCardProps) => {
+}: LessItemCardProps) => {
   const { size } = useScreenSize();
   const [theCount, setTheCount] = useState<number>(0);
-  const { mutateAsync, isPending } = useCountProduct(id);
+  const { mutateAsync, isPending } = useCountItem(id);
   return (
     <article className="w-[200px] h-full grid grid-cols-1 grid-rows-4 bg-white shadow-lg rounded-xl items-center pb-5">
       <Image
@@ -33,7 +33,7 @@ const LessProductCard = ({
       />
 
       <Typography text={title}>
-        <p className="!text-xs md:!text-sm text-center w-full text-md font-bold font-rabar007 row-span-1 col-span-full p-2">
+        <p className="!text-xs md:!text-sm text-center w-full text-md font-bold font-bukra row-span-1 col-span-full p-2">
           {title}
         </p>
       </Typography>
@@ -97,4 +97,4 @@ const LessProductCard = ({
   );
 };
 
-export default LessProductCard;
+export default LessItemCard;

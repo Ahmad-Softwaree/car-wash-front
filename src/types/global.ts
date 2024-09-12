@@ -9,13 +9,8 @@ import {
 } from "react";
 import { CaseHistory } from "./case";
 import { FieldError, FieldValues, SubmitHandler } from "react-hook-form";
-import { ChangeNameQ, GetAuthQ, GetUsersQ, User } from "./auth";
-import {
-  Product,
-  ProductCard,
-  ProductInformation,
-  ProductLess,
-} from "./products";
+import { ChangeProfileQ, GetAuthQ, GetUsersQ, User } from "./auth";
+import { Item, ItemCard, ItemInformation, ItemLess } from "./items";
 import { Expense } from "./expense";
 import {
   FetchNextPageOptions,
@@ -66,17 +61,17 @@ export type QueryResult<T extends DataTypes> = {
   ) => Promise<InfiniteQueryObserverResult>;
 };
 export type DataTypes =
-  | Product[]
+  | Item[]
   | Expense[]
   | CaseHistory[]
   | GetAuthQ
-  | ChangeNameQ
+  | ChangeProfileQ
   | GetUsersQ
   | User[]
-  | ProductCard[]
-  | Product[]
-  | ProductInformation[]
-  | ProductLess[]
+  | ItemCard[]
+  | Item[]
+  | ItemInformation[]
+  | ItemLess[]
   | Customer[];
 
 export type PaginationChildrenProps<T extends DataTypes> = {
@@ -94,7 +89,7 @@ export type PaginationChildrenProps<T extends DataTypes> = {
   ) => Promise<InfiniteQueryObserverResult>;
 };
 
-export type PaginationPages = "products" | "expenses";
+export type PaginationPages = "items" | "expenses";
 
 export type PaginationProps<T extends DataTypes> = {
   page?: PaginationPages;
@@ -106,6 +101,8 @@ export type PaginationProps<T extends DataTypes> = {
 
 export type Page = undefined | number;
 export type Limit = undefined | number;
+export type Search = undefined | string;
+
 export type SearchString = string | number;
 
 export type DeleteModalProps = {
@@ -175,12 +172,12 @@ export type MyButtonProps = PropsWithChildren<
 >;
 export type QueryProviderType = PropsWithChildren<{}>;
 
-export type HomeBox = {
-  id: Id;
-  image: string;
+export type SideLink = {
+  id: string;
+  icon: ReactElement;
   name: string;
   link: string;
-  part: string;
+  type: "general" | "manage" | "report" | "setting";
 };
 export type HeaderItem = {
   id: Id;
@@ -237,6 +234,8 @@ export type ComboboxProps<T extends ComboboxExtendTypes> = {
 
 export type GlobalStateType = {
   oldData: any;
+  checked: any;
+  check_type: "all" | "one";
 };
 export type GlobalPayload<T> = {
   oldData: T;
@@ -262,8 +261,6 @@ export type CreditCardProps = PropsWithChildren<{
 export type TableProps = PropsWithChildren<{}> & ComponentPropsWithRef<"table">;
 
 export type THeadProps = PropsWithChildren<{
-  type: "simple" | "complicated";
-
   color: "gray" | "none";
 }> &
   ComponentPropsWithRef<"thead">;

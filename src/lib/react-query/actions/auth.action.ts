@@ -1,13 +1,11 @@
 import { CONTEXT_TYPEs } from "@/context/types";
 import { api, authApi } from "@/lib/config/api.config";
 import { getCookie } from "@/lib/config/cookie.config";
-import { generateNestErrors, toggleAuth } from "@/lib/functions";
+import { toggleAuth } from "@/lib/functions";
 import { URLs } from "@/lib/url";
 import {
-  ChangeNameF,
-  ChangeNameQ,
-  ChangePasswordF,
-  ChangePasswordQ,
+  ChangeProfileF,
+  ChangeProfileQ,
   GetAuthQ,
   LoginF,
   LoginQ,
@@ -38,7 +36,7 @@ export const getAuth = async (
     return data;
   } catch (error: any) {
     toggleAuth("remove");
-    generateNestErrors(error.response.data, toast);
+    // generateNestErrors(error.response.data, toast);
     throw navigate("/login");
   }
 };
@@ -64,24 +62,13 @@ export const logout = async (): Promise<string> => {
     throw error;
   }
 };
-export const changeName = async (form: ChangeNameF): Promise<ChangeNameQ> => {
+export const changeProfile = async (
+  form: ChangeProfileF
+): Promise<ChangeProfileQ> => {
   try {
-    const { data, status } = await authApi.post<ChangeNameQ>(
-      URLs.CHANGE_NAME,
+    const { data, status } = await authApi.post<ChangeProfileQ>(
+      URLs.CHANGE_PROFILE,
       form
-    );
-    return data;
-  } catch (error: any) {
-    throw error;
-  }
-};
-export const changePassword = async (
-  form: ChangePasswordF
-): Promise<ChangePasswordQ> => {
-  try {
-    const { data, status } = await authApi.post<ChangePasswordQ>(
-      URLs.CHANGE_PASSWORD,
-      { password: form.newPassword }
     );
     return data;
   } catch (error: any) {

@@ -2,8 +2,11 @@ import Header from "./Header";
 import { Outlet, useLocation } from "react-router-dom";
 import Footer from "./Footer";
 import { useEffect, useState } from "react";
+import Sidebar from "./Sidebar";
+import useChangePage from "@/hooks/useChangePage";
 
 const AuthLayout = () => {
+  useChangePage();
   const location = useLocation();
   const path = location?.pathname.split("/");
   const isHome = path.includes("home");
@@ -15,12 +18,17 @@ const AuthLayout = () => {
 
   return (
     <main className="w-full">
-      {isHome && <Header />}
-      <section
-        className={`w-full flex flex-row justify-start items-start ${homeClass}`}>
-        <Outlet />
-      </section>
-      {isHome && <Footer />}
+      <Sidebar />
+
+      {/* Main content area */}
+      <div className={`flex-1 transition-all duration-300 lg:pr-[250px]`}>
+        <Header />
+        <section
+          className={`w-full flex flex-row justify-start items-start ${homeClass}`}>
+          <Outlet />
+        </section>
+        <Footer />
+      </div>
     </main>
   );
 };

@@ -16,7 +16,6 @@ import { useState } from "react";
 import Dialog from "@/components/shared/Dialog";
 import RoleForm from "@/components/forms/RoleForm";
 
-import { useGetConfigs } from "@/lib/react-query/query/config.query";
 import { useGetCarModels } from "@/lib/react-query/query/car-model.query";
 import { useGetCarTypes } from "@/lib/react-query/query/car-type.query";
 import { useGetColors } from "@/lib/react-query/query/color.query";
@@ -78,7 +77,7 @@ const Setting = () => {
           expenseTypes ? (
           <>
             <div className="space-y-5">
-              <h2 className="space-y-5  text-md md:text-lg font-rabar007 font-bold">
+              <h2 className="space-y-5  text-md md:text-lg font-bukra font-bold">
                 ڕۆڵەکان
               </h2>
 
@@ -99,7 +98,7 @@ const Setting = () => {
             </div>
 
             <div className="space-y-5">
-              <h2 className="space-y-5  text-md md:text-lg font-rabar007 font-bold">
+              <h2 className="space-y-5  text-md md:text-lg font-bukra font-bold">
                 مۆدێلەکانی ئۆتۆمبێل
               </h2>
               <MyButton
@@ -118,7 +117,7 @@ const Setting = () => {
               </div>
             </div>
             <div className="space-y-5">
-              <h2 className="space-y-5  text-md md:text-lg font-rabar007 font-bold">
+              <h2 className="space-y-5  text-md md:text-lg font-bukra font-bold">
                 جۆرەکانی ئۆتۆمبێل
               </h2>
               <MyButton
@@ -137,7 +136,7 @@ const Setting = () => {
               </div>
             </div>
             <div className="space-y-5">
-              <h2 className="space-y-5  text-md md:text-lg font-rabar007 font-bold">
+              <h2 className="space-y-5  text-md md:text-lg font-bukra font-bold">
                 ڕەنگەکان
               </h2>
               <MyButton
@@ -156,7 +155,7 @@ const Setting = () => {
               </div>
             </div>
             <div className="space-y-5">
-              <h2 className="space-y-5  text-md md:text-lg font-rabar007 font-bold">
+              <h2 className="space-y-5  text-md md:text-lg font-bukra font-bold">
                 جۆرەکانی خەرجی
               </h2>
               <MyButton
@@ -175,7 +174,7 @@ const Setting = () => {
               </div>
             </div>
             <div className="space-y-5">
-              <h2 className="space-y-5  text-md md:text-lg font-rabar007 font-bold">
+              <h2 className="space-y-5  text-md md:text-lg font-bukra font-bold">
                 خزمەتگوزاریەکان
               </h2>
               <MyButton
@@ -194,7 +193,7 @@ const Setting = () => {
               </div>
             </div>
             <div className="space-y-5">
-              <h2 className="space-y-5  text-md md:text-lg font-rabar007 font-bold">
+              <h2 className="space-y-5  text-md md:text-lg font-bukra font-bold">
                 بەشەکان
               </h2>
 
@@ -220,7 +219,7 @@ const Setting = () => {
             onClick={() => setIsAddRole(false)}
             type="button"
             className="w-full  my-2 bg-red-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
-            <p className="font-bold font-rabar007">هەڵوەشاندنەوە</p>
+            <p className="font-bold font-bukra">هەڵوەشاندنەوە</p>
           </button>
         </Dialog>
       )}
@@ -241,7 +240,7 @@ const Setting = () => {
             onClick={() => setIsAddCarModel(false)}
             type="button"
             className="w-full  my-2 bg-red-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
-            <p className="font-bold font-rabar007">هەڵوەشاندنەوە</p>
+            <p className="font-bold font-bukra">هەڵوەشاندنەوە</p>
           </button>
         </Dialog>
       )}
@@ -259,7 +258,7 @@ const Setting = () => {
             onClick={() => setIsAddCarType(false)}
             type="button"
             className="w-full  my-2 bg-red-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
-            <p className="font-bold font-rabar007">هەڵوەشاندنەوە</p>
+            <p className="font-bold font-bukra">هەڵوەشاندنەوە</p>
           </button>
         </Dialog>
       )}
@@ -277,7 +276,7 @@ const Setting = () => {
             onClick={() => setIsAddColor(false)}
             type="button"
             className="w-full  my-2 bg-red-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
-            <p className="font-bold font-rabar007">هەڵوەشاندنەوە</p>
+            <p className="font-bold font-bukra">هەڵوەشاندنەوە</p>
           </button>
         </Dialog>
       )}
@@ -295,7 +294,7 @@ const Setting = () => {
             onClick={() => setIsAddService(false)}
             type="button"
             className="w-full  my-2 bg-red-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
-            <p className="font-bold font-rabar007">هەڵوەشاندنەوە</p>
+            <p className="font-bold font-bukra">هەڵوەشاندنەوە</p>
           </button>
         </Dialog>
       )}
@@ -316,7 +315,7 @@ const Setting = () => {
             onClick={() => setIsAddExpenseType(false)}
             type="button"
             className="w-full  my-2 bg-red-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
-            <p className="font-bold font-rabar007">هەڵوەشاندنەوە</p>
+            <p className="font-bold font-bukra">هەڵوەشاندنەوە</p>
           </button>
         </Dialog>
       )}

@@ -1,12 +1,12 @@
 import { cn } from "@/lib/utils";
-import { SelectProps } from "@/types";
+import { SelectProps } from "@/types/global";
 import { forwardRef } from "react";
 
 const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ children, className, ...props }, ref) => {
+  ({ children, ...props }, ref) => {
     return (
       <select
-        className={cn(className, "focus:outline-none")}
+        className={cn(props.className, "focus:outline-none")}
         ref={ref}
         {...props}>
         {children}

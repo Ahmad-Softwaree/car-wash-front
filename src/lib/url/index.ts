@@ -5,7 +5,7 @@ export type URLS =
   | "GET_CASE_HISTORY"
   | "GET_CASE_CHART"
   | "GET_REPORT_MONEY_DATA"
-  | "GET_REPORT_MOST_PRODUCT"
+  | "GET_REPORT_MOST_ITEM"
   | "GET_REPORT_MOST_ORDER"
   | "GET_SPENDS"
   | "GET_SETTINGS"
@@ -51,25 +51,23 @@ export type URLS =
   | "ADD_PART"
   | "UPDATE_PART"
   | "DELETE_PART"
-  | "GET_PRODUCTS"
-  | "GET_PRODUCT"
-  | "ADD_PRODUCT"
+  | "GET_ITEMS"
+  | "GET_ITEM"
+  | "ADD_ITEM"
   | "GET_AUTH"
-  | "CHANGE_NAME"
-  | "CHANGE_PASSWORD"
+  | "CHANGE_PROFILE"
   | "LOGIN"
-  | "GET_PRODUCT_IN_ADD"
-  | "GET_PRODUCT_BY_ID"
-  | "UPDATE_PRODUCT"
-  | "DELETE_PRODUCT"
+  | "GET_ITEM_IN_ADD"
+  | "GET_ITEM_BY_ID"
+  | "UPDATE_ITEM"
+  | "DELETE_ITEM"
   | "GET_EMPLOYEES_COMBOBOX"
   | "GET_ROLE_PARTS"
-  | "CHECK_SETTING"
-  | "GET_CONFIGS"
-  | "UPDATE_CONFIG"
-  | "GET_LESS_PRODUCTS"
-  | "COUNT_PRODUCT"
-  | "UPDATE_SPEND";
+  | "GET_LESS_ITEMS"
+  | "COUNT_ITEM"
+  | "UPDATE_SPEND"
+  | "SEARCH_USERS"
+  | "SEARCH_ITEMS";
 
 export const URLs: { [key in URLS]: string } = {
   //case routes
@@ -77,7 +75,7 @@ export const URLs: { [key in URLS]: string } = {
   GET_CASE_HISTORY: `${API}/case/history`,
   GET_CASE_CHART: `${API}/case/chart`,
   GET_REPORT_MONEY_DATA: `${API}/case/money`,
-  GET_REPORT_MOST_PRODUCT: `${API}/case/most`,
+  GET_REPORT_MOST_ITEM: `${API}/case/most`,
   GET_REPORT_MOST_ORDER: `${API}/case/most`,
   GET_SPENDS: `${API}/expense`,
   GET_SETTINGS: `${API}/setting`,
@@ -86,6 +84,8 @@ export const URLs: { [key in URLS]: string } = {
   UPDATE_SPEND: `${API}/expense`,
 
   GET_USERS: `${API}/user`,
+  SEARCH_USERS: `${API}/user/search`,
+
   ADD_USER: `${API}/user`,
   UPDATE_USER: `${API}/user`,
   DELETE_USER: `${API}/user`,
@@ -135,22 +135,20 @@ export const URLs: { [key in URLS]: string } = {
   UPDATE_PART: `${API}/part`,
   DELETE_PART: `${API}/part`,
 
-  GET_PRODUCTS: `${API}/product`,
-  GET_PRODUCT: `${API}/product`,
-  GET_LESS_PRODUCTS: `${API}/product/less`,
-  COUNT_PRODUCT: `${API}/product/count`,
-  ADD_PRODUCT: `${API}/product`,
+  GET_ITEMS: `${API}/item`,
+  GET_ITEM: `${API}/item`,
+  GET_LESS_ITEMS: `${API}/item/less`,
+  COUNT_ITEM: `${API}/item/count`,
+  ADD_ITEM: `${API}/item`,
   GET_AUTH: `${API}/auth`,
-  CHANGE_NAME: `${API}/auth/change_name`,
-  CHANGE_PASSWORD: `${API}/auth/change_password`,
+  CHANGE_PROFILE: `${API}/auth/change_profile`,
   LOGIN: `${API}/auth/login`,
-  GET_PRODUCT_IN_ADD: `${API}/product/in_add`,
-  GET_PRODUCT_BY_ID: `${API}/product`,
-  UPDATE_PRODUCT: `${API}/product`,
-  DELETE_PRODUCT: `${API}/product`,
+  GET_ITEM_IN_ADD: `${API}/item/in_add`,
+  GET_ITEM_BY_ID: `${API}/item`,
+  UPDATE_ITEM: `${API}/item`,
+  DELETE_ITEM: `${API}/item`,
+  SEARCH_ITEMS: `${API}/item/search`,
+
   GET_EMPLOYEES_COMBOBOX: `${API}/employee/combobox`,
   GET_ROLE_PARTS: `${API}/role-part/role`,
-  CHECK_SETTING: `${API}/setting/check`,
-  GET_CONFIGS: `${API}/config`,
-  UPDATE_CONFIG: `${API}/config`,
 };

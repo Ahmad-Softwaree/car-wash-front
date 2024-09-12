@@ -1,4 +1,4 @@
-import PsulaProductCard from "@/components/cards/PsulaProductCard";
+import PsulaItemCard from "@/components/cards/PsulaItemCard";
 import Pagination from "@/components/providers/Pagination";
 import Return from "@/components/shared/Return";
 import Container from "@/components/ui/Container";
@@ -8,22 +8,22 @@ import InputGroup from "@/components/ui/InputGroup";
 import Loading from "@/components/ui/Loading";
 import MyButton from "@/components/ui/MyButton";
 import {
-  useGetProductById,
-  useGetProducts,
-} from "@/lib/react-query/query/product.query";
-import { Product, ProductCard } from "@/types/products";
+  useGetItemById,
+  useGetItems,
+} from "@/lib/react-query/query/item.query";
+import { Item, ItemCard } from "@/types/items";
 import { ChevronDown, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { TailSpin } from "react-loader-spinner";
 
 const CreatePsula = () => {
   const [search, setSearch] = useState<string>("");
-  const [active, setActive] = useState<ProductCard | null>(null);
+  const [active, setActive] = useState<ItemCard | null>(null);
   const {
-    data: product,
-    isLoading: productLoading,
+    data: item,
+    isLoading: itemLoading,
     refetch,
-  } = useGetProductById(active?.id || null);
+  } = useGetItemById(active?.id || null);
 
   useEffect(() => {
     if (active) refetch();
@@ -41,7 +41,7 @@ const CreatePsula = () => {
           <div className="col-span-full lg:col-span-2 flex flex-col justify-start items-start gap-5 border-t-2 lg:border-t-0 lg:border-l-2 border-solid border-gray-500 px-0 lg:px-5">
             <InputGroup className="w-full text-input">
               <Input
-                className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:font-rabar007 text-sm md:text-lg"
+                className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:font-bukra text-sm md:text-lg"
                 name="search"
                 id="search"
                 value={search}
@@ -64,7 +64,7 @@ const CreatePsula = () => {
               </div>
             </div>
 
-            <Pagination<Product[]> queryFn={() => useGetProducts()}>
+            <Pagination<Item[]> queryFn={() => useGetItems()}>
               {({ isFetchingNextPage, data, hasNextPage, isLoading, ref }) => {
                 const allData = useMemo(
                   () =>
@@ -82,7 +82,7 @@ const CreatePsula = () => {
                     ) : (
                       <div className="tableDiv w-full flex flex-row justify-start items-start gap-5   flex-wrap h-full content-start overflow-y-scroll max-h-[700px]">
                         {allData.length > 0 &&
-                          allData.map((val: ProductCard, _index: number) => (
+                          allData.map((val: ItemCard, _index: number) => (
                             <article
                               key={val.id}
                               className={`w-full h-[130px] rounded-xl border-[3px] border-solid cursor-pointer ${
@@ -90,7 +90,7 @@ const CreatePsula = () => {
                                   ? "border-yellow-500"
                                   : "border-white"
                               }`}>
-                              <PsulaProductCard
+                              <PsulaItemCard
                                 onClick={() => setActive(val)}
                                 {...val}
                               />

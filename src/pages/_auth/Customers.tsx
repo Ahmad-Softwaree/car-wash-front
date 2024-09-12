@@ -23,7 +23,6 @@ const Customers = () => {
         as={`div`}
         className="w-full gap-10 flex flex-col justify-start items-start ">
         <div className="w-full flex flex-row justify-between">
-          <Return>کڕیارەکان</Return>
           <button
             title="newExpense"
             type="button"
@@ -86,7 +85,7 @@ const Customers = () => {
             onClick={() => closeDialog()}
             type="button"
             className="w-full  my-2 bg-red-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
-            <p className="font-bold font-rabar007">هەڵوەشاندنەوە</p>
+            <p className="font-bold font-bukra">هەڵوەشاندنەوە</p>
           </button>
         </Dialog>
       )}

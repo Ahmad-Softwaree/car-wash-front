@@ -3,55 +3,39 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "bukra";
-  src: url("/fonts/UNIQAIDAR_BUKRA 002.woff2") format("woff2"),
-    url("/fonts/UNIQAIDAR_BUKRA 002.ttf") format("truetype");
-  font-display: swap;
-}
-@font-face {
-  font-family: "bukra_bold";
-  src: url("/fonts/UNIQAIDAR_BUKRA 003.woff2") format("woff2"),
-    url("/fonts/UNIQAIDAR_BUKRA 003.ttf") format("truetype");
-  font-display: swap;
-}
-@font-face {
   font-family: "speda";
-  src: url("/fonts/Speda.woff2") format("woff2"),
-    url("/fonts/Speda.ttf") format("truetype");
+  src: url("../public/fonts/Speda.ttf") format("truetype");
   font-display: swap;
 }
 @font-face {
   font-family: "speda_bold";
-  src: url("/fonts/Speda-Bold.woff2") format("woff2"),
-    url("/fonts/Speda-Bold.ttf") format("truetype");
+  src: url("../public/fonts/Speda-Bold.ttf") format("truetype");
   font-display: swap;
 }
 @font-face {
-  font-family: "rabar007";
-  src: url("/fonts/rudawregular2.woff2") format("woff2"),
-    url("/fonts/rudawregular2.ttf") format("truetype");
+  font-family: "rudawreguler";
+  src: url("../public/fonts/rudawregular2.ttf") format("truetype");
   font-display: swap;
 }
 @font-face {
-  font-family: "rabar007";
-  src: url("/fonts/rudawbold.woff2") format("woff2"),
-    url("/fonts/rudawbold.ttf") format("truetype");
+  font-family: "rudawbold";
+  src: url("../public/fonts/rudawbold.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "bukra";
+  src: url("../public/fonts/UNIQAIDAR_BUKRA 002.ttf") format("truetype");
   font-display: swap;
 }
 @font-face {
-  font-family: "rabar007";
-  src: url("/fonts/rabar_007.woff2") format("woff2"),
-    url("/fonts/rabar_007.ttf") format("truetype");
+  font-family: "bukra_bold";
+  src: url("../public/fonts/UNIQAIDAR_BUKRA 003.ttf") format("truetype");
   font-display: swap;
 }
-@font-face {
-  font-family: "rabar007";
-  src: url("/fonts/rabar_034.woff2") format("woff2"),
-    url("/fonts/rabar_034.ttf") format("truetype");
-  font-display: swap;
-}
+
 body {
-  font-family: "rabar007";
+  font-family: "bukra";
   box-sizing: border-box;
 }
 
@@ -59,25 +43,35 @@ body {
   display: none;
 }
 
+aside::-webkit-scrollbar {
+  display: none;
+}
+
 @layer components {
+  body {
+    @apply bg-white dark:bg-primary-800;
+  }
   section:not(.auth).home {
-    @apply mb-20 p-5 md:p-10 lg:p-10 xl:!px-40;
+    @apply mb-20 p-5 md:p-10 lg:p-10 xl:!pl-20;
   }
   section {
-    @apply overflow-hidden min-h-screen bg-white;
+    @apply overflow-hidden min-h-screen bg-white dark:bg-primary-800;
   }
   section.out {
-    @apply mb-20 p-5 md:p-10 lg:p-10;
+    @apply mb-20 p-5 md:p-7 xl:!px-20;
   }
   header {
-    @apply p-5 md:p-10 lg:p-10 xl:!px-40;
+    @apply p-5 md:p-7  xl:!px-20;
+  }
+  footer {
+    @apply p-5 md:p-7  xl:!px-20;
   }
   .input_error {
     @apply text-red-500 text-sm;
   }
 
   .text-input {
-    @apply border-2 border-solid  border-gray-200  rounded-md  p-3  flex  flex-row  justify-center  items-center  gap-3;
+    @apply border-2 border-solid  border-primary-300 border-opacity-40 rounded-md  p-2  flex  flex-row  justify-center  items-center  gap-3;
   }
 
   .checkbox-input {
@@ -89,6 +83,14 @@ body {
 
   input {
     @apply bg-transparent;
+  }
+
+  a.active {
+    @apply !bg-white !bg-opacity-20;
+  }
+  th,
+  td {
+    @apply min-w-[150px];
   }
 }
 

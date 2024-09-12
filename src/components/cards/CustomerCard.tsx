@@ -12,7 +12,8 @@ import CustomerForm from "../forms/CustomerForm";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 import Typography from "../shared/Typography";
-
+import Chip from "@mui/joy/Chip";
+import ChipDelete from "@mui/joy/ChipDelete";
 const CustomerCard = ({
   first_name,
   last_name,
@@ -38,7 +39,7 @@ const CustomerCard = ({
     <>
       <article
         id={id.toLocaleString()}
-        className="w-[320px] md:w-[420px] h-[140px] rounded-lg bg-white shadow-md border-[1.2px] border-solid border-opacity-50 border-gray-400 flex flex-row justify-between items-center p-3  gap-5">
+        className="w-[320px] md:w-[420px] h-[140px] rounded-lg bg-primary-800 text-white shadow-md border-2 border-solid  border-primary-300 border-opacity-40 flex flex-row justify-between items-center p-3  gap-5">
         <div className="flex flex-row justify-start items-center gap-5">
           <div className="flex flex-col justify-center items-start gap-1">
             <span className="opacity-50 text-black text-sm">ناو</span>
@@ -58,37 +59,39 @@ const CustomerCard = ({
           </div>
         </div>
         <div className="flex flex-col justify-center items-center gap-3">
-          <div className="flex flex-row justify-center items-center gap-3">
-            <Trash2
-              onClick={() => setIsDelete(true)}
-              className="cursor-pointer text-red-500"
-            />
-            <PenLine
-              onClick={() => {
-                dispatch({
-                  type: CONTEXT_TYPEs.SET_OLD_DATA,
-                  payload: {
-                    first_name,
-                    last_name,
-                    phone,
-                    id,
-                    ...others,
-                  },
-                });
-                setUpdate(true);
-              }}
-              className="cursor-pointer text-green-500"
-            />
-          </div>{" "}
           <MyButton
             onClick={() => setDetail(true)}
             id="showCustomerDataButton"
             type="button"
             name="showCustomerDataButton"
-            className="px-2 md:px-4 text-sm md:text-md py-1 font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
+            className="px-2 md:px-4 text-sm md:text-md py-1 font-medium tracking-wide text-blue-500 capitalize transition-colors duration-300 transform bg-white  rounded-lg hover:bg-blue-500 hover:text-white focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
             زانیاری
           </MyButton>
-        </div>
+          <PenLine
+            onClick={() => {
+              dispatch({
+                type: CONTEXT_TYPEs.SET_OLD_DATA,
+                payload: {
+                  first_name,
+                  last_name,
+                  phone,
+                  id,
+                  ...others,
+                },
+              });
+              setUpdate(true);
+            }}
+            className="cursor-pointer text-green-500"
+          />
+          <Chip
+            onClick={() => setIsDelete(true)}
+            size="lg"
+            variant="solid"
+            color="danger"
+            endDecorator={<ChipDelete onDelete={() => alert("Delete")} />}>
+            سڕینەوە
+          </Chip>
+        </div>{" "}
       </article>
       {detail && (
         <Dialog

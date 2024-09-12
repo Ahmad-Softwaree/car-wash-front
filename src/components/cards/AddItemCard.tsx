@@ -1,15 +1,15 @@
-import { AddProductCardProps } from "@/types/products";
+import { AddItemCardProps } from "@/types/items";
 import Image from "../ui/Image";
 import useScreenSize from "@/hooks/useScreenSize";
 import Typography from "../shared/Typography";
 
-const AddProductCard = ({
+const AddItemCard = ({
   id,
   image_url,
   image_name,
   title,
   onClick,
-}: AddProductCardProps) => {
+}: AddItemCardProps) => {
   const { size } = useScreenSize();
   return (
     <article
@@ -37,4 +37,4 @@ const AddProductCard = ({
   );
 };
 
-export default AddProductCard;
+export default AddItemCard;

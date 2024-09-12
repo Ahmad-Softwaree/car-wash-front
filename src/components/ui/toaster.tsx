@@ -1,5 +1,4 @@
-"use client"
-
+"use client";
 import {
   Toast,
   ToastClose,
@@ -7,29 +6,45 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from "@/components/ui/toast"
-import { useToast } from "@/components/ui/use-toast"
+} from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
+import Alert from "@mui/material/Alert";
 
 export function Toaster() {
-  const { toasts } = useToast()
+  const { toasts } = useToast();
 
   return (
     <ToastProvider>
-      {toasts.map(function ({ id, title, description, action, ...props }) {
+      {toasts.map(function ({
+        id,
+        title,
+        alertType = "info",
+        description,
+        action,
+        ...props
+      }) {
         return (
-          <Toast key={id} {...props}>
-            <div className="grid gap-1">
-              {title && <ToastTitle>{title}</ToastTitle>}
-              {description && (
-                <ToastDescription>{description}</ToastDescription>
+          <Toast className="p-0 !font-bukra" key={id} {...props}>
+            <Alert
+              severity={alertType}
+              className="grid gap-1 w-full !font-bukra">
+              {title && (
+                <ToastTitle className="!font-bukra !text-sm mb-2">
+                  {title}
+                </ToastTitle>
               )}
-            </div>
+              {description && (
+                <ToastDescription className="!font-bukra !text-sm">
+                  {description}
+                </ToastDescription>
+              )}
+            </Alert>
             {action}
             <ToastClose />
           </Toast>
-        )
+        );
       })}
       <ToastViewport />
     </ToastProvider>
-  )
+  );
 }

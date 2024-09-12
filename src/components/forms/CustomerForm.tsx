@@ -57,7 +57,7 @@ const CustomerForm = ({
       ref={form}
       onSubmit={handleSubmit(onSubmit)}
       id="login-form">
-      <p className="font-bold font-rabar007 text-lg text-nowrap">
+      <p className="font-bold font-bukra text-lg text-nowrap">
         {state == "insert" ? "زیادکردنی" : "چاککردنی"} کڕیار
       </p>
 
@@ -112,7 +112,7 @@ const CustomerForm = ({
         name="addCustomerButton"
         type="submit"
         className="w-full bg-black-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
-        <p className="font-bold font-rabar007">جێبەجێکردن</p>
+        <p className="font-bold font-bukra">جێبەجێکردن</p>
       </MyButton>
     </Form>
   );

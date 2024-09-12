@@ -8,10 +8,8 @@ export type User = {
   username: string;
   password: string;
   phone: string;
-  street: string;
   role_id: number;
   role_name: string;
-
   parts: Part[];
 };
 
@@ -19,15 +17,10 @@ export type LoginInputs = {
   username: string;
   password: string;
 };
-export type ChangeNameInputs = {
+export type ChangeProfileInputs = {
   name: string;
 };
 
-export type ChangePasswordInputs = {
-  oldPassword: string;
-  newPassword: string;
-  reNewPassword: string;
-};
 export type AuthStateType = {
   user: User | null;
   token: Token | null;
@@ -47,12 +40,11 @@ export type AuthActionType = {
   payload?: AuthPayload;
 };
 
-export type UserCardProps = User;
+export type UserCardProps = User & { index?: number };
 export type AddUserInputs = {
   username: string;
   password: string;
   role_id: Id;
-  street?: string;
   phone?: string;
   name?: string;
 };
@@ -69,12 +61,11 @@ export type UpdateUserWithFirebaseImage = AddUserInputs & {
 };
 
 export type LoginF = LoginInputs;
-export type ChangeNameF = ChangeNameInputs;
+export type ChangeProfileF = ChangeProfileInputs;
 
-export type ChangePasswordF = ChangePasswordInputs;
 export type GetUsersQ = User[];
 export type AddUserQ = User;
-export type DeleteUserQ = User;
+export type DeleteUserQ = Id[];
 
 export type UpdateUserQ = User;
 
@@ -85,5 +76,5 @@ export type LoginQ = {
   user: AuthQ;
   token: Token;
 };
-export type ChangeNameQ = User;
+export type ChangeProfileQ = User;
 export type ChangePasswordQ = User;

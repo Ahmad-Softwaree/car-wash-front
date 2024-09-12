@@ -1,5 +1,7 @@
 import { DeleteModalProps } from "@/types/global";
 import MyButton from "@/components/ui/MyButton";
+import Chip from "@mui/joy/Chip";
+import { Trash2 } from "lucide-react";
 
 const DeleteModal = ({
   deleteFunction,
@@ -8,7 +10,10 @@ const DeleteModal = ({
   loading,
 }: DeleteModalProps) => {
   return (
-    <div className="w-full  h-full flex flex-col justify-center bg-white items-center gap-5">
+    <div className="w-full  h-full flex flex-col justify-center bg-transparent items-center gap-5">
+      <Chip variant="soft" color="danger">
+        <Trash2 className="w-11 h-11 p-2 cursor-pointer" />
+      </Chip>
       <p className="w-full text-center text-md text-black">
         دڵنیای لە سڕینەوە ئەم داتایە
       </p>
@@ -17,8 +22,8 @@ const DeleteModal = ({
           name="closeDeleteModal"
           onClick={onClose}
           type="button"
-          className="my-2 bg-red-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
-          <p className="font-bold font-rabar007">نەخێر</p>
+          className="my-2 bg-red-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2">
+          <p className="font-light text-sm font-bukra">نەخێر</p>
         </MyButton>
 
         <MyButton
@@ -30,8 +35,8 @@ const DeleteModal = ({
           }}
           disabled={loading}
           type="button"
-          className="my-2 bg-green-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
-          <p className="font-bold font-rabar007">بەڵێ</p>
+          className="my-2 bg-green-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2">
+          <p className="font-light text-sm font-bukra">بەڵێ</p>
         </MyButton>
       </div>
     </div>

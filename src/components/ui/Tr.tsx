@@ -1,11 +1,11 @@
 import { cn } from "@/lib/utils";
 import { TrProps } from "@/types/global";
-import React, { forwardRef } from "react";
+import { forwardRef } from "react";
 
 const Tr = forwardRef<HTMLTableRowElement, TrProps>(
-  ({ color, className, children, ...props }, ref) => {
+  ({ color, children, ...props }, ref) => {
     return (
-      <tr {...props} className={cn(className, [""])}>
+      <tr {...props} className={cn(props.className, [""])}>
         {children}
       </tr>
     );

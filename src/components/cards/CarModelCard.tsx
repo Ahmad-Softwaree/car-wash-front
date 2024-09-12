@@ -25,7 +25,7 @@ const CarModelCard = ({ id, name }: CarModelCardProps) => {
       <article
         className="p-3 rounded-md cursor-pointer flex justify-between items-center shadow-md bg-white px-5 min-w-[200px] w-fit"
         id={id.toLocaleString()}>
-        <p className="text-sm font-bold font-rabar007">{name}</p>
+        <p className="text-sm font-bold font-bukra">{name}</p>
         <div className="flex flex-row justify-center items-center gap-4">
           <Trash
             onClick={() => setIsDelete(true)}
@@ -73,7 +73,7 @@ const CarModelCard = ({ id, name }: CarModelCardProps) => {
             onClick={closeUpdate}
             type="button"
             className="w-full  my-2 bg-red-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
-            <p className="font-bold font-rabar007">هەڵوەشاندنەوە</p>
+            <p className="font-bold font-bukra">هەڵوەشاندنەوە</p>
           </button>
         </Dialog>
       )}

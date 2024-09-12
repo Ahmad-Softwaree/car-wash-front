@@ -88,11 +88,11 @@ export const partName = (part: Part): string => {
   if (part.name == "dept") return "قەرز";
   if (part.name == "less") return "مەوادی کەمبوو";
   if (part.name == "mandub") return "مەندووبەکان";
-  if (part.name == "employee") return "کارمەندەکان";
+  if (part.name == "employee") return "بەکارهێنەران";
   if (part.name == "users") return "بەکارهێنەران";
   if (part.name == "customers") return "کڕیارەکان";
   if (part.name == "expense") return "خەرجی";
-  if (part.name == "report") return "ڕاپۆرت";
+  if (part.name == "report") return "ڕاپۆرتەکان";
   if (part.name == "case") return "قاسە";
   if (part.name == "setting") return "ڕێخکستن";
 
@@ -116,13 +116,12 @@ export const toggleAuth = (type: "add" | "remove", token?: Token) => {
 };
 type ErrorResponse = { message: string[] } | { error: string };
 export const generateNestErrors = (error: NestError, toast: ToastType) => {
-  console.log(error);
-
   const errorData = error.response?.data as ErrorResponse;
   if (typeof error.message == "string" && !error.response?.data) {
     return toast({
-      title: "Error",
+      title: "کێشە",
       description: error.message,
+      alertType: "error",
     });
   }
   if (errorData && "message" in errorData && Array.isArray(errorData.message)) {
@@ -130,17 +129,20 @@ export const generateNestErrors = (error: NestError, toast: ToastType) => {
       return toast({
         title: error.message,
         description: val,
+        alertType: "error",
       });
     });
   } else if ("error" in errorData) {
     return toast({
       title: error.message,
       description: errorData.error,
+      alertType: "error",
     });
   } else {
     return toast({
-      title: "Unexpected Error",
-      description: "An unexpected error occurred.",
+      title: "کێشە",
+      description: "کێشەیەکی چاوەڕواننەکراوە ڕوودیدا",
+      alertType: "error",
     });
   }
 };

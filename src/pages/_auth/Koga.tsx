@@ -2,16 +2,8 @@ import Container from "@/components/ui/Container";
 import { lazy, useMemo, useState } from "react";
 import { CircleFadingPlus, Search, Trash2, X } from "lucide-react";
 const Dialog = lazy(() => import("@/components/shared/Dialog"));
-const UserCard = lazy(() => import("@/components/cards/UserCard"));
 
-import {
-  useDeleteUser,
-  useGetUsers,
-  useSearchUsers,
-} from "@/lib/react-query/query/user.query";
 import Pagination from "@/components/providers/Pagination";
-import { User } from "@/types/auth";
-import UserForm from "@/components/forms/UserForm";
 import TBody from "@/components/ui/TBody";
 import { Table, Th, THead, Tr } from "@/components/ui";
 
@@ -25,9 +17,17 @@ import { ENUMs } from "@/lib/enum";
 import Tooltip from "@mui/joy/Tooltip";
 import Chip from "@mui/joy/Chip";
 import DeleteModal from "@/components/ui/DeleteModal";
+import {
+  useDeleteItem,
+  useGetItems,
+  useSearchItems,
+} from "@/lib/react-query/query/item.query";
+import { Item } from "@/types/items";
+import ItemCard from "@/components/cards/ItemCard";
+import ItemForm from "@/components/forms/ItemForm";
 
-const Users = () => {
-  const { mutateAsync, isPending } = useDeleteUser();
+const Koga = () => {
+  const { mutateAsync, isPending } = useDeleteItem();
 
   const [searchParam, setSearchParam] = useSearchParams();
   const [isDelete, setIsDelete] = useState<boolean>(false);
@@ -35,7 +35,7 @@ const Users = () => {
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
   const {
     dispatch,
-    state: { checked },
+    state: { checked, check_type },
   } = useGlobalContext();
   return (
     <>
@@ -44,6 +44,7 @@ const Users = () => {
         className="w-full gap-10 flex flex-col justify-start items-start">
         <div className="w-full gap-5 flex flex-row justify-between">
           <InputGroup className="text-input max-w-[400px] text-primary-800 dark:text-white">
+            {" "}
             <Input
               onChange={(e) =>
                 setSearchParam((prev) => {
@@ -53,7 +54,7 @@ const Users = () => {
                 })
               }
               value={searchParam.get(ENUMs.SEARCH_PARAM as string) || ""}
-              placeholder="گەڕان بەپێی (ئایدی، ناوی بەکارهێنەر، ناو، ژ.ت)"
+              placeholder="گەڕان بەپێی (ئایدی،بارکۆد، ناوی بەرهەم)"
               className="w-[85%] text-xs"
               type="input"
             />
@@ -85,10 +86,10 @@ const Users = () => {
             <p>زیادکردن</p>
           </button>
         </div>
-        <Pagination<User[]>
-          queryFn={() => useGetUsers()}
+        <Pagination<Item[]>
+          queryFn={() => useGetItems()}
           searchQueryFn={() =>
-            useSearchUsers(searchParam.get(ENUMs.SEARCH_PARAM as string) || "")
+            useSearchItems(searchParam.get(ENUMs.SEARCH_PARAM as string) || "")
           }>
           {({
             isFetchingNextPage,
@@ -128,9 +129,9 @@ const Users = () => {
                               if (checked.length == 0) {
                                 dispatch({
                                   type: CONTEXT_TYPEs.CHECK,
-                                  payload: allData
-                                    .slice(0, 30)
-                                    .map((val: User, _index: number) => val.id),
+                                  payload: allData.map(
+                                    (val: Item, _index: number) => val.id
+                                  ),
                                 });
                               } else {
                                 dispatch({
@@ -139,6 +140,7 @@ const Users = () => {
                                 });
                               }
                             }}
+                            checked={check_type == "all"}
                             type="checkbox"
                             className="cursor-pointer"
                           />
@@ -154,30 +156,40 @@ const Users = () => {
                       </Th>
                       <Th className="text-right text-sm !p-4">
                         <p className="pr-3 border-r-2 border-solid border-primary-400 border-opacity-80">
-                          ناوی بەکارهێنەر
+                          بارکۆد
                         </p>
                       </Th>{" "}
                       <Th className="text-right text-sm !p-4">
                         <p className="pr-3 border-r-2 border-solid border-primary-400 border-opacity-80">
-                          ژمارە تەلەفۆن
+                          جۆر
                         </p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
                         <p className="pr-3 border-r-2 border-solid border-primary-400 border-opacity-80">
-                          ڕۆڵ
+                          عەدەد
                         </p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
                         <p className="pr-3 border-r-2 border-solid border-primary-400 border-opacity-80">
-                          کرادرەکان
+                          نرخی فرۆشتن
+                        </p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 border-r-2 border-solid border-primary-400 border-opacity-80">
+                          نرخی تێچوو
+                        </p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 border-r-2 border-solid border-primary-400 border-opacity-80">
+                          کردارەکان
                         </p>
                       </Th>
                     </Tr>
                   </THead>
-                  <TBody className="w-full ">
+                  <TBody className="w-full">
                     <>
-                      {allData?.map((val: User, index: number) => (
-                        <UserCard key={val.id} index={index} {...val} />
+                      {allData?.map((val: Item, index: number) => (
+                        <ItemCard key={val.id} index={index} {...val} />
                       ))}
 
                       {!isFetchingNextPage && hasNextPage && !isSearched && (
@@ -208,7 +220,7 @@ const Users = () => {
       {isAddOpen && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={800}
+          maxWidth={1500}
           maxHeight={`90%`}
           isOpen={isAddOpen}
           onClose={() => setIsAddOpen(false)}>
@@ -216,11 +228,11 @@ const Users = () => {
             onClick={() => setIsAddOpen(false)}
             className="cursor-pointer p-1 w-8 h-8 border-2 border-solid border-primary-400 border-opacity-40 rounded-lg mb-2 transition-all duration-200 hover:bg-red-400"
           />
-          <UserForm state="insert" onClose={() => setIsAddOpen(false)} />
+          <ItemForm state="insert" onClose={() => setIsAddOpen(false)} />
         </Dialog>
       )}
     </>
   );
 };
 
-export default Users;
+export default Koga;

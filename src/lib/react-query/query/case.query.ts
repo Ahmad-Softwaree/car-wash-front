@@ -11,7 +11,7 @@ import {
   getCaseHistory,
   getReportMoneyData,
   getReportMostOrder,
-  getReportMostProduct,
+  getReportMostItem,
 } from "../actions/case.action";
 import {
   GetCaseChartQ,
@@ -19,7 +19,7 @@ import {
   GetCaseMoneyQ,
   GetReportMoneyDataQ,
   GetReportMostOrderQ,
-  GetReportMostProductQ,
+  GetReportMostItemQ,
 } from "@/types/case";
 import { Page, PaginationReturnType } from "@/types/global";
 import { ENUMs } from "@/lib/enum";
@@ -77,15 +77,15 @@ export const useGetReportMoneyData = (
       getReportMoneyData(toast, from, to),
   });
 };
-export const useGetReportMostProduct = (
+export const useGetReportMostItem = (
   from: Date | string,
   to: Date | string
 ) => {
   const { toast } = useToast();
   return useQuery({
-    queryKey: [QUERY_KEYs.REPORT_MOST_PRODUCT],
-    queryFn: (): Promise<GetReportMostProductQ> =>
-      getReportMostProduct(toast, from, to),
+    queryKey: [QUERY_KEYs.REPORT_MOST_ITEM],
+    queryFn: (): Promise<GetReportMostItemQ> =>
+      getReportMostItem(toast, from, to),
   });
 };
 export const useGetReportMostOrder = (

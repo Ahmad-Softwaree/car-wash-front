@@ -2,14 +2,14 @@ import { useEffect, useRef } from "react";
 import Form from "@/components/ui/Form";
 import Input from "@/components/ui/Input";
 import { FormFinalOperation, FormHandle } from "@/types/global";
-import { ChangeNameInputs } from "@/types/auth";
+import { ChangeProfileInputs } from "@/types/auth";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useAuthContext } from "@/context/AuthContext";
 import InputGroup from "@/components/ui/InputGroup";
-import { useChangeName } from "@/lib/react-query/query/auth.query";
+import { useChangeProfile } from "@/lib/react-query/query/auth.query";
 import MyButton from "@/components/ui/MyButton";
-const ChangeNameForm = ({ onClose }: FormFinalOperation) => {
-  const { mutateAsync, isPending } = useChangeName();
+const ChangeProfileForm = ({ onClose }: FormFinalOperation) => {
+  const { mutateAsync, isPending } = useChangeProfile();
   const {
     state: { user },
   } = useAuthContext();
@@ -20,8 +20,8 @@ const ChangeNameForm = ({ onClose }: FormFinalOperation) => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<ChangeNameInputs>({});
-  const onSubmit: SubmitHandler<ChangeNameInputs> = async (data) => {
+  } = useForm<ChangeProfileInputs>({});
+  const onSubmit: SubmitHandler<ChangeProfileInputs> = async (data) => {
     await mutateAsync({ ...data });
     form.current?.clear();
     if (onClose) onClose();
@@ -36,7 +36,7 @@ const ChangeNameForm = ({ onClose }: FormFinalOperation) => {
       ref={form}
       onSubmit={handleSubmit(onSubmit)}
       id="login-form">
-      <p className="font-bold font-rabar007 text-lg">گۆڕینی ناو</p>
+      <p className="font-bold font-bukra text-lg">گۆڕینی ناو</p>
       <InputGroup error={errors.name} className="w-full text-input">
         <Input
           type="text"
@@ -52,10 +52,10 @@ const ChangeNameForm = ({ onClose }: FormFinalOperation) => {
         name="changeNameButton"
         type="submit"
         className="w-full bg-black-600 rounded-sm p-3 text-white flex flex-row justify-center items-center gap-2">
-        <p className="font-bold font-rabar007">جێبەجێکردن</p>
+        <p className="font-bold font-bukra">جێبەجێکردن</p>
       </MyButton>
     </Form>
   );
 };
 
-export default ChangeNameForm;
+export default ChangeProfileForm;

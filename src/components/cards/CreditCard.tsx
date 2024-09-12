@@ -19,9 +19,7 @@ const CreditCard = ({
     <article
       style={{ backgroundColor: bgColor }}
       className={`w-[330px] h-[140px] rounded-lg flex flex-col justify-between items-center gap-5 p-5`}>
-      <p className="w-full text-right font-bold font-rabar007 text-md">
-        {title}
-      </p>
+      <p className="w-full text-right font-bold font-bukra text-md">{title}</p>
 
       <p className="w-full text-left font-bold font-sans text-lg">{children}</p>
     </article>
@@ -29,7 +27,7 @@ const CreditCard = ({
     <article
       style={{ backgroundColor: bgColor }}
       className={`w-[330px] h-[70px] rounded-lg flex flex-row justify-between items-center gap-5 p-5`}>
-      <p className="text-right font-bold font-rabar007 text-md">{title}</p>
+      <p className="text-right font-bold font-bukra text-md">{title}</p>
 
       <p className="text-left font-bold font-poppins text-md">{children}</p>
     </article>

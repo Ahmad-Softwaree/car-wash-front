@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 const Typography = ({ text, children, ...props }: TypographyProps) => {
-  const [font, setFont] = useState("font-rabar007");
+  const [font, setFont] = useState("font-bukra");
   const location = useLocation();
 
   useEffect(() => {

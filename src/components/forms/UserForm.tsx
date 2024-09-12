@@ -125,7 +125,7 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
       ref={form}
       onSubmit={handleSubmit(onSubmit)}
       id="login-form">
-      <p className="font-bold font-rabar007 text-lg text-nowrap">
+      <p className="font-bold font-bukra text-lg text-nowrap">
         {state == "insert" ? "زیادکردنی" : "چاککردنی"} بەکارهێنەر
       </p>
 
@@ -136,42 +136,10 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
           </Loading>
         ) : roles && parts ? (
           <>
-            <div className=" col-span-full md:col-span-1 w-full">
-              <InputGroup
-                error={errors.role_id}
-                className="w-full space-y-2  text-input col-span-full md:col-span-1">
-                <Select
-                  title="role_id"
-                  {...register("role_id", { required: true })}
-                  name="role_id"
-                  id="role_id"
-                  className="w-full">
-                  <Option value={-1}>ڕۆڵ هەڵبژێرە</Option>
-                  {roles.map((val: Role, _index: number) => (
-                    <Option key={val.id} value={val.id}>
-                      {val.name}
-                    </Option>
-                  ))}
-                </Select>
-              </InputGroup>
-            </div>
-
-            <div className=" col-span-full md:col-span-1 w-full">
-              <InputGroup
-                error={errors.name}
-                className="w-full space-y-2  text-input col-span-full md:col-span-1">
-                <Input
-                  type="text"
-                  {...register("name", { required: state == "update" })}
-                  name="name"
-                  placeholder="ناو"
-                  className="w-full"
-                  aria-invalid={errors.name ? "true" : "false"}
-                />
-              </InputGroup>
-            </div>
-
-            <div className=" col-span-full md:col-span-1 w-full">
+            <div className=" col-span-full md:col-span-1 w-full flex flex-col gap-2">
+              <Label className="w-full text-sm  flex flex-row gap-2">
+                <p>ناوی بەکارهێنەر</p>
+              </Label>{" "}
               <InputGroup
                 error={errors.username}
                 className="w-full space-y-2  text-input col-span-full md:col-span-1">
@@ -180,13 +148,61 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
                   {...register("username", { required: true })}
                   name="username"
                   placeholder="ناوی بەکارهێنەر"
-                  className="w-full"
+                  className="w-full text-sm"
                   aria-invalid={errors.username ? "true" : "false"}
                 />
               </InputGroup>
             </div>
-
-            <div className=" col-span-full md:col-span-1 w-full">
+            <div className=" col-span-full md:col-span-1 w-full flex flex-col gap-2">
+              <Label className="w-full text-sm  flex flex-row gap-2">
+                <p>ناو</p>
+              </Label>{" "}
+              <InputGroup
+                error={errors.name}
+                className="w-full space-y-2  text-input col-span-full md:col-span-1">
+                <Input
+                  type="text"
+                  {...register("name", { required: true })}
+                  name="name"
+                  placeholder="ناو"
+                  className="w-full !text-sm"
+                  aria-invalid={errors.name ? "true" : "false"}
+                />
+              </InputGroup>
+            </div>
+            <div className=" col-span-full md:col-span-1 w-full flex flex-col gap-2">
+              <Label className="w-full text-sm  flex flex-row gap-2">
+                <p>ڕۆڵ</p>
+              </Label>{" "}
+              <InputGroup
+                error={errors.role_id}
+                className="w-full space-y-2  text-input col-span-full md:col-span-1">
+                <Select
+                  title="role_id"
+                  {...register("role_id", { required: true })}
+                  name="role_id"
+                  id="role_id"
+                  className="w-full bg-transparent !text-sm">
+                  <Option
+                    className="!text-sm bg-white dark:bg-primary-800"
+                    value={-1}>
+                    ڕۆڵ هەڵبژێرە
+                  </Option>
+                  {roles.map((val: Role, _index: number) => (
+                    <Option
+                      className="!text-sm bg-white dark:bg-primary-800"
+                      key={val.id}
+                      value={val.id}>
+                      {val.name}
+                    </Option>
+                  ))}
+                </Select>
+              </InputGroup>
+            </div>
+            <div className=" col-span-full md:col-span-1 w-full flex flex-col gap-2">
+              <Label className="w-full text-sm  flex flex-row gap-2">
+                <p>ووشەی نهێنی</p>
+              </Label>{" "}
               <InputGroup
                 error={errors.password}
                 className="w-full   text-input col-span-full md:col-span-1">
@@ -195,7 +211,7 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
                   {...register("password", { required: state == "insert" })}
                   name="password"
                   placeholder="ووشەی نهێنی"
-                  className="w-full"
+                  className="w-full !text-sm"
                   aria-invalid={errors.password ? "true" : "false"}
                 />
                 <InputAddon className="w-[20%] md:w-[10%]">
@@ -230,7 +246,7 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
                       id={val.name}
                     />
                     <Label
-                      className="text-md text-nowrap md:text-lg font-bold font-rabar007"
+                      className="text-sm text-nowrap  font-light font-bukra"
                       htmlFor={val.name}>
                       {val.name}
                     </Label>
@@ -245,8 +261,8 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
         loading={isPending || updatePending}
         name="addUserButton"
         type="submit"
-        className="w-full bg-black-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
-        <p className="font-bold font-rabar007">جێبەجێکردن</p>
+        className=" bg-sky-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2">
+        <p className="font-light text-sm font-bukra">جێبەجێکردن</p>
       </MyButton>
     </Form>
   );

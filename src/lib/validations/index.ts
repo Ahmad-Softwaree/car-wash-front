@@ -23,9 +23,9 @@ const fileSchema = yup
     isBlobOrMediaSource
   );
 
-export const addProductSchema = yup
+export const addItemSchema = yup
   .object({
-    product_image: yup.object().required(),
+    item_image: yup.object().required(),
     barcode: yup.string().required(),
     withoutBarcode: yup.boolean().required(),
     name: yup.string().required(),

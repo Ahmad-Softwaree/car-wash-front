@@ -38,13 +38,13 @@ const Dialog: React.FC<DialogProps> = ({
       }}
       className={cn(
         props.className,
-        "p-2 bg-white border-none overflow-y-auto no-scrollbar"
+        "p-2 bg-white dark:bg-primary-800 shadow-4xl overflow-y-auto no-scrollbar text-primary-800 dark:text-white border-2 border-solid border-primary-400 border-opacity-40"
       )}
       onClick={onClose}>
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className={cn("", "rounded-md bg-white w-full")}
+            className={cn("", "rounded-md bg-white dark:bg-primary-800 w-full")}
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}

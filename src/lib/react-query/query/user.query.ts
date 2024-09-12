@@ -10,18 +10,28 @@ import {
 import {
   useInfiniteQuery,
   useMutation,
+  useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
 import {
   addUser,
   deleteUser,
   getUsers,
+  searchUsers,
   updateUser,
 } from "../actions/user.action";
 import { QUERY_KEYs } from "../key";
-import { Id, NestError, Page, PaginationReturnType } from "@/types/global";
+import {
+  Id,
+  NestError,
+  Page,
+  PaginationReturnType,
+  Search,
+} from "@/types/global";
 import { ENUMs } from "@/lib/enum";
 import { generateNestErrors } from "@/lib/functions";
+import { useGlobalContext } from "@/context/GlobalContext";
+import { CONTEXT_TYPEs } from "@/context/types";
 
 export const useGetUsers = () => {
   const { toast } = useToast();
@@ -40,6 +50,16 @@ export const useGetUsers = () => {
   });
 };
 
+export const useSearchUsers = (search: Search) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.SEARCH_USERS],
+    queryFn: (): Promise<GetUsersQ> => searchUsers(toast, search),
+    enabled: !!search,
+    retry: 0,
+  });
+};
+
 export const useAddUser = () => {
   const { toast } = useToast();
   const queryCustomer = useQueryClient();
@@ -50,6 +70,7 @@ export const useAddUser = () => {
       toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
+        alertType: "success",
       });
       return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.USERS],
@@ -71,6 +92,7 @@ export const useUpdateUser = (id: Id) => {
       toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
+        alertType: "success",
       });
       return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.USERS],
@@ -81,16 +103,25 @@ export const useUpdateUser = (id: Id) => {
     },
   });
 };
-export const useDeleteUser = (id: Id) => {
+export const useDeleteUser = () => {
   const { toast } = useToast();
   const queryCustomer = useQueryClient();
+  const { dispatch } = useGlobalContext();
 
   return useMutation({
-    mutationFn: (): Promise<DeleteUserQ> => deleteUser(id),
+    mutationFn: (ids: Id[]): Promise<DeleteUserQ> => deleteUser(ids),
     onSuccess: (data: DeleteUserQ) => {
       toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
+        alertType: "success",
+      });
+      dispatch({
+        type: CONTEXT_TYPEs.CHECK,
+        payload: [],
+      });
+      queryCustomer.invalidateQueries({
+        queryKey: [QUERY_KEYs.SEARCH_USERS],
       });
       return queryCustomer.invalidateQueries({
         queryKey: [QUERY_KEYs.USERS],

@@ -43,9 +43,7 @@ const Case = () => {
         )}
       </CreditCard>
 
-      <h2 className="!mt-10 text-right font-bold font-rabar007 text-lg">
-        مێژوو
-      </h2>
+      <h2 className="!mt-10 text-right font-bold font-bukra text-lg">مێژوو</h2>
 
       <div className="w-full flex flex-row justify-between items-start flex-wrap gap-30">
         {" "}
@@ -89,7 +87,7 @@ const Case = () => {
                             </p>
                           </Td>
                           <Td>
-                            <p className="text-right font-light font-rabar007 text-md">
+                            <p className="text-right font-light font-bukra text-md">
                               {val.situation}
                             </p>
                           </Td>

@@ -1,10 +1,10 @@
-import { PsulaProductCardProps } from "@/types/products";
+import { PsulaItemCardProps } from "@/types/items";
 import Image from "../ui/Image";
 import useScreenSize from "@/hooks/useScreenSize";
 import Typography from "../shared/Typography";
 import FormatMoney from "../shared/FormatMoney";
 
-const PsulaProductCard = ({
+const PsulaItemCard = ({
   id,
   image_url,
   image_name,
@@ -12,7 +12,7 @@ const PsulaProductCard = ({
   cost,
   frosh,
   onClick,
-}: PsulaProductCardProps) => {
+}: PsulaItemCardProps) => {
   const { size } = useScreenSize();
   return (
     <article
@@ -55,4 +55,4 @@ const PsulaProductCard = ({
   );
 };
 
-export default PsulaProductCard;
+export default PsulaItemCard;

@@ -1,26 +1,33 @@
-import { UserCardProps } from "@/types/auth";
 import { FormFinalOperation } from "@/types/global";
 import Chip from "@mui/joy/Chip";
 import Divider from "@mui/joy/Divider";
-import { Fingerprint, Key, Phone, User, X } from "lucide-react";
+import { BadgePercent, Barcode, FolderPen, Hash } from "lucide-react";
 import InputGroup from "../ui/InputGroup";
 import InputAddon from "../ui/InputAddon";
 import Label from "../ui/Label";
 import Input from "../ui/Input";
+import { ItemCardProps } from "@/types/items";
+import Textarea from "../ui/Textarea";
+import Image from "../ui/Image";
 
-const UserDetailCard = ({
+const ItemDetailCard = ({
   name,
-  role_id,
-  role_name,
+  quantity,
+  image_name,
+  image_url,
+  barcode,
+  type,
+  item_purchase_price,
+  item_sell_price,
+  note,
   id,
-  phone,
-  username,
   onClose,
-}: FormFinalOperation & UserCardProps) => {
+}: FormFinalOperation & ItemCardProps) => {
+  console.log(image_url);
   return (
-    <div className="space-y-4  text-primary-800 dark:text-white  rounded-lg border-2 border-solid border-primary-400 border-opacity-40 bg-transparent py-2 w-full max-w-2xl shadow-4xl">
+    <div className="space-y-4  text-primary-800 dark:text-white   rounded-lg border-2 border-solid border-primary-400 border-opacity-40 bg-transparent py-2 w-full shadow-4xl">
       <div className="w-full flex flex-col justify-start items-start gap-4 my-3 px-3">
-        <p className="text-sm">زانیاری کەسی</p>
+        <p className="text-sm">زانیاری مەواد</p>
       </div>
       <Divider>
         <Chip
@@ -38,7 +45,7 @@ const UserDetailCard = ({
           </Label>
           <InputGroup className="w-full text-input 0">
             <InputAddon className="w-[20%] md:w-[10%]">
-              <User />
+              <FolderPen />
             </InputAddon>
 
             <Input
@@ -47,85 +54,133 @@ const UserDetailCard = ({
               disabled
               type="text"
               dir="ltr"
-              placeholder="ناو"
               className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:!font-bukra text-xs md:!text-sm placeholder:!text-sm"
             />
           </InputGroup>
         </div>
         <div className="w-full md:w-1/2 flex flex-col gap-2">
           <Label className="w-full text-sm  flex flex-row gap-2">
-            <p> ژمارە تەلەفۆن</p>
+            <p>بارکۆد</p>
           </Label>
           <InputGroup className="w-full text-input 0">
             <InputAddon className="w-[20%] md:w-[10%]">
-              <Phone />
+              <Barcode />
             </InputAddon>
 
             <Input
-              value={phone}
+              value={barcode}
               name="name"
               disabled
               type="text"
               dir="ltr"
-              placeholder="ژمارە تەلەفۆن"
               className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:!font-bukra text-xs md:!text-sm placeholder:!text-sm"
             />
           </InputGroup>
         </div>
       </div>
-      <Divider>
-        <Chip
-          className="!font-bukra my-5"
-          variant="soft"
-          color="neutral"
-          size="sm">
-          زانیاری تایبەت
-        </Chip>
-      </Divider>
+
       <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap md:flex-nowrap px-3">
         <div className="w-full md:w-1/2 flex flex-col gap-2">
           <Label className="w-full text-sm  flex flex-row gap-2">
-            <p>ناوی بەکارهێنەر</p>
+            <p>جۆر</p>
           </Label>
           <InputGroup className="w-full text-input 0">
-            <InputAddon className="w-[20%] md:w-[10%]">
-              <Key />
-            </InputAddon>
-
             <Input
-              value={username}
-              name="username"
+              value={type}
+              name="type"
               disabled
               type="text"
               dir="ltr"
               placeholder="ناوی بەکارهێنەر"
+              className="placeholder:text-right w-full font-poppins placeholder:!font-bukra text-xs md:!text-sm placeholder:!text-sm"
+            />
+          </InputGroup>
+        </div>
+        <div className="w-full md:w-1/2 flex flex-col gap-2">
+          <Label className="w-full text-sm  flex flex-row gap-2">
+            <p>عەدەد</p>
+          </Label>
+          <InputGroup className="w-full text-input 0">
+            <InputAddon className="w-[20%] md:w-[10%]">
+              <Hash />
+            </InputAddon>
+
+            <Input
+              value={quantity}
+              name="quantity"
+              disabled
+              type="text"
+              dir="ltr"
+              className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:!font-bukra text-xs md:!text-sm placeholder:!text-sm"
+            />
+          </InputGroup>
+        </div>
+      </div>
+
+      <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap md:flex-nowrap px-3">
+        <div className="w-full md:w-1/2 flex flex-col gap-2">
+          <Label className="w-full text-sm  flex flex-row gap-2">
+            <p>نرخی تێچوو</p>
+          </Label>
+          <InputGroup className="w-full text-input 0">
+            <InputAddon className="w-[20%] md:w-[10%]">
+              <BadgePercent />
+            </InputAddon>
+
+            <Input
+              value={item_purchase_price}
+              name="item_purchase_price"
+              disabled
+              type="text"
+              dir="ltr"
               className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:!font-bukra text-xs md:!text-sm placeholder:!text-sm"
             />
           </InputGroup>
         </div>
         <div className="w-full md:w-1/2 flex flex-col gap-2">
           <Label className="w-full text-sm  flex flex-row gap-2">
-            <p>ڕۆڵ</p>
+            <p>نرخی فڕۆشتن</p>
           </Label>
           <InputGroup className="w-full text-input 0">
             <InputAddon className="w-[20%] md:w-[10%]">
-              <Fingerprint />
+              <BadgePercent />
             </InputAddon>
 
             <Input
-              value={role_name}
-              name="role_name"
+              value={item_sell_price}
+              name="item_sell_price"
               disabled
               type="text"
               dir="ltr"
-              placeholder="ڕۆڵ"
               className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:!font-bukra text-xs md:!text-sm placeholder:!text-sm"
             />
           </InputGroup>
         </div>
       </div>
+
+      <div className="w-full flex flex-col gap-2 px-3">
+        <Label className="w-full text-sm  flex flex-row gap-2">
+          <p>تێبینی</p>
+        </Label>
+        <InputGroup className="w-full text-input 0">
+          <Textarea
+            rows={6}
+            value={note}
+            name="note"
+            disabled
+            dir="ltr"
+            className="placeholder:text-right w-full font-poppins placeholder:!font-bukra text-xs md:!text-sm placeholder:!text-sm !bg-transparent"
+          />
+        </InputGroup>
+      </div>
+      {image_url && image_url != "" && (
+        <div className="w-full flex flex-col gap-2 px-3">
+          <p>وێنە</p>
+          <Image image={image_url} />
+        </div>
+      )}
     </div>
   );
 };
 
-export default UserDetailCard;
+export default ItemDetailCard;

@@ -5,7 +5,7 @@ export type ENUM_TYPES =
   | "LIMIT"
   | "DEBOUNCE"
   | "SEARCH_PARAM"
-  | "PRODUCT_BUCKET"
+  | "ITEM_BUCKET"
   | "USER_BUCKET"
   | "CLIENT_BUCKET";
 
@@ -18,7 +18,7 @@ export const ENUMs: { [key in ENUM_TYPES]: key | string | number } = {
   PAGINATION: 2,
   LIMIT: 10,
   DEBOUNCE: 1000,
-  PRODUCT_BUCKET: "product",
+  ITEM_BUCKET: "item",
   USER_BUCKET: "user",
   CLIENT_BUCKET: "client",
 };

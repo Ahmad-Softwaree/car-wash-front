@@ -64,7 +64,7 @@ const RoleForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
       ref={form}
       onSubmit={handleSubmit(onSubmit)}
       id="login-form">
-      <p className="font-bold font-rabar007 text-lg text-nowrap">فۆڕمی ڕۆل</p>
+      <p className="font-bold font-bukra text-lg text-nowrap">فۆڕمی ڕۆل</p>
       <InputGroup error={errors.name} className="w-full text-input">
         <Input
           type="text"
@@ -74,7 +74,7 @@ const RoleForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
           className="w-full"
         />
       </InputGroup>
-      <p className="font-bold font-rabar007 text-md text-nowrap mt-5">
+      <p className="font-bold font-bukra text-md text-nowrap mt-5">
         چ بەشێکی بۆ کراوە بێ؟
       </p>
 
@@ -97,7 +97,7 @@ const RoleForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
                       : "bg-white text-black"
                   }`}
                   id={val.id.toLocaleString()}>
-                  <p className="text-sm font-bold font-rabar007">{val.name}</p>
+                  <p className="text-sm font-bold font-bukra">{val.name}</p>
                 </article>
               );
             })}
@@ -113,7 +113,7 @@ const RoleForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
         name="addRoleButton"
         type="submit"
         className="w-full bg-black-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
-        <p className="font-bold font-rabar007">جێبەجێکردن</p>
+        <p className="font-bold font-bukra">جێبەجێکردن</p>
       </MyButton>
     </Form>
   );

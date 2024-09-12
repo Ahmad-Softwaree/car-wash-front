@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import Form from "@/components/ui/Form";
-import Input from "@/components/ui/Input";
 import { FormHandle } from "@/types/global";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useLogin } from "@/lib/react-query/query/auth.query";
@@ -9,6 +8,7 @@ import InputAddon from "@/components/ui/InputAddon";
 import MyButton from "@/components/ui/MyButton";
 import { LoginInputs } from "@/types/auth";
 import { Lock, User } from "lucide-react";
+import Input from "../ui/Input";
 
 const LoginForm = () => {
   const { mutateAsync, isPending } = useLogin();
@@ -22,9 +22,10 @@ const LoginForm = () => {
     await mutateAsync(data);
     form.current?.clear();
   };
+
   return (
     <Form
-      className="space-y-4 mt-5"
+      className="space-y-4 mt-5 !text-primary-800 dark:!text-white"
       ref={form}
       onSubmit={handleSubmit(onSubmit)}
       id="login-form">
@@ -34,13 +35,14 @@ const LoginForm = () => {
         <InputAddon className="w-[20%] md:w-[10%]">
           <User />
         </InputAddon>
+
         <Input
-          type="text"
           {...register("username", { required: true })}
           name="username"
-          placeholder="ناوی بەکارهێنەر"
+          type="text"
           dir="ltr"
-          className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:font-rabar007 text-sm md:text-lg"
+          placeholder="ناوی بەکارهێنەر"
+          className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:!font-bukra text-sm md:text-md"
         />
       </InputGroup>
       <InputGroup
@@ -56,7 +58,7 @@ const LoginForm = () => {
           type="password"
           dir="ltr"
           placeholder="ووشەی نهێنی"
-          className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:font-rabar007 text-sm md:text-lg"
+          className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:!font-bukra text-sm md:text-md"
         />
       </InputGroup>
 
@@ -64,7 +66,7 @@ const LoginForm = () => {
         loading={isPending}
         name="loginButton"
         id="loginButton"
-        className="w-full bg-primary-500 text-white p-3 rounded-md flex justify-center"
+        className="w-full text-sm bg-sky-800 text-white p-3 rounded-md flex justify-center"
         type="submit">
         چوونەژوورەوە
       </MyButton>

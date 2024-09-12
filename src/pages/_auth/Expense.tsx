@@ -103,7 +103,7 @@ const Expense = () => {
             name="removeExpenseDetailCard"
             type="button"
             className="w-full bg-black-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2 mt-2">
-            <p className="font-bold font-rabar007">لابردن</p>
+            <p className="font-bold font-bukra">لابردن</p>
           </button>
         </Dialog>
       )}
@@ -119,7 +119,7 @@ const Expense = () => {
             onClick={() => closeDialog("form")}
             type="button"
             className="w-full  my-2 bg-red-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
-            <p className="font-bold font-rabar007">هەڵوەشاندنەوە</p>
+            <p className="font-bold font-bukra">هەڵوەشاندنەوە</p>
           </button>
         </Dialog>
       )}

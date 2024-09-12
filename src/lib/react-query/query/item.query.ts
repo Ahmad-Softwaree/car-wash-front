@@ -1,17 +1,17 @@
 import { useToast } from "@/components/ui/use-toast";
 import {
-  AddProductF,
-  AddProductQ,
-  CountProductF,
-  CountProductQ,
-  DeleteProductQ,
-  GetProductByIdQ,
-  GetProductsInAddQ,
-  GetProductsLessQ,
-  GetProductsQ,
-  UpdateProductF,
-  UpdateProductQ,
-} from "@/types/products";
+  AddItemF,
+  AddItemQ,
+  CountItemF,
+  CountItemQ,
+  DeleteItemQ,
+  GetItemByIdQ,
+  GetItemsInAddQ,
+  GetItemsLessQ,
+  GetItemsQ,
+  UpdateItemF,
+  UpdateItemQ,
+} from "@/types/items";
 import { Id, NestError, Page, PaginationReturnType } from "@/types/global";
 import {
   useInfiniteQuery,
@@ -21,63 +21,33 @@ import {
 } from "@tanstack/react-query";
 import { QUERY_KEYs } from "../key";
 import {
-  addProduct,
-  countProduct,
-  deleteProduct,
-  getLessProducts,
-  getProductById,
-  getProducts,
-  getProductsInAdd,
-  updateProduct,
-} from "../actions/product.action";
+  addItem,
+  countItem,
+  deleteItem,
+  getItemById,
+  getItems,
+  updateItem,
+  searchItems,
+} from "../actions/item.action";
 import { ENUMs } from "@/lib/enum";
 import { generateNestErrors } from "@/lib/functions";
 import { deleteImage, insertImage } from "../actions/firebase.action";
 import { ref, StorageReference } from "firebase/storage";
 import { firebaseStorage } from "@/lib/config/firebase.config";
+import { useGlobalContext } from "@/context/GlobalContext";
+import { CONTEXT_TYPEs } from "@/context/types";
+import { Search } from "react-router-dom";
 
-export const useGetProductsInAdd = () => {
+export const useGetItems = () => {
   const { toast } = useToast();
   return useInfiniteQuery({
-    queryKey: [QUERY_KEYs.PRODUCTS_IN_ADD],
+    queryKey: [QUERY_KEYs.ITEMS],
     queryFn: ({
       pageParam,
     }: {
       pageParam: Page;
-    }): Promise<PaginationReturnType<GetProductsInAddQ>> =>
-      getProductsInAdd(toast, pageParam, ENUMs.LIMIT as number),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage: any, pages: any) => {
-      return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
-    },
-  });
-};
-export const useGetLessProducts = () => {
-  const { toast } = useToast();
-  return useInfiniteQuery({
-    queryKey: [QUERY_KEYs.LESS_PRODUCTS],
-    queryFn: ({
-      pageParam,
-    }: {
-      pageParam: Page;
-    }): Promise<PaginationReturnType<GetProductsLessQ>> =>
-      getLessProducts(toast, pageParam, ENUMs.LIMIT as number),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage: any, pages: any) => {
-      return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
-    },
-  });
-};
-export const useGetProducts = () => {
-  const { toast } = useToast();
-  return useInfiniteQuery({
-    queryKey: [QUERY_KEYs.PRODUCTS],
-    queryFn: ({
-      pageParam,
-    }: {
-      pageParam: Page;
-    }): Promise<PaginationReturnType<GetProductsQ>> =>
-      getProducts(toast, pageParam, ENUMs.LIMIT as number),
+    }): Promise<PaginationReturnType<GetItemsQ>> =>
+      getItems(toast, pageParam, ENUMs.LIMIT as number),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
@@ -85,22 +55,31 @@ export const useGetProducts = () => {
   });
 };
 
-export const useGetProductById = (id: Id | null) => {
+export const useSearchItems = (search: Search) => {
   const { toast } = useToast();
   return useQuery({
-    queryKey: [QUERY_KEYs.PRODUCT_BY_ID, id],
-    queryFn: (): Promise<GetProductByIdQ> => getProductById(toast, id),
+    queryKey: [QUERY_KEYs.SEARCH_ITEMS],
+    queryFn: (): Promise<GetItemsQ> => searchItems(toast, search),
+    enabled: !!search,
+    retry: 0,
+  });
+};
+export const useGetItemById = (id: Id | null) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.ITEM_BY_ID, id],
+    queryFn: (): Promise<GetItemByIdQ> => getItemById(toast, id),
     retry: 0,
     enabled: !!id,
   });
 };
 
-export const useAddProduct = () => {
+export const useAddItem = () => {
   const { toast } = useToast();
   const queryCustomer = useQueryClient();
 
   return useMutation({
-    mutationFn: async (form: AddProductF): Promise<AddProductQ> => {
+    mutationFn: async (form: AddItemF): Promise<AddItemQ> => {
       let imageRef: StorageReference | null = null;
 
       try {
@@ -110,14 +89,14 @@ export const useAddProduct = () => {
           imageRef: ref,
         } = await insertImage(
           form.image[0],
-          ENUMs.PRODUCT_BUCKET as string,
+          ENUMs.ITEM_BUCKET as string,
           toast
         );
         imageRef = ref;
         let { image, ...others } = form;
         let finalForm = { image_url, image_name, ...others };
 
-        const result = await addProduct(finalForm);
+        const result = await addItem(finalForm);
 
         return result;
       } catch (error: any) {
@@ -127,13 +106,13 @@ export const useAddProduct = () => {
         throw error;
       }
     },
-    onSuccess: (data: AddProductQ) => {
+    onSuccess: (data: AddItemQ) => {
       toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
       });
       return queryCustomer.invalidateQueries({
-        queryKey: [QUERY_KEYs.PRODUCTS_IN_ADD],
+        queryKey: [QUERY_KEYs.ITEMS_IN_ADD],
       });
     },
     onError: (error: NestError) => {
@@ -141,12 +120,12 @@ export const useAddProduct = () => {
     },
   });
 };
-export const useUpdateProduct = (id: Id) => {
+export const useUpdateItem = (id: Id) => {
   const { toast } = useToast();
   const queryCustomer = useQueryClient();
 
   return useMutation({
-    mutationFn: async (form: UpdateProductF): Promise<UpdateProductQ> => {
+    mutationFn: async (form: UpdateItemF): Promise<UpdateItemQ> => {
       let imageRef: StorageReference | null = null;
       let oldImageRef: StorageReference | null = null;
 
@@ -163,7 +142,7 @@ export const useUpdateProduct = (id: Id) => {
             imageRef: ref,
           } = await insertImage(
             form.image[0],
-            ENUMs.PRODUCT_BUCKET as string,
+            ENUMs.ITEM_BUCKET as string,
             toast
           );
 
@@ -172,7 +151,7 @@ export const useUpdateProduct = (id: Id) => {
           let finalForm = { image_url, image_name, ...others };
           let { old_image_name, old_image_url, ...final } = finalForm;
 
-          const result = await updateProduct(final, id);
+          const result = await updateItem(final, id);
 
           return result;
         } catch (error: any) {
@@ -187,19 +166,19 @@ export const useUpdateProduct = (id: Id) => {
         let finalForm = { image_url, image_name, ...form };
         let { old_image_name, old_image_url, ...final } = finalForm;
 
-        return await updateProduct(final, id);
+        return await updateItem(final, id);
       }
     },
-    onSuccess: (data: UpdateProductQ) => {
+    onSuccess: (data: UpdateItemQ) => {
       toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
       });
       queryCustomer.invalidateQueries({
-        queryKey: [QUERY_KEYs.PRODUCT_BY_ID, id],
+        queryKey: [QUERY_KEYs.ITEM_BY_ID, id],
       });
       return queryCustomer.invalidateQueries({
-        queryKey: [QUERY_KEYs.PRODUCTS_IN_ADD],
+        queryKey: [QUERY_KEYs.ITEMS_IN_ADD],
       });
     },
     onError: (error: NestError) => {
@@ -207,20 +186,20 @@ export const useUpdateProduct = (id: Id) => {
     },
   });
 };
-export const useCountProduct = (id: Id) => {
+export const useCountItem = (id: Id) => {
   const { toast } = useToast();
   const queryCustomer = useQueryClient();
 
   return useMutation({
-    mutationFn: async (form: CountProductF): Promise<CountProductQ> =>
-      countProduct(form, id),
-    onSuccess: (data: CountProductQ) => {
+    mutationFn: async (form: CountItemF): Promise<CountItemQ> =>
+      countItem(form, id),
+    onSuccess: (data: CountItemQ) => {
       toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
       });
       return queryCustomer.invalidateQueries({
-        queryKey: [QUERY_KEYs.LESS_PRODUCTS],
+        queryKey: [QUERY_KEYs.LESS_ITEMS],
       });
     },
     onError: (error: NestError) => {
@@ -228,22 +207,30 @@ export const useCountProduct = (id: Id) => {
     },
   });
 };
-export const useDeleteProduct = (id: Id) => {
+export const useDeleteItem = () => {
   const { toast } = useToast();
   const queryCustomer = useQueryClient();
+  const { dispatch } = useGlobalContext();
 
   return useMutation({
-    mutationFn: async (): Promise<DeleteProductQ> => deleteProduct(id),
-    onSuccess: (data: DeleteProductQ) => {
+    mutationFn: (ids: Id[]): Promise<DeleteItemQ> => deleteItem(ids),
+    onSuccess: (data: DeleteItemQ) => {
       toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
       });
+      dispatch({
+        type: CONTEXT_TYPEs.CHECK,
+        payload: [],
+      });
       queryCustomer.invalidateQueries({
-        queryKey: [QUERY_KEYs.PRODUCT_BY_ID, id],
+        queryKey: [QUERY_KEYs.ITEM_BY_ID],
+      });
+      queryCustomer.invalidateQueries({
+        queryKey: [QUERY_KEYs.ITEMS],
       });
       return queryCustomer.invalidateQueries({
-        queryKey: [QUERY_KEYs.PRODUCTS_IN_ADD],
+        queryKey: [QUERY_KEYs.ITEMS_IN_ADD],
       });
     },
     onError: (error: NestError) => {

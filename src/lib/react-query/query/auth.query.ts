@@ -1,9 +1,7 @@
 import { useToast } from "@/components/ui/use-toast";
 import {
-  ChangeNameF,
-  ChangeNameQ,
-  ChangePasswordF,
-  ChangePasswordQ,
+  ChangeProfileF,
+  ChangeProfileQ,
   GetAuthQ,
   LoginF,
   LoginQ,
@@ -11,13 +9,7 @@ import {
 import { NestError } from "@/types/global";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEYs } from "../key";
-import {
-  changeName,
-  changePassword,
-  getAuth,
-  login,
-  logout,
-} from "../actions/auth.action";
+import { changeProfile, getAuth, login, logout } from "../actions/auth.action";
 import { useAuthContext } from "@/context/AuthContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 import { useNavigate } from "react-router-dom";
@@ -45,16 +37,16 @@ export const useLogin = () => {
       toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
+        alertType: "success",
       });
       dispatch({
         type: CONTEXT_TYPEs.SET_USER,
         payload: data,
       });
       queryCustomer.setQueryData([QUERY_KEYs.AUTH], data.user);
-      return navigate("/home");
+      return navigate("/داشبۆرد");
     },
     onError: (error: NestError) => {
-      console.log(error);
       return generateNestErrors(error, toast);
     },
   });
@@ -72,6 +64,7 @@ export const useLogout = () => {
       toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
+        alertType: "success",
       });
       dispatch({
         type: CONTEXT_TYPEs.REMOVE_USER,
@@ -86,45 +79,19 @@ export const useLogout = () => {
   });
 };
 
-export const useChangeName = () => {
+export const useChangeProfile = () => {
   const { toast } = useToast();
   const queryCustomer = useQueryClient();
   const { dispatch } = useAuthContext();
 
   return useMutation({
-    mutationFn: (form: ChangeNameF): Promise<ChangeNameQ> => changeName(form),
-    onSuccess: (data: ChangeNameQ) => {
+    mutationFn: (form: ChangeProfileF): Promise<ChangeProfileQ> =>
+      changeProfile(form),
+    onSuccess: (data: ChangeProfileQ) => {
       toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
-      });
-      dispatch({
-        type: CONTEXT_TYPEs.SET_USER,
-        payload: { user: data },
-      });
-      return queryCustomer.setQueryData([QUERY_KEYs.AUTH], data);
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
-    },
-  });
-};
-export const useChangePassword = () => {
-  const { toast } = useToast();
-  const queryCustomer = useQueryClient();
-  const { dispatch } = useAuthContext();
-
-  return useMutation({
-    mutationFn: async (form: ChangePasswordF) => {
-      if (form.newPassword != form.reNewPassword) {
-        throw new Error("Passwords must be the same");
-      }
-      return await changePassword(form);
-    },
-    onSuccess: (data: ChangePasswordQ) => {
-      toast({
-        title: "سەرکەوتووبوو",
-        description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
+        alertType: "success",
       });
       dispatch({
         type: CONTEXT_TYPEs.SET_USER,

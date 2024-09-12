@@ -7,7 +7,7 @@ import {
   GetCaseMoneyQ,
   GetReportMoneyDataQ,
   GetReportMostOrderQ,
-  GetReportMostProductQ,
+  GetReportMostItemQ,
   ReportMoney,
 } from "@/types/case";
 import {
@@ -85,14 +85,14 @@ export const getReportMoneyData = async (
   }
 };
 
-export const getReportMostProduct = async (
+export const getReportMostItem = async (
   toast: ToastType,
   from: Date | string,
   to: Date | string
-): Promise<GetReportMostProductQ> => {
+): Promise<GetReportMostItemQ> => {
   try {
-    // const { data, status } = await authApi.get(`${URLs.GET_REPORT_MOST_PRODUCT}?from=${from}&to=${to}`);
-    const data = products;
+    // const { data, status } = await authApi.get(`${URLs.GET_REPORT_MOST_ITEM}?from=${from}&to=${to}`);
+    const data = items;
     return data;
   } catch (error: any) {
     throw toast({

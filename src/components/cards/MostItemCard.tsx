@@ -1,14 +1,14 @@
-import { MostProductCardProps } from "@/types/products";
+import { MostItemCardProps } from "@/types/items";
 import Image from "../ui/Image";
 
-const MostProductCard = ({
+const MostItemCard = ({
   image_name,
   image_url,
   title,
   cost,
   frosh,
   sold,
-}: MostProductCardProps) => {
+}: MostItemCardProps) => {
   return (
     <article className="w-[210px] h-[360px]  bg-white shadow-lg rounded-xl items-center gap-2 flex flex-col">
       <Image
@@ -23,20 +23,16 @@ const MostProductCard = ({
         }
         alt={image_name}
       />
-      <p className="text-center w-full text-md font-bold font-rabar007">
-        {title}
-      </p>
+      <p className="text-center w-full text-md font-bold font-bukra">{title}</p>
       <p className="text-center w-full text-md font-light text-opacity-50 opacity-50">
         {cost}
       </p>
-      <p className="text-center w-full text-md font-bold font-rabar007">
-        {frosh}
-      </p>
-      <p className="text-center w-full text-md font-bold font-rabar007 text-primary-500 text-xl">
+      <p className="text-center w-full text-md font-bold font-bukra">{frosh}</p>
+      <p className="text-center w-full text-md font-bold font-bukra text-primary-500 text-xl">
         {sold}
       </p>
     </article>
   );
 };
 
-export default MostProductCard;
+export default MostItemCard;

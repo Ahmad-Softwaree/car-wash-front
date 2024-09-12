@@ -71,7 +71,7 @@ const ExpenseForm = ({
       onSubmit={handleSubmit(onSubmit)}
       id="login-form">
       <div className="w-full flex flex-row justify-between items-center">
-        <p className="font-bold font-rabar007 text-lg text-nowrap">
+        <p className="font-bold font-bukra text-lg text-nowrap">
           خەرجی {state == "insert" ? "نوێ" : "کۆن"}
         </p>
       </div>
@@ -128,10 +128,10 @@ const ExpenseForm = ({
       ) : null}
       <MyButton
         loading={loading}
-        name="addProductButton"
+        name="addItemButton"
         type="submit"
         className="w-full bg-black-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
-        <p className="font-bold font-rabar007">جێبەجێکردن</p>
+        <p className="font-bold font-bukra">جێبەجێکردن</p>
       </MyButton>
     </Form>
   );

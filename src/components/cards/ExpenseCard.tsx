@@ -68,10 +68,10 @@ const ExpenseCard = ({
           <div className="flex flex-col justify-start items-start gap-2">
             <span className="opacity-50 text-black text-md">بڕی خەرجکراو</span>
             <div className="w-full flex flex-row gap-2 justify-end">
-              <FormatMoney className="text-primary-500 font-bold font-rabar007 text-lg text-nowrap">
+              <FormatMoney className="text-primary-500 font-bold font-bukra text-lg text-nowrap">
                 {price}
               </FormatMoney>
-              <p className="text-primary-500 font-bold font-rabar007 text-lg text-nowrap">
+              <p className="text-primary-500 font-bold font-bukra text-lg text-nowrap">
                 د.ع
               </p>
             </div>
@@ -80,7 +80,7 @@ const ExpenseCard = ({
 
         <div className="flex flex-row justify-between items-center w-full">
           <div className="flex flex-row justify-center items-center gap-1">
-            <p className="text-sm text-nowrap font-rabar007 opacity-50 text-black">
+            <p className="text-sm text-nowrap font-bukra opacity-50 text-black">
               بەروار :
             </p>
             <p className="text-sm text-nowrap font-poppins opacity-50 text-black">
@@ -103,7 +103,7 @@ const ExpenseCard = ({
             onClick={updateOnClose}
             type="button"
             className="w-full  my-2 bg-red-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
-            <p className="font-bold font-rabar007">هەڵوەشاندنەوە</p>
+            <p className="font-bold font-bukra">هەڵوەشاندنەوە</p>
           </button>
         </Dialog>
       )}
