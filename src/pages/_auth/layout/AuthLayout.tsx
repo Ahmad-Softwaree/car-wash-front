@@ -4,8 +4,10 @@ import Footer from "./Footer";
 import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import useChangePage from "@/hooks/useChangePage";
+import useTheme from "@/hooks/useTheme";
 
 const AuthLayout = () => {
+  useTheme();
   useChangePage();
   const location = useLocation();
   const path = location?.pathname.split("/");

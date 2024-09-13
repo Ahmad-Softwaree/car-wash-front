@@ -137,7 +137,7 @@ module.exports = {
         bukra_bold: "bukra_bold",
 
         rabar_bold: "rabar034",
-        rabar: "rabar007",
+        rabar: "bukra",
 
         sans: ["Graphik", "sans-serif"],
         serif: ["Merriweather", "serif"],

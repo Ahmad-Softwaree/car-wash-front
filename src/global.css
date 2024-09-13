@@ -47,15 +47,19 @@ aside::-webkit-scrollbar {
   display: none;
 }
 
+.hide-scroll::-webkit-scrollbar {
+  display: none;
+}
+
 @layer components {
   body {
-    @apply bg-white dark:bg-primary-800;
+    @apply dark-light;
   }
   section:not(.auth).home {
     @apply mb-20 p-5 md:p-10 lg:p-10 xl:!pl-20;
   }
   section {
-    @apply overflow-hidden min-h-screen bg-white dark:bg-primary-800;
+    @apply overflow-hidden min-h-screen dark-light;
   }
   section.out {
     @apply mb-20 p-5 md:p-7 xl:!px-20;
@@ -91,6 +95,36 @@ aside::-webkit-scrollbar {
   th,
   td {
     @apply min-w-[150px];
+  }
+
+  .dark-light {
+    @apply !bg-white dark:!bg-primary-800 !text-primary-800 dark:!text-white;
+  }
+  .light-dark {
+    @apply dark:!bg-white !bg-primary-800 dark:!text-primary-800 !text-white;
+  }
+
+  .table-dark-light {
+    @apply !bg-white dark:!bg-[#0e1214];
+  }
+
+  .table-row-hover {
+    @apply hover:bg-sky-300 dark:hover:bg-sky-800 transition-all duration-200;
+  }
+
+  .table-row-include {
+    @apply bg-sky-300 dark:bg-sky-800;
+  }
+  .table-row-normal {
+    @apply bg-white dark:bg-[#0e1214];
+  }
+
+  .default-border {
+    @apply border-2 border-solid border-primary-400 border-opacity-80;
+  }
+
+  .table-head-border {
+    @apply border-r-2 border-solid border-primary-400 border-opacity-80;
   }
 }
 

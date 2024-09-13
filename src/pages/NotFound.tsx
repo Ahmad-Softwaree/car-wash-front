@@ -8,7 +8,7 @@ export default function NotFound() {
   return (
     <Container
       as={`div`}
-      className="w-full flex flex-col justify-center items-center gap-5 h-screen !text-white">
+      className="w-full flex flex-col justify-center items-center gap-5 h-screen dark-light">
       <span className="w-full text-[100px] md:text-[200px] lg:text-[250px] font-bold opacity-10 text-center z-20 font">
         404
       </span>
@@ -18,7 +18,7 @@ export default function NotFound() {
 
       <Link
         to={`/داشبۆرد`}
-        className="bg-primary-500 text-white rounded-lg cursor-pointer py-2 md:py-3 px-5 md:px-10 z-50 font-bukra text-sm md:text-lg">
+        className="dark-light rounded-lg cursor-pointer py-2 md:py-3 px-5 md:px-10 z-50 font-bukra text-sm md:text-lg">
         گەڕانەوە بۆ پەرەی سەرەکی
       </Link>
       <DNA

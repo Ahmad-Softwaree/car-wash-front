@@ -25,7 +25,7 @@ const ItemDetailCard = ({
 }: FormFinalOperation & ItemCardProps) => {
   console.log(image_url);
   return (
-    <div className="space-y-4  text-primary-800 dark:text-white   rounded-lg border-2 border-solid border-primary-400 border-opacity-40 bg-transparent py-2 w-full shadow-4xl">
+    <div className="space-y-4  dark-light   rounded-lg default-border bg-transparent py-2 w-full shadow-4xl">
       <div className="w-full flex flex-col justify-start items-start gap-4 my-3 px-3">
         <p className="text-sm">زانیاری مەواد</p>
       </div>

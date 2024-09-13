@@ -183,14 +183,12 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
                   name="role_id"
                   id="role_id"
                   className="w-full bg-transparent !text-sm">
-                  <Option
-                    className="!text-sm bg-white dark:bg-primary-800"
-                    value={-1}>
+                  <Option className="!text-sm dark-light" value={-1}>
                     ڕۆڵ هەڵبژێرە
                   </Option>
                   {roles.map((val: Role, _index: number) => (
                     <Option
-                      className="!text-sm bg-white dark:bg-primary-800"
+                      className="!text-sm dark-light"
                       key={val.id}
                       value={val.id}>
                       {val.name}

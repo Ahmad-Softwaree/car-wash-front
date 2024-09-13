@@ -7,13 +7,15 @@ import { Navigate } from "react-router-dom";
 export default function CheckPart({
   Component,
   part,
-}: RouterProviderType & { part: string | "all" }) {
+}: RouterProviderType & { part: string[] | "all" }) {
   const { data, isLoading } = useGetAuth();
-  let check = data?.parts
-    .map((val: Part, _index: number) => val.name)
-    .includes(part);
+
+  const check = data?.parts
+    .map((val: Part) => val.name)
+    .some((name: string) => part.includes(name));
+
   if (isLoading) return <Fallback />;
-  if (data && part == "all") return <Component />;
+  if (data && part.includes("all")) return <Component />;
   if (!data || !check) return <Navigate replace to={`/`} />;
   if (data && check) return <Component />;
 }

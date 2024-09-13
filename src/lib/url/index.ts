@@ -12,6 +12,9 @@ export type URLS =
   | "UPDATE_SETTING"
   | "ADD_SPEND"
   | "GET_USERS"
+  | "GET_DELETED_USERS"
+  | "RESTORE_USER"
+  | "SEARCH_DELETED_USERS"
   | "ADD_USER"
   | "UPDATE_USER"
   | "DELETE_USER"
@@ -84,6 +87,10 @@ export const URLs: { [key in URLS]: string } = {
   UPDATE_SPEND: `${API}/expense`,
 
   GET_USERS: `${API}/user`,
+  GET_DELETED_USERS: `${API}/user/deleted`,
+  RESTORE_USER: `${API}/user/restore`,
+  SEARCH_DELETED_USERS: `${API}/user/deleted_search`,
+
   SEARCH_USERS: `${API}/user/search`,
 
   ADD_USER: `${API}/user`,

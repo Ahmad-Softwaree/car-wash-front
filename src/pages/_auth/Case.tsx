@@ -49,10 +49,7 @@ const Case = () => {
         {" "}
         <div className="tableDiv w-full lg:w-1/2 max-h-[600px] overflow-auto relative">
           <Table className="max-w-[1000px] relative overflow-auto w-full">
-            <THead
-              className="sticky top-0 bg-white z-10 w-full"
-              type="simple"
-              color="gray">
+            <THead className="sticky top-0 bg-white z-10 w-full" type="simple">
               <Tr>
                 <Th className="text-right">#</Th>
                 <Th className="text-right">حاڵەت</Th>

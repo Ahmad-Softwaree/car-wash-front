@@ -4,6 +4,10 @@ import Divider from "@mui/joy/Divider";
 import Chip from "@mui/joy/Chip";
 import { Link, NavLink } from "react-router-dom";
 import { ReactElement, useState } from "react";
+import Accordion from "@mui/joy/Accordion";
+import AccordionDetails from "@mui/joy/AccordionDetails";
+import AccordionGroup from "@mui/joy/AccordionGroup";
+import AccordionSummary from "@mui/joy/AccordionSummary";
 import {
   Car,
   CarFront,
@@ -19,7 +23,6 @@ import {
   LogOut,
   Palette,
   ReceiptText,
-  User,
   UserCog,
   Users,
 } from "lucide-react";
@@ -30,6 +33,7 @@ import { useLogout } from "@/lib/react-query/query/auth.query";
 import { Part } from "@/types/part";
 
 import { SideLink } from "@/types/global";
+import { ENUMs } from "@/lib/enum";
 
 export const sideLinks: SideLink[] = [
   {
@@ -63,16 +67,23 @@ export const sideLinks: SideLink[] = [
   {
     id: crypto.randomUUID() as string,
     icon: <UserCog />,
-    name: "بەکارهێنەران",
-    link: "/بەکارهێنەران",
+    name: ENUMs.USERS_PART as string,
+    link: `/${ENUMs.MANAGE_SECTION as string}/${ENUMs.USERS_PART as string}`,
     type: "manage",
   },
   {
     id: crypto.randomUUID() as string,
     icon: <Users />,
-    name: "کڕیارەکان",
-    link: "/کڕیارەکان",
+    name: ENUMs.CUSTOMER_PART as string,
+    link: `/${ENUMs.MANAGE_SECTION as string}/${ENUMs.CUSTOMER_PART as string}`,
     type: "manage",
+  },
+  {
+    id: crypto.randomUUID() as string,
+    icon: <UserCog />,
+    name: ENUMs.USERS_PART as string,
+    link: `/${ENUMs.DELETED_SECTION as string}/${ENUMs.USERS_PART as string}`,
+    type: "deleted",
   },
   {
     id: crypto.randomUUID() as string,
@@ -159,7 +170,7 @@ const Sidebar = () => {
     return (
       userParts.includes(text) && (
         <NavLink
-          className="w-full !text-white flex flex-row justify-start items-center gap-3 transition-all duration-200 hover:!bg-white hover:!bg-opacity-20 p-2 rounded-md"
+          className="!font-bukra w-full !text-white flex flex-row justify-start items-center gap-3 transition-all duration-200 hover:!bg-white hover:!bg-opacity-20 p-2 rounded-md"
           to={link}>
           {Icon}
           <p className="!text-xs">{text}</p>
@@ -203,148 +214,207 @@ const Sidebar = () => {
             </p>
           </Card>
         </Link>
-
-        <Divider>
-          <Chip
-            className="!font-bukra"
-            variant="soft"
-            color="neutral"
-            size="sm">
-            گشتی
-          </Chip>
-        </Divider>
-        <div className="mt-3"></div>
-        {sideLinks
-          .filter((val: SideLink, _index: number) => val.type == "general")
-          .map((val: SideLink, _index: number) => (
-            <Item
-              key={val.id}
-              Icon={val.icon}
-              link={val.link}
-              text={val.name}
-            />
-          ))}
-
-        <div className="mt-3"></div>
-        <Divider>
-          <Chip
-            className="!font-bukra"
-            variant="soft"
-            color="neutral"
-            size="sm">
-            بەڕێوەبردن
-          </Chip>
-        </Divider>
-        <div className="mt-3"></div>
-
-        {sideLinks
-          .filter((val: SideLink, _index: number) => val.type == "manage")
-          .map((val: SideLink, _index: number) => (
-            <Item
-              key={val.id}
-              Icon={val.icon}
-              link={val.link}
-              text={val.name}
-            />
-          ))}
-
-        <div className="mt-3"></div>
-        <Divider>
-          <Chip
-            className="!font-bukra"
-            variant="soft"
-            color="neutral"
-            size="sm">
-            ڕاپۆرتەکان
-          </Chip>
-        </Divider>
-        <div className="mt-3"></div>
-
-        {sideLinks
-          .filter((val: SideLink, _index: number) => val.type == "report")
-          .map((val: SideLink, _index: number) => (
-            <Item
-              key={val.id}
-              Icon={val.icon}
-              link={val.link}
-              text={val.name}
-            />
-          ))}
-
-        <div className="mt-3"></div>
-        <Divider>
-          <Chip
-            className="!font-bukra"
-            variant="soft"
-            color="neutral"
-            size="sm">
-            ڕێکخستن
-          </Chip>
-        </Divider>
-        <div className="mt-3"></div>
-
-        {sideLinks
-          .filter((val: SideLink, _index: number) => val.type == "setting")
-          .map((val: SideLink, _index: number) => (
-            <Item
-              key={val.id}
-              Icon={val.icon}
-              link={val.link}
-              text={val.name}
-            />
-          ))}
-
-        <div className="mt-3"></div>
-        <Divider>
-          <Chip
-            className="!font-bukra"
-            variant="soft"
-            color="neutral"
-            size="sm">
-            پڕۆفایل
-          </Chip>
-        </Divider>
-        <div className="mt-3"></div>
-        <div className="w-full mb-3">
-          <Card
-            size="sm"
-            className="w-full !bg-primary-600 !border-2 !border-solid !border-primary-300 !border-opacity-40 !flex !flex-row !justify-between !items-center !gap-2 !text-white">
-            <Tooltip
-              placement="top"
-              color="neutral"
-              title="بینینی پڕۆفایل"
-              variant="soft">
-              <Link
-                to={`/پڕۆفایل`}
-                className="flex flex-col justify-start items-start gap-2">
-                <p className="!text-xs !text-white !font-bukra">
-                  {user?.username}
-                </p>
-                <div className="flex flex-row justify-start items-center gap-2">
-                  <p className="!text-xs !text-white !font-bukra">
-                    {user?.name}
-                  </p>
-                  <Chip color="danger" variant="soft">
-                    {user?.role_name}
+        <AccordionGroup sx={{ maxWidth: 400 }}>
+          <>
+            <Accordion defaultExpanded>
+              <AccordionSummary>
+                <Divider>
+                  <Chip
+                    className="!font-bukra my-3"
+                    variant="soft"
+                    color="neutral"
+                    size="sm">
+                    گشتی
                   </Chip>
-                </div>
-              </Link>
-            </Tooltip>
-            <Tooltip
-              placement="top"
-              color="danger"
-              title="چوونەدەر"
-              variant="soft">
-              <button
-                title="چوونەدەر"
-                type="button"
-                onClick={() => mutateAsync()}
-                className="text-red-400 hover:!bg-opacity-50 !transition-all !duration-200 !font-bukra !text-xs">
-                <LogOut />
-              </button>
-            </Tooltip>
-          </Card>
-        </div>
+                </Divider>
+              </AccordionSummary>
+
+              <AccordionDetails>
+                {" "}
+                {sideLinks
+                  .filter(
+                    (val: SideLink, _index: number) => val.type == "general"
+                  )
+                  .map((val: SideLink, _index: number) => (
+                    <Item
+                      key={val.id}
+                      Icon={val.icon}
+                      link={val.link}
+                      text={val.name}
+                    />
+                  ))}
+              </AccordionDetails>
+            </Accordion>
+
+            <Accordion defaultExpanded>
+              <AccordionSummary>
+                <Divider>
+                  <Chip
+                    className="!font-bukra my-3"
+                    variant="soft"
+                    color="neutral"
+                    size="sm">
+                    بەڕێوەبردن
+                  </Chip>
+                </Divider>
+              </AccordionSummary>
+
+              <AccordionDetails>
+                {" "}
+                {sideLinks
+                  .filter(
+                    (val: SideLink, _index: number) => val.type == "manage"
+                  )
+                  .map((val: SideLink, _index: number) => (
+                    <Item
+                      key={val.id}
+                      Icon={val.icon}
+                      link={val.link}
+                      text={val.name}
+                    />
+                  ))}
+              </AccordionDetails>
+            </Accordion>
+            <Accordion defaultExpanded>
+              <AccordionSummary>
+                <Divider>
+                  <Chip
+                    className="!font-bukra my-3"
+                    variant="soft"
+                    color="neutral"
+                    size="sm">
+                    ڕاپۆرت
+                  </Chip>
+                </Divider>
+              </AccordionSummary>
+
+              <AccordionDetails>
+                {" "}
+                {sideLinks
+                  .filter(
+                    (val: SideLink, _index: number) => val.type == "report"
+                  )
+                  .map((val: SideLink, _index: number) => (
+                    <Item
+                      key={val.id}
+                      Icon={val.icon}
+                      link={val.link}
+                      text={val.name}
+                    />
+                  ))}
+              </AccordionDetails>
+            </Accordion>
+            <Accordion defaultExpanded>
+              <AccordionSummary>
+                <Divider>
+                  <Chip
+                    className="!font-bukra my-3"
+                    variant="soft"
+                    color="neutral"
+                    size="sm">
+                    ڕێکخستن
+                  </Chip>
+                </Divider>
+              </AccordionSummary>
+
+              <AccordionDetails>
+                {" "}
+                {sideLinks
+                  .filter(
+                    (val: SideLink, _index: number) => val.type == "setting"
+                  )
+                  .map((val: SideLink, _index: number) => (
+                    <Item
+                      key={val.id}
+                      Icon={val.icon}
+                      link={val.link}
+                      text={val.name}
+                    />
+                  ))}
+              </AccordionDetails>
+            </Accordion>
+            <Accordion defaultExpanded>
+              <AccordionSummary>
+                <Divider>
+                  <Chip
+                    className="!font-bukra my-3"
+                    variant="soft"
+                    color="neutral"
+                    size="sm">
+                    سڕاوەکان
+                  </Chip>
+                </Divider>
+              </AccordionSummary>
+
+              <AccordionDetails>
+                {" "}
+                {sideLinks
+                  .filter(
+                    (val: SideLink, _index: number) => val.type == "deleted"
+                  )
+                  .map((val: SideLink, _index: number) => (
+                    <Item
+                      key={val.id}
+                      Icon={val.icon}
+                      link={val.link}
+                      text={val.name}
+                    />
+                  ))}
+              </AccordionDetails>
+            </Accordion>
+            <div className="my-4"></div>
+
+            <Divider>
+              <Chip
+                className="!font-bukra"
+                variant="soft"
+                color="neutral"
+                size="sm">
+                پڕۆفایل
+              </Chip>
+            </Divider>
+            <div className="w-full mt-3">
+              <Card
+                size="sm"
+                className="w-full !bg-primary-600 !border-2 !border-solid !border-primary-300 !border-opacity-40 !flex !flex-row !justify-between !items-center !gap-2 !text-white">
+                <Tooltip
+                  placement="top"
+                  color="neutral"
+                  title="بینینی پڕۆفایل"
+                  variant="soft">
+                  <Link
+                    to={`/پڕۆفایل`}
+                    className="flex flex-col justify-start items-start gap-2">
+                    <p className="!text-xs !text-white !font-bukra">
+                      {user?.username}
+                    </p>
+                    <div className="flex flex-row justify-start items-center gap-2">
+                      <p className="!text-xs !text-white !font-bukra">
+                        {user?.name}
+                      </p>
+                      <Chip color="danger" variant="soft">
+                        {user?.role_name}
+                      </Chip>
+                    </div>
+                  </Link>
+                </Tooltip>
+                <Tooltip
+                  placement="top"
+                  color="danger"
+                  title="چوونەدەر"
+                  variant="soft">
+                  <button
+                    title="چوونەدەر"
+                    type="button"
+                    onClick={() => mutateAsync()}
+                    className="text-red-400 hover:!bg-opacity-50 !transition-all !duration-200 !font-bukra !text-xs">
+                    <LogOut />
+                  </button>
+                </Tooltip>
+              </Card>
+            </div>
+          </>
+        </AccordionGroup>
       </aside>
     </>
   );

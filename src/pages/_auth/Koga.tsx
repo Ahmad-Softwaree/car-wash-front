@@ -5,7 +5,7 @@ const Dialog = lazy(() => import("@/components/shared/Dialog"));
 
 import Pagination from "@/components/providers/Pagination";
 import TBody from "@/components/ui/TBody";
-import { Table, Th, THead, Tr } from "@/components/ui";
+import { Table, Td, Th, THead, Tr } from "@/components/ui";
 
 import Input from "@/components/ui/Input";
 import { InputAddon, InputGroup } from "@chakra-ui/react";
@@ -25,6 +25,8 @@ import {
 import { Item } from "@/types/items";
 import ItemCard from "@/components/cards/ItemCard";
 import ItemForm from "@/components/forms/ItemForm";
+import TFoot from "@/components/ui/TFoot";
+import CustomClose from "@/components/shared/CustomClose";
 
 const Koga = () => {
   const { mutateAsync, isPending } = useDeleteItem();
@@ -63,18 +65,23 @@ const Koga = () => {
             </InputAddon>
           </InputGroup>
           {checked?.length > 0 && (
-            <Tooltip
-              placement="top"
-              title="سڕینەوە"
-              color="danger"
-              variant="soft">
-              <Chip
-                onClick={() => setIsDelete(true)}
-                variant="soft"
-                color="danger">
-                <Trash2 className="w-7 h-7 p-1 cursor-pointer" />
-              </Chip>
-            </Tooltip>
+            <div className="flex flex-row justify-center items-center gap-2 dark-light">
+              <Tooltip
+                placement="top"
+                title="سڕینەوە"
+                color="danger"
+                variant="soft">
+                <Chip
+                  onClick={() => setIsDelete(true)}
+                  variant="soft"
+                  color="danger">
+                  <Trash2 className="w-7 h-7 p-1 cursor-pointer" />
+                </Chip>
+              </Tooltip>
+              <p dir="ltr">
+                {checked.length} / {ENUMs.CHECK_LIMIT}
+              </p>
+            </div>
           )}
           <button
             title="newUser"
@@ -116,11 +123,9 @@ const Koga = () => {
             );
 
             return (
-              <div className="w-full max-w-full overflow-x-auto">
-                <Table className="relative  w-full !bg-white dark:!bg-[#0e1214] !text-primary-800 dark:!text-white  border-2 border-solid border-primary-400 border-opacity-80">
-                  <THead
-                    className="sticky top-0   !bg-white dark:!bg-[#0e1214] z-10 w-full  border-2 border-solid border-primary-400 border-opacity-80"
-                    color="gray">
+              <div className="w-full max-w-full overflow-x-auto max-h-screen hide-scroll">
+                <Table className="relative  w-full table-dark-light  default-border">
+                  <THead className="sticky -top-1 z-[100]  table-dark-light w-full  default-border">
                     <Tr>
                       <Th className="text-right text-sm !p-4 !min-w-[100px]">
                         <InputGroup className="checkbox-input">
@@ -129,9 +134,9 @@ const Koga = () => {
                               if (checked.length == 0) {
                                 dispatch({
                                   type: CONTEXT_TYPEs.CHECK,
-                                  payload: allData.map(
-                                    (val: Item, _index: number) => val.id
-                                  ),
+                                  payload: allData
+                                    .slice(0, ENUMs.CHECK_LIMIT as number)
+                                    .map((val: Item, _index: number) => val.id),
                                 });
                               } else {
                                 dispatch({
@@ -150,39 +155,25 @@ const Koga = () => {
                         <p className="pr-1">#</p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 border-r-2 border-solid border-primary-400 border-opacity-80">
-                          ناو
-                        </p>
+                        <p className="pr-3 table-head-border">ناو</p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 border-r-2 border-solid border-primary-400 border-opacity-80">
-                          بارکۆد
-                        </p>
+                        <p className="pr-3 table-head-border">بارکۆد</p>
                       </Th>{" "}
                       <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 border-r-2 border-solid border-primary-400 border-opacity-80">
-                          جۆر
-                        </p>
+                        <p className="pr-3 table-head-border">جۆر</p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 border-r-2 border-solid border-primary-400 border-opacity-80">
-                          عەدەد
-                        </p>
+                        <p className="pr-3 table-head-border">عەدەد</p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 border-r-2 border-solid border-primary-400 border-opacity-80">
-                          نرخی فرۆشتن
-                        </p>
+                        <p className="pr-3 table-head-border">نرخی فرۆشتن</p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 border-r-2 border-solid border-primary-400 border-opacity-80">
-                          نرخی تێچوو
-                        </p>
+                        <p className="pr-3 table-head-border">نرخی تێچوو</p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 border-r-2 border-solid border-primary-400 border-opacity-80">
-                          کردارەکان
-                        </p>
+                        <p className="pr-3 table-head-border">کردارەکان</p>
                       </Th>
                     </Tr>
                   </THead>
@@ -197,6 +188,13 @@ const Koga = () => {
                       )}
                     </>
                   </TBody>
+                  <TFoot className="sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
+                    <Tr>
+                      <Td className="text-center" colSpan={9}>
+                        ژمارەی داتا {allData.length}
+                      </Td>
+                    </Tr>
+                  </TFoot>
                 </Table>
               </div>
             );
@@ -224,10 +222,8 @@ const Koga = () => {
           maxHeight={`90%`}
           isOpen={isAddOpen}
           onClose={() => setIsAddOpen(false)}>
-          <X
-            onClick={() => setIsAddOpen(false)}
-            className="cursor-pointer p-1 w-8 h-8 border-2 border-solid border-primary-400 border-opacity-40 rounded-lg mb-2 transition-all duration-200 hover:bg-red-400"
-          />
+          <CustomClose onClick={() => setIsAddOpen(false)} />
+
           <ItemForm state="insert" onClose={() => setIsAddOpen(false)} />
         </Dialog>
       )}

@@ -1,10 +1,20 @@
 import { UserCardProps } from "@/types/auth";
-import { Info, PenTool, Trash2, X } from "lucide-react";
+import {
+  ArchiveRestore,
+  Info,
+  PenTool,
+  RotateCcw,
+  Trash2,
+  X,
+} from "lucide-react";
 import { useState } from "react";
 import Dialog from "../shared/Dialog";
 import UserDetailCard from "./UserDetailCard";
 import DeleteModal from "../ui/DeleteModal";
-import { useDeleteUser } from "@/lib/react-query/query/user.query";
+import {
+  useDeleteUser,
+  useRestoreUser,
+} from "@/lib/react-query/query/user.query";
 import UserForm from "../forms/UserForm";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
@@ -13,6 +23,9 @@ import InputGroup from "../ui/InputGroup";
 import Input from "../ui/Input";
 import Tooltip from "@mui/joy/Tooltip";
 import Chip from "@mui/joy/Chip";
+import CustomClose from "../shared/CustomClose";
+import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
+import RestoreModal from "../ui/RestoreModal";
 
 const UserCard = ({
   name,
@@ -24,14 +37,19 @@ const UserCard = ({
   index = -1,
   ...others
 }: UserCardProps) => {
+  const { deleted_page } = useCheckDeletedPage();
+
   const [detail, setDetail] = useState<boolean>(false);
   const [update, setUpdate] = useState<boolean>(false);
   const [isDelete, setIsDelete] = useState<boolean>(false);
+  const [isRestore, setIsRestore] = useState<boolean>(false);
+
   const {
     dispatch,
     state: { checked },
   } = useGlobalContext();
   const { mutateAsync, isPending } = useDeleteUser();
+  const { mutateAsync: restore, isPending: restoreLoading } = useRestoreUser();
 
   const updateOnClose = () => {
     dispatch({
@@ -43,16 +61,14 @@ const UserCard = ({
   return (
     <>
       <Tr
-        className={`border-2 border-solid border-primary-400 border-opacity-80    hover:bg-sky-300 dark:hover:bg-sky-800 transition-all duration-200 ${
-          checked?.includes(id)
-            ? "bg-sky-300 dark:bg-sky-800"
-            : "bg-white dark:bg-[#0e1214]"
+        className={`default-border table-row-hover  ${
+          checked?.includes(id) ? "table-row-include" : "table-row-normal"
         }`}
         key={id}>
         <Td className="!p-3">
           <InputGroup className="checkbox-input">
             <Input
-              onClick={() => {
+              onChange={() => {
                 if (checked?.includes(id)) {
                   dispatch({
                     type: CONTEXT_TYPEs.UNCHECK,
@@ -77,64 +93,80 @@ const UserCard = ({
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-rabar007 text-sm">{name}</p>
+          <p className="text-right font-light font-bukra text-sm">{name}</p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-rabar007 text-sm">
-            {username}
-          </p>
+          <p className="text-right font-light font-bukra text-sm">{username}</p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-rabar007 text-sm">{phone}</p>
+          <p className="text-right font-light font-bukra text-sm">{phone}</p>
         </Td>
         <Td className="!p-3">
           <Chip
             variant="soft"
-            color={role_name == "ئەدمین" ? "danger" : "neutral"}>
-            <p className="!font-bukra text-right font-light font-rabar007 text-xs">
+            color={role_name == "سوپەر ئەدمین" ? "danger" : "neutral"}>
+            <p className="!font-bukra text-right font-light  text-xs">
               {role_name}
             </p>
           </Chip>
         </Td>
         <Td className="!p-3 cup flex flex-row gap-2">
-          <Tooltip
-            placement="top"
-            title="سڕینەوە"
-            color="danger"
-            variant="soft">
-            <Chip
-              onClick={() => setIsDelete(true)}
-              variant="soft"
-              color="danger">
-              <Trash2 className="w-7 h-7 p-1 cursor-pointer" />
-            </Chip>
-          </Tooltip>
-          <Tooltip
-            placement="top"
-            title="چاککردن"
-            color="success"
-            variant="soft">
-            <Chip
-              onClick={() => {
-                dispatch({
-                  type: CONTEXT_TYPEs.SET_OLD_DATA,
-                  payload: {
-                    name,
-                    role_id,
-                    role_name,
-                    username,
-                    phone,
-                    id,
-                    ...others,
-                  },
-                });
-                setUpdate(true);
-              }}
-              variant="soft"
-              color="success">
-              <PenTool className="w-7 h-7 p-1 cursor-pointer" />
-            </Chip>
-          </Tooltip>
+          {!deleted_page && (
+            <>
+              <Tooltip
+                placement="top"
+                title="سڕینەوە"
+                color="danger"
+                variant="soft">
+                <Chip
+                  onClick={() => setIsDelete(true)}
+                  variant="soft"
+                  color="danger">
+                  <Trash2 className="w-7 h-7 p-1 cursor-pointer" />
+                </Chip>
+              </Tooltip>
+              <Tooltip
+                placement="top"
+                title="چاککردن"
+                color="success"
+                variant="soft">
+                <Chip
+                  onClick={() => {
+                    dispatch({
+                      type: CONTEXT_TYPEs.SET_OLD_DATA,
+                      payload: {
+                        name,
+                        role_id,
+                        role_name,
+                        username,
+                        phone,
+                        id,
+                        ...others,
+                      },
+                    });
+                    setUpdate(true);
+                  }}
+                  variant="soft"
+                  color="success">
+                  <PenTool className="w-7 h-7 p-1 cursor-pointer" />
+                </Chip>
+              </Tooltip>
+            </>
+          )}
+          {deleted_page && (
+            <Tooltip
+              placement="top"
+              title="گێڕانەوە"
+              color="warning"
+              variant="soft">
+              <Chip
+                onClick={() => setIsRestore(true)}
+                variant="soft"
+                color="warning">
+                <RotateCcw className="w-7 h-7 p-1 cursor-pointer" />
+              </Chip>
+            </Tooltip>
+          )}
           <Tooltip
             placement="top"
             title="زانیاری"
@@ -156,10 +188,7 @@ const UserCard = ({
           maxHeight={`90%`}
           isOpen={detail}
           onClose={() => setDetail(false)}>
-          <X
-            onClick={() => setDetail(false)}
-            className="cursor-pointer p-1 w-8 h-8 border-2 border-solid border-primary-400 border-opacity-40 rounded-lg mb-2 transition-all duration-200 hover:bg-red-400"
-          />
+          <CustomClose onClick={() => setDetail(false)} />
           <UserDetailCard
             id={id}
             name={name}
@@ -186,6 +215,20 @@ const UserCard = ({
           />
         </Dialog>
       )}
+      {isRestore && (
+        <Dialog
+          className="!p-5 rounded-md"
+          maxWidth={500}
+          maxHeight={`90%`}
+          isOpen={isRestore}
+          onClose={() => setIsRestore(false)}>
+          <RestoreModal
+            deleteFunction={() => restore([id])}
+            loading={restoreLoading}
+            onClose={() => setIsRestore(false)}
+          />
+        </Dialog>
+      )}
       {update && (
         <Dialog
           className="!p-5 rounded-md"
@@ -193,10 +236,7 @@ const UserCard = ({
           maxHeight={`90%`}
           isOpen={update}
           onClose={updateOnClose}>
-          <X
-            onClick={updateOnClose}
-            className="cursor-pointer p-1 w-8 h-8 border-2 border-solid border-primary-400 border-opacity-40 rounded-lg mb-2 transition-all duration-200 hover:bg-red-400"
-          />
+          <CustomClose onClick={() => updateOnClose()} />
           <UserForm state="update" onClose={updateOnClose} />
         </Dialog>
       )}

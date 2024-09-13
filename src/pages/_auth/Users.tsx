@@ -1,41 +1,58 @@
 import Container from "@/components/ui/Container";
 import { lazy, useMemo, useState } from "react";
-import { CircleFadingPlus, Search, Trash2, X } from "lucide-react";
+import { CircleFadingPlus } from "lucide-react";
 const Dialog = lazy(() => import("@/components/shared/Dialog"));
 const UserCard = lazy(() => import("@/components/cards/UserCard"));
 
 import {
   useDeleteUser,
+  useGetDeletedUsers,
   useGetUsers,
+  useRestoreUser,
+  useSearchDeletedUsers,
   useSearchUsers,
 } from "@/lib/react-query/query/user.query";
 import Pagination from "@/components/providers/Pagination";
 import { User } from "@/types/auth";
 import UserForm from "@/components/forms/UserForm";
 import TBody from "@/components/ui/TBody";
-import { Table, Th, THead, Tr } from "@/components/ui";
+import { Table, Td, Th, THead, Tr } from "@/components/ui";
 
 import Input from "@/components/ui/Input";
-import { InputAddon, InputGroup } from "@chakra-ui/react";
+import { InputGroup } from "@chakra-ui/react";
 
 import { CONTEXT_TYPEs } from "@/context/types";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { useSearchParams } from "react-router-dom";
 import { ENUMs } from "@/lib/enum";
-import Tooltip from "@mui/joy/Tooltip";
-import Chip from "@mui/joy/Chip";
+
 import DeleteModal from "@/components/ui/DeleteModal";
+import TFoot from "@/components/ui/TFoot";
+import CustomClose from "@/components/shared/CustomClose";
+import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
+import DeleteChip from "@/components/shared/DeleteChip";
+import RestoreChip from "@/components/shared/RestoreChip";
+import Search from "@/components/shared/Search";
+import AddButton from "@/components/shared/AddButton";
+import RestoreModal from "@/components/ui/RestoreModal";
+import Filter from "@/components/shared/Filter";
+import { Role } from "@/types/role";
+import { useGetRoles } from "@/lib/react-query/query/role.query";
 
 const Users = () => {
+  const { deleted_page } = useCheckDeletedPage();
   const { mutateAsync, isPending } = useDeleteUser();
+  const { mutateAsync: restore, isPending: restoreLoading } = useRestoreUser();
 
   const [searchParam, setSearchParam] = useSearchParams();
   const [isDelete, setIsDelete] = useState<boolean>(false);
+  const [isRestore, setIsRestore] = useState<boolean>(false);
 
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
+  const { data: roles } = useGetRoles();
   const {
     dispatch,
-    state: { checked },
+    state: { checked, check_type },
   } = useGlobalContext();
   return (
     <>
@@ -43,52 +60,46 @@ const Users = () => {
         as={`div`}
         className="w-full gap-10 flex flex-col justify-start items-start">
         <div className="w-full gap-5 flex flex-row justify-between">
-          <InputGroup className="text-input max-w-[400px] text-primary-800 dark:text-white">
-            <Input
-              onChange={(e) =>
-                setSearchParam((prev) => {
-                  const params = new URLSearchParams(prev);
-                  params.set(ENUMs.SEARCH_PARAM as string, e.target.value);
-                  return params;
-                })
-              }
-              value={searchParam.get(ENUMs.SEARCH_PARAM as string) || ""}
-              placeholder="گەڕان بەپێی (ئایدی، ناوی بەکارهێنەر، ناو، ژ.ت)"
-              className="w-[85%] text-xs"
-              type="input"
-            />
-            <InputAddon className="w-[15%]">
-              <Search />
-            </InputAddon>
-          </InputGroup>
+          <div className="w-full flex flex-row justify-start items-center gap-3">
+            <Search />
+            {roles && (
+              <Filter<Role>
+                options={roles.map((val: Role, _index: number) => {
+                  return { value: val.id, label: val.name };
+                })}
+              />
+            )}
+          </div>
           {checked?.length > 0 && (
-            <Tooltip
-              placement="top"
-              title="سڕینەوە"
-              color="danger"
-              variant="soft">
-              <Chip
-                onClick={() => setIsDelete(true)}
-                variant="soft"
-                color="danger">
-                <Trash2 className="w-7 h-7 p-1 cursor-pointer" />
-              </Chip>
-            </Tooltip>
+            <div className="flex flex-row justify-center items-center gap-2 dark-light">
+              {deleted_page ? (
+                <RestoreChip onClick={() => setIsRestore(true)} />
+              ) : (
+                <DeleteChip onClick={() => setIsDelete(true)} />
+              )}
+              <p dir="ltr">
+                {checked.length} / {ENUMs.CHECK_LIMIT}
+              </p>
+            </div>
           )}
-          <button
-            title="newUser"
-            type="button"
-            onClick={() => setIsAddOpen(true)}
-            name="newUser"
-            className="flex flex-row justify-center items-center gap-2 p-2 px-4 text-sm bg-sky-500 text-white rounded-sm">
-            <CircleFadingPlus />
-            <p>زیادکردن</p>
-          </button>
+          {!deleted_page && <AddButton onClick={() => setIsAddOpen(true)} />}
         </div>
         <Pagination<User[]>
-          queryFn={() => useGetUsers()}
+          queryFn={() =>
+            deleted_page
+              ? useGetDeletedUsers(
+                  searchParam.get(ENUMs.FILTER_PARAM as string) || ""
+                )
+              : useGetUsers(searchParam.get(ENUMs.FILTER_PARAM as string) || "")
+          }
           searchQueryFn={() =>
-            useSearchUsers(searchParam.get(ENUMs.SEARCH_PARAM as string) || "")
+            deleted_page
+              ? useSearchDeletedUsers(
+                  searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
+                )
+              : useSearchUsers(
+                  searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
+                )
           }>
           {({
             isFetchingNextPage,
@@ -116,15 +127,13 @@ const Users = () => {
 
             return (
               <div className="w-full max-w-full overflow-x-auto">
-                <Table className="relative  w-full !bg-white dark:!bg-[#0e1214] !text-primary-800 dark:!text-white  border-2 border-solid border-primary-400 border-opacity-80">
-                  <THead
-                    className="sticky top-0   !bg-white dark:!bg-[#0e1214] z-10 w-full  border-2 border-solid border-primary-400 border-opacity-80"
-                    color="gray">
+                <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
+                  <THead className="sticky top-0   table-dark-light z-10 w-full  default-border">
                     <Tr>
                       <Th className="text-right text-sm !p-4 !min-w-[100px]">
                         <InputGroup className="checkbox-input">
                           <Input
-                            onClick={() => {
+                            onChange={() => {
                               if (checked.length == 0) {
                                 dispatch({
                                   type: CONTEXT_TYPEs.CHECK,
@@ -139,6 +148,7 @@ const Users = () => {
                                 });
                               }
                             }}
+                            checked={check_type == "all"}
                             type="checkbox"
                             className="cursor-pointer"
                           />
@@ -148,29 +158,21 @@ const Users = () => {
                         <p className="pr-1">#</p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 border-r-2 border-solid border-primary-400 border-opacity-80">
-                          ناو
-                        </p>
+                        <p className="pr-3 table-head-border">ناو</p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 border-r-2 border-solid border-primary-400 border-opacity-80">
+                        <p className="pr-3 table-head-border">
                           ناوی بەکارهێنەر
                         </p>
                       </Th>{" "}
                       <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 border-r-2 border-solid border-primary-400 border-opacity-80">
-                          ژمارە تەلەفۆن
-                        </p>
+                        <p className="pr-3 table-head-border">ژمارە تەلەفۆن</p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 border-r-2 border-solid border-primary-400 border-opacity-80">
-                          ڕۆڵ
-                        </p>
+                        <p className="pr-3 table-head-border">ڕۆڵ</p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 border-r-2 border-solid border-primary-400 border-opacity-80">
-                          کرادرەکان
-                        </p>
+                        <p className="pr-3 table-head-border">کرادرەکان</p>
                       </Th>
                     </Tr>
                   </THead>
@@ -181,10 +183,17 @@ const Users = () => {
                       ))}
 
                       {!isFetchingNextPage && hasNextPage && !isSearched && (
-                        <div className="h-[20px]" ref={ref}></div>
+                        <Tr role="button" className="h-[20px]" ref={ref}></Tr>
                       )}
                     </>
                   </TBody>
+                  <TFoot className="sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
+                    <Tr>
+                      <Td className="text-center" colSpan={9}>
+                        ژمارەی داتا {allData.length}
+                      </Td>
+                    </Tr>
+                  </TFoot>
                 </Table>
               </div>
             );
@@ -205,6 +214,20 @@ const Users = () => {
           />
         </Dialog>
       )}
+      {isRestore && (
+        <Dialog
+          className="!p-5 rounded-md"
+          maxWidth={500}
+          maxHeight={`90%`}
+          isOpen={isRestore}
+          onClose={() => setIsRestore(false)}>
+          <RestoreModal
+            deleteFunction={() => restore(checked)}
+            loading={restoreLoading}
+            onClose={() => setIsRestore(false)}
+          />
+        </Dialog>
+      )}
       {isAddOpen && (
         <Dialog
           className="!p-5 rounded-md"
@@ -212,10 +235,7 @@ const Users = () => {
           maxHeight={`90%`}
           isOpen={isAddOpen}
           onClose={() => setIsAddOpen(false)}>
-          <X
-            onClick={() => setIsAddOpen(false)}
-            className="cursor-pointer p-1 w-8 h-8 border-2 border-solid border-primary-400 border-opacity-40 rounded-lg mb-2 transition-all duration-200 hover:bg-red-400"
-          />
+          <CustomClose onClick={() => setIsAddOpen(false)} />
           <UserForm state="insert" onClose={() => setIsAddOpen(false)} />
         </Dialog>
       )}

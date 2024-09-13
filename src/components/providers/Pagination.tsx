@@ -19,6 +19,8 @@ const Pagination = <T extends DataTypes>({
   });
   const [searchParam] = useSearchParams();
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string);
+  let filter = searchParam.get(ENUMs.FILTER_PARAM as string);
+
   const {
     isFetchingNextPage,
     data,
@@ -32,6 +34,10 @@ const Pagination = <T extends DataTypes>({
   }, [inView]);
 
   const debounceValue = useDebounce(search, ENUMs.DEBOUNCE as number);
+  const debounceFilter = useDebounce(filter, ENUMs.DEBOUNCE as number);
+  useEffect(() => {
+    refetch();
+  }, [debounceFilter, refetch]);
   const {
     data: searchData,
     isLoading: searchLoading,

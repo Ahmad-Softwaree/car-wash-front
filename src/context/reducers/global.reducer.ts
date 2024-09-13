@@ -1,5 +1,6 @@
 import { GlobalActionType, GlobalStateType } from "@/types/global";
 import { CONTEXT_TYPEs } from "../types";
+import { ENUMs } from "@/lib/enum";
 
 export const globalState: GlobalStateType = {
   oldData: null,
@@ -25,7 +26,7 @@ export const globalReducer = (
         result = [];
         typee = "one";
       } else {
-        if (state.checked.length < 30) {
+        if (state.checked.length < ENUMs.CHECK_LIMIT) {
           if (Array.isArray(payload)) {
             //you give whole
             result = payload;

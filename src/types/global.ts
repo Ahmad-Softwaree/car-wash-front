@@ -102,10 +102,17 @@ export type PaginationProps<T extends DataTypes> = {
 export type Page = undefined | number;
 export type Limit = undefined | number;
 export type Search = undefined | string;
+export type Filter = undefined | string;
 
 export type SearchString = string | number;
 
 export type DeleteModalProps = {
+  onClose: () => void;
+  finalOperator?: () => void;
+  deleteFunction: any;
+  loading: boolean;
+};
+export type RestoreModalProps = {
   onClose: () => void;
   finalOperator?: () => void;
   deleteFunction: any;
@@ -177,7 +184,7 @@ export type SideLink = {
   icon: ReactElement;
   name: string;
   link: string;
-  type: "general" | "manage" | "report" | "setting";
+  type: "general" | "manage" | "report" | "setting" | "deleted";
 };
 export type HeaderItem = {
   id: Id;
@@ -260,30 +267,16 @@ export type CreditCardProps = PropsWithChildren<{
 
 export type TableProps = PropsWithChildren<{}> & ComponentPropsWithRef<"table">;
 
-export type THeadProps = PropsWithChildren<{
-  color: "gray" | "none";
-}> &
-  ComponentPropsWithRef<"thead">;
+export type THeadProps = PropsWithChildren<{}> & ComponentPropsWithRef<"thead">;
 
-export type THProps = PropsWithChildren<{
-  color?: "gray" | "none";
-}> &
-  ComponentPropsWithRef<"th">;
+export type TFootProps = PropsWithChildren<{}> & ComponentPropsWithRef<"tfoot">;
+export type THProps = PropsWithChildren<{}> & ComponentPropsWithRef<"th">;
 
-export type TBodyProps = PropsWithChildren<{
-  color?: "gray" | "none";
-}> &
-  ComponentPropsWithRef<"tbody">;
+export type TBodyProps = PropsWithChildren<{}> & ComponentPropsWithRef<"tbody">;
 
-export type TrProps = PropsWithChildren<{
-  color?: "gray" | "none";
-}> &
-  ComponentPropsWithRef<"tr">;
+export type TrProps = PropsWithChildren<{}> & ComponentPropsWithRef<"tr">;
 
-export type TdProps = PropsWithChildren<{
-  color?: "gray" | "none";
-}> &
-  ComponentPropsWithRef<"td">;
+export type TdProps = PropsWithChildren<{}> & ComponentPropsWithRef<"td">;
 export type ScreenSizes = "sm" | "md" | "lg" | "xl" | "xs";
 export type Cookie = {
   name: string;

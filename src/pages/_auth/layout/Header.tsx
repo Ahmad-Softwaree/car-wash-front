@@ -22,27 +22,25 @@ const Header = () => {
   return (
     <Container
       as={`header`}
-      className="w-full flex flex-row bg-white dark:bg-primary-800 justify-between items-center gap-10 !text-primary-800 dark:!text-white">
+      className="w-full flex flex-row justify-between items-center gap-10 dark-light">
       <Breadcrumbs
         separator={<ChevronLeft />}
-        className="!text-primary-800 dark:!text-white"
+        className="dark-light"
         aria-label="breadcrumb">
         {breadcrumbs.map((breadcrumb, index) => {
           const isLast = index === breadcrumbs.length - 1;
           return isLast ? (
             <span
               key={index}
-              className="!text-primary-800 dark:!text-white !font-bukra !text-md !font-bold">
+              className="dark-light !font-bukra !text-md !font-bold">
               {breadcrumb.label}
             </span>
           ) : (
-            <Link
+            <span
               key={index}
-              className="!text-primary-800 dark:!text-white !font-bukra !text-md !text-opacity-50"
-              underline="hover"
-              href={breadcrumb.href}>
+              className="dark-light !font-bukra !text-md !text-opacity-50">
               {breadcrumb.label}
-            </Link>
+            </span>
           );
         })}
       </Breadcrumbs>
@@ -51,6 +49,11 @@ const Header = () => {
           onClick={() => {
             let mode = document.getElementsByTagName("html")[0];
             mode.classList.toggle("dark");
+            if (!mode.classList.contains("dark")) {
+              localStorage.setItem("theme", "light");
+            } else {
+              localStorage.setItem("theme", "dark");
+            }
           }}
           className="cursor-pointer"
         />
@@ -59,7 +62,7 @@ const Header = () => {
             <Button
               variant={"outline"}
               className={cn(
-                "w-[280px] hidden md:flex justify-start text-left font-normal gap-2 !text-primary-800 dark:!text-white !bg-white dark:!bg-primary-500   !border-primary-300 !border-2 !border-opacity-40",
+                "w-[280px] hidden md:flex justify-start text-left font-normal gap-2 dark-light    default-border",
                 !date && "text-muted-foreground"
               )}>
               <CalendarIcon className="mr-2 h-4 w-4" />
@@ -70,7 +73,7 @@ const Header = () => {
               )}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0 !bg-white dark:!bg-primary-500 !text-primary-800 dark:!text-white">
+          <PopoverContent className="w-auto p-0  dark-light">
             <Calendar
               mode="single"
               selected={date}

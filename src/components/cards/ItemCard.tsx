@@ -14,6 +14,7 @@ import FormatMoney from "../shared/FormatMoney";
 import ItemDetailCard from "./ItemDetailCard";
 import ItemForm from "../forms/ItemForm";
 import { useDeleteItem } from "@/lib/react-query/query/item.query";
+import CustomClose from "../shared/CustomClose";
 
 const ItemCard = ({
   name,
@@ -48,10 +49,8 @@ const ItemCard = ({
   return (
     <>
       <Tr
-        className={`border-2 border-solid border-primary-400 border-opacity-80    hover:bg-sky-300 dark:hover:bg-sky-800 transition-all duration-200 ${
-          checked?.includes(id)
-            ? "bg-sky-300 dark:bg-sky-800"
-            : "bg-white dark:bg-[#0e1214]"
+        className={`default-border table-row-hover  ${
+          checked?.includes(id) ? "table-row-include" : "table-row-normal"
         }`}
         key={id}>
         <Td className="!p-3">
@@ -82,33 +81,31 @@ const ItemCard = ({
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-rabar007 text-sm">{name}</p>
+          <p className="text-right font-light font-bukra text-sm">{name}</p>
         </Td>
 
         <Td className="!p-3">
-          <p className="text-right font-light font-rabar007 text-sm">
-            {barcode}
-          </p>
+          <p className="text-right font-light font-bukra text-sm">{barcode}</p>
         </Td>
 
         <Td className="!p-3">
-          <p className="text-right font-light font-rabar007 text-sm">{type}</p>
+          <p className="text-right font-light font-bukra text-sm">{type}</p>
         </Td>
 
         <Td className="!p-3">
           <Chip variant="soft" color={quantity < 30 ? "danger" : "neutral"}>
-            <p className="!font-bukra text-right font-light font-rabar007 text-xs">
+            <p className="!font-bukra text-right font-light  text-xs">
               {quantity}
             </p>
           </Chip>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-rabar007 text-sm">
+          <p className="text-right font-light font-bukra text-sm">
             <FormatMoney>{item_sell_price}</FormatMoney>
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-rabar007 text-sm">
+          <p className="text-right font-light font-bukra text-sm">
             <FormatMoney>{item_purchase_price}</FormatMoney>
           </p>
         </Td>
@@ -176,10 +173,7 @@ const ItemCard = ({
           maxHeight={`90%`}
           isOpen={detail}
           onClose={() => setDetail(false)}>
-          <X
-            onClick={() => setDetail(false)}
-            className="cursor-pointer p-1 w-8 h-8 border-2 border-solid border-primary-400 border-opacity-40 rounded-lg mb-2 transition-all duration-200 hover:bg-red-400"
-          />
+          <CustomClose onClick={() => setDetail(false)} />
           <ItemDetailCard
             id={id}
             name={name}
@@ -217,10 +211,8 @@ const ItemCard = ({
           maxHeight={`90%`}
           isOpen={update}
           onClose={updateOnClose}>
-          <X
-            onClick={updateOnClose}
-            className="cursor-pointer p-1 w-8 h-8 border-2 border-solid border-primary-400 border-opacity-40 rounded-lg mb-2 transition-all duration-200 hover:bg-red-400"
-          />
+          <CustomClose onClick={() => updateOnClose()} />
+
           <ItemForm state="update" onClose={updateOnClose} />
         </Dialog>
       )}

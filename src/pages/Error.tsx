@@ -6,7 +6,7 @@ export default function Error() {
   return (
     <Container
       as={`div`}
-      className="w-full flex flex-col justify-center items-center gap-5 h-screen !text-white">
+      className="w-full flex flex-col justify-center items-center gap-5 h-screen dark-light">
       <span className="text-[25px] md:text-[35px] lg:text-[50px] text-center z-50">
         هەڵە ڕوویداوە
       </span>
@@ -16,7 +16,7 @@ export default function Error() {
       </span>
       <Link
         to={`/داشبۆرد`}
-        className="bg-primary-500 text-white rounded-lg cursor-pointer py-2 md:py-3 px-5 md:px-10 z-50 font-bukra text-sm md:text-lg">
+        className="dark-light rounded-lg cursor-pointer py-2 md:py-3 px-5 md:px-10 z-50 font-bukra text-sm md:text-lg">
         گەڕانەوە بۆ پەرەی سەرەکی
       </Link>
     </Container>

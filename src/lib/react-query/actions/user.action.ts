@@ -10,6 +10,7 @@ import {
   UpdateUserQ,
 } from "@/types/auth";
 import {
+  Filter,
   Id,
   Limit,
   Page,
@@ -21,11 +22,33 @@ import {
 export const getUsers = async (
   toast: ToastType,
   page: Page,
-  limit: Limit
+  limit: Limit,
+  filter: Filter
+): Promise<PaginationReturnType<GetUsersQ>> => {
+  console.log(filter);
+  try {
+    const { data, status } = await authApi.get<PaginationReturnType<GetUsersQ>>(
+      `${URLs.GET_USERS}?page=${page}&limit=${limit}&filter=${
+        filter != "" ? filter : ""
+      }`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+export const getDeletedUser = async (
+  toast: ToastType,
+  page: Page,
+  limit: Limit,
+  filter: Filter
 ): Promise<PaginationReturnType<GetUsersQ>> => {
   try {
     const { data, status } = await authApi.get<PaginationReturnType<GetUsersQ>>(
-      `${URLs.GET_USERS}?page=${page}&limit=${limit}`
+      `${URLs.GET_DELETED_USERS}?page=${page}&limit=${limit}&filter=${
+        filter != "" ? filter : ""
+      }`
     );
     return data;
   } catch (error: any) {
@@ -40,6 +63,19 @@ export const searchUsers = async (
   try {
     const { data, status } = await authApi.get<GetUsersQ>(
       `${URLs.SEARCH_USERS}?search=${search}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+export const searchDeletedUsers = async (
+  toast: ToastType,
+  search: Search
+): Promise<GetUsersQ> => {
+  try {
+    const { data, status } = await authApi.get<GetUsersQ>(
+      `${URLs.SEARCH_DELETED_USERS}?search=${search}`
     );
     return data;
   } catch (error: any) {
@@ -83,6 +119,26 @@ export const deleteUser = async (ids: Id[]): Promise<DeleteUserQ> => {
       const { data, status } = await authApi.delete(
         `${URLs.DELETE_USER}/${id}`
       );
+      return id;
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  // Wait for all requests to complete
+  const results = await Promise.all(requests);
+
+  return results.filter((result) => result !== null);
+};
+export const restoreUser = async (ids: Id[]): Promise<DeleteUserQ> => {
+  const idArray = Array.isArray(ids) ? ids : [ids];
+  const requests = idArray.map(async (id, index) => {
+    try {
+      // Add a timeout between requests
+      if (index > 0) {
+        await new Promise((resolve) => setTimeout(resolve, 1000)); // Adjust the timeout duration as needed
+      }
+      const { data, status } = await authApi.put(`${URLs.RESTORE_USER}/${id}`);
       return id;
     } catch (error) {
       throw error;
