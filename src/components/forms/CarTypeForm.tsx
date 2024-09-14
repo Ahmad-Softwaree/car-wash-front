@@ -58,16 +58,16 @@ const CarTypeForm = ({
           {...register("name", { required: true })}
           name="name"
           placeholder="ناو بە کوردی"
-          className="w-full"
+          className="w-full text-sm"
         />
       </InputGroup>
 
       <MyButton
         loading={loading}
-        name="addCarTypeButton"
+        name="addUserButton"
         type="submit"
-        className="w-full bg-black-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
-        <p className="font-bold font-bukra">جێبەجێکردن</p>
+        className=" bg-sky-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2">
+        <p className="font-light text-sm font-bukra">جێبەجێکردن</p>
       </MyButton>
     </Form>
   );

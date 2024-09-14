@@ -12,6 +12,13 @@ import {
 import Koga from "@/pages/_auth/Koga";
 import Profile from "@/pages/_auth/Profile";
 import { ENUMs } from "@/lib/enum";
+import Roles from "@/pages/_auth/Roles";
+import Colors from "@/pages/_auth/Colors";
+import CarModels from "@/pages/_auth/CarModels";
+import CarTypes from "@/pages/_auth/CarTypes";
+import ItemTypes from "@/pages/_auth/ItemTypes";
+import ExpenseTypes from "@/pages/_auth/ExpenseTypes";
+import Services from "@/pages/_auth/Services";
 const RootLayout = lazy(() => import("@/pages/_root/RootLayout"));
 const AuthRouterProvider = lazy(() => import("@/providers/AuthRouterProvider"));
 const UserNullRouterProvider = lazy(
@@ -49,44 +56,50 @@ const router = createBrowserRouter(
         <Route
           index
           errorElement={<Error />}
-          element={<Navigate replace to={`/داشبۆرد`} />}
-        />
-        <Route
-          path="داشبۆرد"
-          errorElement={<Error />}
-          element={<CheckPart part={["all"]} Component={Home} />}
-        />
-
-        <Route
-          path="کۆگا"
-          errorElement={<Error />}
-          element={<CheckPart part={["کۆگا"]} Component={Koga} />}
-        />
-        <Route
-          path="داغڵکردنی_مواد"
-          errorElement={<Error />}
-          element={<CheckPart part={["داغڵکردنی مواد"]} Component={AddItem} />}
-        />
-
-        <Route
-          path="ڕاپۆرتەکان"
-          errorElement={<Error />}
-          element={<CheckPart part={["ڕاپۆرتەکان"]} Component={Report} />}
-        />
-        <Route
-          path="خەرجی"
-          errorElement={<Error />}
-          element={<CheckPart part={["خەرجی"]} Component={Expense} />}
-        />
-        <Route
-          path={ENUMs.MANAGE_SECTION as string}
-          errorElement={<Error />}
           element={
-            <CheckPart
-              part={[ENUMs.USERS_PART as string, ENUMs.CUSTOMER_PART as string]}
-              Component={Users}
+            <Navigate
+              replace
+              to={`${ENUMs.GENERAL_SECTION}/${ENUMs.DASHBOARD_PART}`}
             />
-          }>
+          }
+        />
+
+        {/* MANAGE */}
+        <Route path={ENUMs.GENERAL_SECTION as string} errorElement={<Error />}>
+          <Route
+            path={ENUMs.DASHBOARD_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[ENUMs.DASHBOARD_PART as string, "all"]}
+                Component={Home}
+              />
+            }
+          />
+          <Route
+            path={ENUMs.KOGA_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart part={[ENUMs.KOGA_PART as string]} Component={Koga} />
+            }
+          />
+        </Route>
+
+        {/* REPORT */}
+        <Route path={ENUMs.REPORT_SECTION as string} errorElement={<Error />}>
+          <Route
+            path={ENUMs.EXPENSE_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[ENUMs.EXPENSE_PART as string]}
+                Component={Expense}
+              />
+            }
+          />
+        </Route>
+        {/* MANAGE */}
+        <Route path={ENUMs.MANAGE_SECTION as string} errorElement={<Error />}>
           <Route
             path={ENUMs.USERS_PART as string}
             errorElement={<Error />}
@@ -97,20 +110,89 @@ const router = createBrowserRouter(
               />
             }
           />
+          <Route
+            path={ENUMs.CUSTOMER_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[ENUMs.CUSTOMER_PART as string]}
+                Component={Customers}
+              />
+            }
+          />
         </Route>
-        <Route
-          path={ENUMs.DELETED_SECTION as string}
-          errorElement={<Error />}
-          element={
-            <CheckPart
-              part={[
-                ENUMs.USERS_PART as string,
-                ENUMs.CUSTOMER_PART as string,
-                ENUMs.DELETED_SECTION as string,
-              ]}
-              Component={Users}
-            />
-          }>
+        {/* SETTING */}
+        <Route path={ENUMs.SETTING_SECTION as string} errorElement={<Error />}>
+          <Route
+            path={ENUMs.ROLE_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart part={[ENUMs.ROLE_PART as string]} Component={Roles} />
+            }
+          />
+          <Route
+            path={ENUMs.COLOR_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[ENUMs.COLOR_PART as string]}
+                Component={Colors}
+              />
+            }
+          />
+          <Route
+            path={ENUMs.CAR_MODEL_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[ENUMs.CAR_MODEL_PART as string]}
+                Component={CarModels}
+              />
+            }
+          />
+          <Route
+            path={ENUMs.CAR_TYPE_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[ENUMs.CAR_TYPE_PART as string]}
+                Component={CarTypes}
+              />
+            }
+          />
+          <Route
+            path={ENUMs.ITEM_TYPE_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[ENUMs.ITEM_TYPE_PART as string]}
+                Component={ItemTypes}
+              />
+            }
+          />
+          <Route
+            path={ENUMs.EXPENSE_TYPE_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[ENUMs.EXPENSE_TYPE_PART as string]}
+                Component={ExpenseTypes}
+              />
+            }
+          />
+          <Route
+            path={ENUMs.SERVICE_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[ENUMs.SERVICE_PART as string]}
+                Component={Services}
+              />
+            }
+          />
+        </Route>
+        {/* DELETED */}
+        <Route path={ENUMs.DELETED_SECTION as string} errorElement={<Error />}>
           <Route
             path={ENUMs.USERS_PART as string}
             errorElement={<Error />}
@@ -124,15 +206,125 @@ const router = createBrowserRouter(
               />
             }
           />
+          <Route
+            path={ENUMs.CUSTOMER_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[
+                  ENUMs.CUSTOMER_PART as string,
+                  ENUMs.DELETED_SECTION as string,
+                ]}
+                Component={Customers}
+              />
+            }
+          />
+          <Route
+            path={ENUMs.EXPENSE_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[
+                  ENUMs.EXPENSE_PART as string,
+                  ENUMs.DELETED_SECTION as string,
+                ]}
+                Component={Expense}
+              />
+            }
+          />
+          <Route
+            path={ENUMs.ROLE_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[
+                  ENUMs.ROLE_PART as string,
+                  ENUMs.DELETED_SECTION as string,
+                ]}
+                Component={Roles}
+              />
+            }
+          />
+          <Route
+            path={ENUMs.COLOR_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[
+                  ENUMs.COLOR_PART as string,
+                  ENUMs.DELETED_SECTION as string,
+                ]}
+                Component={Colors}
+              />
+            }
+          />
+          <Route
+            path={ENUMs.CAR_MODEL_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[
+                  ENUMs.CAR_MODEL_PART as string,
+                  ENUMs.DELETED_SECTION as string,
+                ]}
+                Component={CarModels}
+              />
+            }
+          />
+          <Route
+            path={ENUMs.CAR_TYPE_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[
+                  ENUMs.CAR_TYPE_PART as string,
+                  ENUMs.DELETED_SECTION as string,
+                ]}
+                Component={CarTypes}
+              />
+            }
+          />
+          <Route
+            path={ENUMs.ITEM_TYPE_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[
+                  ENUMs.ITEM_TYPE_PART as string,
+                  ENUMs.DELETED_SECTION as string,
+                ]}
+                Component={ItemTypes}
+              />
+            }
+          />
+          <Route
+            path={ENUMs.EXPENSE_TYPE_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[
+                  ENUMs.EXPENSE_TYPE_PART as string,
+                  ENUMs.DELETED_SECTION as string,
+                ]}
+                Component={ExpenseTypes}
+              />
+            }
+          />
+          <Route
+            path={ENUMs.SERVICE_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[
+                  ENUMs.SERVICE_PART as string,
+                  ENUMs.DELETED_SECTION as string,
+                ]}
+                Component={Services}
+              />
+            }
+          />
         </Route>
 
-        <Route
-          path="دروستکردنی_پسولە"
-          errorElement={<Error />}
-          element={
-            <CheckPart part={["دروستکردنی پسولە"]} Component={CreatePsula} />
-          }
-        />
         <Route
           path="پڕۆفایل"
           errorElement={<Error />}

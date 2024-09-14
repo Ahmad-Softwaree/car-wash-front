@@ -22,7 +22,8 @@ const ItemCard = ({
   image_name,
   image_url,
   barcode,
-  type,
+  type_name,
+  type_id,
   item_purchase_price,
   item_sell_price,
   note,
@@ -89,7 +90,9 @@ const ItemCard = ({
         </Td>
 
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">{type}</p>
+          <p className="text-right font-light font-bukra text-sm">
+            {type_name}
+          </p>
         </Td>
 
         <Td className="!p-3">
@@ -137,7 +140,8 @@ const ItemCard = ({
                     image_name,
                     image_url,
                     barcode,
-                    type,
+                    type_name,
+                    type_id,
                     item_purchase_price,
                     item_sell_price,
                     note,
@@ -179,7 +183,8 @@ const ItemCard = ({
             name={name}
             quantity={quantity}
             barcode={barcode}
-            type={type}
+            type_name={type_name}
+            type_id={type_id}
             item_purchase_price={item_purchase_price}
             item_sell_price={item_sell_price}
             image_url={image_url}

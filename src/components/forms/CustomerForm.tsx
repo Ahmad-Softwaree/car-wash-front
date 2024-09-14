@@ -32,8 +32,7 @@ const CustomerForm = ({
     register,
     handleSubmit,
     reset,
-    resetField,
-    watch,
+
     formState: { errors },
   } = useForm<AddCustomerInputs>({});
 
@@ -72,7 +71,7 @@ const CustomerForm = ({
                 {...register("first_name", { required: true })}
                 name="first_name"
                 placeholder="ناوی یەکەم"
-                className="w-full"
+                className="w-full text-sm"
                 aria-invalid={errors.first_name ? "true" : "false"}
               />
             </InputGroup>
@@ -86,7 +85,7 @@ const CustomerForm = ({
                 {...register("last_name", { required: true })}
                 name="last_name"
                 placeholder="ناوی دووەم"
-                className="w-full"
+                className="w-full text-sm"
                 aria-invalid={errors.last_name ? "true" : "false"}
               />
             </InputGroup>
@@ -100,7 +99,7 @@ const CustomerForm = ({
                 {...register("phone", { required: true })}
                 name="phone"
                 placeholder="ژمارە تەلەفۆنی یەکەم"
-                className="w-full"
+                className="w-full text-sm"
                 aria-invalid={errors.phone ? "true" : "false"}
               />
             </InputGroup>
@@ -109,10 +108,10 @@ const CustomerForm = ({
       </div>
       <MyButton
         loading={isPending || updatePending}
-        name="addCustomerButton"
+        name="addUserButton"
         type="submit"
-        className="w-full bg-black-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
-        <p className="font-bold font-bukra">جێبەجێکردن</p>
+        className=" bg-sky-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2">
+        <p className="font-light text-sm font-bukra">جێبەجێکردن</p>
       </MyButton>
     </Form>
   );

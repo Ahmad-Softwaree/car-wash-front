@@ -1,32 +1,47 @@
-import useScreenSize from "@/hooks/useScreenSize";
 import { CustomerCardProps } from "@/types/customer";
-import Image from "../ui/Image";
-import { PenLine, Trash2 } from "lucide-react";
-import MyButton from "../ui/MyButton";
+import { Info, PenTool, RotateCcw, Trash2, X } from "lucide-react";
 import { useState } from "react";
 import Dialog from "../shared/Dialog";
 import CustomerDetailCard from "./CustomerDetailCard";
 import DeleteModal from "../ui/DeleteModal";
-import { useDeleteCustomer } from "@/lib/react-query/query/customer.query";
+import {
+  useDeleteCustomer,
+  useRestoreCustomer,
+} from "@/lib/react-query/query/customer.query";
 import CustomerForm from "../forms/CustomerForm";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
-import Typography from "../shared/Typography";
+import { Td, Tr } from "../ui";
+import InputGroup from "../ui/InputGroup";
+import Input from "../ui/Input";
+import Tooltip from "@mui/joy/Tooltip";
 import Chip from "@mui/joy/Chip";
-import ChipDelete from "@mui/joy/ChipDelete";
+import CustomClose from "../shared/CustomClose";
+import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
+import RestoreModal from "../ui/RestoreModal";
+
 const CustomerCard = ({
   first_name,
   last_name,
   phone,
   id,
+  index = -1,
   ...others
 }: CustomerCardProps) => {
-  const { size } = useScreenSize();
+  const { deleted_page } = useCheckDeletedPage();
+
   const [detail, setDetail] = useState<boolean>(false);
   const [update, setUpdate] = useState<boolean>(false);
   const [isDelete, setIsDelete] = useState<boolean>(false);
-  const { dispatch } = useGlobalContext();
-  const { mutateAsync, isPending } = useDeleteCustomer(id);
+  const [isRestore, setIsRestore] = useState<boolean>(false);
+
+  const {
+    dispatch,
+    state: { checked },
+  } = useGlobalContext();
+  const { mutateAsync, isPending } = useDeleteCustomer();
+  const { mutateAsync: restore, isPending: restoreLoading } =
+    useRestoreCustomer();
 
   const updateOnClose = () => {
     dispatch({
@@ -37,62 +52,121 @@ const CustomerCard = ({
   };
   return (
     <>
-      <article
-        id={id.toLocaleString()}
-        className="w-[320px] md:w-[420px] h-[140px] rounded-lg bg-primary-800 text-white shadow-md border-2 border-solid  border-primary-300 border-opacity-40 flex flex-row justify-between items-center p-3  gap-5">
-        <div className="flex flex-row justify-start items-center gap-5">
-          <div className="flex flex-col justify-center items-start gap-1">
-            <span className="opacity-50 text-black text-sm">ناو</span>
+      <Tr
+        className={`default-border table-row-hover  ${
+          checked?.includes(id) ? "table-row-include" : "table-row-normal"
+        }`}
+        key={id}>
+        <Td className="!p-3">
+          <InputGroup className="checkbox-input">
+            <Input
+              onChange={() => {
+                if (checked?.includes(id)) {
+                  dispatch({
+                    type: CONTEXT_TYPEs.UNCHECK,
+                    payload: id,
+                  });
+                } else {
+                  dispatch({
+                    type: CONTEXT_TYPEs.CHECK,
+                    payload: id,
+                  });
+                }
+              }}
+              checked={checked.includes(id)}
+              type="checkbox"
+              className="cursor-pointer"
+            />
+          </InputGroup>
+        </Td>
+        <Td className="!p-3">
+          <p className="text-right font-light font-poppins text-sm">
+            {index != -1 ? index + 1 : 0}
+          </p>
+        </Td>
+        <Td className="!p-3">
+          <p className="text-right font-light font-bukra text-sm">
+            {first_name}
+          </p>
+        </Td>
+        <Td className="!p-3">
+          <p className="text-right font-light font-bukra text-sm">
+            {last_name}
+          </p>
+        </Td>
+        <Td className="!p-3">
+          <p className="text-right font-light font-bukra text-sm">{phone}</p>
+        </Td>
 
-            <Typography
-              text={first_name + last_name}
-              className="font-bold  text-sm mb-1">
-              <p>
-                {first_name} {last_name}
-              </p>
-            </Typography>
-            <span className="opacity-50 text-black text-sm">
-              ژمارەی تەلەفۆن
-            </span>
-
-            <p className="font-bold font-poppins text-sm mb-1">{phone}</p>
-          </div>
-        </div>
-        <div className="flex flex-col justify-center items-center gap-3">
-          <MyButton
-            onClick={() => setDetail(true)}
-            id="showCustomerDataButton"
-            type="button"
-            name="showCustomerDataButton"
-            className="px-2 md:px-4 text-sm md:text-md py-1 font-medium tracking-wide text-blue-500 capitalize transition-colors duration-300 transform bg-white  rounded-lg hover:bg-blue-500 hover:text-white focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
-            زانیاری
-          </MyButton>
-          <PenLine
-            onClick={() => {
-              dispatch({
-                type: CONTEXT_TYPEs.SET_OLD_DATA,
-                payload: {
-                  first_name,
-                  last_name,
-                  phone,
-                  id,
-                  ...others,
-                },
-              });
-              setUpdate(true);
-            }}
-            className="cursor-pointer text-green-500"
-          />
-          <Chip
-            onClick={() => setIsDelete(true)}
-            size="lg"
-            variant="solid"
-            color="danger"
-            endDecorator={<ChipDelete onDelete={() => alert("Delete")} />}>
-            سڕینەوە
-          </Chip>
-        </div>{" "}
-      </article>
+        <Td className="!p-3 cup flex flex-row gap-2">
+          {!deleted_page && (
+            <>
+              <Tooltip
+                placement="top"
+                title="سڕینەوە"
+                color="danger"
+                variant="soft">
+                <Chip
+                  onClick={() => setIsDelete(true)}
+                  variant="soft"
+                  color="danger">
+                  <Trash2 className="w-7 h-7 p-1 cursor-pointer" />
+                </Chip>
+              </Tooltip>
+              <Tooltip
+                placement="top"
+                title="چاککردن"
+                color="success"
+                variant="soft">
+                <Chip
+                  onClick={() => {
+                    dispatch({
+                      type: CONTEXT_TYPEs.SET_OLD_DATA,
+                      payload: {
+                        first_name,
+                        last_name,
+                        phone,
+                        id,
+                        ...others,
+                      },
+                    });
+                    setUpdate(true);
+                  }}
+                  variant="soft"
+                  color="success">
+                  <PenTool className="w-7 h-7 p-1 cursor-pointer" />
+                </Chip>
+              </Tooltip>
+            </>
+          )}
+          {deleted_page && (
+            <Tooltip
+              placement="top"
+              title="گێڕانەوە"
+              color="warning"
+              variant="soft">
+              <Chip
+                onClick={() => setIsRestore(true)}
+                variant="soft"
+                color="warning">
+                <RotateCcw className="w-7 h-7 p-1 cursor-pointer" />
+              </Chip>
+            </Tooltip>
+          )}
+          <Tooltip
+            placement="top"
+            title="زانیاری"
+            color="primary"
+            variant="soft">
+            <Chip
+              onClick={() => setDetail(true)}
+              variant="soft"
+              color="primary">
+              <Info className="w-7 h-7 p-1 cursor-pointer" />
+            </Chip>
+          </Tooltip>
+        </Td>
+      </Tr>
       {detail && (
         <Dialog
           className="!p-5 rounded-md"
@@ -100,6 +174,7 @@ const CustomerCard = ({
           maxHeight={`90%`}
           isOpen={detail}
           onClose={() => setDetail(false)}>
+          <CustomClose onClick={() => setDetail(false)} />
           <CustomerDetailCard
             id={id}
             first_name={first_name}
@@ -108,13 +183,6 @@ const CustomerCard = ({
             {...others}
             onClose={() => setDetail(false)}
           />
-          <button
-            name="closeCustomerFormButton"
-            onClick={() => setDetail(false)}
-            type="button"
-            className="w-full  my-2 bg-black-600 rounded-sm p-2 text-white flex flex-row justify-center items-center gap-2">
-            <p className="text-md">لابردن</p>
-          </button>
         </Dialog>
       )}
       {isDelete && (
@@ -125,9 +193,23 @@ const CustomerCard = ({
           isOpen={isDelete}
           onClose={() => setIsDelete(false)}>
           <DeleteModal
-            deleteFunction={() => mutateAsync()}
+            deleteFunction={() => mutateAsync([id])}
             loading={isPending}
             onClose={() => setIsDelete(false)}
+          />
+        </Dialog>
+      )}
+      {isRestore && (
+        <Dialog
+          className="!p-5 rounded-md"
+          maxWidth={500}
+          maxHeight={`90%`}
+          isOpen={isRestore}
+          onClose={() => setIsRestore(false)}>
+          <RestoreModal
+            deleteFunction={() => restore([id])}
+            loading={restoreLoading}
+            onClose={() => setIsRestore(false)}
           />
         </Dialog>
       )}
@@ -138,15 +220,8 @@ const CustomerCard = ({
           maxHeight={`90%`}
           isOpen={update}
           onClose={updateOnClose}>
+          <CustomClose onClick={() => updateOnClose()} />
           <CustomerForm state="update" onClose={updateOnClose} />
-
-          <button
-            name="closeCustomerFormButton"
-            onClick={updateOnClose}
-            type="button"
-            className="w-full  my-2 bg-red-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
-            <p className="font-bold font-bukra">هەڵوەشاندنەوە</p>
-          </button>
         </Dialog>
       )}
     </>

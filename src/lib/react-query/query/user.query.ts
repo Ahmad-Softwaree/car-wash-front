@@ -90,7 +90,7 @@ export const useSearchDeletedUsers = (search: Search) => {
 };
 export const useAddUser = () => {
   const { toast } = useToast();
-  const queryCustomer = useQueryClient();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (form: AddUserF): Promise<AddUserQ> => addUser(form),
@@ -100,7 +100,7 @@ export const useAddUser = () => {
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
-      return queryCustomer.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.USERS],
       });
     },
@@ -111,7 +111,7 @@ export const useAddUser = () => {
 };
 export const useUpdateUser = (id: Id) => {
   const { toast } = useToast();
-  const queryCustomer = useQueryClient();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (form: UpdateUserF): Promise<UpdateUserQ> =>
@@ -122,7 +122,7 @@ export const useUpdateUser = (id: Id) => {
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
-      return queryCustomer.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.USERS],
       });
     },
@@ -133,7 +133,7 @@ export const useUpdateUser = (id: Id) => {
 };
 export const useDeleteUser = () => {
   const { toast } = useToast();
-  const queryCustomer = useQueryClient();
+  const queryClient = useQueryClient();
   const { dispatch } = useGlobalContext();
 
   return useMutation({
@@ -148,10 +148,10 @@ export const useDeleteUser = () => {
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
       });
-      queryCustomer.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.SEARCH_USERS],
       });
-      return queryCustomer.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.USERS],
       });
     },
@@ -162,7 +162,7 @@ export const useDeleteUser = () => {
 };
 export const useRestoreUser = () => {
   const { toast } = useToast();
-  const queryCustomer = useQueryClient();
+  const queryClient = useQueryClient();
   const { dispatch } = useGlobalContext();
 
   return useMutation({
@@ -177,10 +177,10 @@ export const useRestoreUser = () => {
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
       });
-      queryCustomer.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.SEARCH_DELETED_USERS],
       });
-      return queryCustomer.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.DELETED_USERS],
       });
     },

@@ -17,6 +17,12 @@ import {
   ImageTypeInForm,
 } from "@/types/global";
 import Image from "../ui/Image";
+import { useGetItemTypesSelection } from "@/lib/react-query/query/item-type.query";
+import Loading from "../ui/Loading";
+import { TailSpin } from "react-loader-spinner";
+import Select from "../ui/Select";
+import Option from "../ui/Option";
+import { ItemType } from "@/types/item-type";
 
 const ItemForm = ({
   state = "insert",
@@ -25,6 +31,9 @@ const ItemForm = ({
   const { state: globalState } = useGlobalContext();
   const form = useRef<FormHandle>(null);
   const { mutateAsync, isPending } = useAddItem();
+  const { data: itemTypes, isLoading: itemTypesLoading } =
+    useGetItemTypesSelection();
+
   const { mutateAsync: updateMutate, isPending: updatePending } = useUpdateItem(
     globalState?.oldData?.id
   );
@@ -43,6 +52,7 @@ const ItemForm = ({
   ) => {
     const transformedData = {
       ...data,
+      type_id: Number(data.type_id),
       item_purchase_price: Number(data.item_purchase_price),
       item_sell_price: Number(data.item_sell_price),
       quantity: Number(data.quantity),
@@ -80,43 +90,62 @@ const ItemForm = ({
       <p className="font-bold font-bukra text-lg">زیادکردنی مواد</p>
       <div className="w-full grid grid-cols-1 lg:grid-cols-17 gap-10 place-items-start">
         <div className="col-span-full lg:col-span-5 flex flex-col justify-center items-start gap-5 py-5 w-full">
-          <InputGroup error={errors.name} className="w-full text-input">
-            <Input
-              type="text"
-              id="name"
-              placeholder="ناوی کاڵا"
-              className="w-full text-sm"
-              {...register("name", { required: true })}
-            />
-          </InputGroup>
-          <InputGroup error={errors.barcode} className="w-full text-input">
-            <Input
-              type="text"
-              id="barcode"
-              placeholder="بارکۆد"
-              className="w-full text-sm"
-              {...register("barcode", { required: true })}
-            />
-          </InputGroup>
+          {itemTypesLoading ? (
+            <Loading>
+              <TailSpin />
+            </Loading>
+          ) : (
+            <>
+              <InputGroup error={errors.name} className="w-full text-input">
+                <Input
+                  type="text"
+                  id="name"
+                  placeholder="ناوی کاڵا"
+                  className="w-full text-sm"
+                  {...register("name", { required: true })}
+                />
+              </InputGroup>
+              <InputGroup error={errors.barcode} className="w-full text-input">
+                <Input
+                  type="text"
+                  id="barcode"
+                  placeholder="بارکۆد"
+                  className="w-full text-sm"
+                  {...register("barcode", { required: true })}
+                />
+              </InputGroup>
 
-          <InputGroup error={errors.type} className="w-full text-input">
-            <Input
-              type="text"
-              id="type"
-              placeholder="جۆر"
-              className="w-full text-sm"
-              {...register("type", { required: true })}
-            />
-          </InputGroup>
-          <InputGroup error={errors.quantity} className="w-full text-input">
-            <Input
-              type="text"
-              id="quantity"
-              placeholder="عەدەد"
-              className="w-full text-sm"
-              {...register("quantity", { required: true })}
-            />
-          </InputGroup>
+              <InputGroup error={errors.type_id} className="w-full text-input">
+                <Select
+                  title="type_id"
+                  {...register("type_id", { required: true })}
+                  name="type_id"
+                  id="type_id"
+                  className="w-full bg-transparent !text-sm">
+                  <Option className="!text-sm dark-light" value={-1}>
+                    جۆر هەڵبژێرە
+                  </Option>
+                  {itemTypes?.map((val: ItemType, _index: number) => (
+                    <Option
+                      className="!text-sm dark-light"
+                      key={val.id}
+                      value={val.id}>
+                      {val.name}
+                    </Option>
+                  ))}
+                </Select>
+              </InputGroup>
+              <InputGroup error={errors.quantity} className="w-full text-input">
+                <Input
+                  type="text"
+                  id="quantity"
+                  placeholder="عەدەد"
+                  className="w-full text-sm"
+                  {...register("quantity", { required: true })}
+                />
+              </InputGroup>
+            </>
+          )}
         </div>
         <div className="col-span-full lg:col-span-1 h-[2px] lg:h-full w-full lg:w-[2px] bg-gray-500 bg-opacity-50 rounded-lg "></div>
 

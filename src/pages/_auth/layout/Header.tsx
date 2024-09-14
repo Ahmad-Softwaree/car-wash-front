@@ -1,24 +1,11 @@
 import Container from "@/components/ui/Container";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import Link from "@mui/material/Link";
 import { ChevronLeft, SunMoon } from "lucide-react";
 import { useLocation } from "react-router-dom"; // To get the current URL
-import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import React from "react";
 const Header = () => {
   const location = useLocation();
   const breadcrumbs = generateBreadcrumbs(location.pathname);
-  const [date, setDate] = React.useState<Date>();
   return (
     <Container
       as={`header`}
@@ -55,33 +42,8 @@ const Header = () => {
               localStorage.setItem("theme", "dark");
             }
           }}
-          className="cursor-pointer"
+          className="cursor-pointer p-3 w-12 h-12 light-dark rounded-full"
         />
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant={"outline"}
-              className={cn(
-                "w-[280px] hidden md:flex justify-start text-left font-normal gap-2 dark-light    default-border",
-                !date && "text-muted-foreground"
-              )}>
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {date ? (
-                format(date, "PPP")
-              ) : (
-                <span className="!text-xs ">بەروارێک هەڵبژێرە</span>
-              )}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0  dark-light">
-            <Calendar
-              mode="single"
-              selected={date}
-              onSelect={setDate}
-              initialFocus
-            />
-          </PopoverContent>
-        </Popover>
       </div>
     </Container>
   );

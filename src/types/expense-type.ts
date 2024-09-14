@@ -7,7 +7,7 @@ export type ExpenseType = {
   id: Id;
 };
 
-export type ExpenseTypeCardProps = ExpenseType;
+export type ExpenseTypeCardProps = ExpenseType & { index?: number };
 
 export type AddExpenseTypeInputs = {
   name: string;
@@ -20,4 +20,4 @@ export type AddExpenseTypeQ = ExpenseType;
 
 export type UpdateExpenseTypeQ = ExpenseType;
 
-export type DeleteExpenseTypeQ = Id;
+export type DeleteExpenseTypeQ = Id[];

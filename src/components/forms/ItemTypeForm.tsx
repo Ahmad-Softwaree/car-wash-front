@@ -7,23 +7,23 @@ import {
 } from "@/types/global";
 import { useForm, SubmitHandler } from "react-hook-form";
 import MyButton from "@/components/ui/MyButton";
-import { AddColorInputs } from "@/types/color";
+import { AddItemTypeInputs } from "@/types/item-type";
 import {
-  useAddColor,
-  useUpdateColor,
-} from "@/lib/react-query/query/color.query";
+  useAddItemType,
+  useUpdateItemType,
+} from "@/lib/react-query/query/item-type.query";
 import InputGroup from "../ui/InputGroup";
 import Input from "../ui/Input";
 import { useGlobalContext } from "@/context/GlobalContext";
 
-const ColorForm = ({
+const ItemTypeForm = ({
   onClose,
   state,
 }: FormFinalOperation & GlobalFormProps) => {
   const form = useRef<FormHandle>(null);
   const { state: globalState } = useGlobalContext();
-  const { mutateAsync: add, isPending: addLoading } = useAddColor();
-  const { mutateAsync: update, isPending: updateLoading } = useUpdateColor(
+  const { mutateAsync: add, isPending: addLoading } = useAddItemType();
+  const { mutateAsync: update, isPending: updateLoading } = useUpdateItemType(
     globalState?.oldData?.id
   );
 
@@ -33,8 +33,8 @@ const ColorForm = ({
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<AddColorInputs>({});
-  const onSubmit: SubmitHandler<AddColorInputs> = async (data) => {
+  } = useForm<AddItemTypeInputs>({});
+  const onSubmit: SubmitHandler<AddItemTypeInputs> = async (data) => {
     if (state == "insert") await add(data);
     else await update(data);
     form.current?.clear();
@@ -49,7 +49,9 @@ const ColorForm = ({
       ref={form}
       onSubmit={handleSubmit(onSubmit)}
       id="login-form">
-      <p className="font-bold font-bukra text-lg text-nowrap">فۆڕمی ڕەنگ</p>
+      <p className="font-bold font-bukra text-lg text-nowrap">
+        فۆڕمی جۆری بەرهەم
+      </p>
       <InputGroup error={errors.name} className="w-full text-input">
         <Input
           type="text"
@@ -71,4 +73,4 @@ const ColorForm = ({
   );
 };
 
-export default ColorForm;
+export default ItemTypeForm;

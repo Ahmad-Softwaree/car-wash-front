@@ -1,12 +1,12 @@
 import { useToast } from "@/components/ui/use-toast";
 import {
-  AddCustomerF,
-  AddCustomerQ,
-  DeleteCustomerQ,
-  GetCustomersQ,
-  UpdateCustomerF,
-  UpdateCustomerQ,
-} from "@/types/customer";
+  AddItemTypeF,
+  AddItemTypeQ,
+  DeleteItemTypeQ,
+  GetItemTypesQ,
+  UpdateItemTypeF,
+  UpdateItemTypeQ,
+} from "@/types/item-type";
 import {
   useInfiniteQuery,
   useMutation,
@@ -14,18 +14,18 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import {
-  addCustomer,
-  deleteCustomer,
-  getDeletedCustomer,
-  getCustomers,
-  restoreCustomer,
-  searchDeletedCustomers,
-  searchCustomers,
-  updateCustomer,
-} from "../actions/customer.action";
+  addItemType,
+  deleteItemType,
+  getDeletedItemType,
+  getItemTypes,
+  getItemTypeSelection,
+  restoreItemType,
+  searchDeletedItemTypes,
+  searchItemTypes,
+  updateItemType,
+} from "../actions/item-type.action";
 import { QUERY_KEYs } from "../key";
 import {
-  Filter,
   Id,
   NestError,
   Page,
@@ -37,32 +37,40 @@ import { generateNestErrors } from "@/lib/functions";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 
-export const useGetCustomers = () => {
+export const useGetItemTypes = () => {
   const { toast } = useToast();
   return useInfiniteQuery({
-    queryKey: [QUERY_KEYs.CUSTOMERS],
+    queryKey: [QUERY_KEYs.ITEM_TYPES],
     queryFn: ({
       pageParam,
     }: {
       pageParam: Page;
-    }): Promise<PaginationReturnType<GetCustomersQ>> =>
-      getCustomers(toast, pageParam, ENUMs.LIMIT as number),
+    }): Promise<PaginationReturnType<GetItemTypesQ>> =>
+      getItemTypes(toast, pageParam, ENUMs.LIMIT as number),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
   });
 };
-export const useGetDeletedCustomers = () => {
+export const useGetItemTypesSelection = () => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.ITEM_TYPES_SELECTION],
+    queryFn: () => getItemTypeSelection(toast),
+    retry: 0,
+  });
+};
+export const useGetDeletedItemTypes = () => {
   const { toast } = useToast();
   return useInfiniteQuery({
-    queryKey: [QUERY_KEYs.DELETED_CUSTOMERS],
+    queryKey: [QUERY_KEYs.DELETED_ITEM_TYPES],
     queryFn: ({
       pageParam,
     }: {
       pageParam: Page;
-    }): Promise<PaginationReturnType<GetCustomersQ>> =>
-      getDeletedCustomer(toast, pageParam, ENUMs.LIMIT as number),
+    }): Promise<PaginationReturnType<GetItemTypesQ>> =>
+      getDeletedItemType(toast, pageParam, ENUMs.LIMIT as number),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
@@ -70,40 +78,40 @@ export const useGetDeletedCustomers = () => {
   });
 };
 
-export const useSearchCustomers = (search: Search) => {
+export const useSearchItemTypes = (search: Search) => {
   const { toast } = useToast();
   return useQuery({
-    queryKey: [QUERY_KEYs.SEARCH_CUSTOMERS],
-    queryFn: (): Promise<GetCustomersQ> => searchCustomers(toast, search),
+    queryKey: [QUERY_KEYs.SEARCH_ITEM_TYPES],
+    queryFn: (): Promise<GetItemTypesQ> => searchItemTypes(toast, search),
     enabled: !!search,
     retry: 0,
   });
 };
-export const useSearchDeletedCustomers = (search: Search) => {
+export const useSearchDeletedItemTypes = (search: Search) => {
   const { toast } = useToast();
   return useQuery({
-    queryKey: [QUERY_KEYs.SEARCH_DELETED_CUSTOMERS],
-    queryFn: (): Promise<GetCustomersQ> =>
-      searchDeletedCustomers(toast, search),
+    queryKey: [QUERY_KEYs.SEARCH_DELETED_ITEM_TYPES],
+    queryFn: (): Promise<GetItemTypesQ> =>
+      searchDeletedItemTypes(toast, search),
     enabled: !!search,
     retry: 0,
   });
 };
-export const useAddCustomer = () => {
+export const useAddItemType = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (form: AddCustomerF): Promise<AddCustomerQ> =>
-      addCustomer(form),
-    onSuccess: (data: AddCustomerQ) => {
+    mutationFn: (form: AddItemTypeF): Promise<AddItemTypeQ> =>
+      addItemType(form),
+    onSuccess: (data: AddItemTypeQ) => {
       toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
       return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.CUSTOMERS],
+        queryKey: [QUERY_KEYs.ITEM_TYPES],
       });
     },
     onError: (error: NestError) => {
@@ -111,21 +119,21 @@ export const useAddCustomer = () => {
     },
   });
 };
-export const useUpdateCustomer = (id: Id) => {
+export const useUpdateItemType = (id: Id) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (form: UpdateCustomerF): Promise<UpdateCustomerQ> =>
-      updateCustomer(form, id),
-    onSuccess: (data: UpdateCustomerQ) => {
+    mutationFn: async (form: UpdateItemTypeF): Promise<UpdateItemTypeQ> =>
+      updateItemType(form, id),
+    onSuccess: (data: UpdateItemTypeQ) => {
       toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
       return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.CUSTOMERS],
+        queryKey: [QUERY_KEYs.ITEM_TYPES],
       });
     },
     onError: (error: NestError) => {
@@ -133,14 +141,14 @@ export const useUpdateCustomer = (id: Id) => {
     },
   });
 };
-export const useDeleteCustomer = () => {
+export const useDeleteItemType = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { dispatch } = useGlobalContext();
 
   return useMutation({
-    mutationFn: (ids: Id[]): Promise<DeleteCustomerQ> => deleteCustomer(ids),
-    onSuccess: (data: DeleteCustomerQ) => {
+    mutationFn: (ids: Id[]): Promise<DeleteItemTypeQ> => deleteItemType(ids),
+    onSuccess: (data: DeleteItemTypeQ) => {
       toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
@@ -151,10 +159,10 @@ export const useDeleteCustomer = () => {
         payload: [],
       });
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.SEARCH_CUSTOMERS],
+        queryKey: [QUERY_KEYs.SEARCH_ITEM_TYPES],
       });
       return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.CUSTOMERS],
+        queryKey: [QUERY_KEYs.ITEM_TYPES],
       });
     },
     onError: (error: NestError) => {
@@ -162,14 +170,14 @@ export const useDeleteCustomer = () => {
     },
   });
 };
-export const useRestoreCustomer = () => {
+export const useRestoreItemType = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { dispatch } = useGlobalContext();
 
   return useMutation({
-    mutationFn: (ids: Id[]): Promise<DeleteCustomerQ> => restoreCustomer(ids),
-    onSuccess: (data: DeleteCustomerQ) => {
+    mutationFn: (ids: Id[]): Promise<DeleteItemTypeQ> => restoreItemType(ids),
+    onSuccess: (data: DeleteItemTypeQ) => {
       toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
@@ -180,10 +188,10 @@ export const useRestoreCustomer = () => {
         payload: [],
       });
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.SEARCH_DELETED_CUSTOMERS],
+        queryKey: [QUERY_KEYs.SEARCH_DELETED_ITEM_TYPES],
       });
       return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.DELETED_CUSTOMERS],
+        queryKey: [QUERY_KEYs.DELETED_ITEM_TYPES],
       });
     },
     onError: (error: NestError) => {

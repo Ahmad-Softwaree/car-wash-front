@@ -1,13 +1,13 @@
-import { ColorCardProps } from "@/types/color";
+import { ItemTypeCardProps } from "@/types/item-type";
 import { PenTool, RotateCcw, Trash2, X } from "lucide-react";
 import { useState } from "react";
 import Dialog from "../shared/Dialog";
 import DeleteModal from "../ui/DeleteModal";
 import {
-  useDeleteColor,
-  useRestoreColor,
-} from "@/lib/react-query/query/color.query";
-import ColorForm from "../forms/ColorForm";
+  useDeleteItemType,
+  useRestoreItemType,
+} from "@/lib/react-query/query/item-type.query";
+import ItemTypeForm from "../forms/ItemTypeForm";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 import { Td, Tr } from "../ui";
@@ -19,7 +19,12 @@ import CustomClose from "../shared/CustomClose";
 import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import RestoreModal from "../ui/RestoreModal";
 
-const ColorCard = ({ name, id, index = -1, ...others }: ColorCardProps) => {
+const ItemTypeCard = ({
+  name,
+  id,
+  index = -1,
+  ...others
+}: ItemTypeCardProps) => {
   const { deleted_page } = useCheckDeletedPage();
 
   const [update, setUpdate] = useState<boolean>(false);
@@ -30,8 +35,9 @@ const ColorCard = ({ name, id, index = -1, ...others }: ColorCardProps) => {
     dispatch,
     state: { checked },
   } = useGlobalContext();
-  const { mutateAsync, isPending } = useDeleteColor();
-  const { mutateAsync: restore, isPending: restoreLoading } = useRestoreColor();
+  const { mutateAsync, isPending } = useDeleteItemType();
+  const { mutateAsync: restore, isPending: restoreLoading } =
+    useRestoreItemType();
 
   const updateOnClose = () => {
     dispatch({
@@ -170,11 +176,11 @@ const ColorCard = ({ name, id, index = -1, ...others }: ColorCardProps) => {
           isOpen={update}
           onClose={updateOnClose}>
           <CustomClose onClick={() => updateOnClose()} />
-          <ColorForm state="update" onClose={updateOnClose} />
+          <ItemTypeForm state="update" onClose={updateOnClose} />
         </Dialog>
       )}
     </>
   );
 };
 
-export default ColorCard;
+export default ItemTypeCard;

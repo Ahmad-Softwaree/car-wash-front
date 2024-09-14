@@ -19,7 +19,10 @@ import MyButton from "../ui/MyButton";
 import { AddUserInputs } from "@/types/auth";
 import { Part } from "@/types/part";
 import { Role } from "@/types/role";
-import { useGetRoles } from "@/lib/react-query/query/role.query";
+import {
+  useGetRoles,
+  useGetRolesSelection,
+} from "@/lib/react-query/query/role.query";
 import { useGetParts } from "@/lib/react-query/query/part.query";
 import InputAddon from "../ui/InputAddon";
 import { Eye, EyeOff } from "lucide-react";
@@ -33,7 +36,7 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
   const form = useRef<FormHandle>(null);
   const [show, setShow] = useState<boolean>(false);
 
-  const { data: roles, isLoading: rolesLoading } = useGetRoles();
+  const { data: roles, isLoading: rolesLoading } = useGetRolesSelection();
   const { data: parts, isLoading: partsLoading } = useGetParts();
   const { mutateAsync, isPending } = useAddUser();
   const { mutateAsync: updateMutate, isPending: updatePending } = useUpdateUser(

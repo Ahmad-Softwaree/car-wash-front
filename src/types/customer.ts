@@ -15,7 +15,7 @@ export type Customer = {
   deleted: boolean;
 };
 
-export type CustomerCardProps = Customer;
+export type CustomerCardProps = Customer & { index?: number };
 export type AddCustomerInputs = {
   first_name: string;
   last_name: string;
@@ -31,6 +31,6 @@ export type UpdateCustomerWithFirebaseImage = AddCustomerInputs &
 
 export type GetCustomersQ = Customer[];
 export type AddCustomerQ = Customer;
-export type DeleteCustomerQ = Customer;
+export type DeleteCustomerQ = Id[];
 
 export type UpdateCustomerQ = Customer;

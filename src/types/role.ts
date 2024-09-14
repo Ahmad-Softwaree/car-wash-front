@@ -9,7 +9,7 @@ export type Role = {
   id: Id;
 };
 
-export type RoleCardProps = Role;
+export type RoleCardProps = Role & { index?: number };
 
 export type AddRoleInputs = {
   name: string;
@@ -27,4 +27,4 @@ export type AddRoleQ = Role;
 
 export type UpdateRoleQ = Role;
 
-export type DeleteRoleQ = Id;
+export type DeleteRoleQ = Id[];

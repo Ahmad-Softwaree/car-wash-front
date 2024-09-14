@@ -22,6 +22,13 @@ import { AxiosError } from "axios";
 import { Employee } from "./employee";
 import { Toast, ToasterToast } from "@/components/ui/use-toast";
 import { Customer } from "./customer";
+import { Role } from "./role";
+import { ExpenseType } from "./expense-type";
+import { CarType } from "./car-type";
+import { CarModel } from "./car-model";
+import { ItemType } from "./item-type";
+import { Color } from "./color";
+import { Service } from "./service";
 
 export type GlobalFormProps = {
   state?: "update" | "insert";
@@ -72,7 +79,14 @@ export type DataTypes =
   | Item[]
   | ItemInformation[]
   | ItemLess[]
-  | Customer[];
+  | Customer[]
+  | Role[]
+  | ExpenseType[]
+  | CarType[]
+  | CarModel[]
+  | ItemType[]
+  | Color[]
+  | Service[];
 
 export type PaginationChildrenProps<T extends DataTypes> = {
   isFetchingNextPage: boolean;

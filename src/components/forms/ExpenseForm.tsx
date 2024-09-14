@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import Form from "@/components/ui/Form";
-import { CalendarRange, CircleUserRound } from "lucide-react";
 import {
   FormFinalOperation,
   FormHandle,
@@ -16,11 +15,13 @@ import {
   useUpdateExpense,
 } from "@/lib/react-query/query/expense.query";
 import InputGroup from "@/components/ui/InputGroup";
-import Label from "../ui/Label";
 import MyButton from "@/components/ui/MyButton";
 import { AddExpenseInputs } from "@/types/expense";
 import { useGlobalContext } from "@/context/GlobalContext";
-import { useGetExpenseTypes } from "@/lib/react-query/query/expense-type.query";
+import {
+  useGetExpenseTypes,
+  useGetExpenseTypesSelection,
+} from "@/lib/react-query/query/expense-type.query";
 import Loading from "../ui/Loading";
 import { TailSpin } from "react-loader-spinner";
 import Select from "../ui/Select";
@@ -35,7 +36,8 @@ const ExpenseForm = ({
   } = useAuthContext();
   const form = useRef<FormHandle>(null);
   const { state: globalState } = useGlobalContext();
-  const { data: types, isLoading: typesLoading } = useGetExpenseTypes();
+  const { data: types, isLoading: typesLoading } =
+    useGetExpenseTypesSelection();
 
   const { mutateAsync, isPending } = useAddExpense();
   const { mutateAsync: updateMutate, isPending: updateLoading } =
@@ -90,10 +92,15 @@ const ExpenseForm = ({
                 {...register("expense_type_id", { required: true })}
                 name="expense_type_id"
                 id="expense_type_id"
-                className="w-full">
-                <Option value={-1}>جۆری خەرجی هەڵبژێرە</Option>
+                className="w-full dark-light text-sm">
+                <Option className="dark-light text-sm" value={-1}>
+                  جۆری خەرجی هەڵبژێرە
+                </Option>
                 {types.map((val: ExpenseType, _index: number) => (
-                  <Option key={val.id} value={val.id}>
+                  <Option
+                    className="dark-light text-sm"
+                    key={val.id}
+                    value={val.id}>
                     {val.name}
                   </Option>
                 ))}
@@ -109,7 +116,7 @@ const ExpenseForm = ({
                   {...register("price", { required: true })}
                   name="price"
                   placeholder="بڕی پارەی خەرجکراو"
-                  className="w-full"
+                  className="w-full text-sm"
                 />
               </InputGroup>
             </div>
@@ -120,18 +127,18 @@ const ExpenseForm = ({
                 name="note"
                 rows={8}
                 placeholder="تێبینی"
-                className="w-full text-input"
+                className="w-full text-input dark-light !text-sm"
               />
             </InputGroup>
           </div>
         </>
       ) : null}
       <MyButton
-        loading={loading}
-        name="addItemButton"
+        loading={isPending || updateLoading}
+        name="addUserButton"
         type="submit"
-        className="w-full bg-black-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
-        <p className="font-bold font-bukra">جێبەجێکردن</p>
+        className=" bg-sky-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2">
+        <p className="font-light text-sm font-bukra">جێبەجێکردن</p>
       </MyButton>
     </Form>
   );

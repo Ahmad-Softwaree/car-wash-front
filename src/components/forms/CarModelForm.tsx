@@ -50,7 +50,7 @@ const CarModelForm = ({
       onSubmit={handleSubmit(onSubmit)}
       id="login-form">
       <p className="font-bold font-bukra text-lg text-nowrap">
-        فۆڕمی مۆدێلی ئۆتۆمبێل
+        فۆڕمی مۆدێلی ئۆتۆمبێڵ
       </p>
       <InputGroup error={errors.name} className="w-full text-input">
         <Input
@@ -58,16 +58,16 @@ const CarModelForm = ({
           {...register("name", { required: true })}
           name="name"
           placeholder="ناو بە کوردی"
-          className="w-full"
+          className="w-full text-sm"
         />
       </InputGroup>
 
       <MyButton
         loading={loading}
-        name="addCarModelButton"
+        name="addUserButton"
         type="submit"
-        className="w-full bg-black-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
-        <p className="font-bold font-bukra">جێبەجێکردن</p>
+        className=" bg-sky-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2">
+        <p className="font-light text-sm font-bukra">جێبەجێکردن</p>
       </MyButton>
     </Form>
   );

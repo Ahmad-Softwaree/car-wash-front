@@ -1,4 +1,4 @@
-import { CustomerCardProps } from "@/types/customer";
+import { RoleCardProps } from "@/types/role";
 import { FormFinalOperation } from "@/types/global";
 
 import { Key, Phone, User } from "lucide-react";
@@ -6,66 +6,24 @@ import InputGroup from "../ui/InputGroup";
 import InputAddon from "../ui/InputAddon";
 import Label from "../ui/Label";
 import Input from "../ui/Input";
+import { Part } from "@/types/part";
 
-const CustomerDetailCard = ({
+const RoleDetailCard = ({
   onClose,
-  first_name,
-  last_name,
-  phone,
+  name,
+  parts,
   id,
-}: FormFinalOperation & CustomerCardProps) => {
+}: FormFinalOperation & RoleCardProps) => {
   return (
     <div className="space-y-4  dark-light  rounded-lg default-border bg-transparent py-2 w-full max-w-2xl shadow-4xl">
       <div className="w-full flex flex-col justify-start items-start gap-4 my-3 px-3">
-        <p className="text-sm">زانیاری کەسی</p>
+        <p className="text-sm">زانیاری </p>
       </div>
 
       <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap md:flex-nowrap px-3">
         <div className="w-full md:w-1/2 flex flex-col gap-2">
           <Label className="w-full text-sm  flex flex-row gap-2">
-            <p>ناوی سەرەتا</p>
-          </Label>
-          <InputGroup className="w-full text-input 0">
-            <InputAddon className="w-[20%] md:w-[10%]">
-              <User />
-            </InputAddon>
-
-            <Input
-              value={first_name}
-              name="first_name"
-              disabled
-              type="text"
-              dir="ltr"
-              className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:!font-bukra text-xs md:!text-sm placeholder:!text-sm"
-            />
-          </InputGroup>
-        </div>
-
-        <div className="w-full md:w-1/2 flex flex-col gap-2">
-          <Label className="w-full text-sm  flex flex-row gap-2">
-            <p> ژمارە تەلەفۆن</p>
-          </Label>
-          <InputGroup className="w-full text-input 0">
-            <InputAddon className="w-[20%] md:w-[10%]">
-              <Phone />
-            </InputAddon>
-
-            <Input
-              value={last_name}
-              name="last_name"
-              disabled
-              type="text"
-              dir="ltr"
-              className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:!font-bukra text-xs md:!text-sm placeholder:!text-sm"
-            />
-          </InputGroup>
-        </div>
-      </div>
-
-      <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap md:flex-nowrap px-3">
-        <div className="w-full md:w-1/2 flex flex-col gap-2">
-          <Label className="w-full text-sm  flex flex-row gap-2">
-            <p>ژمارە تەلەفۆن</p>
+            <p>ناو</p>
           </Label>
           <InputGroup className="w-full text-input 0">
             <InputAddon className="w-[20%] md:w-[10%]">
@@ -73,8 +31,8 @@ const CustomerDetailCard = ({
             </InputAddon>
 
             <Input
-              value={phone}
-              name="phone"
+              value={name}
+              name="name"
               disabled
               type="text"
               dir="ltr"
@@ -83,8 +41,23 @@ const CustomerDetailCard = ({
           </InputGroup>
         </div>
       </div>
+
+      <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap md:flex-nowrap px-3">
+        <div className="w-full md:w-1/2 flex flex-col gap-2">
+          <Label className="w-full text-sm  flex flex-row gap-2">
+            <p>بەشەکان</p>
+          </Label>
+          <InputGroup className="w-full text-input 0">
+            {parts.map((val: Part, _index: number) => (
+              <div className="w-fit p-2 rounded-md default-border dark-light font-bukra text-xs">
+                <p>{val.name}</p>
+              </div>
+            ))}
+          </InputGroup>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default CustomerDetailCard;
+export default RoleDetailCard;

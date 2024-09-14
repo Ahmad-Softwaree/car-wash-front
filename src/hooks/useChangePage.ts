@@ -20,6 +20,7 @@ const useChangePage = (): void => {
       const params = new URLSearchParams(prev);
       params.delete(ENUMs.SEARCH_PARAM as string);
       params.delete(ENUMs.FILTER_PARAM as string);
+      params.delete(ENUMs.DATE_PARAM as string);
 
       return params;
     });

@@ -7,7 +7,7 @@ export type CarModel = {
   id: Id;
 };
 
-export type CarModelCardProps = CarModel;
+export type CarModelCardProps = CarModel & { index?: number };
 
 export type AddCarModelInputs = {
   name: string;
@@ -20,4 +20,4 @@ export type AddCarModelQ = CarModel;
 
 export type UpdateCarModelQ = CarModel;
 
-export type DeleteCarModelQ = Id;
+export type DeleteCarModelQ = Id[];

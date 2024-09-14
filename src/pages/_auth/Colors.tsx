@@ -1,17 +1,19 @@
 import Container from "@/components/ui/Container";
 import { lazy, useMemo, useState } from "react";
 const Dialog = lazy(() => import("@/components/shared/Dialog"));
-const ExpenseCard = lazy(() => import("@/components/cards/ExpenseCard"));
+const ColorCard = lazy(() => import("@/components/cards/ColorCard"));
 
 import {
-  useDeleteExpense,
-  useGetDeletedExpenses,
-  useGetExpenses,
-  useRestoreExpense,
-} from "@/lib/react-query/query/expense.query";
+  useDeleteColor,
+  useGetDeletedColors,
+  useGetColors,
+  useRestoreColor,
+  useSearchDeletedColors,
+  useSearchColors,
+} from "@/lib/react-query/query/color.query";
 import Pagination from "@/components/providers/Pagination";
-import { Expense } from "@/types/expense";
-import ExpenseForm from "@/components/forms/ExpenseForm";
+import { Color } from "@/types/color";
+import ColorForm from "@/components/forms/ColorForm";
 import TBody from "@/components/ui/TBody";
 import { Table, Td, Th, THead, Tr } from "@/components/ui";
 
@@ -29,26 +31,20 @@ import CustomClose from "@/components/shared/CustomClose";
 import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import DeleteChip from "@/components/shared/DeleteChip";
 import RestoreChip from "@/components/shared/RestoreChip";
+import Search from "@/components/shared/Search";
 import AddButton from "@/components/shared/AddButton";
 import RestoreModal from "@/components/ui/RestoreModal";
-import Filter from "@/components/shared/Filter";
-import { Role } from "@/types/role";
-import { useGetExpenseTypesSelection } from "@/lib/react-query/query/expense-type.query";
-import { ExpenseType } from "@/types/expense-type";
 
-const Expenses = () => {
+const Colors = () => {
   const { deleted_page } = useCheckDeletedPage();
-  const { mutateAsync, isPending } = useDeleteExpense();
-  const { mutateAsync: restore, isPending: restoreLoading } =
-    useRestoreExpense();
+  const { mutateAsync, isPending } = useDeleteColor();
+  const { mutateAsync: restore, isPending: restoreLoading } = useRestoreColor();
 
   const [searchParam, setSearchParam] = useSearchParams();
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const [isRestore, setIsRestore] = useState<boolean>(false);
 
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
-  const { data: expense_types } = useGetExpenseTypesSelection();
-  console.log(expense_types);
   const {
     dispatch,
     state: { checked, check_type },
@@ -60,15 +56,7 @@ const Expenses = () => {
         className="w-full gap-10 flex flex-col justify-start items-start">
         <div className="w-full gap-5 flex flex-row justify-between">
           <div className="w-full flex flex-row justify-start items-center gap-3">
-            {expense_types && (
-              <Filter<Role>
-                options={expense_types.map(
-                  (val: ExpenseType, _index: number) => {
-                    return { value: val.id, label: val.name };
-                  }
-                )}
-              />
-            )}
+            <Search />
           </div>
           <div className="w-full flex flex-row justify-end items-center gap-3">
             {checked?.length > 0 && (
@@ -86,14 +74,17 @@ const Expenses = () => {
             {!deleted_page && <AddButton onClick={() => setIsAddOpen(true)} />}
           </div>
         </div>
-        <Pagination<Expense[]>
+        <Pagination<Color[]>
           queryFn={() =>
+            deleted_page ? useGetDeletedColors() : useGetColors()
+          }
+          searchQueryFn={() =>
             deleted_page
-              ? useGetDeletedExpenses(
-                  searchParam.get(ENUMs.FILTER_PARAM as string) || ""
+              ? useSearchDeletedColors(
+                  searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
                 )
-              : useGetExpenses(
-                  searchParam.get(ENUMs.FILTER_PARAM as string) || ""
+              : useSearchColors(
+                  searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
                 )
           }>
           {({
@@ -103,13 +94,21 @@ const Expenses = () => {
             ref,
             data,
             refetch,
+            isSearched,
+            searchData,
+            searchRefetch,
+            fetchNextPage,
           }) => {
             const allData = useMemo(
               () =>
-                data?.pages && data?.pages?.length > 0
-                  ? data.pages.map((page) => page.paginatedData).flat()
+                !isSearched
+                  ? data?.pages && data?.pages?.length > 0
+                    ? data.pages.map((page) => page.paginatedData).flat()
+                    : []
+                  : searchData && searchData.length > 0
+                  ? searchData
                   : [],
-              [data]
+              [data, searchData, isSearched]
             );
 
             return (
@@ -127,7 +126,7 @@ const Expenses = () => {
                                   payload: allData
                                     .slice(0, 30)
                                     .map(
-                                      (val: Expense, _index: number) => val.id
+                                      (val: Color, _index: number) => val.id
                                     ),
                                 });
                               } else {
@@ -147,14 +146,9 @@ const Expenses = () => {
                         <p className="pr-1">#</p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">جۆری خەرجی</p>
+                        <p className="pr-3 table-head-border">ناو</p>
                       </Th>
-                      <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">بڕی خەرجکراو</p>
-                      </Th>{" "}
-                      <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">بەروار</p>
-                      </Th>
+
                       <Th className="text-right text-sm !p-4">
                         <p className="pr-3 table-head-border">کرادرەکان</p>
                       </Th>
@@ -162,11 +156,11 @@ const Expenses = () => {
                   </THead>
                   <TBody className="w-full ">
                     <>
-                      {allData?.map((val: Expense, index: number) => (
-                        <ExpenseCard key={val.id} index={index} {...val} />
+                      {allData?.map((val: Color, index: number) => (
+                        <ColorCard key={val.id} index={index} {...val} />
                       ))}
 
-                      {!isFetchingNextPage && hasNextPage && (
+                      {!isFetchingNextPage && hasNextPage && !isSearched && (
                         <div className="h-[20px]" ref={ref}></div>
                       )}
                     </>
@@ -220,11 +214,11 @@ const Expenses = () => {
           isOpen={isAddOpen}
           onClose={() => setIsAddOpen(false)}>
           <CustomClose onClick={() => setIsAddOpen(false)} />
-          <ExpenseForm state="insert" onClose={() => setIsAddOpen(false)} />
+          <ColorForm state="insert" onClose={() => setIsAddOpen(false)} />
         </Dialog>
       )}
     </>
   );
 };
 
-export default Expenses;
+export default Colors;

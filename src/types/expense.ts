@@ -8,7 +8,8 @@ export type AddExpenseInputs = {
 };
 export type Expense = {
   id: Id;
-  type: string;
+  type_name: string;
+  type_id: number;
   price: number;
   date: Date | string;
   note: string;
@@ -17,7 +18,7 @@ export type Expense = {
   deleted: boolean;
 };
 export type ExpenseCardProps = Expense & {
-  onClick: (id: Id) => void;
+  index?: number;
 };
 
 export type AddExpenseF = AddExpenseInputs & {
@@ -26,6 +27,8 @@ export type AddExpenseF = AddExpenseInputs & {
 export type UpdateExpenseF = AddExpenseInputs & {
   date: Date | string | null;
 };
+
+export type DeleteExpenseQ = Id[];
 
 export type GetExpensesQ = Expense[];
 export type AddExpenseQ = Expense;

@@ -1,7 +1,6 @@
 import { authApi } from "@/lib/config/api.config";
 import { generateNestErrors } from "@/lib/functions";
 import { URLs } from "@/lib/url";
-import { Id, ToastType } from "@/types/global";
 import {
   AddServiceF,
   AddServiceQ,
@@ -10,10 +9,66 @@ import {
   UpdateServiceF,
   UpdateServiceQ,
 } from "@/types/service";
+import {
+  Id,
+  Limit,
+  Page,
+  PaginationReturnType,
+  Search,
+  ToastType,
+} from "@/types/global";
 
-export const getServices = async (toast: ToastType): Promise<GetServicesQ> => {
+export const getServices = async (
+  toast: ToastType,
+  page: Page,
+  limit: Limit
+): Promise<PaginationReturnType<GetServicesQ>> => {
   try {
-    const { data, status } = await authApi.get<GetServicesQ>(URLs.GET_SERVICES);
+    const { data, status } = await authApi.get<
+      PaginationReturnType<GetServicesQ>
+    >(`${URLs.GET_SERVICES}?page=${page}&limit=${limit}`);
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+export const getDeletedService = async (
+  toast: ToastType,
+  page: Page,
+  limit: Limit
+): Promise<PaginationReturnType<GetServicesQ>> => {
+  try {
+    const { data, status } = await authApi.get<
+      PaginationReturnType<GetServicesQ>
+    >(`${URLs.GET_DELETED_SERVICES}?page=${page}&limit=${limit}`);
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+export const searchServices = async (
+  toast: ToastType,
+  search: Search
+): Promise<GetServicesQ> => {
+  try {
+    const { data, status } = await authApi.get<GetServicesQ>(
+      `${URLs.SEARCH_SERVICES}?search=${search}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+export const searchDeletedServices = async (
+  toast: ToastType,
+  search: Search
+): Promise<GetServicesQ> => {
+  try {
+    const { data, status } = await authApi.get<GetServicesQ>(
+      `${URLs.SEARCH_DELETED_SERVICES}?search=${search}`
+    );
     return data;
   } catch (error: any) {
     throw generateNestErrors(error, toast);
@@ -23,7 +78,7 @@ export const getServices = async (toast: ToastType): Promise<GetServicesQ> => {
 export const addService = async (form: AddServiceF): Promise<AddServiceQ> => {
   try {
     const { data, status } = await authApi.post<AddServiceQ>(
-      URLs.ADD_SERVICE,
+      `${URLs.ADD_SERVICE}`,
       form
     );
     return data;
@@ -31,7 +86,6 @@ export const addService = async (form: AddServiceF): Promise<AddServiceQ> => {
     throw error;
   }
 };
-
 export const updateService = async (
   form: UpdateServiceF,
   id: Id
@@ -46,14 +100,47 @@ export const updateService = async (
     throw error;
   }
 };
+export const deleteService = async (ids: Id[]): Promise<DeleteServiceQ> => {
+  const idArray = Array.isArray(ids) ? ids : [ids];
+  const requests = idArray.map(async (id, index) => {
+    try {
+      // Add a timeout between requests
+      if (index > 0) {
+        await new Promise((resolve) => setTimeout(resolve, 1000)); // Adjust the timeout duration as needed
+      }
+      const { data, status } = await authApi.delete(
+        `${URLs.DELETE_SERVICE}/${id}`
+      );
+      return id;
+    } catch (error) {
+      throw error;
+    }
+  });
 
-export const deleteService = async (id: Id): Promise<DeleteServiceQ> => {
-  try {
-    const { data, status } = await authApi.delete<DeleteServiceQ>(
-      `${URLs.DELETE_SERVICE}/${id}`
-    );
-    return data;
-  } catch (error: any) {
-    throw error;
-  }
+  // Wait for all requests to complete
+  const results = await Promise.all(requests);
+
+  return results.filter((result) => result !== null);
+};
+export const restoreService = async (ids: Id[]): Promise<DeleteServiceQ> => {
+  const idArray = Array.isArray(ids) ? ids : [ids];
+  const requests = idArray.map(async (id, index) => {
+    try {
+      // Add a timeout between requests
+      if (index > 0) {
+        await new Promise((resolve) => setTimeout(resolve, 1000)); // Adjust the timeout duration as needed
+      }
+      const { data, status } = await authApi.put(
+        `${URLs.RESTORE_SERVICE}/${id}`
+      );
+      return id;
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  // Wait for all requests to complete
+  const results = await Promise.all(requests);
+
+  return results.filter((result) => result !== null);
 };

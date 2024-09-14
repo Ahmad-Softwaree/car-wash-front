@@ -14,6 +14,7 @@ import { useAuthContext } from "@/context/AuthContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 import { useNavigate } from "react-router-dom";
 import { generateNestErrors } from "@/lib/functions";
+import { ENUMs } from "@/lib/enum";
 
 export const useGetAuth = () => {
   const { toast } = useToast();
@@ -27,7 +28,7 @@ export const useGetAuth = () => {
 };
 export const useLogin = () => {
   const { toast } = useToast();
-  const queryCustomer = useQueryClient();
+  const queryClient = useQueryClient();
   const { dispatch } = useAuthContext();
   const navigate = useNavigate();
 
@@ -43,8 +44,8 @@ export const useLogin = () => {
         type: CONTEXT_TYPEs.SET_USER,
         payload: data,
       });
-      queryCustomer.setQueryData([QUERY_KEYs.AUTH], data.user);
-      return navigate("/داشبۆرد");
+      queryClient.setQueryData([QUERY_KEYs.AUTH], data.user);
+      return navigate(`${ENUMs.GENERAL_SECTION}/${ENUMs.DASHBOARD_PART}`);
     },
     onError: (error: NestError) => {
       return generateNestErrors(error, toast);
@@ -54,7 +55,7 @@ export const useLogin = () => {
 
 export const useLogout = () => {
   const { toast } = useToast();
-  const queryCustomer = useQueryClient();
+  const queryClient = useQueryClient();
   const { dispatch } = useAuthContext();
   const navigate = useNavigate();
 
@@ -70,7 +71,7 @@ export const useLogout = () => {
         type: CONTEXT_TYPEs.REMOVE_USER,
       });
 
-      queryCustomer.setQueryData([QUERY_KEYs.AUTH], null);
+      queryClient.setQueryData([QUERY_KEYs.AUTH], null);
       return navigate("/login");
     },
     onError: (error: NestError) => {
@@ -81,7 +82,7 @@ export const useLogout = () => {
 
 export const useChangeProfile = () => {
   const { toast } = useToast();
-  const queryCustomer = useQueryClient();
+  const queryClient = useQueryClient();
   const { dispatch } = useAuthContext();
 
   return useMutation({
@@ -97,7 +98,7 @@ export const useChangeProfile = () => {
         type: CONTEXT_TYPEs.SET_USER,
         payload: { user: data },
       });
-      return queryCustomer.setQueryData([QUERY_KEYs.AUTH], data);
+      return queryClient.setQueryData([QUERY_KEYs.AUTH], data);
     },
     onError: (error: NestError) => {
       return generateNestErrors(error, toast);

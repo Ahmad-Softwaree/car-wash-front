@@ -1,6 +1,5 @@
 import Container from "@/components/ui/Container";
 import { lazy, useMemo, useState } from "react";
-import { CircleFadingPlus } from "lucide-react";
 const Dialog = lazy(() => import("@/components/shared/Dialog"));
 const UserCard = lazy(() => import("@/components/cards/UserCard"));
 
@@ -37,7 +36,10 @@ import AddButton from "@/components/shared/AddButton";
 import RestoreModal from "@/components/ui/RestoreModal";
 import Filter from "@/components/shared/Filter";
 import { Role } from "@/types/role";
-import { useGetRoles } from "@/lib/react-query/query/role.query";
+import {
+  useGetRoles,
+  useGetRolesSelection,
+} from "@/lib/react-query/query/role.query";
 
 const Users = () => {
   const { deleted_page } = useCheckDeletedPage();
@@ -49,7 +51,7 @@ const Users = () => {
   const [isRestore, setIsRestore] = useState<boolean>(false);
 
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
-  const { data: roles } = useGetRoles();
+  const { data: roles } = useGetRolesSelection();
   const {
     dispatch,
     state: { checked, check_type },
@@ -70,19 +72,21 @@ const Users = () => {
               />
             )}
           </div>
-          {checked?.length > 0 && (
-            <div className="flex flex-row justify-center items-center gap-2 dark-light">
-              {deleted_page ? (
-                <RestoreChip onClick={() => setIsRestore(true)} />
-              ) : (
-                <DeleteChip onClick={() => setIsDelete(true)} />
-              )}
-              <p dir="ltr">
-                {checked.length} / {ENUMs.CHECK_LIMIT}
-              </p>
-            </div>
-          )}
-          {!deleted_page && <AddButton onClick={() => setIsAddOpen(true)} />}
+          <div className="w-full flex flex-row justify-end items-center gap-3">
+            {checked?.length > 0 && (
+              <div className="flex flex-row justify-center items-center gap-2 dark-light">
+                {deleted_page ? (
+                  <RestoreChip onClick={() => setIsRestore(true)} />
+                ) : (
+                  <DeleteChip onClick={() => setIsDelete(true)} />
+                )}
+                <p dir="ltr">
+                  {checked.length} / {ENUMs.CHECK_LIMIT}
+                </p>
+              </div>
+            )}
+            {!deleted_page && <AddButton onClick={() => setIsAddOpen(true)} />}
+          </div>
         </div>
         <Pagination<User[]>
           queryFn={() =>
@@ -126,9 +130,9 @@ const Users = () => {
             );
 
             return (
-              <div className="w-full max-w-full overflow-x-auto">
+              <div className="w-full max-w-full overflow-x-auto max-h-screen hide-scroll">
                 <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
-                  <THead className="sticky top-0   table-dark-light z-10 w-full  default-border">
+                  <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
                     <Tr>
                       <Th className="text-right text-sm !p-4 !min-w-[100px]">
                         <InputGroup className="checkbox-input">
@@ -183,7 +187,7 @@ const Users = () => {
                       ))}
 
                       {!isFetchingNextPage && hasNextPage && !isSearched && (
-                        <Tr role="button" className="h-[20px]" ref={ref}></Tr>
+                        <div className="h-[20px]" ref={ref}></div>
                       )}
                     </>
                   </TBody>

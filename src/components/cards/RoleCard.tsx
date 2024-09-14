@@ -1,81 +1,213 @@
 import { RoleCardProps } from "@/types/role";
-import { PenLine, Trash } from "lucide-react";
+import { Info, PenTool, RotateCcw, Trash2, X } from "lucide-react";
 import { useState } from "react";
 import Dialog from "../shared/Dialog";
-import RoleForm from "../forms/RoleForm";
+import RoleDetailCard from "./RoleDetailCard";
 import DeleteModal from "../ui/DeleteModal";
-import { useDeleteRole } from "@/lib/react-query/query/role.query";
+import {
+  useDeleteRole,
+  useRestoreRole,
+} from "@/lib/react-query/query/role.query";
+import RoleForm from "../forms/RoleForm";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
+import { Td, Tr } from "../ui";
+import InputGroup from "../ui/InputGroup";
+import Input from "../ui/Input";
+import Tooltip from "@mui/joy/Tooltip";
+import Chip from "@mui/joy/Chip";
+import CustomClose from "../shared/CustomClose";
+import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
+import RestoreModal from "../ui/RestoreModal";
 
-const RoleCard = ({ id, name, parts }: RoleCardProps) => {
+const RoleCard = ({
+  name,
+  parts,
+  id,
+  index = -1,
+  ...others
+}: RoleCardProps) => {
+  const { deleted_page } = useCheckDeletedPage();
+
+  const [detail, setDetail] = useState<boolean>(false);
+  const [update, setUpdate] = useState<boolean>(false);
   const [isDelete, setIsDelete] = useState<boolean>(false);
-  const [isUpdate, setIsUpdate] = useState<boolean>(false);
-  const { mutateAsync, isPending } = useDeleteRole(id);
-  const { dispatch } = useGlobalContext();
-  const closeUpdate = () => {
+  const [isRestore, setIsRestore] = useState<boolean>(false);
+
+  const {
+    dispatch,
+    state: { checked },
+  } = useGlobalContext();
+  const { mutateAsync, isPending } = useDeleteRole();
+  const { mutateAsync: restore, isPending: restoreLoading } = useRestoreRole();
+
+  const updateOnClose = () => {
     dispatch({
       type: CONTEXT_TYPEs.SET_OLD_DATA,
       payload: null,
     });
-    setIsUpdate(false);
+    setUpdate(false);
   };
   return (
     <>
-      <article
-        className="p-3 rounded-md cursor-pointer flex justify-between items-center shadow-md bg-white px-5 min-w-[200px] w-fit"
-        id={id.toLocaleString()}>
-        <p className="text-sm font-bold font-bukra">{name}</p>
-        <div className="flex flex-row justify-center items-center gap-4">
-          <Trash
-            onClick={() => setIsDelete(true)}
-            className="cursor-pointer text-red-500"
+      <Tr
+        className={`default-border table-row-hover  ${
+          checked?.includes(id) ? "table-row-include" : "table-row-normal"
+        }`}
+        key={id}>
+        <Td className="!p-3">
+          <InputGroup className="checkbox-input">
+            <Input
+              onChange={() => {
+                if (checked?.includes(id)) {
+                  dispatch({
+                    type: CONTEXT_TYPEs.UNCHECK,
+                    payload: id,
+                  });
+                } else {
+                  dispatch({
+                    type: CONTEXT_TYPEs.CHECK,
+                    payload: id,
+                  });
+                }
+              }}
+              checked={checked.includes(id)}
+              type="checkbox"
+              className="cursor-pointer"
+            />
+          </InputGroup>
+        </Td>
+        <Td className="!p-3">
+          <p className="text-right font-light font-poppins text-sm">
+            {index != -1 ? index + 1 : 0}
+          </p>
+        </Td>
+        <Td className="!p-3">
+          <p className="text-right font-light font-bukra text-sm">{name}</p>
+        </Td>
+
+        <Td className="!p-3 cup flex flex-row gap-2">
+          {!deleted_page && (
+            <>
+              <Tooltip
+                placement="top"
+                title="سڕینەوە"
+                color="danger"
+                variant="soft">
+                <Chip
+                  onClick={() => setIsDelete(true)}
+                  variant="soft"
+                  color="danger">
+                  <Trash2 className="w-7 h-7 p-1 cursor-pointer" />
+                </Chip>
+              </Tooltip>
+              <Tooltip
+                placement="top"
+                title="چاککردن"
+                color="success"
+                variant="soft">
+                <Chip
+                  onClick={() => {
+                    dispatch({
+                      type: CONTEXT_TYPEs.SET_OLD_DATA,
+                      payload: {
+                        parts,
+                        name,
+                        id,
+                        ...others,
+                      },
+                    });
+                    setUpdate(true);
+                  }}
+                  variant="soft"
+                  color="success">
+                  <PenTool className="w-7 h-7 p-1 cursor-pointer" />
+                </Chip>
+              </Tooltip>
+            </>
+          )}
+          {deleted_page && (
+            <Tooltip
+              placement="top"
+              title="گێڕانەوە"
+              color="warning"
+              variant="soft">
+              <Chip
+                onClick={() => setIsRestore(true)}
+                variant="soft"
+                color="warning">
+                <RotateCcw className="w-7 h-7 p-1 cursor-pointer" />
+              </Chip>
+            </Tooltip>
+          )}
+          <Tooltip
+            placement="top"
+            title="زانیاری"
+            color="primary"
+            variant="soft">
+            <Chip
+              onClick={() => setDetail(true)}
+              variant="soft"
+              color="primary">
+              <Info className="w-7 h-7 p-1 cursor-pointer" />
+            </Chip>
+          </Tooltip>
+        </Td>
+      </Tr>
+      {detail && (
+        <Dialog
+          className="!p-5 rounded-md"
+          maxWidth={500}
+          maxHeight={`90%`}
+          isOpen={detail}
+          onClose={() => setDetail(false)}>
+          <CustomClose onClick={() => setDetail(false)} />
+          <RoleDetailCard
+            id={id}
+            name={name}
+            parts={parts}
+            {...others}
+            onClose={() => setDetail(false)}
           />
-          <PenLine
-            onClick={() => {
-              setIsUpdate(true);
-              dispatch({
-                type: CONTEXT_TYPEs.SET_OLD_DATA,
-                payload: {
-                  id,
-                  name,
-                  parts,
-                },
-              });
-            }}
-            className="cursor-pointer text-green-500"
-          />
-        </div>
-      </article>
+        </Dialog>
+      )}
       {isDelete && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={300}
+          maxWidth={500}
           maxHeight={`90%`}
           isOpen={isDelete}
           onClose={() => setIsDelete(false)}>
           <DeleteModal
-            deleteFunction={() => mutateAsync()}
+            deleteFunction={() => mutateAsync([id])}
             loading={isPending}
             onClose={() => setIsDelete(false)}
           />
         </Dialog>
       )}
-      {isUpdate && (
+      {isRestore && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={400}
+          maxWidth={500}
           maxHeight={`90%`}
-          isOpen={isUpdate}
-          onClose={closeUpdate}>
-          <RoleForm state="update" onClose={closeUpdate} />
-          <button
-            name="closeRoleFormButton"
-            onClick={closeUpdate}
-            type="button"
-            className="w-full  my-2 bg-red-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
-            <p className="font-bold font-bukra">هەڵوەشاندنەوە</p>
-          </button>
+          isOpen={isRestore}
+          onClose={() => setIsRestore(false)}>
+          <RestoreModal
+            deleteFunction={() => restore([id])}
+            loading={restoreLoading}
+            onClose={() => setIsRestore(false)}
+          />
+        </Dialog>
+      )}
+      {update && (
+        <Dialog
+          className="!p-5 rounded-md"
+          maxWidth={800}
+          maxHeight={`90%`}
+          isOpen={update}
+          onClose={updateOnClose}>
+          <CustomClose onClick={() => updateOnClose()} />
+          <RoleForm state="update" onClose={updateOnClose} />
         </Dialog>
       )}
     </>

@@ -2,7 +2,7 @@ import Image from "@/components/ui/Image";
 import Card from "@mui/joy/Card";
 import Divider from "@mui/joy/Divider";
 import Chip from "@mui/joy/Chip";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { ReactElement, useState } from "react";
 import Accordion from "@mui/joy/Accordion";
 import AccordionDetails from "@mui/joy/AccordionDetails";
@@ -21,7 +21,9 @@ import {
   Key,
   LoaderPinwheel,
   LogOut,
+  PackageSearch,
   Palette,
+  Presentation,
   ReceiptText,
   UserCog,
   Users,
@@ -36,18 +38,30 @@ import { SideLink } from "@/types/global";
 import { ENUMs } from "@/lib/enum";
 
 export const sideLinks: SideLink[] = [
+  //GENERAL
   {
     id: crypto.randomUUID() as string,
     icon: <Gauge />,
-    name: "داشبۆرد",
-    link: "/داشبۆرد",
+    name: ENUMs.DASHBOARD_PART as string,
+    link: `/${ENUMs.GENERAL_SECTION as string}/${
+      ENUMs.DASHBOARD_PART as string
+    }`,
+    type: "general",
+  },
+  {
+    id: crypto.randomUUID() as string,
+    icon: <Presentation />,
+    name: ENUMs.RESERVATION_PART as string,
+    link: `/${ENUMs.GENERAL_SECTION as string}/${
+      ENUMs.RESERVATION_PART as string
+    }`,
     type: "general",
   },
   {
     id: crypto.randomUUID() as string,
     icon: <Database />,
-    name: "کۆگا",
-    link: "/کۆگا",
+    name: ENUMs.KOGA_PART as string,
+    link: `/${ENUMs.GENERAL_SECTION as string}/${ENUMs.KOGA_PART as string}`,
     type: "general",
   },
   {
@@ -64,6 +78,7 @@ export const sideLinks: SideLink[] = [
     link: "/دروستکردنی_پسولە",
     type: "general",
   },
+  //MANAGE
   {
     id: crypto.randomUUID() as string,
     icon: <UserCog />,
@@ -78,6 +93,83 @@ export const sideLinks: SideLink[] = [
     link: `/${ENUMs.MANAGE_SECTION as string}/${ENUMs.CUSTOMER_PART as string}`,
     type: "manage",
   },
+  //REPORT
+  {
+    id: crypto.randomUUID() as string,
+    icon: <CircleDollarSign />,
+    name: ENUMs.EXPENSE_PART as string,
+    link: `/${ENUMs.REPORT_SECTION as string}/${ENUMs.EXPENSE_PART as string}`,
+    type: "report",
+  },
+  {
+    id: crypto.randomUUID() as string,
+    icon: <ClipboardPlus />,
+    name: ENUMs.REPORT_PART as string,
+    link: `/${ENUMs.REPORT_SECTION as string}/${ENUMs.REPORT_PART as string}`,
+    type: "report",
+  },
+  //SETTING
+  {
+    id: crypto.randomUUID() as string,
+    icon: <Key />,
+    name: ENUMs.ROLE_PART as string,
+    link: `/${ENUMs.SETTING_SECTION as string}/${ENUMs.ROLE_PART as string}`,
+    type: "setting",
+  },
+  {
+    id: crypto.randomUUID() as string,
+    icon: <Palette />,
+    name: ENUMs.COLOR_PART as string,
+    link: `/${ENUMs.SETTING_SECTION as string}/${ENUMs.COLOR_PART as string}`,
+    type: "setting",
+  },
+
+  {
+    id: crypto.randomUUID() as string,
+    icon: <Car />,
+    name: ENUMs.CAR_TYPE_PART as string,
+    link: `/${ENUMs.SETTING_SECTION as string}/${
+      ENUMs.CAR_TYPE_PART as string
+    }`,
+    type: "setting",
+  },
+
+  {
+    id: crypto.randomUUID() as string,
+    icon: <PackageSearch />,
+    name: ENUMs.ITEM_TYPE_PART as string,
+    link: `/${ENUMs.SETTING_SECTION as string}/${
+      ENUMs.ITEM_TYPE_PART as string
+    }`,
+    type: "setting",
+  },
+  {
+    id: crypto.randomUUID() as string,
+    icon: <CarFront />,
+    name: ENUMs.CAR_MODEL_PART as string,
+    link: `/${ENUMs.SETTING_SECTION as string}/${
+      ENUMs.CAR_MODEL_PART as string
+    }`,
+    type: "setting",
+  },
+
+  {
+    id: crypto.randomUUID() as string,
+    icon: <LoaderPinwheel />,
+    name: ENUMs.SERVICE_PART as string,
+    link: `/${ENUMs.SETTING_SECTION as string}/${ENUMs.SERVICE_PART as string}`,
+    type: "setting",
+  },
+  {
+    id: crypto.randomUUID() as string,
+    icon: <HandCoins />,
+    name: ENUMs.EXPENSE_TYPE_PART as string,
+    link: `/${ENUMs.SETTING_SECTION as string}/${
+      ENUMs.EXPENSE_TYPE_PART as string
+    }`,
+    type: "setting",
+  },
+  //DELETED
   {
     id: crypto.randomUUID() as string,
     icon: <UserCog />,
@@ -87,66 +179,108 @@ export const sideLinks: SideLink[] = [
   },
   {
     id: crypto.randomUUID() as string,
+    icon: <Users />,
+    name: ENUMs.CUSTOMER_PART as string,
+    link: `/${ENUMs.DELETED_SECTION as string}/${
+      ENUMs.CUSTOMER_PART as string
+    }`,
+    type: "deleted",
+  },
+  {
+    id: crypto.randomUUID() as string,
     icon: <CircleDollarSign />,
-    name: "خەرجی",
-    link: "/خەرجی",
-    type: "report",
+    name: ENUMs.EXPENSE_PART as string,
+    link: `/${ENUMs.DELETED_SECTION as string}/${ENUMs.EXPENSE_PART as string}`,
+    type: "deleted",
   },
   {
     id: crypto.randomUUID() as string,
     icon: <ClipboardPlus />,
-    name: "ڕاپۆرتەکان",
-    link: "/ڕاپۆرتەکان",
-    type: "report",
+    name: ENUMs.REPORT_PART as string,
+    link: `/${ENUMs.DELETED_SECTION as string}/${ENUMs.REPORT_PART as string}`,
+    type: "deleted",
   },
 
   {
     id: crypto.randomUUID() as string,
     icon: <Key />,
-    name: "ڕۆڵەکان",
-    link: "/ڕۆڵەکان",
-    type: "setting",
+    name: ENUMs.ROLE_PART as string,
+    link: `/${ENUMs.DELETED_SECTION as string}/${ENUMs.ROLE_PART as string}`,
+    type: "deleted",
   },
   {
     id: crypto.randomUUID() as string,
     icon: <Palette />,
-    name: "ڕەنگەکان",
-    link: "/ڕەنگەکان",
-    type: "setting",
+    name: ENUMs.COLOR_PART as string,
+    link: `/${ENUMs.DELETED_SECTION as string}/${ENUMs.COLOR_PART as string}`,
+    type: "deleted",
   },
 
   {
     id: crypto.randomUUID() as string,
     icon: <Car />,
-    name: "جۆرەکانی ئۆتۆمبێل",
-    link: "/جۆرەکانی ئۆتۆمبێل",
-    type: "setting",
+    name: ENUMs.CAR_TYPE_PART as string,
+    link: `/${ENUMs.DELETED_SECTION as string}/${
+      ENUMs.CAR_TYPE_PART as string
+    }`,
+    type: "deleted",
+  },
+
+  {
+    id: crypto.randomUUID() as string,
+    icon: <PackageSearch />,
+    name: ENUMs.ITEM_TYPE_PART as string,
+    link: `/${ENUMs.DELETED_SECTION as string}/${
+      ENUMs.ITEM_TYPE_PART as string
+    }`,
+    type: "deleted",
   },
   {
     id: crypto.randomUUID() as string,
     icon: <CarFront />,
-    name: "مۆدێلەکانی ئۆتۆمبێل",
-    link: "/مۆدێلەکانی ئۆتۆمبێل",
-    type: "setting",
+    name: ENUMs.CAR_MODEL_PART as string,
+    link: `/${ENUMs.DELETED_SECTION as string}/${
+      ENUMs.CAR_MODEL_PART as string
+    }`,
+    type: "deleted",
   },
 
   {
     id: crypto.randomUUID() as string,
     icon: <LoaderPinwheel />,
-    name: "خزمەتگوزاریەکان",
-    link: "/خزمەتگوزاریەکان",
-    type: "setting",
+    name: ENUMs.SERVICE_PART as string,
+    link: `/${ENUMs.DELETED_SECTION as string}/${ENUMs.SERVICE_PART as string}`,
+    type: "deleted",
   },
   {
     id: crypto.randomUUID() as string,
     icon: <HandCoins />,
-    name: "جۆرەکانی خەرجی",
-    link: "/جۆرەکانی خەرجی",
-    type: "setting",
+    name: ENUMs.EXPENSE_TYPE_PART as string,
+    link: `/${ENUMs.DELETED_SECTION as string}/${
+      ENUMs.EXPENSE_TYPE_PART as string
+    }`,
+    type: "deleted",
   },
 ];
 
 const Sidebar = () => {
+  let path = useLocation()
+    .pathname.split("/")
+    .map((val) => decodeURIComponent(val));
+
+  const [index, setIndex] = useState<number | null>(
+    path.includes(ENUMs.GENERAL_SECTION as string)
+      ? 0
+      : path.includes(ENUMs.MANAGE_SECTION as string)
+      ? 1
+      : path.includes(ENUMs.REPORT_SECTION as string)
+      ? 2
+      : path.includes(ENUMs.SETTING_SECTION as string)
+      ? 3
+      : path.includes(ENUMs.DELETED_SECTION as string)
+      ? 4
+      : 0
+  );
   const [expand, setExpand] = useState<boolean>(false);
   const { mutateAsync, isPending } = useLogout();
 
@@ -170,7 +304,7 @@ const Sidebar = () => {
     return (
       userParts.includes(text) && (
         <NavLink
-          className="!font-bukra w-full !text-white flex flex-row justify-start items-center gap-3 transition-all duration-200 hover:!bg-white hover:!bg-opacity-20 p-2 rounded-md"
+          className="!font-bukra w-full !text-white flex flex-row justify-start items-center gap-3 transition-all duration-200 hover:!bg-white hover:!bg-opacity-20 p-2 rounded-md my-1"
           to={link}>
           {Icon}
           <p className="!text-xs">{text}</p>
@@ -201,7 +335,9 @@ const Sidebar = () => {
         className={`z-[100] h-full fixed ${
           expand ? "right-0" : "-right-full"
         } lg:right-0 transition-all duration-500 bg-primary-500 top-0 bottom-0 w-[250px]bg-primary-600 border-l-2 p-4 border-solid border-primary-300 border-opacity-40 flex flex-col justify-start items-center gap-2 overflow-y-auto`}>
-        <Link to={`/داشبۆرد`} className="w-full mb-3">
+        <Link
+          to={`/${ENUMs.GENERAL_SECTION}/${ENUMs.DASHBOARD_PART}`}
+          className="w-full mb-3">
           <Card
             size="sm"
             className="w-full !bg-primary-600 !border-2 !border-solid !border-primary-300 !border-opacity-40 !flex !flex-row !justify-center !items-center !gap-5">
@@ -214,19 +350,21 @@ const Sidebar = () => {
             </p>
           </Card>
         </Link>
-        <AccordionGroup sx={{ maxWidth: 400 }}>
+        <AccordionGroup sx={{ maxWidth: 400 }} transition="0.2s ease">
           <>
-            <Accordion defaultExpanded>
+            <Accordion
+              expanded={index === 0}
+              onChange={(event, expanded) => {
+                setIndex(expanded ? 0 : null);
+              }}>
               <AccordionSummary>
-                <Divider>
-                  <Chip
-                    className="!font-bukra my-3"
-                    variant="soft"
-                    color="neutral"
-                    size="sm">
-                    گشتی
-                  </Chip>
-                </Divider>
+                <Chip
+                  className="!font-bukra my-3"
+                  variant="soft"
+                  color="neutral"
+                  size="sm">
+                  گشتی
+                </Chip>
               </AccordionSummary>
 
               <AccordionDetails>
@@ -246,17 +384,20 @@ const Sidebar = () => {
               </AccordionDetails>
             </Accordion>
 
-            <Accordion defaultExpanded>
+            <Accordion
+              expanded={index === 1}
+              onChange={(event, expanded) => {
+                setIndex(expanded ? 1 : null);
+              }}
+              defaultExpanded>
               <AccordionSummary>
-                <Divider>
-                  <Chip
-                    className="!font-bukra my-3"
-                    variant="soft"
-                    color="neutral"
-                    size="sm">
-                    بەڕێوەبردن
-                  </Chip>
-                </Divider>
+                <Chip
+                  className="!font-bukra my-3"
+                  variant="soft"
+                  color="neutral"
+                  size="sm">
+                  بەڕێوەبردن
+                </Chip>
               </AccordionSummary>
 
               <AccordionDetails>
@@ -275,17 +416,20 @@ const Sidebar = () => {
                   ))}
               </AccordionDetails>
             </Accordion>
-            <Accordion defaultExpanded>
+            <Accordion
+              expanded={index === 2}
+              onChange={(event, expanded) => {
+                setIndex(expanded ? 2 : null);
+              }}
+              defaultExpanded>
               <AccordionSummary>
-                <Divider>
-                  <Chip
-                    className="!font-bukra my-3"
-                    variant="soft"
-                    color="neutral"
-                    size="sm">
-                    ڕاپۆرت
-                  </Chip>
-                </Divider>
+                <Chip
+                  className="!font-bukra my-3"
+                  variant="soft"
+                  color="neutral"
+                  size="sm">
+                  ڕاپۆرت
+                </Chip>
               </AccordionSummary>
 
               <AccordionDetails>
@@ -304,17 +448,20 @@ const Sidebar = () => {
                   ))}
               </AccordionDetails>
             </Accordion>
-            <Accordion defaultExpanded>
+            <Accordion
+              expanded={index === 3}
+              onChange={(event, expanded) => {
+                setIndex(expanded ? 3 : null);
+              }}
+              defaultExpanded>
               <AccordionSummary>
-                <Divider>
-                  <Chip
-                    className="!font-bukra my-3"
-                    variant="soft"
-                    color="neutral"
-                    size="sm">
-                    ڕێکخستن
-                  </Chip>
-                </Divider>
+                <Chip
+                  className="!font-bukra my-3"
+                  variant="soft"
+                  color="neutral"
+                  size="sm">
+                  ڕێکخستن
+                </Chip>
               </AccordionSummary>
 
               <AccordionDetails>
@@ -333,17 +480,20 @@ const Sidebar = () => {
                   ))}
               </AccordionDetails>
             </Accordion>
-            <Accordion defaultExpanded>
+            <Accordion
+              expanded={index === 4}
+              onChange={(event, expanded) => {
+                setIndex(expanded ? 4 : null);
+              }}
+              defaultExpanded>
               <AccordionSummary>
-                <Divider>
-                  <Chip
-                    className="!font-bukra my-3"
-                    variant="soft"
-                    color="neutral"
-                    size="sm">
-                    سڕاوەکان
-                  </Chip>
-                </Divider>
+                <Chip
+                  className="!font-bukra my-3"
+                  variant="soft"
+                  color="neutral"
+                  size="sm">
+                  سڕاوەکان
+                </Chip>
               </AccordionSummary>
 
               <AccordionDetails>

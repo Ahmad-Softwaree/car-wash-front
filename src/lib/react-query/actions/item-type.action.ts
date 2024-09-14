@@ -2,13 +2,13 @@ import { authApi } from "@/lib/config/api.config";
 import { generateNestErrors } from "@/lib/functions";
 import { URLs } from "@/lib/url";
 import {
-  AddCustomerF,
-  AddCustomerQ,
-  DeleteCustomerQ,
-  GetCustomersQ,
-  UpdateCustomerF,
-  UpdateCustomerQ,
-} from "@/types/customer";
+  AddItemTypeF,
+  AddItemTypeQ,
+  DeleteItemTypeQ,
+  GetItemTypesQ,
+  UpdateItemTypeF,
+  UpdateItemTypeQ,
+} from "@/types/item-type";
 import {
   Id,
   Limit,
@@ -18,56 +18,26 @@ import {
   ToastType,
 } from "@/types/global";
 
-export const getCustomers = async (
+export const getItemTypes = async (
   toast: ToastType,
   page: Page,
   limit: Limit
-): Promise<PaginationReturnType<GetCustomersQ>> => {
+): Promise<PaginationReturnType<GetItemTypesQ>> => {
   try {
     const { data, status } = await authApi.get<
-      PaginationReturnType<GetCustomersQ>
-    >(`${URLs.GET_CUSTOMERS}?page=${page}&limit=${limit}`);
+      PaginationReturnType<GetItemTypesQ>
+    >(`${URLs.GET_ITEM_TYPES}?page=${page}&limit=${limit}`);
     return data;
   } catch (error: any) {
     throw generateNestErrors(error, toast);
   }
 };
-
-export const getDeletedCustomer = async (
-  toast: ToastType,
-  page: Page,
-  limit: Limit
-): Promise<PaginationReturnType<GetCustomersQ>> => {
+export const getItemTypeSelection = async (
+  toast: ToastType
+): Promise<GetItemTypesQ> => {
   try {
-    const { data, status } = await authApi.get<
-      PaginationReturnType<GetCustomersQ>
-    >(`${URLs.GET_DELETED_CUSTOMERS}?page=${page}&limit=${limit}`);
-    return data;
-  } catch (error: any) {
-    throw generateNestErrors(error, toast);
-  }
-};
-
-export const searchCustomers = async (
-  toast: ToastType,
-  search: Search
-): Promise<GetCustomersQ> => {
-  try {
-    const { data, status } = await authApi.get<GetCustomersQ>(
-      `${URLs.SEARCH_CUSTOMERS}?search=${search}`
-    );
-    return data;
-  } catch (error: any) {
-    throw generateNestErrors(error, toast);
-  }
-};
-export const searchDeletedCustomers = async (
-  toast: ToastType,
-  search: Search
-): Promise<GetCustomersQ> => {
-  try {
-    const { data, status } = await authApi.get<GetCustomersQ>(
-      `${URLs.SEARCH_DELETED_CUSTOMERS}?search=${search}`
+    const { data, status } = await authApi.get<GetItemTypesQ>(
+      `${URLs.GET_ITEM_TYPES_SELECTED}`
     );
     return data;
   } catch (error: any) {
@@ -75,12 +45,54 @@ export const searchDeletedCustomers = async (
   }
 };
 
-export const addCustomer = async (
-  form: AddCustomerF
-): Promise<AddCustomerQ> => {
+export const getDeletedItemType = async (
+  toast: ToastType,
+  page: Page,
+  limit: Limit
+): Promise<PaginationReturnType<GetItemTypesQ>> => {
   try {
-    const { data, status } = await authApi.post<AddCustomerQ>(
-      `${URLs.ADD_CUSTOMER}`,
+    const { data, status } = await authApi.get<
+      PaginationReturnType<GetItemTypesQ>
+    >(`${URLs.GET_DELETED_ITEM_TYPES}?page=${page}&limit=${limit}`);
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+export const searchItemTypes = async (
+  toast: ToastType,
+  search: Search
+): Promise<GetItemTypesQ> => {
+  try {
+    const { data, status } = await authApi.get<GetItemTypesQ>(
+      `${URLs.SEARCH_ITEM_TYPES}?search=${search}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+export const searchDeletedItemTypes = async (
+  toast: ToastType,
+  search: Search
+): Promise<GetItemTypesQ> => {
+  try {
+    const { data, status } = await authApi.get<GetItemTypesQ>(
+      `${URLs.SEARCH_DELETED_ITEM_TYPES}?search=${search}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+export const addItemType = async (
+  form: AddItemTypeF
+): Promise<AddItemTypeQ> => {
+  try {
+    const { data, status } = await authApi.post<AddItemTypeQ>(
+      `${URLs.ADD_ITEM_TYPE}`,
       form
     );
     return data;
@@ -88,13 +100,13 @@ export const addCustomer = async (
     throw error;
   }
 };
-export const updateCustomer = async (
-  form: UpdateCustomerF,
+export const updateItemType = async (
+  form: UpdateItemTypeF,
   id: Id
-): Promise<UpdateCustomerQ> => {
+): Promise<UpdateItemTypeQ> => {
   try {
-    const { data, status } = await authApi.put<UpdateCustomerQ>(
-      `${URLs.UPDATE_CUSTOMER}/${id}`,
+    const { data, status } = await authApi.put<UpdateItemTypeQ>(
+      `${URLs.UPDATE_ITEM_TYPE}/${id}`,
       form
     );
     return data;
@@ -102,7 +114,7 @@ export const updateCustomer = async (
     throw error;
   }
 };
-export const deleteCustomer = async (ids: Id[]): Promise<DeleteCustomerQ> => {
+export const deleteItemType = async (ids: Id[]): Promise<DeleteItemTypeQ> => {
   const idArray = Array.isArray(ids) ? ids : [ids];
   const requests = idArray.map(async (id, index) => {
     try {
@@ -111,7 +123,7 @@ export const deleteCustomer = async (ids: Id[]): Promise<DeleteCustomerQ> => {
         await new Promise((resolve) => setTimeout(resolve, 1000)); // Adjust the timeout duration as needed
       }
       const { data, status } = await authApi.delete(
-        `${URLs.DELETE_CUSTOMER}/${id}`
+        `${URLs.DELETE_ITEM_TYPE}/${id}`
       );
       return id;
     } catch (error) {
@@ -124,7 +136,7 @@ export const deleteCustomer = async (ids: Id[]): Promise<DeleteCustomerQ> => {
 
   return results.filter((result) => result !== null);
 };
-export const restoreCustomer = async (ids: Id[]): Promise<DeleteCustomerQ> => {
+export const restoreItemType = async (ids: Id[]): Promise<DeleteItemTypeQ> => {
   const idArray = Array.isArray(ids) ? ids : [ids];
   const requests = idArray.map(async (id, index) => {
     try {
@@ -133,7 +145,7 @@ export const restoreCustomer = async (ids: Id[]): Promise<DeleteCustomerQ> => {
         await new Promise((resolve) => setTimeout(resolve, 1000)); // Adjust the timeout duration as needed
       }
       const { data, status } = await authApi.put(
-        `${URLs.RESTORE_CUSTOMER}/${id}`
+        `${URLs.RESTORE_ITEM_TYPE}/${id}`
       );
       return id;
     } catch (error) {

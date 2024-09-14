@@ -16,7 +16,8 @@ const ItemDetailCard = ({
   image_name,
   image_url,
   barcode,
-  type,
+  type_name,
+  type_id,
   item_purchase_price,
   item_sell_price,
   note,
@@ -86,12 +87,11 @@ const ItemDetailCard = ({
           </Label>
           <InputGroup className="w-full text-input 0">
             <Input
-              value={type}
-              name="type"
+              value={type_name}
+              name="type_name"
               disabled
               type="text"
               dir="ltr"
-              placeholder="ناوی بەکارهێنەر"
               className="placeholder:text-right w-full font-poppins placeholder:!font-bukra text-xs md:!text-sm placeholder:!text-sm"
             />
           </InputGroup>

@@ -7,7 +7,7 @@ export type Service = {
   id: Id;
 };
 
-export type ServiceCardProps = Service;
+export type ServiceCardProps = Service & { index?: number };
 
 export type AddServiceInputs = {
   name: string;
@@ -20,4 +20,4 @@ export type AddServiceQ = Service;
 
 export type UpdateServiceQ = Service;
 
-export type DeleteServiceQ = Id;
+export type DeleteServiceQ = Id[];

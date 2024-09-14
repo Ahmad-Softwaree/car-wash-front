@@ -14,7 +14,8 @@ export type ItemCard = {
 };
 export type ItemInformation = {
   barcode: string;
-  type: string;
+  type_name: string;
+  type_id: number;
   item_purchase_price: number;
   item_sell_price: number;
   note: string;
@@ -36,7 +37,7 @@ export type MostItemCardProps = Item;
 export type AddItemInputs = {
   name: string;
   barcode: string;
-  type: string;
+  type_id: number;
   quantity: number;
   item_purchase_price: number;
   item_sell_price: number;

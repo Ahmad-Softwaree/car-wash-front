@@ -56,8 +56,14 @@ const RoleForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
     if (onClose) onClose();
   };
   useEffect(() => {
-    if (globalState.oldData) reset(globalState.oldData);
-  }, [state]);
+    if (globalState.oldData) {
+      console.log(globalState.oldData);
+      setSelectedParts(
+        globalState?.oldData?.parts?.map((val: Part, _index: number) => val.id)
+      );
+      reset(globalState.oldData);
+    }
+  }, [state, globalState]);
   return (
     <Form
       className="w-full flex flex-col justify-center items-start gap-5 min-w-none "
@@ -71,14 +77,14 @@ const RoleForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
           {...register("name", { required: true })}
           name="name"
           placeholder="ناو بە کوردی"
-          className="w-full"
+          className="w-full text-sm"
         />
       </InputGroup>
       <p className="font-bold font-bukra text-md text-nowrap mt-5">
         چ بەشێکی بۆ کراوە بێ؟
       </p>
 
-      <div className="w-full flex flex-row justify-start items-center gap-3 flex-wrap mb-2">
+      <div className="w-full flex flex-row justify-start items-center gap-3 flex-wrap mb-2 dark-light">
         {partsLoading ? (
           <Loading>
             <TailSpin />
@@ -91,10 +97,8 @@ const RoleForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
                 <article
                   key={val.id}
                   onClick={() => addPart(val.id)}
-                  className={`p-3 rounded-md cursor-pointer flex justify-between items-center shadow-md  px-5 w-fit ${
-                    checked != -1
-                      ? "bg-primary-500 text-white"
-                      : "bg-white text-black"
+                  className={`p-3 rounded-md cursor-pointer flex justify-between items-center shadow-md  px-5 w-fit text-sm ${
+                    checked != -1 ? "!bg-blue-500 !text-white" : "light-dark"
                   }`}
                   id={val.id.toLocaleString()}>
                   <p className="text-sm font-bold font-bukra">{val.name}</p>
@@ -108,12 +112,13 @@ const RoleForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
           </NoData>
         )}
       </div>
+
       <MyButton
         loading={loading}
-        name="addRoleButton"
+        name="addUserButton"
         type="submit"
-        className="w-full bg-black-600 rounded-sm p-4 text-white flex flex-row justify-center items-center gap-2">
-        <p className="font-bold font-bukra">جێبەجێکردن</p>
+        className=" bg-sky-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2">
+        <p className="font-light text-sm font-bukra">جێبەجێکردن</p>
       </MyButton>
     </Form>
   );

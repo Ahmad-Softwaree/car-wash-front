@@ -7,7 +7,7 @@ export type Color = {
   id: Id;
 };
 
-export type ColorCardProps = Color;
+export type ColorCardProps = Color & { index?: number };
 
 export type AddColorInputs = {
   name: string;
@@ -20,4 +20,4 @@ export type AddColorQ = Color;
 
 export type UpdateColorQ = Color;
 
-export type DeleteColorQ = Id;
+export type DeleteColorQ = Id[];

@@ -1,7 +1,6 @@
 import { authApi } from "@/lib/config/api.config";
 import { generateNestErrors } from "@/lib/functions";
 import { URLs } from "@/lib/url";
-import { Id, ToastType } from "@/types/global";
 import {
   AddExpenseTypeF,
   AddExpenseTypeQ,
@@ -10,13 +9,76 @@ import {
   UpdateExpenseTypeF,
   UpdateExpenseTypeQ,
 } from "@/types/expense-type";
+import {
+  Id,
+  Limit,
+  Page,
+  PaginationReturnType,
+  Search,
+  ToastType,
+} from "@/types/global";
 
 export const getExpenseTypes = async (
+  toast: ToastType,
+  page: Page,
+  limit: Limit
+): Promise<PaginationReturnType<GetExpenseTypesQ>> => {
+  try {
+    const { data, status } = await authApi.get<
+      PaginationReturnType<GetExpenseTypesQ>
+    >(`${URLs.GET_EXPENSE_TYPES}?page=${page}&limit=${limit}`);
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+export const getExpenseTypesSelection = async (
   toast: ToastType
 ): Promise<GetExpenseTypesQ> => {
   try {
     const { data, status } = await authApi.get<GetExpenseTypesQ>(
-      URLs.GET_EXPENSE_TYPES
+      `${URLs.GET_EXPENSE_TYPES_SELECTION}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+export const getDeletedExpenseType = async (
+  toast: ToastType,
+  page: Page,
+  limit: Limit
+): Promise<PaginationReturnType<GetExpenseTypesQ>> => {
+  try {
+    const { data, status } = await authApi.get<
+      PaginationReturnType<GetExpenseTypesQ>
+    >(`${URLs.GET_DELETED_EXPENSE_TYPES}?page=${page}&limit=${limit}`);
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+export const searchExpenseTypes = async (
+  toast: ToastType,
+  search: Search
+): Promise<GetExpenseTypesQ> => {
+  try {
+    const { data, status } = await authApi.get<GetExpenseTypesQ>(
+      `${URLs.SEARCH_EXPENSE_TYPES}?search=${search}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+export const searchDeletedExpenseTypes = async (
+  toast: ToastType,
+  search: Search
+): Promise<GetExpenseTypesQ> => {
+  try {
+    const { data, status } = await authApi.get<GetExpenseTypesQ>(
+      `${URLs.SEARCH_DELETED_EXPENSE_TYPES}?search=${search}`
     );
     return data;
   } catch (error: any) {
@@ -29,7 +91,7 @@ export const addExpenseType = async (
 ): Promise<AddExpenseTypeQ> => {
   try {
     const { data, status } = await authApi.post<AddExpenseTypeQ>(
-      URLs.ADD_EXPENSE_TYPE,
+      `${URLs.ADD_EXPENSE_TYPE}`,
       form
     );
     return data;
@@ -37,7 +99,6 @@ export const addExpenseType = async (
     throw error;
   }
 };
-
 export const updateExpenseType = async (
   form: UpdateExpenseTypeF,
   id: Id
@@ -52,16 +113,51 @@ export const updateExpenseType = async (
     throw error;
   }
 };
-
 export const deleteExpenseType = async (
-  id: Id
+  ids: Id[]
 ): Promise<DeleteExpenseTypeQ> => {
-  try {
-    const { data, status } = await authApi.delete<DeleteExpenseTypeQ>(
-      `${URLs.DELETE_EXPENSE_TYPE}/${id}`
-    );
-    return data;
-  } catch (error: any) {
-    throw error;
-  }
+  const idArray = Array.isArray(ids) ? ids : [ids];
+  const requests = idArray.map(async (id, index) => {
+    try {
+      // Add a timeout between requests
+      if (index > 0) {
+        await new Promise((resolve) => setTimeout(resolve, 1000)); // Adjust the timeout duration as needed
+      }
+      const { data, status } = await authApi.delete(
+        `${URLs.DELETE_EXPENSE_TYPE}/${id}`
+      );
+      return id;
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  // Wait for all requests to complete
+  const results = await Promise.all(requests);
+
+  return results.filter((result) => result !== null);
+};
+export const restoreExpenseType = async (
+  ids: Id[]
+): Promise<DeleteExpenseTypeQ> => {
+  const idArray = Array.isArray(ids) ? ids : [ids];
+  const requests = idArray.map(async (id, index) => {
+    try {
+      // Add a timeout between requests
+      if (index > 0) {
+        await new Promise((resolve) => setTimeout(resolve, 1000)); // Adjust the timeout duration as needed
+      }
+      const { data, status } = await authApi.put(
+        `${URLs.RESTORE_EXPENSE_TYPE}/${id}`
+      );
+      return id;
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  // Wait for all requests to complete
+  const results = await Promise.all(requests);
+
+  return results.filter((result) => result !== null);
 };

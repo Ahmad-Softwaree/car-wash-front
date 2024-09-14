@@ -76,7 +76,7 @@ export const useGetItemById = (id: Id | null) => {
 
 export const useAddItem = () => {
   const { toast } = useToast();
-  const queryCustomer = useQueryClient();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (form: AddItemF): Promise<AddItemQ> => {
@@ -111,7 +111,7 @@ export const useAddItem = () => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
       });
-      return queryCustomer.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.ITEMS_IN_ADD],
       });
     },
@@ -122,7 +122,7 @@ export const useAddItem = () => {
 };
 export const useUpdateItem = (id: Id) => {
   const { toast } = useToast();
-  const queryCustomer = useQueryClient();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (form: UpdateItemF): Promise<UpdateItemQ> => {
@@ -174,10 +174,10 @@ export const useUpdateItem = (id: Id) => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
       });
-      queryCustomer.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.ITEM_BY_ID, id],
       });
-      return queryCustomer.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.ITEMS_IN_ADD],
       });
     },
@@ -188,7 +188,7 @@ export const useUpdateItem = (id: Id) => {
 };
 export const useCountItem = (id: Id) => {
   const { toast } = useToast();
-  const queryCustomer = useQueryClient();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (form: CountItemF): Promise<CountItemQ> =>
@@ -198,7 +198,7 @@ export const useCountItem = (id: Id) => {
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
       });
-      return queryCustomer.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.LESS_ITEMS],
       });
     },
@@ -209,7 +209,7 @@ export const useCountItem = (id: Id) => {
 };
 export const useDeleteItem = () => {
   const { toast } = useToast();
-  const queryCustomer = useQueryClient();
+  const queryClient = useQueryClient();
   const { dispatch } = useGlobalContext();
 
   return useMutation({
@@ -223,13 +223,13 @@ export const useDeleteItem = () => {
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
       });
-      queryCustomer.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.ITEM_BY_ID],
       });
-      queryCustomer.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.ITEMS],
       });
-      return queryCustomer.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.ITEMS_IN_ADD],
       });
     },
