@@ -3,7 +3,8 @@ export type CONTEXT_TYPES =
   | "SET_USER"
   | "REMOVE_USER"
   | "CHECK"
-  | "UNCHECK";
+  | "UNCHECK"
+  | "THEME";
 
 export const CONTEXT_TYPEs: { [key in CONTEXT_TYPES]: key } = {
   SET_OLD_DATA: "SET_OLD_DATA",
@@ -11,4 +12,5 @@ export const CONTEXT_TYPEs: { [key in CONTEXT_TYPES]: key } = {
   REMOVE_USER: "REMOVE_USER",
   CHECK: "CHECK",
   UNCHECK: "UNCHECK",
+  THEME: "THEME",
 };

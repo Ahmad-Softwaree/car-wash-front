@@ -11,6 +11,7 @@ export type ItemCard = {
   image_name: string;
   name: string;
   quantity: number;
+  actual_quantity: number;
 };
 export type ItemInformation = {
   barcode: string;
@@ -24,9 +25,10 @@ export type ItemInformation = {
 export type ItemLess = ItemCard & {};
 export type LessItemCardProps = ItemCard & {};
 
-export type PsulaItemCardProps = ItemCard & {
-  onClick: (id: Id) => void;
-};
+export type PsulaItemCardProps = ItemCard &
+  ItemInformation & {
+    onClick: (id: Id) => void;
+  };
 export type Item = ItemCard & ItemInformation;
 
 export type AddItemCardProps = ItemCard & {

@@ -10,7 +10,9 @@ export type ENUM_TYPES =
   //PARAM
   | "SEARCH_PARAM"
   | "FILTER_PARAM"
-  | "DATE_PARAM"
+  | "FROM_PARAM"
+  | "TO_PARAM"
+  | "SELL_PARAM"
 
   //FIREBASE
   | "ITEM_BUCKET"
@@ -32,6 +34,7 @@ export type ENUM_TYPES =
   | "DASHBOARD_PART"
   | "RESERVATION_PART"
   | "KOGA_PART"
+  | "CREATE_PSULA_PART"
 
   //SECTIONS
   | "MANAGE_SECTION"
@@ -52,7 +55,9 @@ export const ENUMs: { [key in ENUM_TYPES]: key | string | number } = {
   //PARAM
   SEARCH_PARAM: `search`,
   FILTER_PARAM: `filter`,
-  DATE_PARAM: `date`,
+  FROM_PARAM: `from`,
+  TO_PARAM: `to`,
+  SELL_PARAM: "sell_id",
 
   //FIREBASE
   ITEM_BUCKET: "item",
@@ -74,6 +79,7 @@ export const ENUMs: { [key in ENUM_TYPES]: key | string | number } = {
   DASHBOARD_PART: "داشبۆرد",
   RESERVATION_PART: "نۆرەکان",
   KOGA_PART: "کۆگا",
+  CREATE_PSULA_PART: "دروستکردنی پسولە",
   //SECTIONS
 
   MANAGE_SECTION: "بەڕێوەبردن",

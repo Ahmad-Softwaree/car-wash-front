@@ -5,51 +5,35 @@ import Typography from "../shared/Typography";
 import FormatMoney from "../shared/FormatMoney";
 
 const PsulaItemCard = ({
-  id,
-  image_url,
+  name,
+  quantity,
   image_name,
-  title,
-  cost,
-  frosh,
+  image_url,
+  barcode,
+  type_name,
+  type_id,
+  item_purchase_price,
+  item_sell_price,
+  note,
+  id,
   onClick,
 }: PsulaItemCardProps) => {
   const { size } = useScreenSize();
   return (
     <article
       onClick={() => onClick(id)}
-      className="w-full h-full flex flex-row justify-start items-center  bg-white shadow-lg rounded-xl">
+      className="dark-light !default-border w-full h-full flex flex-col justify-center items-center  text-center shadow-lg rounded-xl">
       <Image
-        className="relative   rounded-r-xl"
-        width={
-          size == "xl" || size == "lg"
-            ? "120px"
-            : size == "md"
-            ? "110px"
-            : "80px"
-        }
-        height={`100%`}
+        className="relative   rounded-t-xl"
+        width={`100%`}
+        height={`50%`}
         image={image_url}
         alt={image_name}
       />
-      <div className="flex flex-col justify-start items-start gap-2  px-2">
-        <Typography className="text-right !text-sm " text={title}>
-          <p>{title}</p>
+      <div className="flex flex-col justify-start items-start gap-2  px-2 h-[50%] pt-2">
+        <Typography className="text-center !text-sm " text={name}>
+          <p>{name}</p>
         </Typography>
-        <div className="w-full flex flex-row gap-1 justify-start">
-          <p className="text-center  text-sm font-light text-opacity-50 opacity-50">
-            بڕی تێچوو:
-          </p>
-          <p className="font-poppins  text-opacity-50 opacity-50">$</p>
-          <FormatMoney className="text-center text-sm font-light text-opacity-50 opacity-50 font-poppins">
-            {cost}
-          </FormatMoney>
-        </div>
-        <div className="w-full flex flex-row gap-1 justify-start">
-          <p className="text-center  text-md font-bold font-poppins">$</p>
-          <FormatMoney className="text-center  text-md font-bold font-poppins">
-            {frosh}
-          </FormatMoney>
-        </div>
       </div>
     </article>
   );

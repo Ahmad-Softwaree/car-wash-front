@@ -10,23 +10,31 @@ import {
   UpdateColorQ,
 } from "@/types/color";
 import {
+  From,
   Id,
   Limit,
   Page,
   PaginationReturnType,
   Search,
+  To,
   ToastType,
 } from "@/types/global";
 
 export const getColors = async (
   toast: ToastType,
   page: Page,
-  limit: Limit
+  limit: Limit,
+  from: From,
+  to: To
 ): Promise<PaginationReturnType<GetColorsQ>> => {
   try {
     const { data, status } = await authApi.get<
       PaginationReturnType<GetColorsQ>
-    >(`${URLs.GET_COLORS}?page=${page}&limit=${limit}`);
+    >(
+      `${URLs.GET_COLORS}?page=${page}&limit=${limit}&from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}`
+    );
     return data;
   } catch (error: any) {
     throw generateNestErrors(error, toast);
@@ -36,12 +44,18 @@ export const getColors = async (
 export const getDeletedColor = async (
   toast: ToastType,
   page: Page,
-  limit: Limit
+  limit: Limit,
+  from: From,
+  to: To
 ): Promise<PaginationReturnType<GetColorsQ>> => {
   try {
     const { data, status } = await authApi.get<
       PaginationReturnType<GetColorsQ>
-    >(`${URLs.GET_DELETED_COLORS}?page=${page}&limit=${limit}`);
+    >(
+      `${URLs.GET_DELETED_COLORS}?page=${page}&limit=${limit}&from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}`
+    );
     return data;
   } catch (error: any) {
     throw generateNestErrors(error, toast);

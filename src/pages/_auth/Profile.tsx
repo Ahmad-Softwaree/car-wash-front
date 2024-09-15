@@ -200,7 +200,7 @@ const Profile = () => {
             name="updateProfile"
             title="updateProfile"
             disabled={isPending}
-            className="ml-auto mr-3 text-xs p-2 rounded-lg bg-primary-800 px-4 bg-opacity-50 border-2 border-solid border-primary-800 transition-all duration-200 hover:bg-opacity-100">
+            className="ml-auto mr-3 text-xs p-2 rounded-lg bg-sky-800 px-4 bg-opacity-50 border-2 border-solid border-primary-800 transition-all duration-200 hover:bg-opacity-100">
             دڵنیابوونەوە
           </MyButton>
         </Form>

@@ -1,4 +1,6 @@
 import Container from "@/components/ui/Container";
+import { useGlobalContext } from "@/context/GlobalContext";
+import { CONTEXT_TYPEs } from "@/context/types";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { ChevronLeft, SunMoon } from "lucide-react";
 import { useLocation } from "react-router-dom"; // To get the current URL
@@ -6,6 +8,7 @@ import { useLocation } from "react-router-dom"; // To get the current URL
 const Header = () => {
   const location = useLocation();
   const breadcrumbs = generateBreadcrumbs(location.pathname);
+  const { dispatch } = useGlobalContext();
   return (
     <Container
       as={`header`}
@@ -38,8 +41,16 @@ const Header = () => {
             mode.classList.toggle("dark");
             if (!mode.classList.contains("dark")) {
               localStorage.setItem("theme", "light");
+              dispatch({
+                type: CONTEXT_TYPEs.THEME,
+                payload: "light",
+              });
             } else {
               localStorage.setItem("theme", "dark");
+              dispatch({
+                type: CONTEXT_TYPEs.THEME,
+                payload: "dark",
+              });
             }
           }}
           className="cursor-pointer p-3 w-12 h-12 light-dark rounded-full"

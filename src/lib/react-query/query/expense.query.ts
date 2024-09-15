@@ -23,17 +23,19 @@ import {
 import { QUERY_KEYs } from "../key";
 import {
   Filter,
+  From,
   Id,
   NestError,
   Page,
   PaginationReturnType,
+  To,
 } from "@/types/global";
 import { ENUMs } from "@/lib/enum";
 import { generateNestErrors } from "@/lib/functions";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 
-export const useGetExpenses = (filter: Filter) => {
+export const useGetExpenses = (filter: Filter, from: From, to: To) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.EXPENSES],
@@ -42,14 +44,14 @@ export const useGetExpenses = (filter: Filter) => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetExpensesQ>> =>
-      getExpenses(toast, pageParam, ENUMs.LIMIT as number, filter),
+      getExpenses(toast, pageParam, ENUMs.LIMIT as number, filter, from, to),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
   });
 };
-export const useGetDeletedExpenses = (filter: Filter) => {
+export const useGetDeletedExpenses = (filter: Filter, from: From, to: To) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.DELETED_EXPENSES],
@@ -58,7 +60,14 @@ export const useGetDeletedExpenses = (filter: Filter) => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetExpensesQ>> =>
-      getDeletedExpense(toast, pageParam, ENUMs.LIMIT as number, filter),
+      getDeletedExpense(
+        toast,
+        pageParam,
+        ENUMs.LIMIT as number,
+        filter,
+        from,
+        to
+      ),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;

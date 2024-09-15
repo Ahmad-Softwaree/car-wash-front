@@ -26,18 +26,20 @@ import {
 } from "../actions/item-type.action";
 import { QUERY_KEYs } from "../key";
 import {
+  From,
   Id,
   NestError,
   Page,
   PaginationReturnType,
   Search,
+  To,
 } from "@/types/global";
 import { ENUMs } from "@/lib/enum";
 import { generateNestErrors } from "@/lib/functions";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 
-export const useGetItemTypes = () => {
+export const useGetItemTypes = (from: From, to: To) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.ITEM_TYPES],
@@ -46,7 +48,7 @@ export const useGetItemTypes = () => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetItemTypesQ>> =>
-      getItemTypes(toast, pageParam, ENUMs.LIMIT as number),
+      getItemTypes(toast, pageParam, ENUMs.LIMIT as number, from, to),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
@@ -61,7 +63,7 @@ export const useGetItemTypesSelection = () => {
     retry: 0,
   });
 };
-export const useGetDeletedItemTypes = () => {
+export const useGetDeletedItemTypes = (from: From, to: To) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.DELETED_ITEM_TYPES],
@@ -70,7 +72,7 @@ export const useGetDeletedItemTypes = () => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetItemTypesQ>> =>
-      getDeletedItemType(toast, pageParam, ENUMs.LIMIT as number),
+      getDeletedItemType(toast, pageParam, ENUMs.LIMIT as number, from, to),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;

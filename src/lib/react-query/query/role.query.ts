@@ -26,18 +26,20 @@ import {
 } from "../actions/role.action";
 import { QUERY_KEYs } from "../key";
 import {
+  From,
   Id,
   NestError,
   Page,
   PaginationReturnType,
   Search,
+  To,
 } from "@/types/global";
 import { ENUMs } from "@/lib/enum";
 import { generateNestErrors } from "@/lib/functions";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 
-export const useGetRoles = () => {
+export const useGetRoles = (from: From, to: To) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.ROLES],
@@ -46,7 +48,7 @@ export const useGetRoles = () => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetRolesQ>> =>
-      getRoles(toast, pageParam, ENUMs.LIMIT as number),
+      getRoles(toast, pageParam, ENUMs.LIMIT as number, from, to),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
@@ -61,7 +63,7 @@ export const useGetRolesSelection = () => {
     retry: 0,
   });
 };
-export const useGetDeletedRoles = () => {
+export const useGetDeletedRoles = (from: From, to: To) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.DELETED_ROLES],
@@ -70,7 +72,7 @@ export const useGetDeletedRoles = () => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetRolesQ>> =>
-      getDeletedRole(toast, pageParam, ENUMs.LIMIT as number),
+      getDeletedRole(toast, pageParam, ENUMs.LIMIT as number, from, to),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;

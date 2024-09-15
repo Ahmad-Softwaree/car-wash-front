@@ -26,18 +26,20 @@ import {
 } from "../actions/expense-type.action";
 import { QUERY_KEYs } from "../key";
 import {
+  From,
   Id,
   NestError,
   Page,
   PaginationReturnType,
   Search,
+  To,
 } from "@/types/global";
 import { ENUMs } from "@/lib/enum";
 import { generateNestErrors } from "@/lib/functions";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 
-export const useGetExpenseTypes = () => {
+export const useGetExpenseTypes = (from: From, to: To) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.EXPENSE_TYPES],
@@ -46,7 +48,7 @@ export const useGetExpenseTypes = () => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetExpenseTypesQ>> =>
-      getExpenseTypes(toast, pageParam, ENUMs.LIMIT as number),
+      getExpenseTypes(toast, pageParam, ENUMs.LIMIT as number, from, to),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
@@ -61,7 +63,7 @@ export const useGetExpenseTypesSelection = () => {
     retry: 0,
   });
 };
-export const useGetDeletedExpenseTypes = () => {
+export const useGetDeletedExpenseTypes = (from: From, to: To) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.DELETED_EXPENSE_TYPES],
@@ -70,7 +72,7 @@ export const useGetDeletedExpenseTypes = () => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetExpenseTypesQ>> =>
-      getDeletedExpenseType(toast, pageParam, ENUMs.LIMIT as number),
+      getDeletedExpenseType(toast, pageParam, ENUMs.LIMIT as number, from, to),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;

@@ -5,6 +5,18 @@ import { User } from "@/types/auth";
 import { Part } from "@/types/part";
 
 const { VITE_JWT_SECRET, VITE_COOKIE_NAME } = import.meta.env;
+export function timestampToDateString(timestamp: number): string {
+  // Create a Date object from the timestamp
+  const date = new Date(timestamp);
+
+  // Extract year, month, and day from the Date object
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+  const day = String(date.getDate()).padStart(2, "0");
+
+  // Format the date string as YYYY-MM-DD
+  return `${year}-${month}-${day}`;
+}
 
 export function formatDateToDDMMYY(dateString: string): string {
   const date = new Date(dateString);
@@ -63,47 +75,16 @@ export function parseDate(dateString: string): Date {
   return date;
 }
 
-export const roleName = (role: string): string => {
-  if (role == "ئەدمین") return "ئەدمین";
-
-  if (role == "accountant") return "محاسب";
-  if (role == "cashier") return "کاشێر";
-  return "کارمەند";
-};
-
-export const cityName = (city: string): string => {
-  if (city == "Sulaymaniah") return "سلێمانی";
-  if (city == "سلێمانی") return "سلێمانی";
-  if (city == "Duhok") return "دهۆک";
-  if (city == "Karkuk") return "کەرکوک";
-
-  return "سلێمانی";
-};
-export const partName = (part: Part): string => {
-  if (part.name == "selling") return "فرۆشتن";
-  if (part.name == "koga") return "کۆگا";
-  if (part.name == "add") return "زیادکردن";
-  if (part.name == "psula") return "پسوڵەکان";
-  if (part.name == "create_psula") return "دروستکردنی پسولە";
-  if (part.name == "dept") return "قەرز";
-  if (part.name == "less") return "مەوادی کەمبوو";
-  if (part.name == "mandub") return "مەندووبەکان";
-  if (part.name == "employee") return "بەکارهێنەران";
-  if (part.name == "users") return "بەکارهێنەران";
-  if (part.name == "customers") return "کڕیارەکان";
-  if (part.name == "expense") return "خەرجی";
-  if (part.name == "report") return "ڕاپۆرتەکان";
-  if (part.name == "case") return "قاسە";
-  if (part.name == "setting") return "ڕێخکستن";
-
-  return "";
-};
-
 export const generateToken = async (user: User) => {
   if (!user) throw Error("There is no user");
   let token = JSON.stringify({ id: user.id, name: user.name });
   return token;
 };
+export function parseDateToTimestamp(dateString: string): string {
+  const decodedDate = decodeURIComponent(dateString);
+  const date = new Date(decodedDate);
+  return date.getTime().toString();
+}
 
 export const toggleAuth = (type: "add" | "remove", token?: Token) => {
   if (type == "add" && token) {

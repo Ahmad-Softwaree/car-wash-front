@@ -95,33 +95,38 @@ export type URLS =
   | "RESTORE_EXPENSE_TYPE"
   | "SEARCH_DELETED_EXPENSE_TYPES"
   | "SEARCH_EXPENSE_TYPES"
+  //ITEM
+  | "GET_ITEMS"
+  | "GET_ITEM"
+  | "ADD_ITEM"
+  | "GET_ITEM_BY_ID"
+  | "UPDATE_ITEM"
+  | "DELETE_ITEM"
+  | "COUNT_ITEM"
+  | "SEARCH_ITEMS"
+  | "RESTORE_ITEM"
+  | "SEARCH_DELETED_ITEMS"
+  | "GET_DELETED_ITEMS"
+  //SELL
+  | "GET_SELL"
+  | "RESTORE_SELL"
+  | "ADD_SELL"
+  | "UPDATE_SELL"
+  | "DELETE_SELL"
+  | "ADD_ITEM_TO_SELL"
+  | "UPDATE_ITEM_IN_SELL"
+  | "DELETE_ITEM_IN_SELL"
+  | "GET_SELL_ITEMS"
+
   //
-  | "GET_CASE_MONEY"
-  | "GET_CASE_HISTORY"
-  | "GET_CASE_CHART"
-  | "GET_REPORT_MONEY_DATA"
-  | "GET_REPORT_MOST_ITEM"
-  | "GET_REPORT_MOST_ORDER"
-  | "GET_SETTINGS"
-  | "UPDATE_SETTING"
   | "GET_PARTS"
   | "ADD_PART"
   | "UPDATE_PART"
   | "DELETE_PART"
-  | "GET_ITEMS"
-  | "GET_ITEM"
-  | "ADD_ITEM"
   | "GET_AUTH"
   | "CHANGE_PROFILE"
   | "LOGIN"
-  | "GET_ITEM_IN_ADD"
-  | "GET_ITEM_BY_ID"
-  | "UPDATE_ITEM"
-  | "DELETE_ITEM"
-  | "GET_ROLE_PARTS"
-  | "GET_LESS_ITEMS"
-  | "COUNT_ITEM"
-  | "SEARCH_ITEMS";
+  | "GET_ROLE_PARTS";
 
 export const URLs: { [key in URLS]: string } = {
   //USER
@@ -224,34 +229,42 @@ export const URLs: { [key in URLS]: string } = {
   SEARCH_DELETED_SERVICES: `${API}/service/deleted_search`,
   SEARCH_SERVICES: `${API}/service/search`,
 
+  //ITEM
+  GET_ITEM_BY_ID: `${API}/item`,
+  UPDATE_ITEM: `${API}/item`,
+  DELETE_ITEM: `${API}/item`,
+  RESTORE_ITEM: `${API}/item/restore`,
+
+  SEARCH_ITEMS: `${API}/item/search`,
+  GET_ITEMS: `${API}/item`,
+  SEARCH_DELETED_ITEMS: `${API}/item/deleted_search`,
+  GET_DELETED_ITEMS: `${API}/item/deleted`,
+  GET_ITEM: `${API}/item`,
+  COUNT_ITEM: `${API}/item/count`,
+  ADD_ITEM: `${API}/item`,
+
+  //SELL
+  RESTORE_SELL: `${API}/sell/restore`,
+  ADD_SELL: `${API}/sell`,
+  UPDATE_SELL: `${API}/sell`,
+  DELETE_SELL: `${API}/sell`,
+  GET_SELL: `${API}/sell/sell`,
+  GET_SELL_ITEMS: `${API}/sell/sell_items`,
+
+  ADD_ITEM_TO_SELL: `${API}/sell/add_item_to_sell`,
+  UPDATE_ITEM_IN_SELL: `${API}/sell/update_item_in_sell`,
+  DELETE_ITEM_IN_SELL: `${API}/sell/delete_item_in_sell`,
+
   //
-  GET_CASE_MONEY: `${API}/case`,
-  GET_CASE_HISTORY: `${API}/case/history`,
-  GET_CASE_CHART: `${API}/case/chart`,
-  GET_REPORT_MONEY_DATA: `${API}/case/money`,
-  GET_REPORT_MOST_ITEM: `${API}/case/most`,
-  GET_REPORT_MOST_ORDER: `${API}/case/most`,
-  GET_SETTINGS: `${API}/setting`,
-  UPDATE_SETTING: `${API}/setting`,
 
   GET_PARTS: `${API}/part`,
   ADD_PART: `${API}/part`,
   UPDATE_PART: `${API}/part`,
   DELETE_PART: `${API}/part`,
 
-  GET_ITEMS: `${API}/item`,
-  GET_ITEM: `${API}/item`,
-  GET_LESS_ITEMS: `${API}/item/less`,
-  COUNT_ITEM: `${API}/item/count`,
-  ADD_ITEM: `${API}/item`,
   GET_AUTH: `${API}/auth`,
   CHANGE_PROFILE: `${API}/auth/change_profile`,
   LOGIN: `${API}/auth/login`,
-  GET_ITEM_IN_ADD: `${API}/item/in_add`,
-  GET_ITEM_BY_ID: `${API}/item`,
-  UPDATE_ITEM: `${API}/item`,
-  DELETE_ITEM: `${API}/item`,
-  SEARCH_ITEMS: `${API}/item/search`,
 
   GET_ROLE_PARTS: `${API}/role-part/role`,
 };

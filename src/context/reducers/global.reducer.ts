@@ -6,6 +6,7 @@ export const globalState: GlobalStateType = {
   oldData: null,
   checked: [],
   check_type: "one",
+  theme: (localStorage.getItem("theme") as "dark" | "light") || "dark",
 };
 
 export const globalReducer = (
@@ -47,6 +48,11 @@ export const globalReducer = (
         checked: state.checked.filter(
           (val: any, _index: number) => val != payload
         ),
+      };
+    case CONTEXT_TYPEs.THEME:
+      return {
+        ...state,
+        theme: payload,
       };
     default:
       return state;

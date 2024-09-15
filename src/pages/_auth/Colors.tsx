@@ -34,6 +34,7 @@ import RestoreChip from "@/components/shared/RestoreChip";
 import Search from "@/components/shared/Search";
 import AddButton from "@/components/shared/AddButton";
 import RestoreModal from "@/components/ui/RestoreModal";
+import DatePicker from "@/components/shared/DatePicker";
 
 const Colors = () => {
   const { deleted_page } = useCheckDeletedPage();
@@ -55,7 +56,7 @@ const Colors = () => {
         as={`div`}
         className="w-full gap-10 flex flex-col justify-start items-start">
         <div className="w-full gap-5 flex flex-row justify-between">
-          <div className="w-full flex flex-row justify-start items-center gap-3">
+          <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
             <Search />
           </div>
           <div className="w-full flex flex-row justify-end items-center gap-3">
@@ -74,9 +75,19 @@ const Colors = () => {
             {!deleted_page && <AddButton onClick={() => setIsAddOpen(true)} />}
           </div>
         </div>
+        <DatePicker />
+
         <Pagination<Color[]>
           queryFn={() =>
-            deleted_page ? useGetDeletedColors() : useGetColors()
+            deleted_page
+              ? useGetDeletedColors(
+                  searchParam.get(ENUMs.FROM_PARAM as string) || "",
+                  searchParam.get(ENUMs.TO_PARAM as string) || ""
+                )
+              : useGetColors(
+                  searchParam.get(ENUMs.FROM_PARAM as string) || "",
+                  searchParam.get(ENUMs.TO_PARAM as string) || ""
+                )
           }
           searchQueryFn={() =>
             deleted_page
@@ -112,7 +123,7 @@ const Colors = () => {
             );
 
             return (
-              <div className="w-full max-w-full overflow-x-auto max-h-screen hide-scroll">
+              <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
                 <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
                   <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
                     <Tr>

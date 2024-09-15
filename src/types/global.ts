@@ -7,7 +7,6 @@ import {
   ReactElement,
   ReactNode,
 } from "react";
-import { CaseHistory } from "./case";
 import { FieldError, FieldValues, SubmitHandler } from "react-hook-form";
 import { ChangeProfileQ, GetAuthQ, GetUsersQ, User } from "./auth";
 import { Item, ItemCard, ItemInformation, ItemLess } from "./items";
@@ -70,7 +69,6 @@ export type QueryResult<T extends DataTypes> = {
 export type DataTypes =
   | Item[]
   | Expense[]
-  | CaseHistory[]
   | GetAuthQ
   | ChangeProfileQ
   | GetUsersQ
@@ -117,6 +115,8 @@ export type Page = undefined | number;
 export type Limit = undefined | number;
 export type Search = undefined | string;
 export type Filter = undefined | string;
+export type From = undefined | string;
+export type To = undefined | string;
 
 export type SearchString = string | number;
 
@@ -257,6 +257,7 @@ export type GlobalStateType = {
   oldData: any;
   checked: any;
   check_type: "all" | "one";
+  theme: "dark" | "light";
 };
 export type GlobalPayload<T> = {
   oldData: T;

@@ -20,6 +20,8 @@ const Pagination = <T extends DataTypes>({
   const [searchParam] = useSearchParams();
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string);
   let filter = searchParam.get(ENUMs.FILTER_PARAM as string);
+  let from = searchParam.get(ENUMs.FROM_PARAM as string);
+  let to = searchParam.get(ENUMs.TO_PARAM as string);
 
   const {
     isFetchingNextPage,
@@ -35,9 +37,12 @@ const Pagination = <T extends DataTypes>({
 
   const debounceValue = useDebounce(search, ENUMs.DEBOUNCE as number);
   const debounceFilter = useDebounce(filter, ENUMs.DEBOUNCE as number);
+  const debounceFrom = useDebounce(from, ENUMs.DEBOUNCE as number);
+  const debounceTo = useDebounce(to, ENUMs.DEBOUNCE as number);
+
   useEffect(() => {
     refetch();
-  }, [debounceFilter, refetch]);
+  }, [debounceFilter, debounceFrom, debounceTo, refetch]);
   const {
     data: searchData,
     isLoading: searchLoading,

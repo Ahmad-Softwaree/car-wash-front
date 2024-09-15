@@ -1,6 +1,5 @@
 import Container from "@/components/ui/Container";
 import { lazy, useMemo, useState } from "react";
-import { CircleFadingPlus, Search, Trash2, X } from "lucide-react";
 const Dialog = lazy(() => import("@/components/shared/Dialog"));
 
 import Pagination from "@/components/providers/Pagination";
@@ -8,18 +7,19 @@ import TBody from "@/components/ui/TBody";
 import { Table, Td, Th, THead, Tr } from "@/components/ui";
 
 import Input from "@/components/ui/Input";
-import { InputAddon, InputGroup } from "@chakra-ui/react";
+import { InputGroup } from "@chakra-ui/react";
 
 import { CONTEXT_TYPEs } from "@/context/types";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { useSearchParams } from "react-router-dom";
 import { ENUMs } from "@/lib/enum";
-import Tooltip from "@mui/joy/Tooltip";
-import Chip from "@mui/joy/Chip";
 import DeleteModal from "@/components/ui/DeleteModal";
 import {
   useDeleteItem,
+  useGetDeletedItems,
   useGetItems,
+  useRestoreItem,
+  useSearchDeletedItems,
   useSearchItems,
 } from "@/lib/react-query/query/item.query";
 import { Item } from "@/types/items";
@@ -27,14 +27,29 @@ import ItemCard from "@/components/cards/ItemCard";
 import ItemForm from "@/components/forms/ItemForm";
 import TFoot from "@/components/ui/TFoot";
 import CustomClose from "@/components/shared/CustomClose";
+import { useGetItemTypesSelection } from "@/lib/react-query/query/item-type.query";
+import { ItemType } from "@/types/item-type";
+import Filter from "@/components/shared/Filter";
+import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
+import DeleteChip from "@/components/shared/DeleteChip";
+import RestoreChip from "@/components/shared/RestoreChip";
+import AddButton from "@/components/shared/AddButton";
+import DatePicker from "@/components/shared/DatePicker";
+import RestoreModal from "@/components/ui/RestoreModal";
+import Search from "@/components/shared/Search";
 
-const Koga = () => {
+const items = () => {
   const { mutateAsync, isPending } = useDeleteItem();
+  const { mutateAsync: restore, isPending: restoreLoading } = useRestoreItem();
 
   const [searchParam, setSearchParam] = useSearchParams();
   const [isDelete, setIsDelete] = useState<boolean>(false);
 
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
+  const { data: types } = useGetItemTypesSelection();
+  const { deleted_page } = useCheckDeletedPage();
+  const [isRestore, setIsRestore] = useState<boolean>(false);
+
   const {
     dispatch,
     state: { checked, check_type },
@@ -44,59 +59,56 @@ const Koga = () => {
       <Container
         as={`div`}
         className="w-full gap-10 flex flex-col justify-start items-start">
-        <div className="w-full gap-5 flex flex-row justify-between">
-          <InputGroup className="text-input max-w-[400px] text-primary-800 dark:text-white">
-            {" "}
-            <Input
-              onChange={(e) =>
-                setSearchParam((prev) => {
-                  const params = new URLSearchParams(prev);
-                  params.set(ENUMs.SEARCH_PARAM as string, e.target.value);
-                  return params;
-                })
-              }
-              value={searchParam.get(ENUMs.SEARCH_PARAM as string) || ""}
-              placeholder="گەڕان بەپێی (ئایدی،بارکۆد، ناوی بەرهەم)"
-              className="w-[85%] text-xs"
-              type="input"
-            />
-            <InputAddon className="w-[15%]">
-              <Search />
-            </InputAddon>
-          </InputGroup>
-          {checked?.length > 0 && (
-            <div className="flex flex-row justify-center items-center gap-2 dark-light">
-              <Tooltip
-                placement="top"
-                title="سڕینەوە"
-                color="danger"
-                variant="soft">
-                <Chip
-                  onClick={() => setIsDelete(true)}
-                  variant="soft"
-                  color="danger">
-                  <Trash2 className="w-7 h-7 p-1 cursor-pointer" />
-                </Chip>
-              </Tooltip>
-              <p dir="ltr">
-                {checked.length} / {ENUMs.CHECK_LIMIT}
-              </p>
-            </div>
-          )}
-          <button
-            title="newUser"
-            type="button"
-            onClick={() => setIsAddOpen(true)}
-            name="newUser"
-            className="flex flex-row justify-center items-center gap-2 p-2 px-4 text-sm bg-sky-500 text-white rounded-sm">
-            <CircleFadingPlus />
-            <p>زیادکردن</p>
-          </button>
+        <div className="w-full gap-5 flex flex-row justify-between ">
+          <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
+            <Search />
+            {types && (
+              <Filter
+                options={types.map((val: ItemType, _index: number) => {
+                  return { value: val.id, label: val.name };
+                })}
+              />
+            )}
+          </div>
+          <div className=" flex flex-row justify-end items-center gap-3">
+            {checked?.length > 0 && (
+              <div className="flex flex-row justify-center items-center gap-2 dark-light">
+                {deleted_page ? (
+                  <RestoreChip onClick={() => setIsRestore(true)} />
+                ) : (
+                  <DeleteChip onClick={() => setIsDelete(true)} />
+                )}
+                <p dir="ltr">
+                  {checked.length} / {ENUMs.CHECK_LIMIT}
+                </p>
+              </div>
+            )}
+            {!deleted_page && <AddButton onClick={() => setIsAddOpen(true)} />}
+          </div>
         </div>
+        <DatePicker />
         <Pagination<Item[]>
-          queryFn={() => useGetItems()}
+          queryFn={() =>
+            deleted_page
+              ? useGetDeletedItems(
+                  searchParam.get(ENUMs.FILTER_PARAM as string) || "",
+                  searchParam.get(ENUMs.FROM_PARAM as string) || "",
+                  searchParam.get(ENUMs.TO_PARAM as string) || ""
+                )
+              : useGetItems(
+                  searchParam.get(ENUMs.FILTER_PARAM as string) || "",
+                  searchParam.get(ENUMs.FROM_PARAM as string) || "",
+                  searchParam.get(ENUMs.TO_PARAM as string) || ""
+                )
+          }
           searchQueryFn={() =>
-            useSearchItems(searchParam.get(ENUMs.SEARCH_PARAM as string) || "")
+            deleted_page
+              ? useSearchDeletedItems(
+                  searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
+                )
+              : useSearchItems(
+                  searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
+                )
           }>
           {({
             isFetchingNextPage,
@@ -123,7 +135,7 @@ const Koga = () => {
             );
 
             return (
-              <div className="w-full max-w-full overflow-x-auto max-h-screen hide-scroll">
+              <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
                 <Table className="relative  w-full table-dark-light  default-border">
                   <THead className="sticky -top-1 z-[100]  table-dark-light w-full  default-border">
                     <Tr>
@@ -215,6 +227,20 @@ const Koga = () => {
           />
         </Dialog>
       )}
+      {isRestore && (
+        <Dialog
+          className="!p-5 rounded-md"
+          maxWidth={500}
+          maxHeight={`90%`}
+          isOpen={isRestore}
+          onClose={() => setIsRestore(false)}>
+          <RestoreModal
+            deleteFunction={() => restore(checked)}
+            loading={restoreLoading}
+            onClose={() => setIsRestore(false)}
+          />
+        </Dialog>
+      )}
       {isAddOpen && (
         <Dialog
           className="!p-5 rounded-md"
@@ -231,4 +257,4 @@ const Koga = () => {
   );
 };
 
-export default Koga;
+export default items;

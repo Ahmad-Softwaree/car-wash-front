@@ -11,10 +11,12 @@ import {
 } from "@/types/expense";
 import {
   Filter,
+  From,
   Id,
   Limit,
   Page,
   PaginationReturnType,
+  To,
   ToastType,
 } from "@/types/global";
 
@@ -22,16 +24,17 @@ export const getExpenses = async (
   toast: ToastType,
   page: Page,
   limit: Limit,
-  filter: Filter
+  filter: Filter,
+  from: From,
+  to: To
 ): Promise<PaginationReturnType<GetExpensesQ>> => {
-  console.log(filter);
   try {
     const { data, status } = await authApi.get<
       PaginationReturnType<GetExpensesQ>
     >(
       `${URLs.GET_EXPENSES}?page=${page}&limit=${limit}&filter=${
         filter != "" ? filter : ""
-      }`
+      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}`
     );
     return data;
   } catch (error: any) {
@@ -43,7 +46,9 @@ export const getDeletedExpense = async (
   toast: ToastType,
   page: Page,
   limit: Limit,
-  filter: Filter
+  filter: Filter,
+  from: From,
+  to: To
 ): Promise<PaginationReturnType<GetExpensesQ>> => {
   try {
     const { data, status } = await authApi.get<
@@ -51,7 +56,7 @@ export const getDeletedExpense = async (
     >(
       `${URLs.GET_DELETED_EXPENSES}?page=${page}&limit=${limit}&filter=${
         filter != "" ? filter : ""
-      }`
+      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}`
     );
     return data;
   } catch (error: any) {

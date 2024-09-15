@@ -36,10 +36,9 @@ import AddButton from "@/components/shared/AddButton";
 import RestoreModal from "@/components/ui/RestoreModal";
 import Filter from "@/components/shared/Filter";
 import { Role } from "@/types/role";
-import {
-  useGetRoles,
-  useGetRolesSelection,
-} from "@/lib/react-query/query/role.query";
+
+import { useGetRolesSelection } from "@/lib/react-query/query/role.query";
+import DatePicker from "@/components/shared/DatePicker";
 
 const Users = () => {
   const { deleted_page } = useCheckDeletedPage();
@@ -61,18 +60,18 @@ const Users = () => {
       <Container
         as={`div`}
         className="w-full gap-10 flex flex-col justify-start items-start">
-        <div className="w-full gap-5 flex flex-row justify-between">
-          <div className="w-full flex flex-row justify-start items-center gap-3">
+        <div className="w-full gap-5 flex flex-row justify-between ">
+          <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
             <Search />
             {roles && (
-              <Filter<Role>
+              <Filter
                 options={roles.map((val: Role, _index: number) => {
                   return { value: val.id, label: val.name };
                 })}
               />
             )}
           </div>
-          <div className="w-full flex flex-row justify-end items-center gap-3">
+          <div className=" flex flex-row justify-end items-center gap-3">
             {checked?.length > 0 && (
               <div className="flex flex-row justify-center items-center gap-2 dark-light">
                 {deleted_page ? (
@@ -88,13 +87,20 @@ const Users = () => {
             {!deleted_page && <AddButton onClick={() => setIsAddOpen(true)} />}
           </div>
         </div>
+        <DatePicker />
         <Pagination<User[]>
           queryFn={() =>
             deleted_page
               ? useGetDeletedUsers(
-                  searchParam.get(ENUMs.FILTER_PARAM as string) || ""
+                  searchParam.get(ENUMs.FILTER_PARAM as string) || "",
+                  searchParam.get(ENUMs.FROM_PARAM as string) || "",
+                  searchParam.get(ENUMs.TO_PARAM as string) || ""
                 )
-              : useGetUsers(searchParam.get(ENUMs.FILTER_PARAM as string) || "")
+              : useGetUsers(
+                  searchParam.get(ENUMs.FILTER_PARAM as string) || "",
+                  searchParam.get(ENUMs.FROM_PARAM as string) || "",
+                  searchParam.get(ENUMs.TO_PARAM as string) || ""
+                )
           }
           searchQueryFn={() =>
             deleted_page
@@ -130,7 +136,7 @@ const Users = () => {
             );
 
             return (
-              <div className="w-full max-w-full overflow-x-auto max-h-screen hide-scroll">
+              <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
                 <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
                   <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
                     <Tr>

@@ -1,5 +1,4 @@
 import Customers from "@/pages/_auth/Customers";
-import CreatePsula from "@/pages/_auth/CreatePsula";
 import CheckPart from "@/providers/CheckPart";
 import { lazy } from "react";
 
@@ -9,7 +8,7 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import Koga from "@/pages/_auth/Koga";
+import items from "@/pages/_auth/Items";
 import Profile from "@/pages/_auth/Profile";
 import { ENUMs } from "@/lib/enum";
 import Roles from "@/pages/_auth/Roles";
@@ -19,6 +18,7 @@ import CarTypes from "@/pages/_auth/CarTypes";
 import ItemTypes from "@/pages/_auth/ItemTypes";
 import ExpenseTypes from "@/pages/_auth/ExpenseTypes";
 import Services from "@/pages/_auth/Services";
+import CreatePsula from "@/pages/_auth/CreatePsula";
 const RootLayout = lazy(() => import("@/pages/_root/RootLayout"));
 const AuthRouterProvider = lazy(() => import("@/providers/AuthRouterProvider"));
 const UserNullRouterProvider = lazy(
@@ -29,12 +29,10 @@ const Login = lazy(() => import("@/pages/_root/Login"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 const Error = lazy(() => import("@/pages/Error"));
 
-const Report = lazy(() => import("@/pages/_auth/Report"));
 const Expense = lazy(() => import("@/pages/_auth/Expense"));
 const Users = lazy(() => import("@/pages/_auth/Users"));
 
 const Home = lazy(() => import("@/pages/_auth/Home"));
-const AddItem = lazy(() => import("@/pages/_auth/AddItem"));
 const AuthLayout = lazy(() => import("@/pages/_auth/layout/AuthLayout"));
 
 const router = createBrowserRouter(
@@ -64,7 +62,7 @@ const router = createBrowserRouter(
           }
         />
 
-        {/* MANAGE */}
+        {/* GENERAL */}
         <Route path={ENUMs.GENERAL_SECTION as string} errorElement={<Error />}>
           <Route
             path={ENUMs.DASHBOARD_PART as string}
@@ -80,7 +78,17 @@ const router = createBrowserRouter(
             path={ENUMs.KOGA_PART as string}
             errorElement={<Error />}
             element={
-              <CheckPart part={[ENUMs.KOGA_PART as string]} Component={Koga} />
+              <CheckPart part={[ENUMs.KOGA_PART as string]} Component={items} />
+            }
+          />
+          <Route
+            path={ENUMs.CREATE_PSULA_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[ENUMs.CREATE_PSULA_PART as string]}
+                Component={CreatePsula}
+              />
             }
           />
         </Route>
@@ -203,6 +211,19 @@ const router = createBrowserRouter(
                   ENUMs.DELETED_SECTION as string,
                 ]}
                 Component={Users}
+              />
+            }
+          />
+          <Route
+            path={ENUMs.KOGA_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[
+                  ENUMs.KOGA_PART as string,
+                  ENUMs.DELETED_SECTION as string,
+                ]}
+                Component={items}
               />
             }
           />

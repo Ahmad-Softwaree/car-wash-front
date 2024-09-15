@@ -1,5 +1,6 @@
 import Container from "@/components/ui/Container";
 import useScreenSize from "@/hooks/useScreenSize";
+import { ENUMs } from "@/lib/enum";
 import { DNA } from "react-loader-spinner";
 import { Link } from "react-router-dom";
 
@@ -17,7 +18,7 @@ export default function NotFound() {
       </span>
 
       <Link
-        to={`/داشبۆرد`}
+        to={`${ENUMs.GENERAL_SECTION}/${ENUMs.DASHBOARD_PART}`}
         className="dark-light rounded-lg cursor-pointer py-2 md:py-3 px-5 md:px-10 z-50 font-bukra text-sm md:text-lg">
         گەڕانەوە بۆ پەرەی سەرەکی
       </Link>

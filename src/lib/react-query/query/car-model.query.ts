@@ -25,18 +25,20 @@ import {
 } from "../actions/car-model.action";
 import { QUERY_KEYs } from "../key";
 import {
+  From,
   Id,
   NestError,
   Page,
   PaginationReturnType,
   Search,
+  To,
 } from "@/types/global";
 import { ENUMs } from "@/lib/enum";
 import { generateNestErrors } from "@/lib/functions";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 
-export const useGetCarModels = () => {
+export const useGetCarModels = (from: From, to: To) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.CAR_MODELS],
@@ -45,14 +47,14 @@ export const useGetCarModels = () => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetCarModelsQ>> =>
-      getCarModels(toast, pageParam, ENUMs.LIMIT as number),
+      getCarModels(toast, pageParam, ENUMs.LIMIT as number, from, to),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
   });
 };
-export const useGetDeletedCarModels = () => {
+export const useGetDeletedCarModels = (from: From, to: To) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.DELETED_CAR_MODELS],
@@ -61,7 +63,7 @@ export const useGetDeletedCarModels = () => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetCarModelsQ>> =>
-      getDeletedCarModel(toast, pageParam, ENUMs.LIMIT as number),
+      getDeletedCarModel(toast, pageParam, ENUMs.LIMIT as number, from, to),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;

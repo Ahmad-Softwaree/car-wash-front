@@ -10,22 +10,30 @@ import {
   UpdateCarModelQ,
 } from "@/types/car-model";
 import {
+  From,
   Id,
   Limit,
   Page,
   PaginationReturnType,
   Search,
+  To,
   ToastType,
 } from "@/types/global";
 
 export const getCarModels = async (
   toast: ToastType,
   page: Page,
-  limit: Limit
+  limit: Limit,
+  from: From,
+  to: To
 ): Promise<PaginationReturnType<GetCarModelsQ>> => {
   try {
-    const { data, status } = await authApi.get<PaginationReturnType<GetCarModelsQ>>(
-      `${URLs.GET_CAR_MODELS}?page=${page}&limit=${limit}`
+    const { data, status } = await authApi.get<
+      PaginationReturnType<GetCarModelsQ>
+    >(
+      `${URLs.GET_CAR_MODELS}?page=${page}&limit=${limit}&from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}`
     );
     return data;
   } catch (error: any) {
@@ -36,11 +44,17 @@ export const getCarModels = async (
 export const getDeletedCarModel = async (
   toast: ToastType,
   page: Page,
-  limit: Limit
+  limit: Limit,
+  from: From,
+  to: To
 ): Promise<PaginationReturnType<GetCarModelsQ>> => {
   try {
-    const { data, status } = await authApi.get<PaginationReturnType<GetCarModelsQ>>(
-      `${URLs.GET_DELETED_CAR_MODELS}?page=${page}&limit=${limit}`
+    const { data, status } = await authApi.get<
+      PaginationReturnType<GetCarModelsQ>
+    >(
+      `${URLs.GET_DELETED_CAR_MODELS}?page=${page}&limit=${limit}&from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}`
     );
     return data;
   } catch (error: any) {
@@ -75,7 +89,9 @@ export const searchDeletedCarModels = async (
   }
 };
 
-export const addCarModel = async (form: AddCarModelF): Promise<AddCarModelQ> => {
+export const addCarModel = async (
+  form: AddCarModelF
+): Promise<AddCarModelQ> => {
   try {
     const { data, status } = await authApi.post<AddCarModelQ>(
       `${URLs.ADD_CAR_MODEL}`,
@@ -130,7 +146,9 @@ export const restoreCarModel = async (ids: Id[]): Promise<DeleteCarModelQ> => {
       if (index > 0) {
         await new Promise((resolve) => setTimeout(resolve, 1000)); // Adjust the timeout duration as needed
       }
-      const { data, status } = await authApi.put(`${URLs.RESTORE_CAR_MODEL}/${id}`);
+      const { data, status } = await authApi.put(
+        `${URLs.RESTORE_CAR_MODEL}/${id}`
+      );
       return id;
     } catch (error) {
       throw error;

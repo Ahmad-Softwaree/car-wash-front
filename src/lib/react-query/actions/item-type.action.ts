@@ -10,23 +10,31 @@ import {
   UpdateItemTypeQ,
 } from "@/types/item-type";
 import {
+  From,
   Id,
   Limit,
   Page,
   PaginationReturnType,
   Search,
+  To,
   ToastType,
 } from "@/types/global";
 
 export const getItemTypes = async (
   toast: ToastType,
   page: Page,
-  limit: Limit
+  limit: Limit,
+  from: From,
+  to: To
 ): Promise<PaginationReturnType<GetItemTypesQ>> => {
   try {
     const { data, status } = await authApi.get<
       PaginationReturnType<GetItemTypesQ>
-    >(`${URLs.GET_ITEM_TYPES}?page=${page}&limit=${limit}`);
+    >(
+      `${URLs.GET_ITEM_TYPES}?page=${page}&limit=${limit}&from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}`
+    );
     return data;
   } catch (error: any) {
     throw generateNestErrors(error, toast);
@@ -48,12 +56,18 @@ export const getItemTypeSelection = async (
 export const getDeletedItemType = async (
   toast: ToastType,
   page: Page,
-  limit: Limit
+  limit: Limit,
+  from: From,
+  to: To
 ): Promise<PaginationReturnType<GetItemTypesQ>> => {
   try {
     const { data, status } = await authApi.get<
       PaginationReturnType<GetItemTypesQ>
-    >(`${URLs.GET_DELETED_ITEM_TYPES}?page=${page}&limit=${limit}`);
+    >(
+      `${URLs.GET_DELETED_ITEM_TYPES}?page=${page}&limit=${limit}&from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}`
+    );
     return data;
   } catch (error: any) {
     throw generateNestErrors(error, toast);

@@ -10,23 +10,31 @@ import {
   UpdateExpenseTypeQ,
 } from "@/types/expense-type";
 import {
+  From,
   Id,
   Limit,
   Page,
   PaginationReturnType,
   Search,
+  To,
   ToastType,
 } from "@/types/global";
 
 export const getExpenseTypes = async (
   toast: ToastType,
   page: Page,
-  limit: Limit
+  limit: Limit,
+  from: From,
+  to: To
 ): Promise<PaginationReturnType<GetExpenseTypesQ>> => {
   try {
     const { data, status } = await authApi.get<
       PaginationReturnType<GetExpenseTypesQ>
-    >(`${URLs.GET_EXPENSE_TYPES}?page=${page}&limit=${limit}`);
+    >(
+      `${URLs.GET_EXPENSE_TYPES}?page=${page}&limit=${limit}&from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}`
+    );
     return data;
   } catch (error: any) {
     throw generateNestErrors(error, toast);
@@ -47,12 +55,18 @@ export const getExpenseTypesSelection = async (
 export const getDeletedExpenseType = async (
   toast: ToastType,
   page: Page,
-  limit: Limit
+  limit: Limit,
+  from: From,
+  to: To
 ): Promise<PaginationReturnType<GetExpenseTypesQ>> => {
   try {
     const { data, status } = await authApi.get<
       PaginationReturnType<GetExpenseTypesQ>
-    >(`${URLs.GET_DELETED_EXPENSE_TYPES}?page=${page}&limit=${limit}`);
+    >(
+      `${URLs.GET_DELETED_EXPENSE_TYPES}?page=${page}&limit=${limit}&from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}`
+    );
     return data;
   } catch (error: any) {
     throw generateNestErrors(error, toast);

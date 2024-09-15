@@ -11,11 +11,13 @@ import {
 } from "@/types/auth";
 import {
   Filter,
+  From,
   Id,
   Limit,
   Page,
   PaginationReturnType,
   Search,
+  To,
   ToastType,
 } from "@/types/global";
 
@@ -23,14 +25,15 @@ export const getUsers = async (
   toast: ToastType,
   page: Page,
   limit: Limit,
-  filter: Filter
+  filter: Filter,
+  from: From,
+  to: To
 ): Promise<PaginationReturnType<GetUsersQ>> => {
-  console.log(filter);
   try {
     const { data, status } = await authApi.get<PaginationReturnType<GetUsersQ>>(
       `${URLs.GET_USERS}?page=${page}&limit=${limit}&filter=${
         filter != "" ? filter : ""
-      }`
+      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}`
     );
     return data;
   } catch (error: any) {
@@ -42,13 +45,15 @@ export const getDeletedUser = async (
   toast: ToastType,
   page: Page,
   limit: Limit,
-  filter: Filter
+  filter: Filter,
+  from: From,
+  to: To
 ): Promise<PaginationReturnType<GetUsersQ>> => {
   try {
     const { data, status } = await authApi.get<PaginationReturnType<GetUsersQ>>(
       `${URLs.GET_DELETED_USERS}?page=${page}&limit=${limit}&filter=${
         filter != "" ? filter : ""
-      }`
+      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}`
     );
     return data;
   } catch (error: any) {

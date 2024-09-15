@@ -4,12 +4,14 @@ import { useSearchParams } from "react-router-dom";
 import { ENUMs } from "@/lib/enum";
 import InputAddon from "../ui/InputAddon";
 import { Search as SearchIcon } from "lucide-react";
+import CustomClose from "./CustomClose";
 
 const Search = () => {
   const [searchParam, setSearchParam] = useSearchParams();
+  let search = searchParam.get(ENUMs.SEARCH_PARAM as string) || "";
 
   return (
-    <InputGroup className="text-input w-full max-w-[300px] dark-light">
+    <InputGroup className="text-input w-[200px] md:w-[300px] dark-light">
       <Input
         onChange={(e) =>
           setSearchParam((prev) => {
@@ -18,14 +20,26 @@ const Search = () => {
             return params;
           })
         }
-        value={searchParam.get(ENUMs.SEARCH_PARAM as string) || ""}
+        value={search}
         placeholder="گەڕان"
         className="w-[85%] text-xs"
         type="input"
       />
-      <InputAddon className="w-fit">
-        <SearchIcon />
-      </InputAddon>
+      {search == "" ? (
+        <InputAddon className="w-fit">
+          <SearchIcon />
+        </InputAddon>
+      ) : (
+        <CustomClose
+          onClick={() => {
+            setSearchParam((prev) => {
+              const params = new URLSearchParams(prev);
+              params.delete(ENUMs.SEARCH_PARAM as string);
+              return params;
+            });
+          }}
+        />
+      )}
     </InputGroup>
   );
 };

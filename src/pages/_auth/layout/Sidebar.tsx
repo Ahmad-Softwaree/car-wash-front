@@ -74,8 +74,10 @@ export const sideLinks: SideLink[] = [
   {
     id: crypto.randomUUID() as string,
     icon: <ReceiptText />,
-    name: "دروستکردنی پسولە",
-    link: "/دروستکردنی_پسولە",
+    name: ENUMs.CREATE_PSULA_PART as string,
+    link: `/${ENUMs.GENERAL_SECTION as string}/${
+      ENUMs.CREATE_PSULA_PART as string
+    }`,
     type: "general",
   },
   //MANAGE
@@ -184,6 +186,13 @@ export const sideLinks: SideLink[] = [
     link: `/${ENUMs.DELETED_SECTION as string}/${
       ENUMs.CUSTOMER_PART as string
     }`,
+    type: "deleted",
+  },
+  {
+    id: crypto.randomUUID() as string,
+    icon: <Database />,
+    name: ENUMs.KOGA_PART as string,
+    link: `/${ENUMs.DELETED_SECTION as string}/${ENUMs.KOGA_PART as string}`,
     type: "deleted",
   },
   {
@@ -302,7 +311,7 @@ const Sidebar = () => {
     text: string;
   }) => {
     return (
-      userParts.includes(text) && (
+      userParts?.includes(text) && (
         <NavLink
           className="!font-bukra w-full !text-white flex flex-row justify-start items-center gap-3 transition-all duration-200 hover:!bg-white hover:!bg-opacity-20 p-2 rounded-md my-1"
           to={link}>
@@ -334,7 +343,7 @@ const Sidebar = () => {
       <aside
         className={`z-[100] h-full fixed ${
           expand ? "right-0" : "-right-full"
-        } lg:right-0 transition-all duration-500 bg-primary-500 top-0 bottom-0 w-[250px]bg-primary-600 border-l-2 p-4 border-solid border-primary-300 border-opacity-40 flex flex-col justify-start items-center gap-2 overflow-y-auto`}>
+        } lg:right-0 transition-all duration-500 bg-primary-500 top-0 bottom-0 w-[250px]  border-l-2 p-4 border-solid border-primary-300 border-opacity-40 flex flex-col justify-start items-center gap-2 overflow-y-auto`}>
         <Link
           to={`/${ENUMs.GENERAL_SECTION}/${ENUMs.DASHBOARD_PART}`}
           className="w-full mb-3">
@@ -538,14 +547,12 @@ const Sidebar = () => {
                     <p className="!text-xs !text-white !font-bukra">
                       {user?.username}
                     </p>
-                    <div className="flex flex-row justify-start items-center gap-2">
-                      <p className="!text-xs !text-white !font-bukra">
-                        {user?.name}
-                      </p>
-                      <Chip color="danger" variant="soft">
-                        {user?.role_name}
-                      </Chip>
-                    </div>
+                    <p className="!text-xs !text-white !font-bukra">
+                      {user?.name}
+                    </p>
+                    <Chip color="danger" variant="soft">
+                      {user?.role_name}
+                    </Chip>
                   </Link>
                 </Tooltip>
                 <Tooltip

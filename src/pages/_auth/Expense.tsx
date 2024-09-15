@@ -35,6 +35,7 @@ import Filter from "@/components/shared/Filter";
 import { Role } from "@/types/role";
 import { useGetExpenseTypesSelection } from "@/lib/react-query/query/expense-type.query";
 import { ExpenseType } from "@/types/expense-type";
+import DatePicker from "@/components/shared/DatePicker";
 
 const Expenses = () => {
   const { deleted_page } = useCheckDeletedPage();
@@ -48,7 +49,6 @@ const Expenses = () => {
 
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
   const { data: expense_types } = useGetExpenseTypesSelection();
-  console.log(expense_types);
   const {
     dispatch,
     state: { checked, check_type },
@@ -58,10 +58,10 @@ const Expenses = () => {
       <Container
         as={`div`}
         className="w-full gap-10 flex flex-col justify-start items-start">
-        <div className="w-full gap-5 flex flex-row justify-between">
-          <div className="w-full flex flex-row justify-start items-center gap-3">
+        <div className="w-full gap-5 flex flex-row justify-between ">
+          <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
             {expense_types && (
-              <Filter<Role>
+              <Filter
                 options={expense_types.map(
                   (val: ExpenseType, _index: number) => {
                     return { value: val.id, label: val.name };
@@ -86,14 +86,20 @@ const Expenses = () => {
             {!deleted_page && <AddButton onClick={() => setIsAddOpen(true)} />}
           </div>
         </div>
+        <DatePicker />
+
         <Pagination<Expense[]>
           queryFn={() =>
             deleted_page
               ? useGetDeletedExpenses(
-                  searchParam.get(ENUMs.FILTER_PARAM as string) || ""
+                  searchParam.get(ENUMs.FILTER_PARAM as string) || "",
+                  searchParam.get(ENUMs.FROM_PARAM as string) || "",
+                  searchParam.get(ENUMs.TO_PARAM as string) || ""
                 )
               : useGetExpenses(
-                  searchParam.get(ENUMs.FILTER_PARAM as string) || ""
+                  searchParam.get(ENUMs.FILTER_PARAM as string) || "",
+                  searchParam.get(ENUMs.FROM_PARAM as string) || "",
+                  searchParam.get(ENUMs.TO_PARAM as string) || ""
                 )
           }>
           {({
@@ -113,7 +119,7 @@ const Expenses = () => {
             );
 
             return (
-              <div className="w-full max-w-full overflow-x-auto max-h-screen hide-scroll">
+              <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
                 <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
                   <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
                     <Tr>

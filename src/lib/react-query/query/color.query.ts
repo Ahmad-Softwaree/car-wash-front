@@ -25,18 +25,20 @@ import {
 } from "../actions/color.action";
 import { QUERY_KEYs } from "../key";
 import {
+  From,
   Id,
   NestError,
   Page,
   PaginationReturnType,
   Search,
+  To,
 } from "@/types/global";
 import { ENUMs } from "@/lib/enum";
 import { generateNestErrors } from "@/lib/functions";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 
-export const useGetColors = () => {
+export const useGetColors = (from: From, to: To) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.COLORS],
@@ -45,14 +47,14 @@ export const useGetColors = () => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetColorsQ>> =>
-      getColors(toast, pageParam, ENUMs.LIMIT as number),
+      getColors(toast, pageParam, ENUMs.LIMIT as number, from, to),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
   });
 };
-export const useGetDeletedColors = () => {
+export const useGetDeletedColors = (from: From, to: To) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.DELETED_COLORS],
@@ -61,7 +63,7 @@ export const useGetDeletedColors = () => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetColorsQ>> =>
-      getDeletedColor(toast, pageParam, ENUMs.LIMIT as number),
+      getDeletedColor(toast, pageParam, ENUMs.LIMIT as number, from, to),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;

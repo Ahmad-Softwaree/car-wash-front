@@ -26,18 +26,20 @@ import {
 import { QUERY_KEYs } from "../key";
 import {
   Filter,
+  From,
   Id,
   NestError,
   Page,
   PaginationReturnType,
   Search,
+  To,
 } from "@/types/global";
 import { ENUMs } from "@/lib/enum";
 import { generateNestErrors } from "@/lib/functions";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 
-export const useGetUsers = (filter: Filter) => {
+export const useGetUsers = (filter: Filter, from: From, to: To) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.USERS],
@@ -46,14 +48,14 @@ export const useGetUsers = (filter: Filter) => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetUsersQ>> =>
-      getUsers(toast, pageParam, ENUMs.LIMIT as number, filter),
+      getUsers(toast, pageParam, ENUMs.LIMIT as number, filter, from, to),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
   });
 };
-export const useGetDeletedUsers = (filter: Filter) => {
+export const useGetDeletedUsers = (filter: Filter, from: From, to: To) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.DELETED_USERS],
@@ -62,7 +64,7 @@ export const useGetDeletedUsers = (filter: Filter) => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetUsersQ>> =>
-      getDeletedUser(toast, pageParam, ENUMs.LIMIT as number, filter),
+      getDeletedUser(toast, pageParam, ENUMs.LIMIT as number, filter, from, to),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;

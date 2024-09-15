@@ -10,22 +10,28 @@ import {
   UpdateRoleQ,
 } from "@/types/role";
 import {
+  From,
   Id,
   Limit,
   Page,
   PaginationReturnType,
   Search,
+  To,
   ToastType,
 } from "@/types/global";
 
 export const getRoles = async (
   toast: ToastType,
   page: Page,
-  limit: Limit
+  limit: Limit,
+  from: From,
+  to: To
 ): Promise<PaginationReturnType<GetRolesQ>> => {
   try {
     const { data, status } = await authApi.get<PaginationReturnType<GetRolesQ>>(
-      `${URLs.GET_ROLES}?page=${page}&limit=${limit}`
+      `${URLs.GET_ROLES}?page=${page}&limit=${limit}&from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}`
     );
     return data;
   } catch (error: any) {
@@ -48,11 +54,15 @@ export const getRolesSelection = async (
 export const getDeletedRole = async (
   toast: ToastType,
   page: Page,
-  limit: Limit
+  limit: Limit,
+  from: From,
+  to: To
 ): Promise<PaginationReturnType<GetRolesQ>> => {
   try {
     const { data, status } = await authApi.get<PaginationReturnType<GetRolesQ>>(
-      `${URLs.GET_DELETED_ROLES}?page=${page}&limit=${limit}`
+      `${URLs.GET_DELETED_ROLES}?page=${page}&limit=${limit}&from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}`
     );
     return data;
   } catch (error: any) {

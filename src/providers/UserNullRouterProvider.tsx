@@ -11,6 +11,12 @@ export default function UserNullRouterProvider({
   const { data, isLoading } = useGetAuth();
   let token = getCookie({ name: ENUMs.COOKIE_NAME });
   if (isLoading) return <Fallback />;
-  if (token && data) return <Navigate replace to={`/داشبۆرد`} />;
+  if (token && data)
+    return (
+      <Navigate
+        replace
+        to={`${ENUMs.GENERAL_SECTION}/${ENUMs.DASHBOARD_PART}`}
+      />
+    );
   if (!token || !data) return <Component />;
 }

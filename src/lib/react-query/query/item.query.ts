@@ -12,7 +12,15 @@ import {
   UpdateItemF,
   UpdateItemQ,
 } from "@/types/items";
-import { Id, NestError, Page, PaginationReturnType } from "@/types/global";
+import {
+  Filter,
+  From,
+  Id,
+  NestError,
+  Page,
+  PaginationReturnType,
+  To,
+} from "@/types/global";
 import {
   useInfiniteQuery,
   useMutation,
@@ -28,6 +36,8 @@ import {
   getItems,
   updateItem,
   searchItems,
+  getDeletedItems,
+  searchDeletedItems,
 } from "../actions/item.action";
 import { ENUMs } from "@/lib/enum";
 import { generateNestErrors } from "@/lib/functions";
@@ -38,7 +48,7 @@ import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 import { Search } from "react-router-dom";
 
-export const useGetItems = () => {
+export const useGetItems = (filter: Filter, from: From, to: To) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.ITEMS],
@@ -47,7 +57,30 @@ export const useGetItems = () => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetItemsQ>> =>
-      getItems(toast, pageParam, ENUMs.LIMIT as number),
+      getItems(toast, pageParam, ENUMs.LIMIT as number, filter, from, to),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage: any, pages: any) => {
+      return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
+    },
+  });
+};
+export const useGetDeletedItems = (filter: Filter, from: From, to: To) => {
+  const { toast } = useToast();
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEYs.DELETED_ITEMS],
+    queryFn: ({
+      pageParam,
+    }: {
+      pageParam: Page;
+    }): Promise<PaginationReturnType<GetItemsQ>> =>
+      getDeletedItems(
+        toast,
+        pageParam,
+        ENUMs.LIMIT as number,
+        filter,
+        from,
+        to
+      ),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
@@ -60,6 +93,15 @@ export const useSearchItems = (search: Search) => {
   return useQuery({
     queryKey: [QUERY_KEYs.SEARCH_ITEMS],
     queryFn: (): Promise<GetItemsQ> => searchItems(toast, search),
+    enabled: !!search,
+    retry: 0,
+  });
+};
+export const useSearchDeletedItems = (search: Search) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.SEARCH_DELETED_ITEMS],
+    queryFn: (): Promise<GetItemsQ> => searchDeletedItems(toast, search),
     enabled: !!search,
     retry: 0,
   });
@@ -199,7 +241,7 @@ export const useCountItem = (id: Id) => {
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
       });
       return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.LESS_ITEMS],
+        queryKey: [QUERY_KEYs.ITEMS],
       });
     },
     onError: (error: NestError) => {
@@ -226,15 +268,42 @@ export const useDeleteItem = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.ITEM_BY_ID],
       });
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.ITEMS],
-      });
       return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.ITEMS_IN_ADD],
+        queryKey: [QUERY_KEYs.ITEMS],
       });
     },
     onError: (error: NestError) => {
       throw generateNestErrors(error, toast);
+    },
+  });
+};
+
+export const useRestoreItem = () => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const { dispatch } = useGlobalContext();
+
+  return useMutation({
+    mutationFn: (ids: Id[]): Promise<DeleteUserQ> => restoreUser(ids),
+    onSuccess: (data: DeleteUserQ) => {
+      toast({
+        title: "سەرکەوتووبوو",
+        description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
+        alertType: "success",
+      });
+      dispatch({
+        type: CONTEXT_TYPEs.CHECK,
+        payload: [],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.SEARCH_DELETED_USERS],
+      });
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.DELETED_USERS],
+      });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
     },
   });
 };

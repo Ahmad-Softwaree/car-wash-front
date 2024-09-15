@@ -1,6 +1,6 @@
 import Select, { SelectStaticProps } from "@mui/joy/Select";
 import Option from "@mui/joy/Option";
-import { Box, Chip, IconButton } from "@mui/joy";
+import { IconButton } from "@mui/joy";
 import { Role } from "@/types/role";
 import { Id } from "@/types/global";
 import { useSearchParams } from "react-router-dom";
@@ -13,35 +13,34 @@ type OptionType = {
   label: string;
 };
 
-const Filter = <T extends Role>({ options }: { options: OptionType[] }) => {
+const Filter = ({ options }: { options: OptionType[] }) => {
   const [searchParam, setSearchParam] = useSearchParams();
-  const [value, setValue] = React.useState<string | null>("dog");
   const action: SelectStaticProps["action"] = React.useRef(null);
+  let filter = searchParam.get(ENUMs.FILTER_PARAM as string);
   return (
     <Select
       action={action}
-      value={value}
+      value={filter}
       placeholder="فلتەر"
-      className="dark-light  !font-bukra !text-xs !default-border"
+      className="!dark-light  !font-bukra !text-xs !default-border"
       onChange={(e, newValue) => {
-        setValue(newValue);
         setSearchParam((prev) => {
           const params = new URLSearchParams(prev);
           if (newValue) params.set(ENUMs.FILTER_PARAM as string, newValue);
           return params;
         });
       }}
-      {...(value && {
+      {...(filter && {
         endDecorator: (
           <IconButton
             size="sm"
             variant="plain"
             color="neutral"
+            className="dark-light"
             onMouseDown={(event) => {
               event.stopPropagation();
             }}
             onClick={() => {
-              setValue(null);
               action.current?.focusVisible();
               setSearchParam((prev) => {
                 const params = new URLSearchParams(prev);
@@ -57,7 +56,7 @@ const Filter = <T extends Role>({ options }: { options: OptionType[] }) => {
       sx={{ minWidth: 160 }}>
       {options.map((val: OptionType, _index: number) => (
         <Option
-          className="dark-light !font-bukra !text-xs !default-border"
+          className="!dark-light !font-bukra !text-xs  !default-border"
           key={val.value}
           value={val.value}>
           {val.label}

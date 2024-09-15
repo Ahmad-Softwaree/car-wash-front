@@ -1,4 +1,5 @@
 import Container from "@/components/ui/Container";
+import { ENUMs } from "@/lib/enum";
 import { Link, useRouteError } from "react-router-dom";
 
 export default function Error() {
@@ -15,7 +16,7 @@ export default function Error() {
         {error?.message}
       </span>
       <Link
-        to={`/داشبۆرد`}
+        to={`${ENUMs.GENERAL_SECTION}/${ENUMs.DASHBOARD_PART}`}
         className="dark-light rounded-lg cursor-pointer py-2 md:py-3 px-5 md:px-10 z-50 font-bukra text-sm md:text-lg">
         گەڕانەوە بۆ پەرەی سەرەکی
       </Link>

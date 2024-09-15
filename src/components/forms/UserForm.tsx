@@ -19,10 +19,7 @@ import MyButton from "../ui/MyButton";
 import { AddUserInputs } from "@/types/auth";
 import { Part } from "@/types/part";
 import { Role } from "@/types/role";
-import {
-  useGetRoles,
-  useGetRolesSelection,
-} from "@/lib/react-query/query/role.query";
+import { useGetRolesSelection } from "@/lib/react-query/query/role.query";
 import { useGetParts } from "@/lib/react-query/query/part.query";
 import InputAddon from "../ui/InputAddon";
 import { Eye, EyeOff } from "lucide-react";
@@ -94,7 +91,7 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
   }, [watch("role_id")]);
 
   useEffect(() => {
-    if (roleParts && state == "insert") {
+    if (roleParts) {
       setSelectedParts(
         roleParts.map((val: RolePart, _index: number) => val.part_id)
       );
@@ -124,7 +121,7 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
   }, [state, globalState]);
   return (
     <Form
-      className="w-full flex flex-col justify-center items-start gap-10 min-w-none "
+      className="w-full flex flex-col justify-center items-start gap-10 min-w-none mt-2"
       ref={form}
       onSubmit={handleSubmit(onSubmit)}
       id="login-form">
@@ -139,7 +136,7 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
           </Loading>
         ) : roles && parts ? (
           <>
-            <div className=" col-span-full md:col-span-1 w-full flex flex-col gap-2">
+            <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
               <Label className="w-full text-sm  flex flex-row gap-2">
                 <p>ناوی بەکارهێنەر</p>
               </Label>{" "}

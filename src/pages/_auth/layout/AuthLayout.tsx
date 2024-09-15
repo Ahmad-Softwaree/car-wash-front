@@ -23,7 +23,7 @@ const AuthLayout = () => {
       <Sidebar />
 
       {/* Main content area */}
-      <div className={`flex-1 transition-all duration-300 lg:pr-[250px]`}>
+      <div className={`flex-1 transition-all duration-300  lg:pr-[250px]`}>
         <Header />
         <section
           className={`w-full flex flex-row justify-start items-start ${homeClass}`}>

@@ -83,7 +83,7 @@ const ItemForm = ({
 
   return (
     <Form
-      className="w-full flex flex-col justify-center items-start gap-10 min-w-none "
+      className="w-full flex flex-col justify-center items-start gap-10 min-w-none mt-2"
       ref={form}
       onSubmit={handleSubmit(onSubmit)}
       id="login-form">
@@ -96,82 +96,129 @@ const ItemForm = ({
             </Loading>
           ) : (
             <>
-              <InputGroup error={errors.name} className="w-full text-input">
-                <Input
-                  type="text"
-                  id="name"
-                  placeholder="ناوی کاڵا"
-                  className="w-full text-sm"
-                  {...register("name", { required: true })}
-                />
-              </InputGroup>
-              <InputGroup error={errors.barcode} className="w-full text-input">
-                <Input
-                  type="text"
-                  id="barcode"
-                  placeholder="بارکۆد"
-                  className="w-full text-sm"
-                  {...register("barcode", { required: true })}
-                />
-              </InputGroup>
-
-              <InputGroup error={errors.type_id} className="w-full text-input">
-                <Select
-                  title="type_id"
-                  {...register("type_id", { required: true })}
-                  name="type_id"
-                  id="type_id"
-                  className="w-full bg-transparent !text-sm">
-                  <Option className="!text-sm dark-light" value={-1}>
-                    جۆر هەڵبژێرە
-                  </Option>
-                  {itemTypes?.map((val: ItemType, _index: number) => (
-                    <Option
-                      className="!text-sm dark-light"
-                      key={val.id}
-                      value={val.id}>
-                      {val.name}
+              <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
+                <Label
+                  htmlFor="name"
+                  className="w-full text-sm  flex flex-row gap-2">
+                  <p>ناوی کاڵا</p>
+                </Label>{" "}
+                <InputGroup error={errors.name} className="w-full text-input">
+                  <Input
+                    type="text"
+                    id="name"
+                    placeholder="ناوی کاڵا"
+                    className="w-full text-sm"
+                    {...register("name", { required: true })}
+                  />
+                </InputGroup>
+              </div>
+              <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
+                <Label
+                  htmlFor="barcode"
+                  className="w-full text-sm  flex flex-row gap-2">
+                  <p>بارکۆد</p>
+                </Label>{" "}
+                <InputGroup
+                  error={errors.barcode}
+                  className="w-full text-input">
+                  <Input
+                    type="text"
+                    id="barcode"
+                    placeholder="بارکۆد"
+                    className="w-full text-sm"
+                    {...register("barcode", { required: true })}
+                  />
+                </InputGroup>
+              </div>
+              <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
+                <Label
+                  htmlFor="type_id"
+                  className="w-full text-sm  flex flex-row gap-2">
+                  <p>جۆری کاڵا</p>
+                </Label>{" "}
+                <InputGroup
+                  error={errors.type_id}
+                  className="w-full text-input">
+                  <Select
+                    title="type_id"
+                    {...register("type_id", { required: true })}
+                    name="type_id"
+                    id="type_id"
+                    className="w-full bg-transparent !text-sm">
+                    <Option className="!text-sm dark-light" value={-1}>
+                      جۆر هەڵبژێرە
                     </Option>
-                  ))}
-                </Select>
-              </InputGroup>
-              <InputGroup error={errors.quantity} className="w-full text-input">
-                <Input
-                  type="text"
-                  id="quantity"
-                  placeholder="عەدەد"
-                  className="w-full text-sm"
-                  {...register("quantity", { required: true })}
-                />
-              </InputGroup>
+                    {itemTypes?.map((val: ItemType, _index: number) => (
+                      <Option
+                        className="!text-sm dark-light"
+                        key={val.id}
+                        value={val.id}>
+                        {val.name}
+                      </Option>
+                    ))}
+                  </Select>
+                </InputGroup>
+              </div>
+              <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
+                <Label
+                  htmlFor="quantity"
+                  className="w-full text-sm  flex flex-row gap-2">
+                  <p>عەدەد</p>
+                </Label>{" "}
+                <InputGroup
+                  error={errors.quantity}
+                  className="w-full text-input">
+                  <Input
+                    type="text"
+                    id="quantity"
+                    placeholder="عەدەد"
+                    className="w-full text-sm"
+                    {...register("quantity", { required: true })}
+                  />
+                </InputGroup>
+              </div>
             </>
           )}
         </div>
         <div className="col-span-full lg:col-span-1 h-[2px] lg:h-full w-full lg:w-[2px] bg-gray-500 bg-opacity-50 rounded-lg "></div>
 
         <div className="col-span-full lg:col-span-5 flex flex-col justify-start items-start gap-5 py-5 w-full h-full">
-          <InputGroup
-            error={errors.item_purchase_price}
-            className="w-full text-input">
-            <Input
-              type="text"
-              id="item_purchase_price"
-              placeholder="بڕی تێچوو"
-              className="w-full text-sm"
-              {...register("item_purchase_price", { required: true })}
-            />{" "}
-          </InputGroup>
-          <InputGroup
-            error={errors.item_sell_price}
-            className="w-full text-input">
-            <Input
-              type="text"
-              id="item_sell_price"
-              placeholder="نرخی فرۆشتن"
-              className="w-full text-sm"
-              {...register("item_sell_price", { required: true })}
-            />{" "}
-          </InputGroup>
+          <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
+            <Label
+              htmlFor="item_purchase_price"
+              className="w-full text-sm  flex flex-row gap-2">
+              <p>بڕی تێچوو</p>
+            </Label>{" "}
+            <InputGroup
+              error={errors.item_purchase_price}
+              className="w-full text-input">
+              <Input
+                type="text"
+                id="item_purchase_price"
+                placeholder="بڕی تێچوو"
+                className="w-full text-sm"
+                {...register("item_purchase_price", { required: true })}
+              />{" "}
+            </InputGroup>
+          </div>
+          <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
+            <Label
+              htmlFor="item_sell_price"
+              className="w-full text-sm  flex flex-row gap-2">
+              <p>نرخی فرۆشتن</p>
+            </Label>{" "}
+            <InputGroup
+              error={errors.item_sell_price}
+              className="w-full text-input">
+              <Input
+                type="text"
+                id="item_sell_price"
+                placeholder="نرخی فرۆشتن"
+                className="w-full text-sm"
+                {...register("item_sell_price", { required: true })}
+              />{" "}
+            </InputGroup>
+          </div>
 
           <InputGroup error={errors.image} className="w-full space-y-2">
             <Label
@@ -236,7 +283,10 @@ const ItemForm = ({
           )}
         </div>
         <div className="col-span-full lg:col-span-1 h-[2px] lg:h-full w-full lg:w-[2px] bg-gray-500 bg-opacity-50 rounded-lg"></div>
-        <div className="col-span-full lg:col-span-5 flex flex-col justify-start items-start gap-5 py-5 w-full h-full">
+        <div className="col-span-full lg:col-span-5 flex flex-col justify-start items-start gap-2 py-5 w-full h-full">
+          <Label htmlFor="note" className="w-full text-sm  flex flex-row gap-2">
+            <p>تێبینی</p>
+          </Label>{" "}
           <InputGroup error={errors.note} className="w-full text-input">
             <Textarea
               rows={12}
