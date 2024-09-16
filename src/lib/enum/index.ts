@@ -35,6 +35,7 @@ export type ENUM_TYPES =
   | "RESERVATION_PART"
   | "KOGA_PART"
   | "CREATE_PSULA_PART"
+  | "SELL_PART"
 
   //SECTIONS
   | "MANAGE_SECTION"
@@ -80,6 +81,7 @@ export const ENUMs: { [key in ENUM_TYPES]: key | string | number } = {
   RESERVATION_PART: "نۆرەکان",
   KOGA_PART: "کۆگا",
   CREATE_PSULA_PART: "دروستکردنی پسولە",
+  SELL_PART: "پسولەکان",
   //SECTIONS
 
   MANAGE_SECTION: "بەڕێوەبردن",

@@ -40,7 +40,7 @@ export type AddItemInputs = {
   name: string;
   barcode: string;
   type_id: number;
-  quantity: number;
+  quantity?: number;
   item_purchase_price: number;
   item_sell_price: number;
   note: string;

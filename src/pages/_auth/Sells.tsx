@@ -1,19 +1,18 @@
 import Container from "@/components/ui/Container";
 import { lazy, useMemo, useState } from "react";
 const Dialog = lazy(() => import("@/components/shared/Dialog"));
-const CarTypeCard = lazy(() => import("@/components/cards/CarTypeCard"));
+const SellCard = lazy(() => import("@/components/cards/SellCard"));
 
 import {
-  useDeleteCarType,
-  useGetDeletedCarTypes,
-  useGetCarTypes,
-  useRestoreCarType,
-  useSearchDeletedCarTypes,
-  useSearchCarTypes,
-} from "@/lib/react-query/query/car-type.query";
+  useDeleteSell,
+  useGetDeletedSells,
+  useGetSells,
+  useRestoreSell,
+  useSearchDeletedSells,
+  useSearchSells,
+} from "@/lib/react-query/query/sell.query";
 import Pagination from "@/components/providers/Pagination";
-import { CarType } from "@/types/car-type";
-import CarTypeForm from "@/components/forms/CarTypeForm";
+import { Sell } from "@/types/sell";
 import TBody from "@/components/ui/TBody";
 import { Table, Td, Th, THead, Tr } from "@/components/ui";
 
@@ -27,26 +26,22 @@ import { ENUMs } from "@/lib/enum";
 
 import DeleteModal from "@/components/ui/DeleteModal";
 import TFoot from "@/components/ui/TFoot";
-import CustomClose from "@/components/shared/CustomClose";
 import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import DeleteChip from "@/components/shared/DeleteChip";
 import RestoreChip from "@/components/shared/RestoreChip";
 import Search from "@/components/shared/Search";
-import AddButton from "@/components/shared/AddButton";
 import RestoreModal from "@/components/ui/RestoreModal";
 import DatePicker from "@/components/shared/DatePicker";
 
-const CarTypes = () => {
+const Sells = () => {
   const { deleted_page } = useCheckDeletedPage();
-  const { mutateAsync, isPending } = useDeleteCarType();
-  const { mutateAsync: restore, isPending: restoreLoading } =
-    useRestoreCarType();
+  const { mutateAsync, isPending } = useDeleteSell();
+  const { mutateAsync: restore, isPending: restoreLoading } = useRestoreSell();
 
   const [searchParam, setSearchParam] = useSearchParams();
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const [isRestore, setIsRestore] = useState<boolean>(false);
 
-  const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
   const {
     dispatch,
     state: { checked, check_type },
@@ -56,12 +51,11 @@ const CarTypes = () => {
       <Container
         as={`div`}
         className="w-full gap-10 flex flex-col justify-start items-start">
-        <div className="w-full gap-5 flex flex-row justify-between">
+        <div className="w-full gap-5 flex flex-row justify-between ">
           <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
-            {" "}
             <Search />
           </div>
-          <div className="w-full flex flex-row justify-end items-center gap-3">
+          <div className=" flex flex-row justify-end items-center gap-3">
             {checked?.length > 0 && (
               <div className="flex flex-row justify-center items-center gap-2 dark-light">
                 {deleted_page ? (
@@ -74,29 +68,27 @@ const CarTypes = () => {
                 </p>
               </div>
             )}
-            {!deleted_page && <AddButton onClick={() => setIsAddOpen(true)} />}
           </div>
         </div>
-        {/* <DatePicker /> */}
-
-        <Pagination<CarType[]>
+        <DatePicker />
+        <Pagination<Sell[]>
           queryFn={() =>
             deleted_page
-              ? useGetDeletedCarTypes(
+              ? useGetDeletedSells(
                   searchParam.get(ENUMs.FROM_PARAM as string) || "",
                   searchParam.get(ENUMs.TO_PARAM as string) || ""
                 )
-              : useGetCarTypes(
+              : useGetSells(
                   searchParam.get(ENUMs.FROM_PARAM as string) || "",
                   searchParam.get(ENUMs.TO_PARAM as string) || ""
                 )
           }
           searchQueryFn={() =>
             deleted_page
-              ? useSearchDeletedCarTypes(
+              ? useSearchDeletedSells(
                   searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
                 )
-              : useSearchCarTypes(
+              : useSearchSells(
                   searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
                 )
           }>
@@ -138,9 +130,7 @@ const CarTypes = () => {
                                   type: CONTEXT_TYPEs.CHECK,
                                   payload: allData
                                     .slice(0, 30)
-                                    .map(
-                                      (val: CarType, _index: number) => val.id
-                                    ),
+                                    .map((val: Sell, _index: number) => val.id),
                                 });
                               } else {
                                 dispatch({
@@ -159,9 +149,11 @@ const CarTypes = () => {
                         <p className="pr-1">#</p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">ناو</p>
+                        <p className="pr-3 table-head-border">ژمارەی وەصڵ</p>
                       </Th>
-
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">داشکاندن</p>
+                      </Th>{" "}
                       <Th className="text-right text-sm !p-4">
                         <p className="pr-3 table-head-border">کرادرەکان</p>
                       </Th>
@@ -169,8 +161,8 @@ const CarTypes = () => {
                   </THead>
                   <TBody className="w-full ">
                     <>
-                      {allData?.map((val: CarType, index: number) => (
-                        <CarTypeCard key={val.id} index={index} {...val} />
+                      {allData?.map((val: Sell, index: number) => (
+                        <SellCard key={val.id} index={index} {...val} />
                       ))}
 
                       {!isFetchingNextPage && hasNextPage && !isSearched && (
@@ -219,19 +211,8 @@ const CarTypes = () => {
           />
         </Dialog>
       )}
-      {isAddOpen && (
-        <Dialog
-          className="!p-5 rounded-md"
-          maxWidth={800}
-          maxHeight={`90%`}
-          isOpen={isAddOpen}
-          onClose={() => setIsAddOpen(false)}>
-          <CustomClose onClick={() => setIsAddOpen(false)} />
-          <CarTypeForm state="insert" onClose={() => setIsAddOpen(false)} />
-        </Dialog>
-      )}
     </>
   );
 };
 
-export default CarTypes;
+export default Sells;

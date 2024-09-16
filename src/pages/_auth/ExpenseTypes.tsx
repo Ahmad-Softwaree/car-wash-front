@@ -79,7 +79,7 @@ const ExpenseTypes = () => {
             {!deleted_page && <AddButton onClick={() => setIsAddOpen(true)} />}
           </div>
         </div>
-        <DatePicker />
+        {/* <DatePicker /> */}
 
         <Pagination<ExpenseType[]>
           queryFn={() =>

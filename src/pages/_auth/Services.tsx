@@ -77,7 +77,7 @@ const Services = () => {
             {!deleted_page && <AddButton onClick={() => setIsAddOpen(true)} />}
           </div>
         </div>
-        <DatePicker />
+        {/* <DatePicker /> */}
 
         <Pagination<Service[]>
           queryFn={() =>

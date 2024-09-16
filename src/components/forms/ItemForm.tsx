@@ -1,7 +1,14 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Form from "@/components/ui/Form";
 import Input from "@/components/ui/Input";
-import { CircleFadingPlus, CircleX, PenLine } from "lucide-react";
+import {
+  CircleFadingPlus,
+  CircleX,
+  Hash,
+  Minus,
+  PenLine,
+  Plus,
+} from "lucide-react";
 import Textarea from "../ui/Textarea";
 import { AddItemInputs } from "@/types/items";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -9,7 +16,11 @@ import { useGlobalContext } from "@/context/GlobalContext";
 import InputGroup from "@/components/ui/InputGroup";
 import Label from "../ui/Label";
 import MyButton from "@/components/ui/MyButton";
-import { useAddItem, useUpdateItem } from "@/lib/react-query/query/item.query";
+import {
+  useAddItem,
+  useChangeItemQuantity,
+  useUpdateItem,
+} from "@/lib/react-query/query/item.query";
 import {
   FormFinalOperation,
   FormHandle,
@@ -23,6 +34,8 @@ import { TailSpin } from "react-loader-spinner";
 import Select from "../ui/Select";
 import Option from "../ui/Option";
 import { ItemType } from "@/types/item-type";
+import InputAddon from "../ui/InputAddon";
+import { Chip } from "@mui/joy";
 
 const ItemForm = ({
   state = "insert",
@@ -31,6 +44,10 @@ const ItemForm = ({
   const { state: globalState } = useGlobalContext();
   const form = useRef<FormHandle>(null);
   const { mutateAsync, isPending } = useAddItem();
+  const { mutateAsync: changeQuantity, isPending: changeQuantityLoading } =
+    useChangeItemQuantity(globalState?.oldData?.id);
+  const [quantityInput, setQuantityInput] = useState<string>("");
+
   const { data: itemTypes, isLoading: itemTypesLoading } =
     useGetItemTypesSelection();
 
@@ -81,14 +98,25 @@ const ItemForm = ({
     }
   }, [state]);
 
+  const quantityFunction = async (type: "increase" | "decrease") => {
+    await changeQuantity({
+      quantity: Number(quantityInput),
+      type: type,
+    });
+    setQuantityInput("");
+  };
+
   return (
     <Form
       className="w-full flex flex-col justify-center items-start gap-10 min-w-none mt-2"
       ref={form}
       onSubmit={handleSubmit(onSubmit)}
       id="login-form">
-      <p className="font-bold font-bukra text-lg">زیادکردنی مواد</p>
-      <div className="w-full grid grid-cols-1 lg:grid-cols-17 gap-10 place-items-start">
+      <p className="font-bold font-bukra text-lg">فۆڕمی مواد</p>
+      <div
+        className={`w-full grid grid-cols-1 ${
+          state == "insert" ? "lg:grid-cols-17" : "lg:grid-cols-23"
+        } gap-10 place-items-start`}>
         <div className="col-span-full lg:col-span-5 flex flex-col justify-center items-start gap-5 py-5 w-full">
           {itemTypesLoading ? (
             <Loading>
@@ -159,24 +187,26 @@ const ItemForm = ({
                   </Select>
                 </InputGroup>
               </div>
-              <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
-                <Label
-                  htmlFor="quantity"
-                  className="w-full text-sm  flex flex-row gap-2">
-                  <p>عەدەد</p>
-                </Label>{" "}
-                <InputGroup
-                  error={errors.quantity}
-                  className="w-full text-input">
-                  <Input
-                    type="text"
-                    id="quantity"
-                    placeholder="عەدەد"
-                    className="w-full text-sm"
-                    {...register("quantity", { required: true })}
-                  />
-                </InputGroup>
-              </div>
+              {state == "insert" && (
+                <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
+                  <Label
+                    htmlFor="quantity"
+                    className="w-full text-sm  flex flex-row gap-2">
+                    <p>عەدەد</p>
+                  </Label>{" "}
+                  <InputGroup
+                    error={errors.quantity}
+                    className="w-full text-input">
+                    <Input
+                      type="text"
+                      id="quantity"
+                      placeholder="عەدەد"
+                      className="w-full text-sm"
+                      {...register("quantity", { required: true })}
+                    />
+                  </InputGroup>
+                </div>
+              )}
             </>
           )}
         </div>
@@ -282,6 +312,111 @@ const ItemForm = ({
             <Image image={globalState.oldData?.image_url} />
           )}
         </div>
+        {state == "update" && (
+          <>
+            <div className="col-span-full lg:col-span-1 h-[2px] lg:h-full w-full lg:w-[2px] bg-gray-500 bg-opacity-50 rounded-lg "></div>
+
+            <div className="col-span-full lg:col-span-5 flex flex-col justify-start items-start gap-5 py-5 w-full h-full">
+              <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
+                <Label
+                  htmlFor="quantity"
+                  className="w-full text-sm  flex flex-row gap-2">
+                  <p>عەدەد</p>
+                </Label>{" "}
+                <div className="w-full flex flex-row justify-start items-center gap-3">
+                  <InputGroup className="w-full text-input">
+                    <Input
+                      value={quantityInput}
+                      onChange={(e) => setQuantityInput(e.target.value)}
+                      type="text"
+                      id="quantity"
+                      placeholder="عەدەد"
+                      className="w-full text-sm"
+                    />
+                  </InputGroup>
+                  <Chip
+                    sx={{
+                      borderRadius: "2px",
+                    }}
+                    onClick={() => quantityFunction("increase")}
+                    variant="soft"
+                    color="success">
+                    <Plus className="w-4 h-4 cursor-pointer" />
+                  </Chip>
+                  <Chip
+                    sx={{
+                      borderRadius: "2px",
+                    }}
+                    onClick={() => quantityFunction("decrease")}
+                    variant="soft"
+                    color="danger">
+                    <Minus className="w-4 h-4 cursor-pointer" />
+                  </Chip>
+                </div>
+              </div>
+              <div className="w-full  flex flex-col gap-2">
+                <Label className="w-full text-sm  flex flex-row gap-2">
+                  <p>دانەی کڕاو</p>
+                </Label>
+                <InputGroup className="w-full text-input 0">
+                  <InputAddon className="w-[20%] md:w-[10%]">
+                    <Hash />
+                  </InputAddon>
+
+                  <Input
+                    value={globalState.oldData?.quantity}
+                    name="quantity"
+                    disabled
+                    type="text"
+                    dir="ltr"
+                    className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:!font-bukra text-xs md:!text-sm placeholder:!text-sm"
+                  />
+                </InputGroup>
+              </div>
+              <div className="w-full  flex flex-col gap-2">
+                <Label className="w-full text-sm  flex flex-row gap-2">
+                  <p>دانەی فرۆشراو</p>
+                </Label>
+                <InputGroup className="w-full text-input 0">
+                  <InputAddon className="w-[20%] md:w-[10%]">
+                    <Hash />
+                  </InputAddon>
+
+                  <Input
+                    value={
+                      globalState.oldData?.quantity -
+                      globalState.oldData?.actual_quantity
+                    }
+                    name="quantity"
+                    disabled
+                    type="text"
+                    dir="ltr"
+                    className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:!font-bukra text-xs md:!text-sm placeholder:!text-sm"
+                  />
+                </InputGroup>
+              </div>
+              <div className="w-full  flex flex-col gap-2">
+                <Label className="w-full text-sm  flex flex-row gap-2">
+                  <p>دانەی کۆگا</p>
+                </Label>
+                <InputGroup className="w-full text-input 0">
+                  <InputAddon className="w-[20%] md:w-[10%]">
+                    <Hash />
+                  </InputAddon>
+
+                  <Input
+                    value={globalState.oldData?.actual_quantity}
+                    name="actual_quantity"
+                    disabled
+                    type="text"
+                    dir="ltr"
+                    className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:!font-bukra text-xs md:!text-sm placeholder:!text-sm"
+                  />
+                </InputGroup>
+              </div>
+            </div>
+          </>
+        )}
         <div className="col-span-full lg:col-span-1 h-[2px] lg:h-full w-full lg:w-[2px] bg-gray-500 bg-opacity-50 rounded-lg"></div>
         <div className="col-span-full lg:col-span-5 flex flex-col justify-start items-start gap-2 py-5 w-full h-full">
           <Label htmlFor="note" className="w-full text-sm  flex flex-row gap-2">

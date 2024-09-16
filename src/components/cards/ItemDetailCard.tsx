@@ -98,28 +98,6 @@ const ItemDetailCard = ({
         </div>
         <div className="w-full md:w-1/2 flex flex-col gap-2">
           <Label className="w-full text-sm  flex flex-row gap-2">
-            <p>عەدەد</p>
-          </Label>
-          <InputGroup className="w-full text-input 0">
-            <InputAddon className="w-[20%] md:w-[10%]">
-              <Hash />
-            </InputAddon>
-
-            <Input
-              value={actual_quantity}
-              name="actual_quantity"
-              disabled
-              type="text"
-              dir="ltr"
-              className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:!font-bukra text-xs md:!text-sm placeholder:!text-sm"
-            />
-          </InputGroup>
-        </div>
-      </div>
-
-      <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap md:flex-nowrap px-3">
-        <div className="w-full md:w-1/2 flex flex-col gap-2">
-          <Label className="w-full text-sm  flex flex-row gap-2">
             <p>نرخی تێچوو</p>
           </Label>
           <InputGroup className="w-full text-input 0">
@@ -137,6 +115,9 @@ const ItemDetailCard = ({
             />
           </InputGroup>
         </div>
+      </div>
+
+      <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap md:flex-nowrap px-3">
         <div className="w-full md:w-1/2 flex flex-col gap-2">
           <Label className="w-full text-sm  flex flex-row gap-2">
             <p>نرخی فڕۆشتن</p>
@@ -157,7 +138,65 @@ const ItemDetailCard = ({
           </InputGroup>
         </div>
       </div>
+      <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap md:flex-nowrap px-3">
+        <div className="w-full md:w-1/2 flex flex-col gap-2">
+          <Label className="w-full text-sm  flex flex-row gap-2">
+            <p>دانەی کڕاو</p>
+          </Label>
+          <InputGroup className="w-full text-input 0">
+            <InputAddon className="w-[20%] md:w-[10%]">
+              <Hash />
+            </InputAddon>
 
+            <Input
+              value={quantity}
+              name="quantity"
+              disabled
+              type="text"
+              dir="ltr"
+              className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:!font-bukra text-xs md:!text-sm placeholder:!text-sm"
+            />
+          </InputGroup>
+        </div>
+        <div className="w-full md:w-1/2 flex flex-col gap-2">
+          <Label className="w-full text-sm  flex flex-row gap-2">
+            <p>دانەی فرۆشراو</p>
+          </Label>
+          <InputGroup className="w-full text-input 0">
+            <InputAddon className="w-[20%] md:w-[10%]">
+              <Hash />
+            </InputAddon>
+
+            <Input
+              value={quantity - actual_quantity}
+              name="quantity"
+              disabled
+              type="text"
+              dir="ltr"
+              className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:!font-bukra text-xs md:!text-sm placeholder:!text-sm"
+            />
+          </InputGroup>
+        </div>
+        <div className="w-full md:w-1/2 flex flex-col gap-2">
+          <Label className="w-full text-sm  flex flex-row gap-2">
+            <p>دانەی کۆگا</p>
+          </Label>
+          <InputGroup className="w-full text-input 0">
+            <InputAddon className="w-[20%] md:w-[10%]">
+              <Hash />
+            </InputAddon>
+
+            <Input
+              value={actual_quantity}
+              name="actual_quantity"
+              disabled
+              type="text"
+              dir="ltr"
+              className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:!font-bukra text-xs md:!text-sm placeholder:!text-sm"
+            />
+          </InputGroup>
+        </div>
+      </div>
       <div className="w-full flex flex-col gap-2 px-3">
         <Label className="w-full text-sm  flex flex-row gap-2">
           <p>تێبینی</p>

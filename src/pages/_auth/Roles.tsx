@@ -76,7 +76,7 @@ const Roles = () => {
             {!deleted_page && <AddButton onClick={() => setIsAddOpen(true)} />}
           </div>
         </div>
-        <DatePicker />
+        {/* <DatePicker /> */}
 
         <Pagination<Role[]>
           queryFn={() =>

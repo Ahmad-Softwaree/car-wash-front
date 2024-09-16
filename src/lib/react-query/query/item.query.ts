@@ -38,6 +38,8 @@ import {
   searchItems,
   getDeletedItems,
   searchDeletedItems,
+  restoreItem,
+  changeItemQuantity,
 } from "../actions/item.action";
 import { ENUMs } from "@/lib/enum";
 import { generateNestErrors } from "@/lib/functions";
@@ -154,7 +156,7 @@ export const useAddItem = () => {
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
       });
       return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.ITEMS_IN_ADD],
+        queryKey: [QUERY_KEYs.ITEMS],
       });
     },
     onError: (error: NestError) => {
@@ -220,7 +222,7 @@ export const useUpdateItem = (id: Id) => {
         queryKey: [QUERY_KEYs.ITEM_BY_ID, id],
       });
       return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.ITEMS_IN_ADD],
+        queryKey: [QUERY_KEYs.ITEMS],
       });
     },
     onError: (error: NestError) => {
@@ -228,17 +230,26 @@ export const useUpdateItem = (id: Id) => {
     },
   });
 };
-export const useCountItem = (id: Id) => {
+export const useChangeItemQuantity = (id: Id) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
-
+  const { dispatch } = useGlobalContext();
   return useMutation({
-    mutationFn: async (form: CountItemF): Promise<CountItemQ> =>
-      countItem(form, id),
-    onSuccess: (data: CountItemQ) => {
+    mutationFn: async (form: {
+      quantity: number;
+      type: "increase" | "decrease";
+    }): Promise<UpdateItemQ> => changeItemQuantity(form, id),
+    onSuccess: (data: UpdateItemQ) => {
       toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
+      });
+      dispatch({
+        type: CONTEXT_TYPEs.SET_OLD_DATA,
+        payload: data,
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.ITEM_BY_ID, id],
       });
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.ITEMS],
@@ -249,6 +260,7 @@ export const useCountItem = (id: Id) => {
     },
   });
 };
+
 export const useDeleteItem = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -284,8 +296,8 @@ export const useRestoreItem = () => {
   const { dispatch } = useGlobalContext();
 
   return useMutation({
-    mutationFn: (ids: Id[]): Promise<DeleteUserQ> => restoreUser(ids),
-    onSuccess: (data: DeleteUserQ) => {
+    mutationFn: (ids: Id[]): Promise<DeleteItemQ> => restoreItem(ids),
+    onSuccess: (data: DeleteItemQ) => {
       toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
@@ -296,10 +308,10 @@ export const useRestoreItem = () => {
         payload: [],
       });
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.SEARCH_DELETED_USERS],
+        queryKey: [QUERY_KEYs.SEARCH_DELETED_ITEMS],
       });
       return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.DELETED_USERS],
+        queryKey: [QUERY_KEYs.DELETED_ITEMS],
       });
     },
     onError: (error: NestError) => {

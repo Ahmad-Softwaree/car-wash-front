@@ -67,8 +67,8 @@ export const sideLinks: SideLink[] = [
   {
     id: crypto.randomUUID() as string,
     icon: <ReceiptText />,
-    name: "پسولەکان",
-    link: "/پسولەکان",
+    name: ENUMs.SELL_PART as string,
+    link: `/${ENUMs.GENERAL_SECTION as string}/${ENUMs.SELL_PART as string}`,
     type: "general",
   },
   {
@@ -197,6 +197,13 @@ export const sideLinks: SideLink[] = [
   },
   {
     id: crypto.randomUUID() as string,
+    icon: <ReceiptText />,
+    name: ENUMs.SELL_PART as string,
+    link: `/${ENUMs.DELETED_SECTION as string}/${ENUMs.SELL_PART as string}`,
+    type: "deleted",
+  },
+  {
+    id: crypto.randomUUID() as string,
     icon: <CircleDollarSign />,
     name: ENUMs.EXPENSE_PART as string,
     link: `/${ENUMs.DELETED_SECTION as string}/${ENUMs.EXPENSE_PART as string}`,
@@ -313,7 +320,7 @@ const Sidebar = () => {
     return (
       userParts?.includes(text) && (
         <NavLink
-          className="!font-bukra w-full !text-white flex flex-row justify-start items-center gap-3 transition-all duration-200 hover:!bg-white hover:!bg-opacity-20 p-2 rounded-md my-1"
+          className="!font-bukra w-full !text-white bg-transparent flex flex-row justify-start items-center gap-3 transition-all duration-200 hover:!bg-white hover:!bg-opacity-20 p-2 rounded-md my-1"
           to={link}>
           {Icon}
           <p className="!text-xs">{text}</p>

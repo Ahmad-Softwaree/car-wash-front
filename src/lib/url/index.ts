@@ -97,6 +97,7 @@ export type URLS =
   | "SEARCH_EXPENSE_TYPES"
   //ITEM
   | "GET_ITEMS"
+  | "CHANGE_ITEM_QUANTITY"
   | "GET_ITEM"
   | "ADD_ITEM"
   | "GET_ITEM_BY_ID"
@@ -117,6 +118,13 @@ export type URLS =
   | "UPDATE_ITEM_IN_SELL"
   | "DELETE_ITEM_IN_SELL"
   | "GET_SELL_ITEMS"
+  | "INCREASE_ITEM_IN_SELL"
+  | "DECREASE_ITEM_IN_SELL"
+  | "GET_SELL_PRINT"
+  | "GET_SELLS"
+  | "GET_DELETED_SELLS"
+  | "SEARCH_DELETED_SELLS"
+  | "SEARCH_SELLS"
 
   //
   | "GET_PARTS"
@@ -234,7 +242,7 @@ export const URLs: { [key in URLS]: string } = {
   UPDATE_ITEM: `${API}/item`,
   DELETE_ITEM: `${API}/item`,
   RESTORE_ITEM: `${API}/item/restore`,
-
+  CHANGE_ITEM_QUANTITY: `${API}/item/change_quantity`,
   SEARCH_ITEMS: `${API}/item/search`,
   GET_ITEMS: `${API}/item`,
   SEARCH_DELETED_ITEMS: `${API}/item/deleted_search`,
@@ -254,7 +262,13 @@ export const URLs: { [key in URLS]: string } = {
   ADD_ITEM_TO_SELL: `${API}/sell/add_item_to_sell`,
   UPDATE_ITEM_IN_SELL: `${API}/sell/update_item_in_sell`,
   DELETE_ITEM_IN_SELL: `${API}/sell/delete_item_in_sell`,
-
+  INCREASE_ITEM_IN_SELL: `${API}/sell/increase_item_in_sell`,
+  DECREASE_ITEM_IN_SELL: `${API}/sell/decrease_item_in_sell`,
+  GET_SELL_PRINT: `${API}/sell/print`,
+  GET_SELLS: `${API}/sell`,
+  GET_DELETED_SELLS: `${API}/sell/deleted`,
+  SEARCH_DELETED_SELLS: `${API}/sell/deleted_search`,
+  SEARCH_SELLS: `${API}/sell/search`,
   //
 
   GET_PARTS: `${API}/part`,

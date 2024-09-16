@@ -75,7 +75,7 @@ const Colors = () => {
             {!deleted_page && <AddButton onClick={() => setIsAddOpen(true)} />}
           </div>
         </div>
-        <DatePicker />
+        {/* <DatePicker /> */}
 
         <Pagination<Color[]>
           queryFn={() =>

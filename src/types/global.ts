@@ -28,6 +28,7 @@ import { CarModel } from "./car-model";
 import { ItemType } from "./item-type";
 import { Color } from "./color";
 import { Service } from "./service";
+import { Sell } from "./sell";
 
 export type GlobalFormProps = {
   state?: "update" | "insert";
@@ -84,7 +85,8 @@ export type DataTypes =
   | CarModel[]
   | ItemType[]
   | Color[]
-  | Service[];
+  | Service[]
+  | Sell[];
 
 export type PaginationChildrenProps<T extends DataTypes> = {
   isFetchingNextPage: boolean;
@@ -125,6 +127,9 @@ export type DeleteModalProps = {
   finalOperator?: () => void;
   deleteFunction: any;
   loading: boolean;
+};
+export type PrintModalProps = {
+  onClose: () => void;
 };
 export type RestoreModalProps = {
   onClose: () => void;

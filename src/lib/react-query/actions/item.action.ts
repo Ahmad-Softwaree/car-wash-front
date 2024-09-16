@@ -116,9 +116,9 @@ export const addItem = async (
 export const updateItem = async (
   form: UpdateItemWithFirebaseImage,
   id: Id
-): Promise<CountItemQ> => {
+): Promise<UpdateItemQ> => {
   try {
-    const { data, status } = await authApi.put<CountItemQ>(
+    const { data, status } = await authApi.put<UpdateItemQ>(
       `${URLs.UPDATE_ITEM}/${id}`,
       form
     );
@@ -127,14 +127,16 @@ export const updateItem = async (
     throw error;
   }
 };
-
-export const countItem = async (
-  form: CountItemF,
+export const changeItemQuantity = async (
+  form: {
+    quantity: number;
+    type: "increase" | "decrease";
+  },
   id: Id
 ): Promise<UpdateItemQ> => {
   try {
-    const { data, status } = await authApi.put<AddItemQ>(
-      `${URLs.COUNT_ITEM}/${id}`,
+    const { data, status } = await authApi.put<UpdateItemQ>(
+      `${URLs.CHANGE_ITEM_QUANTITY}/${id}/${form.type}`,
       form
     );
     return data;
@@ -142,6 +144,7 @@ export const countItem = async (
     throw error;
   }
 };
+
 export const deleteItem = async (ids: Id[]): Promise<DeleteItemQ> => {
   const idArray = Array.isArray(ids) ? ids : [ids];
   const requests = idArray.map(async (id, index) => {

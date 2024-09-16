@@ -76,7 +76,7 @@ const CarModels = () => {
             {!deleted_page && <AddButton onClick={() => setIsAddOpen(true)} />}
           </div>
         </div>
-        <DatePicker />
+        {/* <DatePicker /> */}
 
         <Pagination<CarModel[]>
           queryFn={() =>

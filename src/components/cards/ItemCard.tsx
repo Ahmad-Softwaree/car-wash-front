@@ -97,16 +97,6 @@ const ItemCard = ({
         </Td>
 
         <Td className="!p-3 flex flex-row justify-start items-center gap-1">
-          <Tooltip
-            placement="top"
-            title="زیادکردن"
-            color="success"
-            variant="soft">
-            <Chip onClick={() => {}} variant="soft" color="success">
-              <Plus className="w-4 h-4 cursor-pointer" />
-            </Chip>
-          </Tooltip>
-
           <Chip
             variant="soft"
             color={actual_quantity < 30 ? "danger" : "neutral"}>
@@ -114,16 +104,6 @@ const ItemCard = ({
               {actual_quantity}
             </p>
           </Chip>
-
-          <Tooltip
-            placement="top"
-            title="کەمکردن"
-            color="danger"
-            variant="soft">
-            <Chip onClick={() => {}} variant="soft" color="danger">
-              <Minus className="w-4 h-4 cursor-pointer" />
-            </Chip>
-          </Tooltip>
         </Td>
         <Td className="!p-3">
           <p className="text-right font-light font-bukra text-sm">
@@ -160,6 +140,7 @@ const ItemCard = ({
                   payload: {
                     name,
                     quantity,
+                    actual_quantity,
                     image_name,
                     image_url,
                     barcode,
@@ -236,8 +217,8 @@ const ItemCard = ({
       {update && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={1500}
-          maxHeight={`90%`}
+          maxWidth={2000}
+          maxHeight={700}
           isOpen={update}
           onClose={updateOnClose}>
           <CustomClose onClick={() => updateOnClose()} />

@@ -13,6 +13,8 @@ export type SellItem = {
   id: number;
   sell_id: number;
   item_id: number;
+  item_name: string;
+
   quantity: number;
   item_purchase_price: number;
   item_sell_price: number;
@@ -20,8 +22,15 @@ export type SellItem = {
   updated_at: Date | null;
   deleted: boolean;
 };
+
+export type UpdateSellItemInputs = {
+  quantity: number;
+};
+
+export type SellCardProps = Sell & { index?: number };
 export type SellItemCardProps = SellItem & { index?: number };
 export type GetSellQ = Sell;
+export type GetSellsQ = Sell[];
 
 export type GetSellItemsQ = SellItem[];
 
@@ -33,7 +42,7 @@ export type AddSellItemQ = SellItem;
 
 export type UpdateSellItemQ = SellItem;
 
-export type DeleteSellItemQ = Id;
+export type DeleteSellItemQ = Id[];
 
 export type DeleteSellQ = Id[];
 
@@ -47,6 +56,4 @@ export type AddItemToSellF = {
 
 export type UpdateItemInSellF = {
   quantity: number;
-  item_purchase_price: number;
-  item_sell_price: number;
 };

@@ -34,6 +34,11 @@
   font-display: swap;
 }
 
+/* Smooth scrolling for a better experience */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: "bukra";
   box-sizing: border-box;
@@ -89,9 +94,6 @@ aside::-webkit-scrollbar {
     @apply bg-transparent;
   }
 
-  a.active {
-    @apply !bg-white !bg-opacity-20;
-  }
   th,
   td {
     @apply min-w-[150px];
@@ -125,6 +127,9 @@ aside::-webkit-scrollbar {
 
   .table-head-border {
     @apply border-r-2 border-solid border-primary-400 border-opacity-80;
+  }
+  a.active {
+    @apply !bg-white !bg-opacity-20;
   }
 }
 

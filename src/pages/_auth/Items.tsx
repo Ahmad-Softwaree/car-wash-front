@@ -86,7 +86,7 @@ const items = () => {
             {!deleted_page && <AddButton onClick={() => setIsAddOpen(true)} />}
           </div>
         </div>
-        <DatePicker />
+        {/* <DatePicker /> */}
         <Pagination<Item[]>
           queryFn={() =>
             deleted_page
