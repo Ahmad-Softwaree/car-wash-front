@@ -6,13 +6,16 @@ const SellCard = lazy(() => import("@/components/cards/SellCard"));
 import {
   useDeleteSell,
   useGetDeletedSells,
+  useGetSelfDeletedSellItems,
   useGetSells,
+  useRestoreSelfDeletedSellItem,
   useRestoreSell,
   useSearchDeletedSells,
+  useSearchSelfDeletedSellItems,
   useSearchSells,
 } from "@/lib/react-query/query/sell.query";
 import Pagination from "@/components/providers/Pagination";
-import { Sell } from "@/types/sell";
+import { Sell, SellItem } from "@/types/sell";
 import TBody from "@/components/ui/TBody";
 import { Table, Td, Th, THead, Tr } from "@/components/ui";
 
@@ -30,18 +33,23 @@ import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import DeleteChip from "@/components/shared/DeleteChip";
 import RestoreChip from "@/components/shared/RestoreChip";
 import Search from "@/components/shared/Search";
-import RestoreModal from "@/components/ui/RestoreModal";
 import DatePicker from "@/components/shared/DatePicker";
-
+import Tabs from "@mui/joy/Tabs";
+import TabList from "@mui/joy/TabList";
+import Tab from "@mui/joy/Tab";
+import SellItemCard from "@/components/cards/SellItemCard";
+import RestoreModal from "@/components/ui/RestoreModal";
 const Sells = () => {
+  const [index, setIndex] = useState(0);
+
   const { deleted_page } = useCheckDeletedPage();
   const { mutateAsync, isPending } = useDeleteSell();
-  const { mutateAsync: restore, isPending: restoreLoading } = useRestoreSell();
 
   const [searchParam, setSearchParam] = useSearchParams();
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const [isRestore, setIsRestore] = useState<boolean>(false);
-
+  const { mutateAsync: restoreSelfDeleted, isPending: selfRestoreLoading } =
+    useRestoreSelfDeletedSellItem();
   const {
     dispatch,
     state: { checked, check_type },
@@ -70,118 +78,295 @@ const Sells = () => {
             )}
           </div>
         </div>
-        <DatePicker />
-        <Pagination<Sell[]>
-          queryFn={() =>
-            deleted_page
-              ? useGetDeletedSells(
-                  searchParam.get(ENUMs.FROM_PARAM as string) || "",
-                  searchParam.get(ENUMs.TO_PARAM as string) || ""
-                )
-              : useGetSells(
-                  searchParam.get(ENUMs.FROM_PARAM as string) || "",
-                  searchParam.get(ENUMs.TO_PARAM as string) || ""
-                )
-          }
-          searchQueryFn={() =>
-            deleted_page
-              ? useSearchDeletedSells(
-                  searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
-                )
-              : useSearchSells(
-                  searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
-                )
-          }>
-          {({
-            isFetchingNextPage,
-            hasNextPage,
-            isLoading,
-            ref,
-            data,
-            refetch,
-            isSearched,
-            searchData,
-            searchRefetch,
-            fetchNextPage,
-          }) => {
-            const allData = useMemo(
-              () =>
-                !isSearched
-                  ? data?.pages && data?.pages?.length > 0
-                    ? data.pages.map((page) => page.paginatedData).flat()
-                    : []
-                  : searchData && searchData.length > 0
-                  ? searchData
-                  : [],
-              [data, searchData, isSearched]
-            );
+        {index == 0 && <DatePicker />}
 
-            return (
-              <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
-                <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
-                  <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
-                    <Tr>
-                      <Th className="text-right text-sm !p-4 !min-w-[100px]">
-                        <InputGroup className="checkbox-input">
-                          <Input
-                            onChange={() => {
-                              if (checked.length == 0) {
-                                dispatch({
-                                  type: CONTEXT_TYPEs.CHECK,
-                                  payload: allData
-                                    .slice(0, 30)
-                                    .map((val: Sell, _index: number) => val.id),
-                                });
-                              } else {
-                                dispatch({
-                                  type: CONTEXT_TYPEs.CHECK,
-                                  payload: [],
-                                });
-                              }
-                            }}
-                            checked={check_type == "all"}
-                            type="checkbox"
-                            className="cursor-pointer"
+        {deleted_page && (
+          <Tabs
+            defaultValue={0}
+            value={index}
+            onChange={(event, value) => setIndex(value as number)}
+            className="w-full !dark-light"
+            aria-label="Flex auto tabs">
+            <TabList
+              sx={{
+                gap: "10px",
+              }}
+              tabFlex="auto">
+              <Tab
+                sx={{
+                  borderColor: "gray",
+                  width: "40%",
+                  transition: "color 300ms ease", // Adding transition for color change
+                  fontFamily: "bukra",
+                  borderRadius: "10px",
+                  color:
+                    localStorage.getItem("theme") == "dark" ? "white" : "black",
+                  "&.Mui-selected": {
+                    color:
+                      localStorage.getItem("theme") === "dark"
+                        ? "black"
+                        : "black", // Active text color
+                  },
+                }}>
+                وەصڵە سڕاوەکان
+              </Tab>
+              <Tab
+                sx={{
+                  borderColor: "gray",
+                  width: "40%",
+                  transition: "color 300ms ease", // Adding transition for color change
+                  fontFamily: "bukra",
+                  borderRadius: "10px",
+                  color:
+                    localStorage.getItem("theme") == "dark" ? "white" : "black",
+                  "&.Mui-selected": {
+                    color:
+                      localStorage.getItem("theme") === "dark"
+                        ? "black"
+                        : "black", // Active text color
+                  },
+                }}>
+                موادە سڕآوەکان کە وەصڵیان هەیە
+              </Tab>
+            </TabList>
+          </Tabs>
+        )}
+
+        {index == 0 && (
+          <Pagination<Sell[]>
+            queryFn={() =>
+              deleted_page
+                ? useGetDeletedSells(
+                    searchParam.get(ENUMs.FROM_PARAM as string) || "",
+                    searchParam.get(ENUMs.TO_PARAM as string) || ""
+                  )
+                : useGetSells(
+                    searchParam.get(ENUMs.FROM_PARAM as string) || "",
+                    searchParam.get(ENUMs.TO_PARAM as string) || ""
+                  )
+            }
+            searchQueryFn={() =>
+              deleted_page
+                ? useSearchDeletedSells(
+                    searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
+                  )
+                : useSearchSells(
+                    searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
+                  )
+            }>
+            {({
+              isFetchingNextPage,
+              hasNextPage,
+              isLoading,
+              ref,
+              data,
+              refetch,
+              isSearched,
+              searchData,
+              searchRefetch,
+              fetchNextPage,
+            }) => {
+              const allData = useMemo(
+                () =>
+                  !isSearched
+                    ? data?.pages && data?.pages?.length > 0
+                      ? data.pages.map((page) => page.paginatedData).flat()
+                      : []
+                    : searchData && searchData.length > 0
+                    ? searchData
+                    : [],
+                [data, searchData, isSearched]
+              );
+
+              return (
+                <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
+                  <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
+                    <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
+                      <Tr>
+                        {!deleted_page && (
+                          <Th className="text-right text-sm !p-4 !min-w-[100px]">
+                            <InputGroup className="checkbox-input">
+                              <Input
+                                onChange={() => {
+                                  if (checked.length == 0) {
+                                    dispatch({
+                                      type: CONTEXT_TYPEs.CHECK,
+                                      payload: allData
+                                        .slice(0, 30)
+                                        .map(
+                                          (val: Sell, _index: number) => val.id
+                                        ),
+                                    });
+                                  } else {
+                                    dispatch({
+                                      type: CONTEXT_TYPEs.CHECK,
+                                      payload: [],
+                                    });
+                                  }
+                                }}
+                                checked={check_type == "all"}
+                                type="checkbox"
+                                className="cursor-pointer"
+                              />
+                            </InputGroup>
+                          </Th>
+                        )}
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-1">#</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">ژمارەی وەصڵ</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">بەروار</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">داشکاندن</p>
+                        </Th>{" "}
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">کرادرەکان</p>
+                        </Th>
+                      </Tr>
+                    </THead>
+                    <TBody className="w-full ">
+                      <>
+                        {allData?.map((val: Sell, index: number) => (
+                          <SellCard key={val.id} index={index} {...val} />
+                        ))}
+
+                        {!isFetchingNextPage && hasNextPage && !isSearched && (
+                          <div className="h-[20px]" ref={ref}></div>
+                        )}
+                      </>
+                    </TBody>
+                    <TFoot className="sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
+                      <Tr>
+                        <Td className="text-center" colSpan={9}>
+                          ژمارەی داتا {allData.length}
+                        </Td>
+                      </Tr>
+                    </TFoot>
+                  </Table>
+                </div>
+              );
+            }}
+          </Pagination>
+        )}
+        {index == 1 && (
+          <Pagination<SellItem[]>
+            queryFn={() => useGetSelfDeletedSellItems()}
+            searchQueryFn={() =>
+              useSearchSelfDeletedSellItems(
+                searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
+              )
+            }>
+            {({
+              isFetchingNextPage,
+              hasNextPage,
+              isLoading,
+              ref,
+              data,
+              refetch,
+              isSearched,
+              searchData,
+              searchRefetch,
+              fetchNextPage,
+            }) => {
+              const allData = useMemo(
+                () =>
+                  !isSearched
+                    ? data?.pages && data?.pages?.length > 0
+                      ? data.pages.map((page) => page.paginatedData).flat()
+                      : []
+                    : searchData && searchData.length > 0
+                    ? searchData
+                    : [],
+                [data, searchData, isSearched]
+              );
+              return (
+                <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
+                  <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
+                    <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
+                      <Tr>
+                        <Th className="text-right text-sm !p-4 !min-w-[100px]">
+                          <InputGroup className="checkbox-input">
+                            <Input
+                              onChange={() => {
+                                if (checked.length == 0) {
+                                  dispatch({
+                                    type: CONTEXT_TYPEs.CHECK,
+                                    payload: allData
+                                      .slice(0, 30)
+                                      .map(
+                                        (val: SellItem, _index: number) =>
+                                          val.item_id
+                                      ),
+                                  });
+                                } else {
+                                  dispatch({
+                                    type: CONTEXT_TYPEs.CHECK,
+                                    payload: [],
+                                  });
+                                }
+                              }}
+                              checked={check_type == "all"}
+                              type="checkbox"
+                              className="cursor-pointer"
+                            />
+                          </InputGroup>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-1">#</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">ناوی کاڵا</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">ژمارەی وەصڵ</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">عەدەد</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">نرخ</p>
+                        </Th>{" "}
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">داشکاندن</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">کردارەکان</p>
+                        </Th>
+                      </Tr>
+                    </THead>
+                    <TBody className="w-full ">
+                      <>
+                        {allData?.map((val: SellItem, index: number) => (
+                          <SellItemCard
+                            self_delete={true}
+                            key={val.id}
+                            index={index}
+                            {...val}
                           />
-                        </InputGroup>
-                      </Th>
-                      <Th className="text-right text-sm !p-4">
-                        <p className="pr-1">#</p>
-                      </Th>
-                      <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">ژمارەی وەصڵ</p>
-                      </Th>
-                      <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">داشکاندن</p>
-                      </Th>{" "}
-                      <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">کرادرەکان</p>
-                      </Th>
-                    </Tr>
-                  </THead>
-                  <TBody className="w-full ">
-                    <>
-                      {allData?.map((val: Sell, index: number) => (
-                        <SellCard key={val.id} index={index} {...val} />
-                      ))}
+                        ))}
 
-                      {!isFetchingNextPage && hasNextPage && !isSearched && (
-                        <div className="h-[20px]" ref={ref}></div>
-                      )}
-                    </>
-                  </TBody>
-                  <TFoot className="sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
-                    <Tr>
-                      <Td className="text-center" colSpan={9}>
-                        ژمارەی داتا {allData.length}
-                      </Td>
-                    </Tr>
-                  </TFoot>
-                </Table>
-              </div>
-            );
-          }}
-        </Pagination>
+                        {!isFetchingNextPage && hasNextPage && !isSearched && (
+                          <div className="h-[20px]" ref={ref}></div>
+                        )}
+                      </>
+                    </TBody>
+                    <TFoot className="sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
+                      <Tr>
+                        <Td className="text-center" colSpan={9}>
+                          ژمارەی داتا {allData.length}
+                        </Td>
+                      </Tr>
+                    </TFoot>
+                  </Table>
+                </div>
+              );
+            }}
+          </Pagination>
+        )}
       </Container>
       {isDelete && (
         <Dialog
@@ -205,8 +390,8 @@ const Sells = () => {
           isOpen={isRestore}
           onClose={() => setIsRestore(false)}>
           <RestoreModal
-            deleteFunction={() => restore(checked)}
-            loading={restoreLoading}
+            deleteFunction={() => restoreSelfDeleted(checked)}
+            loading={selfRestoreLoading}
             onClose={() => setIsRestore(false)}
           />
         </Dialog>

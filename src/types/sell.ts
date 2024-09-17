@@ -27,8 +27,17 @@ export type UpdateSellItemInputs = {
   quantity: number;
 };
 
-export type SellCardProps = Sell & { index?: number };
-export type SellItemCardProps = SellItem & { index?: number };
+export type SellCardProps = {
+  id: number;
+  discount: number;
+  date: Date | string;
+} & { index?: number };
+export type SellItemCardProps = SellItem & {
+  index?: number;
+  state?: "insert" | "read";
+  confirm?: boolean;
+  self_delete?: boolean;
+};
 export type GetSellQ = Sell;
 export type GetSellsQ = Sell[];
 
@@ -45,6 +54,9 @@ export type UpdateSellItemQ = SellItem;
 export type DeleteSellItemQ = Id[];
 
 export type DeleteSellQ = Id[];
+export type RestoreSelfDeletedSellItemQ = Id[];
+
+export type RestoreSellQ = Id;
 
 export type UpdateSellF = {
   discount: number;

@@ -272,7 +272,12 @@ const CreatePsula = () => {
                     </THead>
                     <TBody className="w-full">
                       {sellItems?.map((val: SellItem, _index: number) => (
-                        <SellItemCard index={_index} key={val.id} {...val} />
+                        <SellItemCard
+                          state="insert"
+                          index={_index}
+                          key={val.id}
+                          {...val}
+                        />
                       ))}
                     </TBody>
                     <TFoot className="sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
@@ -300,7 +305,7 @@ const CreatePsula = () => {
                       )}
                     </TFoot>
                   </Table>
-                </div>{" "}
+                </div>
                 <div className="row-span-2 w-full flex flex-col justify-center items-center gap-5 default-border p-5">
                   <div className=" w-full flex flex-row justify-center items-end gap-5">
                     <div className="w-[200px] flex flex-col gap-2">

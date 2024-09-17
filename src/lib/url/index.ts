@@ -118,6 +118,7 @@ export type URLS =
   | "UPDATE_ITEM_IN_SELL"
   | "DELETE_ITEM_IN_SELL"
   | "GET_SELL_ITEMS"
+  | "GET_DELETED_SELL_ITEMS"
   | "INCREASE_ITEM_IN_SELL"
   | "DECREASE_ITEM_IN_SELL"
   | "GET_SELL_PRINT"
@@ -125,7 +126,9 @@ export type URLS =
   | "GET_DELETED_SELLS"
   | "SEARCH_DELETED_SELLS"
   | "SEARCH_SELLS"
-
+  | "GET_SELF_DELETED_SELL_ITEMS"
+  | "SEARCH_SELF_DELETED_SELL_ITEMS"
+  | "RESTORE_SELF_DELETED_SELL_ITEM"
   //
   | "GET_PARTS"
   | "ADD_PART"
@@ -258,6 +261,7 @@ export const URLs: { [key in URLS]: string } = {
   DELETE_SELL: `${API}/sell`,
   GET_SELL: `${API}/sell/sell`,
   GET_SELL_ITEMS: `${API}/sell/sell_items`,
+  GET_DELETED_SELL_ITEMS: `${API}/sell/deleted_sell_items`,
 
   ADD_ITEM_TO_SELL: `${API}/sell/add_item_to_sell`,
   UPDATE_ITEM_IN_SELL: `${API}/sell/update_item_in_sell`,
@@ -269,6 +273,12 @@ export const URLs: { [key in URLS]: string } = {
   GET_DELETED_SELLS: `${API}/sell/deleted`,
   SEARCH_DELETED_SELLS: `${API}/sell/deleted_search`,
   SEARCH_SELLS: `${API}/sell/search`,
+
+  GET_SELF_DELETED_SELL_ITEMS: `${API}/sell/self_deleted_sell_items`,
+
+  SEARCH_SELF_DELETED_SELL_ITEMS: `${API}/sell/search_deleted_sell_items`,
+  RESTORE_SELF_DELETED_SELL_ITEM: `${API}/sell/restore_self_deleted_sell_item`,
+
   //
 
   GET_PARTS: `${API}/part`,

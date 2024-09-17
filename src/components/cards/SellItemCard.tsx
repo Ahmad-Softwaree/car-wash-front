@@ -1,4 +1,4 @@
-import { Minus, PenTool, Plus, Trash2 } from "lucide-react";
+import { Minus, PenTool, Plus, RotateCcw, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import Dialog from "../shared/Dialog";
 import DeleteModal from "../ui/DeleteModal";
@@ -14,12 +14,15 @@ import {
   useDecreaseItemInSell,
   useDeleteItemInSell,
   useIncreaseItemInSell,
+  useRestoreSelfDeletedSellItem,
   useUpdateItemInSell,
 } from "@/lib/react-query/query/sell.query";
 import { useSearchParams } from "react-router-dom";
 import { ENUMs } from "@/lib/enum";
 import SellItemForm from "../forms/SellItemForm";
 import CustomClose from "../shared/CustomClose";
+import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
+import RestoreModal from "../ui/RestoreModal";
 
 const SellItemCard = ({
   id,
@@ -30,8 +33,13 @@ const SellItemCard = ({
   item_sell_price,
   item_name,
   index = -1,
+  state,
+  confirm = false,
+  self_delete = false,
   ...others
 }: SellItemCardProps) => {
+  const { deleted_page } = useCheckDeletedPage();
+
   const [quantityInput, setQuantityInput] = useState<string>(
     quantity.toString()
   );
@@ -46,26 +54,31 @@ const SellItemCard = ({
     mutateAsync: updateItem,
     isPending: updateLoading,
     isError,
-  } = useUpdateItemInSell(Number(sell_id_param), item_id);
+  } = useUpdateItemInSell(Number(sell_id_param) || sell_id, item_id);
   const [isDelete, setIsDelete] = useState<boolean>(false);
+  const [restore, setIsRestore] = useState<boolean>(false);
+
   const [update, setUpdate] = useState<boolean>(false);
 
-  const { mutateAsync, isPending } = useDeleteItemInSell(Number(sell_id_param));
+  const { mutateAsync, isPending } = useDeleteItemInSell(
+    Number(sell_id_param) || sell_id
+  );
+  const { mutateAsync: restoreSelfDeleted, isPending: selfRestoreLoading } =
+    useRestoreSelfDeletedSellItem();
   useEffect(() => {
     setQuantityInput(quantity.toString());
   }, [quantity]);
   useEffect(() => {
-    console.log(isError);
     if (isError) {
       setQuantityInput(quantity.toString());
     }
   }, [isError]);
 
   const { mutateAsync: increase, isPending: increasePending } =
-    useIncreaseItemInSell(Number(sell_id_param), item_id);
+    useIncreaseItemInSell(Number(sell_id_param) || sell_id, item_id);
 
   const { mutateAsync: decrease, isPending: decreasePending } =
-    useDecreaseItemInSell(Number(sell_id_param), item_id);
+    useDecreaseItemInSell(Number(sell_id_param) || sell_id, item_id);
 
   return (
     <>
@@ -74,28 +87,54 @@ const SellItemCard = ({
           checked?.includes(item_id) ? "table-row-include" : "table-row-normal"
         }`}
         key={id}>
-        <Td className="!p-3">
-          <InputGroup className="checkbox-input">
-            <Input
-              onClick={() => {
-                if (checked?.includes(item_id)) {
-                  dispatch({
-                    type: CONTEXT_TYPEs.UNCHECK,
-                    payload: item_id,
-                  });
-                } else {
-                  dispatch({
-                    type: CONTEXT_TYPEs.CHECK,
-                    payload: item_id,
-                  });
-                }
-              }}
-              checked={checked.includes(item_id)}
-              type="checkbox"
-              className="cursor-pointer"
-            />
-          </InputGroup>
-        </Td>
+        {!deleted_page && (
+          <Td className="!p-3">
+            <InputGroup className="checkbox-input">
+              <Input
+                onClick={() => {
+                  if (checked?.includes(item_id)) {
+                    dispatch({
+                      type: CONTEXT_TYPEs.UNCHECK,
+                      payload: item_id,
+                    });
+                  } else {
+                    dispatch({
+                      type: CONTEXT_TYPEs.CHECK,
+                      payload: item_id,
+                    });
+                  }
+                }}
+                checked={checked.includes(item_id)}
+                type="checkbox"
+                className="cursor-pointer"
+              />
+            </InputGroup>
+          </Td>
+        )}
+        {(confirm || self_delete) && (
+          <Td className="!p-3">
+            <InputGroup className="checkbox-input">
+              <Input
+                onClick={() => {
+                  if (checked?.includes(item_id)) {
+                    dispatch({
+                      type: CONTEXT_TYPEs.UNCHECK,
+                      payload: item_id,
+                    });
+                  } else {
+                    dispatch({
+                      type: CONTEXT_TYPEs.CHECK,
+                      payload: item_id,
+                    });
+                  }
+                }}
+                checked={checked.includes(item_id)}
+                type="checkbox"
+                className="cursor-pointer"
+              />
+            </InputGroup>
+          </Td>
+        )}
         <Td className="!p-3">
           <p className="text-right font-light font-poppins text-sm">
             {index != -1 ? index + 1 : 0}
@@ -106,21 +145,29 @@ const SellItemCard = ({
             {item_name}
           </p>
         </Td>
-
+        {self_delete && (
+          <Td className="!p-3">
+            <p className="text-right font-light font-bukra text-sm">
+              {sell_id}
+            </p>
+          </Td>
+        )}
         <Td className="!p-3 flex flex-row justify-start items-center gap-1">
-          <Tooltip
-            placement="top"
-            title="زیادکردن"
-            color="success"
-            variant="soft">
-            <Chip
-              disabled={increasePending}
-              onClick={() => increase()}
-              variant="soft"
-              color="success">
-              <Plus className="w-4 h-4 cursor-pointer" />
-            </Chip>
-          </Tooltip>
+          {!deleted_page && (
+            <Tooltip
+              placement="top"
+              title="زیادکردن"
+              color="success"
+              variant="soft">
+              <Chip
+                disabled={increasePending}
+                onClick={() => increase()}
+                variant="soft"
+                color="success">
+                <Plus className="w-4 h-4 cursor-pointer" />
+              </Chip>
+            </Tooltip>
+          )}
 
           <Chip
             sx={{
@@ -135,26 +182,28 @@ const SellItemCard = ({
                   quantity: Number(quantityInput) - Number(quantity),
                 })
               }
+              disabled={deleted_page}
               className="w-[40px] text-center !font-bukra"
               value={quantityInput}
               name="quantityInput"
               onChange={(e) => setQuantityInput(e.target.value)}
             />
           </Chip>
-
-          <Tooltip
-            placement="top"
-            title="کەمکردن"
-            color="danger"
-            variant="soft">
-            <Chip
-              disabled={decreasePending}
-              onClick={() => decrease()}
-              variant="soft"
-              color="danger">
-              <Minus className="w-4 h-4 cursor-pointer" />
-            </Chip>
-          </Tooltip>
+          {!deleted_page && (
+            <Tooltip
+              placement="top"
+              title="کەمکردن"
+              color="danger"
+              variant="soft">
+              <Chip
+                disabled={decreasePending}
+                onClick={() => decrease()}
+                variant="soft"
+                color="danger">
+                <Minus className="w-4 h-4 cursor-pointer" />
+              </Chip>
+            </Tooltip>
+          )}
         </Td>
 
         <Td className="!p-3">
@@ -169,40 +218,58 @@ const SellItemCard = ({
         </Td>
 
         <Td className="!p-3 cup flex flex-row gap-2">
-          <Tooltip
-            placement="top"
-            title="سڕینەوە"
-            color="danger"
-            variant="soft">
-            <Chip
-              onClick={() => setIsDelete(true)}
-              variant="soft"
-              color="danger">
-              <Trash2 className="w-7 h-7 p-1 cursor-pointer" />
-            </Chip>
-          </Tooltip>
-          <Tooltip
-            placement="top"
-            title="چاککردن"
-            color="success"
-            variant="soft">
-            <Chip
-              onClick={() => {
-                dispatch({
-                  type: CONTEXT_TYPEs.SET_OLD_DATA,
-                  payload: {
-                    item_id,
-                    quantity,
-                    item_sell_price,
-                  },
-                });
-                setUpdate(true);
-              }}
-              variant="soft"
-              color="success">
-              <PenTool className="w-7 h-7 p-1 cursor-pointer" />
-            </Chip>
-          </Tooltip>
+          {!deleted_page && (
+            <>
+              <Tooltip
+                placement="top"
+                title="سڕینەوە"
+                color="danger"
+                variant="soft">
+                <Chip
+                  onClick={() => setIsDelete(true)}
+                  variant="soft"
+                  color="danger">
+                  <Trash2 className="w-7 h-7 p-1 cursor-pointer" />
+                </Chip>
+              </Tooltip>
+              <Tooltip
+                placement="top"
+                title="چاککردن"
+                color="success"
+                variant="soft">
+                <Chip
+                  onClick={() => {
+                    dispatch({
+                      type: CONTEXT_TYPEs.SET_OLD_DATA,
+                      payload: {
+                        item_id,
+                        quantity,
+                        item_sell_price,
+                      },
+                    });
+                    setUpdate(true);
+                  }}
+                  variant="soft"
+                  color="success">
+                  <PenTool className="w-7 h-7 p-1 cursor-pointer" />
+                </Chip>
+              </Tooltip>
+            </>
+          )}
+          {self_delete && (
+            <Tooltip
+              placement="top"
+              title="گێڕانەوە"
+              color="warning"
+              variant="soft">
+              <Chip
+                onClick={() => setIsRestore(true)}
+                variant="soft"
+                color="warning">
+                <RotateCcw className="w-7 h-7 p-1 cursor-pointer" />
+              </Chip>
+            </Tooltip>
+          )}
         </Td>
       </Tr>
 
@@ -220,6 +287,20 @@ const SellItemCard = ({
           />
         </Dialog>
       )}
+      {restore && (
+        <Dialog
+          className="!p-5 rounded-md"
+          maxWidth={500}
+          maxHeight={`90%`}
+          isOpen={restore}
+          onClose={() => setIsRestore(false)}>
+          <RestoreModal
+            deleteFunction={() => restoreSelfDeleted(checked)}
+            loading={selfRestoreLoading}
+            onClose={() => setIsRestore(false)}
+          />
+        </Dialog>
+      )}
       {update && (
         <Dialog
           className="!p-5 rounded-md"
@@ -228,7 +309,7 @@ const SellItemCard = ({
           isOpen={update}
           onClose={() => setUpdate(false)}>
           <CustomClose onClick={() => setUpdate(false)} />
-          <SellItemForm onClose={() => setUpdate(false)} />
+          <SellItemForm sell_id={sell_id} onClose={() => setUpdate(false)} />
         </Dialog>
       )}
     </>

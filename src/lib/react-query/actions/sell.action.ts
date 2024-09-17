@@ -5,11 +5,13 @@ import {
   AddItemToSellF,
   AddSellItemQ,
   AddSellQ,
+  RestoreSelfDeletedSellItemQ,
   DeleteSellItemQ,
   DeleteSellQ,
   GetSellItemsQ,
   GetSellQ,
   GetSellsQ,
+  RestoreSellQ,
   UpdateItemInSellF,
   UpdateSellF,
   UpdateSellItemQ,
@@ -44,7 +46,33 @@ export const getSells = async (
     throw generateNestErrors(error, toast);
   }
 };
-
+export const getSelfDeletedSellItems = async (
+  toast: ToastType,
+  page: Page,
+  limit: Limit
+): Promise<PaginationReturnType<GetSellItemsQ>> => {
+  try {
+    const { data, status } = await authApi.get<
+      PaginationReturnType<GetSellItemsQ>
+    >(`${URLs.GET_SELF_DELETED_SELL_ITEMS}?page=${page}&limit=${limit}`);
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+export const searchSelfDeletedSellItems = async (
+  toast: ToastType,
+  search: Search
+): Promise<GetSellItemsQ> => {
+  try {
+    const { data, status } = await authApi.get<GetSellItemsQ>(
+      `${URLs.SEARCH_SELF_DELETED_SELL_ITEMS}?search=${search}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
 export const getDeletedSell = async (
   toast: ToastType,
   page: Page,
@@ -128,13 +156,24 @@ export const getSellItems = async (
     const { data, status } = await authApi.get<GetSellItemsQ>(
       `${URLs.GET_SELL_ITEMS}/${sell_id}`
     );
-    console.log(data);
     return data;
   } catch (error: any) {
     throw generateNestErrors(error, toast);
   }
 };
-
+export const getDeletedSellItems = async (
+  toast: ToastType,
+  sell_id: Id
+): Promise<GetSellItemsQ> => {
+  try {
+    const { data, status } = await authApi.get<GetSellItemsQ>(
+      `${URLs.GET_DELETED_SELL_ITEMS}/${sell_id}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
 export const addSell = async (): Promise<AddSellQ> => {
   try {
     const { data, status } = await authApi.post<AddSellQ>(`${URLs.ADD_SELL}`);
@@ -262,7 +301,23 @@ export const deleteSell = async (ids: Id[]): Promise<DeleteSellQ> => {
 
   return results.filter((result) => result !== null);
 };
-export const restoreSell = async (ids: Id[]): Promise<DeleteSellQ> => {
+export const restoreSell = async (
+  sell_id: Id,
+  item_ids: Id[]
+): Promise<RestoreSellQ> => {
+  try {
+    const { data, status } = await authApi.put<RestoreSellQ>(
+      `${URLs.RESTORE_SELL}/${sell_id}`,
+      { item_ids }
+    );
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+export const restoreSelfDeletedSellItem = async (
+  ids: Id[]
+): Promise<RestoreSelfDeletedSellItemQ> => {
   const idArray = Array.isArray(ids) ? ids : [ids];
   const requests = idArray.map(async (id, index) => {
     try {
@@ -270,7 +325,9 @@ export const restoreSell = async (ids: Id[]): Promise<DeleteSellQ> => {
       if (index > 0) {
         await new Promise((resolve) => setTimeout(resolve, 1000)); // Adjust the timeout duration as needed
       }
-      const { data, status } = await authApi.put(`${URLs.RESTORE_SELL}/${id}`);
+      const { data, status } = await authApi.put(
+        `${URLs.RESTORE_SELF_DELETED_SELL_ITEM}/${id}`
+      );
       return id;
     } catch (error) {
       throw error;

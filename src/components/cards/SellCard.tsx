@@ -1,12 +1,5 @@
 import { SellCardProps } from "@/types/sell";
-import {
-  ArchiveRestore,
-  Info,
-  PenTool,
-  RotateCcw,
-  Trash2,
-  X,
-} from "lucide-react";
+import { Info, PenTool, RotateCcw, Trash2 } from "lucide-react";
 import { useState } from "react";
 import Dialog from "../shared/Dialog";
 import DeleteModal from "../ui/DeleteModal";
@@ -23,6 +16,12 @@ import Tooltip from "@mui/joy/Tooltip";
 import Chip from "@mui/joy/Chip";
 import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import RestoreModal from "../ui/RestoreModal";
+import SellDetailCard from "./SellDetailCard";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { ENUMs } from "@/lib/enum";
+import SellRestoreConfirm from "./SellRestoreConfirm";
+import CustomClose from "../shared/CustomClose";
+import { formatDateToDDMMYY } from "@/lib/functions";
 
 const SellCard = ({
   discount,
@@ -31,18 +30,19 @@ const SellCard = ({
   index = -1,
   ...others
 }: SellCardProps) => {
+  const navigate = useNavigate();
   const { deleted_page } = useCheckDeletedPage();
-
+  const [searchParam, setSearchParam] = useSearchParams();
   const [detail, setDetail] = useState<boolean>(false);
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const [isRestore, setIsRestore] = useState<boolean>(false);
+  const [isConfirm, setIsConfirm] = useState<boolean>(false);
 
   const {
     dispatch,
     state: { checked },
   } = useGlobalContext();
   const { mutateAsync, isPending } = useDeleteSell();
-  const { mutateAsync: restore, isPending: restoreLoading } = useRestoreSell();
 
   return (
     <>
@@ -51,28 +51,30 @@ const SellCard = ({
           checked?.includes(id) ? "table-row-include" : "table-row-normal"
         }`}
         key={id}>
-        <Td className="!p-3">
-          <InputGroup className="checkbox-input">
-            <Input
-              onChange={() => {
-                if (checked?.includes(id)) {
-                  dispatch({
-                    type: CONTEXT_TYPEs.UNCHECK,
-                    payload: id,
-                  });
-                } else {
-                  dispatch({
-                    type: CONTEXT_TYPEs.CHECK,
-                    payload: id,
-                  });
-                }
-              }}
-              checked={checked.includes(id)}
-              type="checkbox"
-              className="cursor-pointer"
-            />
-          </InputGroup>
-        </Td>
+        {!deleted_page && (
+          <Td className="!p-3">
+            <InputGroup className="checkbox-input">
+              <Input
+                onChange={() => {
+                  if (checked?.includes(id)) {
+                    dispatch({
+                      type: CONTEXT_TYPEs.UNCHECK,
+                      payload: id,
+                    });
+                  } else {
+                    dispatch({
+                      type: CONTEXT_TYPEs.CHECK,
+                      payload: id,
+                    });
+                  }
+                }}
+                checked={checked.includes(id)}
+                type="checkbox"
+                className="cursor-pointer"
+              />
+            </InputGroup>
+          </Td>
+        )}
         <Td className="!p-3">
           <p className="text-right font-light font-poppins text-sm">
             {index != -1 ? index + 1 : 0}
@@ -80,6 +82,11 @@ const SellCard = ({
         </Td>
         <Td className="!p-3">
           <p className="text-right font-light font-bukra text-sm">{id}</p>
+        </Td>
+        <Td className="!p-3">
+          <p className="text-right font-light font-bukra text-sm">
+            {formatDateToDDMMYY(date.toLocaleString())}
+          </p>
         </Td>
         <Td className="!p-3">
           <p className="text-right font-light font-bukra text-sm">{discount}</p>
@@ -105,7 +112,14 @@ const SellCard = ({
                 title="چاککردن"
                 color="success"
                 variant="soft">
-                <Chip variant="soft" color="success">
+                <Chip
+                  onClick={async () => {
+                    navigate(
+                      `/${ENUMs.GENERAL_SECTION}/${ENUMs.CREATE_PSULA_PART}?sell_id=${id}`
+                    );
+                  }}
+                  variant="soft"
+                  color="success">
                   <PenTool className="w-7 h-7 p-1 cursor-pointer" />
                 </Chip>
               </Tooltip>
@@ -162,9 +176,44 @@ const SellCard = ({
           isOpen={isRestore}
           onClose={() => setIsRestore(false)}>
           <RestoreModal
-            deleteFunction={() => restore([id])}
-            loading={restoreLoading}
+            deleteFunction={() => setIsConfirm(true)}
+            loading={false}
             onClose={() => setIsRestore(false)}
+          />
+        </Dialog>
+      )}
+      {detail && (
+        <Dialog
+          className="!p-5 rounded-md hide-scroll"
+          maxWidth={2000}
+          maxHeight={`90%`}
+          isOpen={detail}
+          onClose={() => setDetail(false)}>
+          <CustomClose onClick={() => setDetail(false)} />
+          <SellDetailCard
+            discount={discount}
+            id={id}
+            date={date}
+            index={index}
+            onClose={() => setDetail(false)}
+          />
+        </Dialog>
+      )}
+      {isConfirm && (
+        <Dialog
+          className="!p-5 rounded-md hide-scroll"
+          maxWidth={2000}
+          maxHeight={`90%`}
+          isOpen={isConfirm}
+          onClose={() => setIsConfirm(false)}>
+          <CustomClose onClick={() => setIsConfirm(false)} />
+
+          <SellRestoreConfirm
+            discount={discount}
+            id={id}
+            date={date}
+            index={index}
+            onClose={() => setIsConfirm(false)}
           />
         </Dialog>
       )}

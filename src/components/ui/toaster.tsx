@@ -24,10 +24,10 @@ export function Toaster() {
         ...props
       }) {
         return (
-          <Toast className="p-0 !font-bukra" key={id} {...props}>
+          <Toast className="p-0 !font-bukra !z-[3000]" key={id} {...props}>
             <Alert
               severity={alertType}
-              className="grid gap-1 w-full !font-bukra">
+              className="grid gap-1 w-full !font-bukra !z-[3000]">
               {title && (
                 <ToastTitle className="!font-bukra !text-sm mb-2">
                   {title}

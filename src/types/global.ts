@@ -28,7 +28,7 @@ import { CarModel } from "./car-model";
 import { ItemType } from "./item-type";
 import { Color } from "./color";
 import { Service } from "./service";
-import { Sell } from "./sell";
+import { Sell, SellItem } from "./sell";
 
 export type GlobalFormProps = {
   state?: "update" | "insert";
@@ -86,7 +86,8 @@ export type DataTypes =
   | ItemType[]
   | Color[]
   | Service[]
-  | Sell[];
+  | Sell[]
+  | SellItem[];
 
 export type PaginationChildrenProps<T extends DataTypes> = {
   isFetchingNextPage: boolean;

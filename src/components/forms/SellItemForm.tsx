@@ -4,6 +4,7 @@ import {
   FormFinalOperation,
   FormHandle,
   GlobalFormProps,
+  Id,
 } from "@/types/global";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Input from "@/components/ui/Input";
@@ -19,20 +20,22 @@ import { ENUMs } from "@/lib/enum";
 import { Chip, Tooltip } from "@mui/joy";
 import { Minus, Plus } from "lucide-react";
 
-const SellItemForm = ({ onClose }: FormFinalOperation & GlobalFormProps) => {
+const SellItemForm = ({
+  onClose,
+  sell_id,
+}: FormFinalOperation & GlobalFormProps & { sell_id: Id }) => {
   const [searchParam, setSearchParam] = useSearchParams();
   let sell_id_param = searchParam.get(ENUMs.SELL_PARAM as string);
   const { state: globalState } = useGlobalContext();
   const form = useRef<FormHandle>(null);
   const { mutateAsync, isPending } = useUpdateItemInSell(
-    Number(sell_id_param),
+    Number(sell_id_param) || sell_id,
     globalState?.oldData?.item_id
   );
 
   const {
     register,
     handleSubmit,
-    reset,
     getValues,
     setValue,
     formState: { errors },
@@ -44,13 +47,6 @@ const SellItemForm = ({ onClose }: FormFinalOperation & GlobalFormProps) => {
     if (onClose) onClose();
   };
 
-  useEffect(() => {
-    if (globalState.oldData) {
-      let { deleted, updated_at, created_at, item_id, ...others } =
-        globalState.oldData;
-      reset(others);
-    }
-  }, [globalState]);
   return (
     <Form
       className="w-full flex flex-col justify-center items-start gap-10 min-w-none mt-2"
@@ -66,7 +62,7 @@ const SellItemForm = ({ onClose }: FormFinalOperation & GlobalFormProps) => {
           <Label
             htmlFor="quantity"
             className="w-full text-sm  flex flex-row gap-2">
-            <p>عەدەد</p>
+            <p>عەدەد (ئەتەوێ چەند زیاد بکەی؟)</p>
           </Label>{" "}
           <div className="w-full flex flex-row justify-start items-center gap-2">
             <InputGroup

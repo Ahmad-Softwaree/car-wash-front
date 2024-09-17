@@ -38,7 +38,7 @@ const Dialog: React.FC<DialogProps> = ({
       }}
       className={cn(
         props.className,
-        "p-2 dark-light shadow-4xl overflow-y-auto no-scrollbar  default-border"
+        "p-2 dark-light shadow-4xl  overflow-y-auto no-scrollbar  default-border"
       )}
       onClick={onClose}>
       <AnimatePresence>

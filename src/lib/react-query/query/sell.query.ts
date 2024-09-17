@@ -5,7 +5,10 @@ import {
   AddSellQ,
   DeleteSellItemQ,
   DeleteSellQ,
+  GetSellItemsQ,
   GetSellsQ,
+  RestoreSelfDeletedSellItemQ,
+  RestoreSellQ,
   UpdateItemInSellF,
   UpdateSellF,
   UpdateSellItemQ,
@@ -24,13 +27,17 @@ import {
   deleteItemInSell,
   deleteSell,
   getDeletedSell,
+  getDeletedSellItems,
+  getSelfDeletedSellItems,
   getSell,
   getSellItems,
   getSellPrint,
   getSells,
   increaseItemInSell,
+  restoreSelfDeletedSellItem,
   restoreSell,
   searchDeletedSells,
+  searchSelfDeletedSellItems,
   searchSells,
   updateItemInSell,
   updateSell,
@@ -65,6 +72,32 @@ export const useGetSells = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+  });
+};
+export const useGetSelfDeletedSellItems = () => {
+  const { toast } = useToast();
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEYs.SELF_DELETED_SELL_ITEMS],
+    queryFn: ({
+      pageParam,
+    }: {
+      pageParam: Page;
+    }): Promise<PaginationReturnType<GetSellItemsQ>> =>
+      getSelfDeletedSellItems(toast, pageParam, ENUMs.LIMIT as number),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage: any, pages: any) => {
+      return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
+    },
+  });
+};
+export const useSearchSelfDeletedSellItems = (search: Search) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.SEARCH_SELF_DELETED_SELL_ITEMS],
+    queryFn: (): Promise<GetSellItemsQ> =>
+      searchSelfDeletedSellItems(toast, search),
+    enabled: !!search,
+    retry: 0,
   });
 };
 export const useGetDeletedSells = (from: From, to: To) => {
@@ -125,6 +158,15 @@ export const useGetSellItems = (sell_id: Id) => {
   return useQuery({
     queryKey: [QUERY_KEYs.SELL_ITEMS, sell_id],
     queryFn: () => getSellItems(toast, sell_id),
+    retry: 0,
+    enabled: !!sell_id,
+  });
+};
+export const useGetDeletedSellItems = (sell_id: Id) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.DELETED_SELL_ITEMS, sell_id],
+    queryFn: () => getDeletedSellItems(toast, sell_id),
     retry: 0,
     enabled: !!sell_id,
   });
@@ -368,14 +410,15 @@ export const useDeleteSell = () => {
     },
   });
 };
-export const useRestoreSell = () => {
+export const useRestoreSell = (item_ids: Id[]) => {
   const { toast } = useToast();
   const { dispatch } = useGlobalContext();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (ids: Id[]): Promise<DeleteSellQ> => restoreSell(ids),
-    onSuccess: (data: DeleteSellQ) => {
+    mutationFn: (sell_id: Id): Promise<RestoreSellQ> =>
+      restoreSell(sell_id, item_ids),
+    onSuccess: (data: RestoreSellQ) => {
       toast({
         title: "سەرکەوتووبوو",
         description: "پسولەکە گێردرایەوە",
@@ -390,6 +433,38 @@ export const useRestoreSell = () => {
       return dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
+      });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+  });
+};
+
+export const useRestoreSelfDeletedSellItem = () => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const { dispatch } = useGlobalContext();
+
+  return useMutation({
+    mutationFn: (ids: Id[]): Promise<RestoreSelfDeletedSellItemQ> =>
+      restoreSelfDeletedSellItem(ids),
+    onSuccess: (data: RestoreSelfDeletedSellItemQ) => {
+      toast({
+        title: "سەرکەوتووبوو",
+        description: "پسولەکە سڕایەوە",
+        alertType: "success",
+      });
+      dispatch({
+        type: CONTEXT_TYPEs.CHECK,
+        payload: [],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.SELF_DELETED_SELL_ITEMS],
+      });
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.SEARCH_SELF_DELETED_SELL_ITEMS],
       });
     },
     onError: (error: NestError) => {
