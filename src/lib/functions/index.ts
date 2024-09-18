@@ -17,6 +17,25 @@ export function timestampToDateString(timestamp: number): string {
   // Format the date string as YYYY-MM-DD
   return `${year}-${month}-${day}`;
 }
+export function formatDateString(dateString: string): string {
+  // Parse the input date string
+  const date = new Date(dateString);
+
+  // Ensure the date is valid
+  if (isNaN(date.getTime())) {
+    throw new Error("Invalid date format");
+  }
+
+  // Get the components you need: year, month, day, hour, and minute
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed, so add 1
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+
+  // Format the date string
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+}
 
 export function formatDateToDDMMYY(dateString: string): string {
   const date = new Date(dateString);

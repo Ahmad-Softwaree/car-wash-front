@@ -190,6 +190,15 @@ export const sideLinks: SideLink[] = [
   },
   {
     id: crypto.randomUUID() as string,
+    icon: <Presentation />,
+    name: ENUMs.RESERVATION_PART as string,
+    link: `/${ENUMs.DELETED_SECTION as string}/${
+      ENUMs.RESERVATION_PART as string
+    }`,
+    type: "deleted",
+  },
+  {
+    id: crypto.randomUUID() as string,
     icon: <Database />,
     name: ENUMs.KOGA_PART as string,
     link: `/${ENUMs.DELETED_SECTION as string}/${ENUMs.KOGA_PART as string}`,

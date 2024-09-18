@@ -38,7 +38,6 @@ import Filter from "@/components/shared/Filter";
 import { Role } from "@/types/role";
 
 import { useGetRolesSelection } from "@/lib/react-query/query/role.query";
-import DatePicker from "@/components/shared/DatePicker";
 
 const Users = () => {
   const { deleted_page } = useCheckDeletedPage();

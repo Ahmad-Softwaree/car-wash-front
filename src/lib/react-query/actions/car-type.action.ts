@@ -40,7 +40,18 @@ export const getCarTypes = async (
     throw generateNestErrors(error, toast);
   }
 };
-
+export const getCarTypesSelection = async (
+  toast: ToastType
+): Promise<GetCarTypesQ> => {
+  try {
+    const { data, status } = await authApi.get<GetCarTypesQ>(
+      `${URLs.GET_CAR_TYPES_SELECTION}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
 export const getDeletedCarType = async (
   toast: ToastType,
   page: Page,

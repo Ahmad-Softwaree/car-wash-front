@@ -22,6 +22,7 @@ import {
   searchDeletedCarModels,
   searchCarModels,
   updateCarModel,
+  getCarModelsSelection,
 } from "../actions/car-model.action";
 import { QUERY_KEYs } from "../key";
 import {
@@ -52,6 +53,14 @@ export const useGetCarModels = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+  });
+};
+export const useGetCarModelsSelection = () => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.CAR_MODELS_SELECTION],
+    queryFn: () => getCarModelsSelection(toast),
+    retry: 0,
   });
 };
 export const useGetDeletedCarModels = (from: From, to: To) => {

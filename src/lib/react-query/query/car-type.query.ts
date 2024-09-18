@@ -22,6 +22,7 @@ import {
   searchDeletedCarTypes,
   searchCarTypes,
   updateCarType,
+  getCarTypesSelection,
 } from "../actions/car-type.action";
 import { QUERY_KEYs } from "../key";
 import {
@@ -31,12 +32,12 @@ import {
   Page,
   PaginationReturnType,
   Search,
+  To,
 } from "@/types/global";
 import { ENUMs } from "@/lib/enum";
 import { generateNestErrors } from "@/lib/functions";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
-import { To } from "react-router-dom";
 
 export const useGetCarTypes = (from: From, to: To) => {
   const { toast } = useToast();
@@ -52,6 +53,14 @@ export const useGetCarTypes = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+  });
+};
+export const useGetCarTypesSelection = () => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.CAR_TYPES_SELECTION],
+    queryFn: () => getCarTypesSelection(toast),
+    retry: 0,
   });
 };
 export const useGetDeletedCarTypes = (from: From, to: To) => {

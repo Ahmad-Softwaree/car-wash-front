@@ -22,6 +22,7 @@ import {
   searchDeletedCustomers,
   searchCustomers,
   updateCustomer,
+  getCustomersSelection,
 } from "../actions/customer.action";
 import { QUERY_KEYs } from "../key";
 import {
@@ -53,6 +54,14 @@ export const useGetCustomers = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+  });
+};
+export const useGetCustomersSelection = () => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.CUSTOMERS_SELECTION],
+    queryFn: () => getCustomersSelection(toast),
+    retry: 0,
   });
 };
 export const useGetDeletedCustomers = (from: From, to: To) => {

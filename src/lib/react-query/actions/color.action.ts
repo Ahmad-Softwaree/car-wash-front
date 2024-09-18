@@ -41,6 +41,19 @@ export const getColors = async (
   }
 };
 
+export const getColorsSelection = async (
+  toast: ToastType
+): Promise<GetColorsQ> => {
+  try {
+    const { data, status } = await authApi.get<GetColorsQ>(
+      `${URLs.GET_COLORS_SELECTION}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
 export const getDeletedColor = async (
   toast: ToastType,
   page: Page,

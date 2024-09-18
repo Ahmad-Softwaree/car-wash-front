@@ -22,6 +22,7 @@ import {
   searchDeletedColors,
   searchColors,
   updateColor,
+  getColorsSelection,
 } from "../actions/color.action";
 import { QUERY_KEYs } from "../key";
 import {
@@ -52,6 +53,14 @@ export const useGetColors = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+  });
+};
+export const useGetColorsSelection = () => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.COLORS_SELECTION],
+    queryFn: () => getColorsSelection(toast),
+    retry: 0,
   });
 };
 export const useGetDeletedColors = (from: From, to: To) => {

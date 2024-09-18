@@ -1,9 +1,4 @@
-import {
-  Id,
-  ImageTypeInDatabase,
-  ImageTypeInForm,
-  MaybeImageTypeInDatabase,
-} from "./global";
+import { Id } from "./global";
 
 export type Customer = {
   id: number;
@@ -23,12 +18,9 @@ export type AddCustomerInputs = {
 };
 
 export type AddCustomerF = AddCustomerInputs;
-export type AddCustomerWithFirebaseImage = AddCustomerInputs &
-  ImageTypeInDatabase;
+export type AddCustomerWithFirebaseImage = AddCustomerInputs;
 export type UpdateCustomerF = AddCustomerInputs;
-export type UpdateCustomerWithFirebaseImage = AddCustomerInputs &
-  MaybeImageTypeInDatabase;
-
+export type UpdateCustomerWithFirebaseImage = AddCustomerInputs;
 export type GetCustomersQ = Customer[];
 export type AddCustomerQ = Customer;
 export type DeleteCustomerQ = Id[];

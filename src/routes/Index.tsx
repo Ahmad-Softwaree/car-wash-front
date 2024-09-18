@@ -20,6 +20,7 @@ import ExpenseTypes from "@/pages/_auth/ExpenseTypes";
 import Services from "@/pages/_auth/Services";
 import CreatePsula from "@/pages/_auth/CreatePsula";
 import Sells from "@/pages/_auth/Sells";
+import Reservations from "@/pages/_auth/Reservations";
 const RootLayout = lazy(() => import("@/pages/_root/RootLayout"));
 const AuthRouterProvider = lazy(() => import("@/providers/AuthRouterProvider"));
 const UserNullRouterProvider = lazy(
@@ -97,6 +98,16 @@ const router = createBrowserRouter(
             errorElement={<Error />}
             element={
               <CheckPart part={[ENUMs.SELL_PART as string]} Component={Sells} />
+            }
+          />
+          <Route
+            path={ENUMs.RESERVATION_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[ENUMs.RESERVATION_PART as string]}
+                Component={Reservations}
+              />
             }
           />
         </Route>
@@ -219,6 +230,19 @@ const router = createBrowserRouter(
                   ENUMs.DELETED_SECTION as string,
                 ]}
                 Component={Users}
+              />
+            }
+          />
+          <Route
+            path={ENUMs.RESERVATION_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[
+                  ENUMs.RESERVATION_PART as string,
+                  ENUMs.DELETED_SECTION as string,
+                ]}
+                Component={Reservations}
               />
             }
           />

@@ -28,7 +28,7 @@ import { useGlobalContext } from "@/context/GlobalContext";
 
 import { UserPart } from "@/types/user-part";
 import { RolePart } from "@/types/role-part";
-import { Chip, Tooltip } from "@mui/joy";
+import { Chip } from "@mui/joy";
 import Dialog from "../shared/Dialog";
 import CustomClose from "../shared/CustomClose";
 import RoleForm from "./RoleForm";

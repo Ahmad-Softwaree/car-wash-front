@@ -29,6 +29,7 @@ import { ItemType } from "./item-type";
 import { Color } from "./color";
 import { Service } from "./service";
 import { Sell, SellItem } from "./sell";
+import { Reservation } from "./reservation";
 
 export type GlobalFormProps = {
   state?: "update" | "insert";
@@ -87,7 +88,8 @@ export type DataTypes =
   | Color[]
   | Service[]
   | Sell[]
-  | SellItem[];
+  | SellItem[]
+  | Reservation[];
 
 export type PaginationChildrenProps<T extends DataTypes> = {
   isFetchingNextPage: boolean;

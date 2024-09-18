@@ -18,6 +18,7 @@ import {
   deleteService,
   getDeletedService,
   getServices,
+  getServicesSelection,
   restoreService,
   searchDeletedServices,
   searchServices,
@@ -52,6 +53,14 @@ export const useGetServices = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+  });
+};
+export const useGetServicesSelection = () => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.SERVICES_SELECTION],
+    queryFn: () => getServicesSelection(toast),
+    retry: 0,
   });
 };
 export const useGetDeletedServices = (from: From, to: To) => {

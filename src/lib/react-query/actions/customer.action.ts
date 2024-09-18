@@ -41,6 +41,19 @@ export const getCustomers = async (
   }
 };
 
+export const getCustomersSelection = async (
+  toast: ToastType
+): Promise<GetCustomersQ> => {
+  try {
+    const { data, status } = await authApi.get<GetCustomersQ>(
+      `${URLs.GET_CUSTOMERS_SELECTION}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
 export const getDeletedCustomer = async (
   toast: ToastType,
   page: Page,

@@ -13,6 +13,7 @@ export type URLS =
 
   //CUSTOMER
   | "GET_CUSTOMERS"
+  | "GET_CUSTOMERS_SELECTION"
   | "ADD_CUSTOMER"
   | "UPDATE_CUSTOMER"
   | "DELETE_CUSTOMER"
@@ -40,6 +41,7 @@ export type URLS =
   | "SEARCH_DELETED_ROLES"
   | "SEARCH_ROLES"
   //COLOR
+  | "GET_COLORS_SELECTION"
   | "GET_COLORS"
   | "ADD_COLOR"
   | "UPDATE_COLOR"
@@ -49,6 +51,7 @@ export type URLS =
   | "SEARCH_DELETED_COLORS"
   | "SEARCH_COLORS"
   //CAR_MODEL
+  | "GET_CAR_MODELS_SELECTION"
   | "GET_CAR_MODELS"
   | "ADD_CAR_MODEL"
   | "UPDATE_CAR_MODEL"
@@ -58,6 +61,7 @@ export type URLS =
   | "SEARCH_DELETED_CAR_MODELS"
   | "SEARCH_CAR_MODELS"
   //CAR_TYPE
+  | "GET_CAR_TYPES_SELECTION"
   | "GET_CAR_TYPES"
   | "ADD_CAR_TYPE"
   | "UPDATE_CAR_TYPE"
@@ -77,6 +81,7 @@ export type URLS =
   | "SEARCH_DELETED_ITEM_TYPES"
   | "SEARCH_ITEM_TYPES"
   //SERVICE
+  | "GET_SERVICES_SELECTION"
   | "GET_SERVICES"
   | "ADD_SERVICE"
   | "UPDATE_SERVICE"
@@ -129,15 +134,26 @@ export type URLS =
   | "GET_SELF_DELETED_SELL_ITEMS"
   | "SEARCH_SELF_DELETED_SELL_ITEMS"
   | "RESTORE_SELF_DELETED_SELL_ITEM"
-  //
+  //RESERVATION
+  | "GET_PANEL_RESERVATIONS"
+  | "GET_RESERVATIONS"
+  | "GET_DELETED_RESERVATIONS"
+  | "RESTORE_RESERVATION"
+  | "SEARCH_DELETED_RESERVATIONS"
+  | "ADD_RESERVATION"
+  | "UPDATE_RESERVATION"
+  | "DELETE_RESERVATION"
+  | "SEARCH_RESERVATIONS"
+  //PART
   | "GET_PARTS"
   | "ADD_PART"
   | "UPDATE_PART"
   | "DELETE_PART"
+  | "GET_ROLE_PARTS"
+  //AUTH
   | "GET_AUTH"
   | "CHANGE_PROFILE"
-  | "LOGIN"
-  | "GET_ROLE_PARTS";
+  | "LOGIN";
 
 export const URLs: { [key in URLS]: string } = {
   //USER
@@ -151,6 +167,8 @@ export const URLs: { [key in URLS]: string } = {
   DELETE_USER: `${API}/user`,
   //CUSTOMER
   GET_CUSTOMERS: `${API}/customer`,
+  GET_CUSTOMERS_SELECTION: `${API}/customer/select`,
+
   ADD_CUSTOMER: `${API}/customer`,
   UPDATE_CUSTOMER: `${API}/customer`,
   DELETE_CUSTOMER: `${API}/customer`,
@@ -180,6 +198,8 @@ export const URLs: { [key in URLS]: string } = {
 
   //COLOR
   GET_COLORS: `${API}/color`,
+  GET_COLORS_SELECTION: `${API}/color/select`,
+
   ADD_COLOR: `${API}/color`,
   UPDATE_COLOR: `${API}/color`,
   DELETE_COLOR: `${API}/color`,
@@ -190,6 +210,8 @@ export const URLs: { [key in URLS]: string } = {
 
   //CAR_MODEL
   GET_CAR_MODELS: `${API}/car-model`,
+  GET_CAR_MODELS_SELECTION: `${API}/car-model/select`,
+
   ADD_CAR_MODEL: `${API}/car-model`,
   UPDATE_CAR_MODEL: `${API}/car-model`,
   DELETE_CAR_MODEL: `${API}/car-model`,
@@ -200,6 +222,8 @@ export const URLs: { [key in URLS]: string } = {
 
   //CAR_TYPE
   GET_CAR_TYPES: `${API}/car-type`,
+  GET_CAR_TYPES_SELECTION: `${API}/car-type/select`,
+
   ADD_CAR_TYPE: `${API}/car-type`,
   UPDATE_CAR_TYPE: `${API}/car-type`,
   DELETE_CAR_TYPE: `${API}/car-type`,
@@ -232,6 +256,8 @@ export const URLs: { [key in URLS]: string } = {
 
   //SERVICE
   GET_SERVICES: `${API}/service`,
+  GET_SERVICES_SELECTION: `${API}/service/select`,
+
   ADD_SERVICE: `${API}/service`,
   UPDATE_SERVICE: `${API}/service`,
   DELETE_SERVICE: `${API}/service`,
@@ -279,16 +305,25 @@ export const URLs: { [key in URLS]: string } = {
   SEARCH_SELF_DELETED_SELL_ITEMS: `${API}/sell/search_deleted_sell_items`,
   RESTORE_SELF_DELETED_SELL_ITEM: `${API}/sell/restore_self_deleted_sell_item`,
 
-  //
-
+  //RESERVATION
+  GET_PANEL_RESERVATIONS: `${API}/reservation/panel`,
+  GET_RESERVATIONS: `${API}/reservation`,
+  GET_DELETED_RESERVATIONS: `${API}/reservation/deleted`,
+  RESTORE_RESERVATION: `${API}/reservation/restore`,
+  SEARCH_DELETED_RESERVATIONS: `${API}/reservation/deleted_search`,
+  SEARCH_RESERVATIONS: `${API}/reservation/search`,
+  ADD_RESERVATION: `${API}/reservation`,
+  UPDATE_RESERVATION: `${API}/reservation`,
+  DELETE_RESERVATION: `${API}/reservation`,
+  //PART
   GET_PARTS: `${API}/part`,
   ADD_PART: `${API}/part`,
   UPDATE_PART: `${API}/part`,
   DELETE_PART: `${API}/part`,
+  GET_ROLE_PARTS: `${API}/role-part/role`,
 
+  //AUTH
   GET_AUTH: `${API}/auth`,
   CHANGE_PROFILE: `${API}/auth/change_profile`,
   LOGIN: `${API}/auth/login`,
-
-  GET_ROLE_PARTS: `${API}/role-part/role`,
 };

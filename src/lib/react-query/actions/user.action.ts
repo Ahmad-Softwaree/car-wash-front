@@ -99,6 +99,7 @@ export const addUser = async (form: AddUserF): Promise<AddUserQ> => {
     throw error;
   }
 };
+
 export const updateUser = async (
   form: UpdateUserF,
   id: Id

@@ -13,6 +13,7 @@ export type ENUM_TYPES =
   | "FROM_PARAM"
   | "TO_PARAM"
   | "SELL_PARAM"
+  | "RESERVATION_PARAM"
 
   //FIREBASE
   | "ITEM_BUCKET"
@@ -59,6 +60,7 @@ export const ENUMs: { [key in ENUM_TYPES]: key | string | number } = {
   FROM_PARAM: `from`,
   TO_PARAM: `to`,
   SELL_PARAM: "sell_id",
+  RESERVATION_PARAM: "date_time",
 
   //FIREBASE
   ITEM_BUCKET: "item",
