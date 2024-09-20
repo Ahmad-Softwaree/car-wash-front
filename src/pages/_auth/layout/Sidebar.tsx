@@ -16,8 +16,10 @@ import {
   CircleDollarSign,
   ClipboardPlus,
   Database,
+  DatabaseBackup,
   Gauge,
   HandCoins,
+  HardDrive,
   Key,
   LoaderPinwheel,
   LogOut,
@@ -38,6 +40,25 @@ import { SideLink } from "@/types/global";
 import { ENUMs } from "@/lib/enum";
 
 export const sideLinks: SideLink[] = [
+  //BACKUP
+  {
+    id: crypto.randomUUID() as string,
+    icon: <DatabaseBackup />,
+    name: ENUMs.NORMAL_BACKUP_PART as string,
+    link: `/${ENUMs.BACKUP_SECTION as string}/${
+      ENUMs.NORMAL_BACKUP_PART as string
+    }`,
+    type: "backup",
+  },
+  {
+    id: crypto.randomUUID() as string,
+    icon: <HardDrive />,
+    name: ENUMs.SERVER_BACKUP_PART as string,
+    link: `/${ENUMs.BACKUP_SECTION as string}/${
+      ENUMs.SERVER_BACKUP_PART as string
+    }`,
+    type: "backup",
+  },
   //GENERAL
   {
     id: crypto.randomUUID() as string,
@@ -304,6 +325,8 @@ const Sidebar = () => {
       ? 3
       : path.includes(ENUMs.DELETED_SECTION as string)
       ? 4
+      : path.includes(ENUMs.BACKUP_SECTION as string)
+      ? 5
       : 0
   );
   const [expand, setExpand] = useState<boolean>(false);
@@ -329,7 +352,7 @@ const Sidebar = () => {
     return (
       userParts?.includes(text) && (
         <NavLink
-          className="!font-bukra w-full !text-white bg-transparent flex flex-row justify-start items-center gap-3 transition-all duration-200 hover:!bg-white hover:!bg-opacity-20 p-2 rounded-md my-1"
+          className="!font-bukra w-full !text-white bg-transparent flex flex-row justify-start items-center gap-3 transition-all duration-200 hover:!bg-secondary-100 hover:!bg-opacity-20 p-2 rounded-md my-1"
           to={link}>
           {Icon}
           <p className="!text-xs">{text}</p>
@@ -526,6 +549,37 @@ const Sidebar = () => {
                 {sideLinks
                   .filter(
                     (val: SideLink, _index: number) => val.type == "deleted"
+                  )
+                  .map((val: SideLink, _index: number) => (
+                    <Item
+                      key={val.id}
+                      Icon={val.icon}
+                      link={val.link}
+                      text={val.name}
+                    />
+                  ))}
+              </AccordionDetails>
+            </Accordion>
+            <Accordion
+              expanded={index === 5}
+              onChange={(event, expanded) => {
+                setIndex(expanded ? 5 : null);
+              }}
+              defaultExpanded>
+              <AccordionSummary>
+                <Chip
+                  className="!font-bukra my-3"
+                  variant="soft"
+                  color="neutral"
+                  size="sm">
+                  باکئەپ
+                </Chip>
+              </AccordionSummary>
+
+              <AccordionDetails>
+                {sideLinks
+                  .filter(
+                    (val: SideLink, _index: number) => val.type == "backup"
                   )
                   .map((val: SideLink, _index: number) => (
                     <Item

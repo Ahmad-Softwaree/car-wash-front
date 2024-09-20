@@ -37,13 +37,16 @@ export type ENUM_TYPES =
   | "KOGA_PART"
   | "CREATE_PSULA_PART"
   | "SELL_PART"
+  | "NORMAL_BACKUP_PART"
+  | "SERVER_BACKUP_PART"
 
   //SECTIONS
   | "MANAGE_SECTION"
   | "DELETED_SECTION"
   | "REPORT_SECTION"
   | "SETTING_SECTION"
-  | "GENERAL_SECTION";
+  | "GENERAL_SECTION"
+  | "BACKUP_SECTION";
 
 export const ENUMs: { [key in ENUM_TYPES]: key | string | number } = {
   //GLOBAL
@@ -84,6 +87,9 @@ export const ENUMs: { [key in ENUM_TYPES]: key | string | number } = {
   KOGA_PART: "کۆگا",
   CREATE_PSULA_PART: "دروستکردنی پسولە",
   SELL_PART: "پسولەکان",
+  NORMAL_BACKUP_PART: "باکئەپی ئاسایی",
+  SERVER_BACKUP_PART: "باکئەپی سێرڤەر",
+
   //SECTIONS
 
   MANAGE_SECTION: "بەڕێوەبردن",
@@ -91,4 +97,5 @@ export const ENUMs: { [key in ENUM_TYPES]: key | string | number } = {
   REPORT_SECTION: "ڕاپۆرت",
   SETTING_SECTION: "ڕێکخستن",
   GENERAL_SECTION: "گشتی",
+  BACKUP_SECTION: "باکئەپ",
 };

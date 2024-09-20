@@ -30,6 +30,7 @@ import { Color } from "./color";
 import { Service } from "./service";
 import { Sell, SellItem } from "./sell";
 import { Reservation } from "./reservation";
+import { Backup } from "./backup";
 
 export type GlobalFormProps = {
   state?: "update" | "insert";
@@ -89,7 +90,8 @@ export type DataTypes =
   | Service[]
   | Sell[]
   | SellItem[]
-  | Reservation[];
+  | Reservation[]
+  | Backup[];
 
 export type PaginationChildrenProps<T extends DataTypes> = {
   isFetchingNextPage: boolean;
@@ -140,7 +142,12 @@ export type RestoreModalProps = {
   deleteFunction: any;
   loading: boolean;
 };
-
+export type CompleteModalProps = {
+  onClose: () => void;
+  finalOperator?: () => void;
+  deleteFunction: any;
+  loading: boolean;
+};
 export type DialogProps = PropsWithChildren<{
   isOpen: boolean;
   onClose: () => void;
@@ -206,7 +213,7 @@ export type SideLink = {
   icon: ReactElement;
   name: string;
   link: string;
-  type: "general" | "manage" | "report" | "setting" | "deleted";
+  type: "general" | "manage" | "report" | "setting" | "deleted" | "backup";
 };
 export type HeaderItem = {
   id: Id;

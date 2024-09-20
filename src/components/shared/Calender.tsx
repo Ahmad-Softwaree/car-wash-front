@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, LucideCircleGauge } from "lucide-react";
-import { Chip } from "@mui/joy";
+import { Chip, Tooltip } from "@mui/joy";
 import { useGetPanelReservation } from "@/lib/react-query/query/reservation.query";
 import Loading from "../ui/Loading";
 import { TailSpin } from "react-loader-spinner";
@@ -28,8 +28,7 @@ const Calendar: React.FC = () => {
   const [daysGrid, setDaysGrid] = useState<JSX.Element[]>([]);
   const [calenderData, setCalenderData] = useState<CalenderDataType[]>([]);
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
-  const [currentMonth, setCurrentMonth] = useState(today.getMonth());
-  const [currentDay, setCurrentDay] = useState(today.getDay());
+  const [currentMonth, setCurrentMonth] = useState(today.getMonth() + 1);
   const selectedDate = new Date(currentYear, currentMonth, 1);
 
   const { data, isLoading, isPending, refetch, isError } =
@@ -87,19 +86,23 @@ const Calendar: React.FC = () => {
                 }
               }}
               key={day}
-              className={`cursor-pointer col-span-2 dark-light rounded-md h-[200px] flex items-center justify-center border bg-gray-100 text-sm transition-all duration-300  ${
+              className={`cursor-pointer col-span-2 dark-light rounded-2xl h-[200px] flex items-center justify-center  bg-gray-100 text-sm transition-all duration-300 default-border border-4 ${
                 include
-                  ? "border-yellow-500 hover:scale-125"
+                  ? "!border-yellow-500 hover:scale-125"
                   : "cursor-not-allowed"
               }`}>
               {!include ? (
                 <div className="w-full h-full flex flex-col justify-center items-center gap-3">
-                  <p className="text-center text-xl">{day}</p>
+                  <p className="text-center text-xl">
+                    {day} / {currentMonth} / {currentYear}
+                  </p>
                   <p className="text-xl">سەرە نیە</p>
                 </div>
               ) : (
                 <div className="w-full h-full flex flex-col justify-center items-center gap-3">
-                  <p className="text-center text-xl">{day}</p>
+                  <p className="text-center text-xl">
+                    {day} / {currentMonth} / {currentYear}
+                  </p>{" "}
                   {customers.map((val: PanelReservation) => {
                     const date = new Date(val.date_time);
                     const hours = date
@@ -113,16 +116,31 @@ const Calendar: React.FC = () => {
                     const timeString = `${hours}:${minutes}`;
                     return (
                       <div
-                        className="w-full flex flex-row justify-center items-center gap-2"
+                        className="w-full flex flex-col justify-center items-center gap-2"
                         key={val.id}>
                         <Chip variant="soft" color="primary">
-                          <p>{timeString}</p>
+                          <div className="flex flex-row justify-center items-center gap-1">
+                            <p className="text-sm">{val.total_reservations}</p>
+                            <p className="text-sm">ژمارەی نۆرەکان</p>
+                          </div>{" "}
                         </Chip>
-                        <Chip variant="soft" color="primary">
-                          <p>{val.customer_name}</p>
+
+                        <Chip variant="soft" color="danger">
+                          <div className="flex flex-row justify-center items-center gap-1">
+                            <p className="text-sm">
+                              {val.not_completed_reservations}
+                            </p>
+                            <p className="text-sm">نۆرە تەواو نەبووەکان</p>
+                          </div>
                         </Chip>
-                        <Chip variant="soft" color="primary">
-                          <p>{val.id}</p>
+
+                        <Chip variant="soft" color="success">
+                          <div className="flex flex-row justify-center items-center gap-1">
+                            <p className="text-sm">
+                              {val.completed_reservations}
+                            </p>
+                            <p className="text-sm">نۆرە تەواو بووەکان</p>
+                          </div>
                         </Chip>
                       </div>
                     );
@@ -158,15 +176,6 @@ const Calendar: React.FC = () => {
     "November",
     "December",
   ];
-  const daysOfWeek = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
 
   // Handle previous month click
   const handlePreviousMonth = () => {
@@ -188,29 +197,23 @@ const Calendar: React.FC = () => {
     }
   };
 
-  // Number of days in the current month
-  const daysInMonth = getDaysInMonth(currentYear, currentMonth);
-
   return (
     <>
       <div className="w-full flex flex-col gap-5 justify-center items-center">
         {/* Month and Year Display with Navigation */}
         <div className="w-full flex flex-row justify-center items-center gap-10">
-          <Chip variant="soft" color="neutral">
-            <ChevronRight
-              onClick={handleNextMonth}
-              className="cursor-pointer w-12 h-12"
-            />
-          </Chip>
+          <ChevronRight
+            onClick={handleNextMonth}
+            className="cursor-pointer w-12 h-12 p-3 rounded-full light-dark"
+          />
+
           <p className="text-2xl">
-            {daysOfWeek[currentDay]} {monthNames[currentMonth]} {currentYear}
+            {monthNames[currentMonth]} {currentYear}
           </p>
-          <Chip variant="soft" color="neutral">
-            <ChevronLeft
-              onClick={handlePreviousMonth}
-              className="cursor-pointer w-12 h-12"
-            />
-          </Chip>{" "}
+          <ChevronLeft
+            onClick={handlePreviousMonth}
+            className="cursor-pointer w-12 h-12 p-3 rounded-full light-dark"
+          />
         </div>
 
         {/* Days Grid */}
@@ -228,6 +231,7 @@ const Calendar: React.FC = () => {
         <Dialog
           className="!p-5 rounded-md"
           maxWidth={2000}
+          height={1000}
           maxHeight={`90%`}
           isOpen={monthOpen}
           onClose={() => setMonthOpen(false)}>

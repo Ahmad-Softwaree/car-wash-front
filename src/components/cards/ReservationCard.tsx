@@ -1,10 +1,18 @@
 import { ReservationCardProps } from "@/types/reservation";
-import { Info, PenTool, RotateCcw, Trash2 } from "lucide-react";
+import {
+  CircleCheck,
+  CircleX,
+  Info,
+  PenTool,
+  RotateCcw,
+  Trash2,
+} from "lucide-react";
 import { useState } from "react";
 import Dialog from "../shared/Dialog";
 import ReservationDetailCard from "./ReservationDetailCard";
 import DeleteModal from "../ui/DeleteModal";
 import {
+  useCompleteReservation,
   useDeleteReservation,
   useRestoreReservation,
 } from "@/lib/react-query/query/reservation.query";
@@ -20,6 +28,7 @@ import CustomClose from "../shared/CustomClose";
 import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import RestoreModal from "../ui/RestoreModal";
 import { formatDateString } from "@/lib/functions";
+import CompleteModal from "../ui/CompleteModal";
 
 const ReservationCard = ({
   customer_first_name,
@@ -32,6 +41,7 @@ const ReservationCard = ({
   note,
   date_time,
   id,
+  completed,
   index = -1,
   ...others
 }: ReservationCardProps) => {
@@ -40,6 +50,9 @@ const ReservationCard = ({
   const [detail, setDetail] = useState<boolean>(false);
   const [update, setUpdate] = useState<boolean>(false);
   const [isDelete, setIsDelete] = useState<boolean>(false);
+  const [isComplete, setIsComplete] = useState<boolean>(false);
+  const [completeState, setCompleteState] = useState<boolean>(false);
+
   const [isRestore, setIsRestore] = useState<boolean>(false);
 
   const {
@@ -49,7 +62,8 @@ const ReservationCard = ({
   const { mutateAsync, isPending } = useDeleteReservation();
   const { mutateAsync: restore, isPending: restoreLoading } =
     useRestoreReservation();
-
+  const { mutateAsync: complete, isPending: completeLoading } =
+    useCompleteReservation();
   const updateOnClose = () => {
     dispatch({
       type: CONTEXT_TYPEs.SET_OLD_DATA,
@@ -122,6 +136,7 @@ const ReservationCard = ({
             </p>
           </Chip>
         </Td>
+
         <Td className="!p-3">
           <Chip variant="soft" color={"neutral"}>
             <p className="!font-bukra text-right font-light  text-xs">
@@ -129,7 +144,48 @@ const ReservationCard = ({
             </p>
           </Chip>
         </Td>
+        <Td className="!p-3">
+          <Chip variant="soft" color={completed ? "neutral" : "danger"}>
+            <p className="!font-bukra text-right font-light  text-xs">
+              {completed ? "تەواوبوو" : "تەواونەبوو"}
+            </p>
+          </Chip>
+        </Td>
         <Td className="!p-3 cup flex flex-row gap-2">
+          {!completed && (
+            <Tooltip
+              placement="top"
+              title="تەواو بوو"
+              color="primary"
+              variant="soft">
+              <Chip
+                onClick={() => {
+                  setIsComplete(true);
+                  setCompleteState(true);
+                }}
+                variant="soft"
+                color="primary">
+                <CircleCheck className="w-7 h-7 p-1 cursor-pointer" />
+              </Chip>
+            </Tooltip>
+          )}
+          {completed && (
+            <Tooltip
+              placement="top"
+              title="تەواو نەبوو"
+              color="danger"
+              variant="soft">
+              <Chip
+                onClick={() => {
+                  setIsComplete(true);
+                  setCompleteState(false);
+                }}
+                variant="soft"
+                color="danger">
+                <CircleX className="w-7 h-7 p-1 cursor-pointer" />
+              </Chip>
+            </Tooltip>
+          )}
           {!deleted_page && (
             <>
               <Tooltip
@@ -214,6 +270,7 @@ const ReservationCard = ({
           <CustomClose onClick={() => setDetail(false)} />
           <ReservationDetailCard
             id={id}
+            completed={completed}
             customer_first_name={customer_first_name}
             customer_last_name={customer_last_name}
             color_name={color_name}
@@ -253,6 +310,22 @@ const ReservationCard = ({
             deleteFunction={() => restore([id])}
             loading={restoreLoading}
             onClose={() => setIsRestore(false)}
+          />
+        </Dialog>
+      )}
+      {isComplete && (
+        <Dialog
+          className="!p-5 rounded-md"
+          maxWidth={500}
+          maxHeight={`90%`}
+          isOpen={isComplete}
+          onClose={() => setIsComplete(false)}>
+          <CompleteModal
+            deleteFunction={() =>
+              complete({ ids: [id], complete: completeState })
+            }
+            loading={completeLoading}
+            onClose={() => setIsComplete(false)}
           />
         </Dialog>
       )}

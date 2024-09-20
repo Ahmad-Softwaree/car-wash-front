@@ -34,3 +34,15 @@ export const pdfFileAuthApi: AxiosInstance = axios.create({
   },
   withCredentials: true,
 });
+export const blobAuthApi: AxiosInstance = axios.create({
+  baseURL: "/api",
+  responseType: "blob",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${getCookie({ name: ENUMs.COOKIE_NAME })}`,
+    common: {
+      Authorization: `Bearer ${getCookie({ name: ENUMs.COOKIE_NAME })}`,
+    },
+  },
+  withCredentials: true,
+});

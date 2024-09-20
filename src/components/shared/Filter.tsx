@@ -22,7 +22,7 @@ const Filter = ({ options }: { options: OptionType[] }) => {
       action={action}
       value={filter}
       placeholder="فلتەر"
-      className="!dark-light  !font-bukra !text-xs !default-border"
+      className="!dark-light  !font-bukra !text-xs !default-border !border-4"
       onChange={(e, newValue) => {
         setSearchParam((prev) => {
           const params = new URLSearchParams(prev);

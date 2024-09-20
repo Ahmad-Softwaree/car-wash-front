@@ -14,7 +14,7 @@ const AddItemCard = ({
   return (
     <article
       onClick={() => onClick(id)}
-      className="w-full h-full grid grid-cols-1 grid-rows-4 bg-white shadow-lg rounded-xl items-center">
+      className="w-full h-full grid grid-cols-1 grid-rows-4 bg-secondary-100 shadow-lg rounded-xl items-center">
       <Image
         className="relative row-span-2 md:row-span-3 col-span-full rounded-t-xl w-full h-full"
         height={

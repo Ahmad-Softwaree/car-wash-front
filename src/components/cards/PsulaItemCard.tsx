@@ -27,7 +27,7 @@ const PsulaItemCard = ({
   const [detail, setDetail] = useState<boolean>(false);
   return (
     <>
-      <article className="dark-light !default-border w-full h-full flex flex-col justify-center items-center  text-center shadow-lg rounded-xl pb-3">
+      <article className="dark-light  w-full h-full flex flex-col justify-center items-center  text-center shadow-lg rounded-xl pb-3">
         <div
           onClick={() => onClick(id)}
           className="w-full flex flex-col justify-center items-center text-center h-[90%]">

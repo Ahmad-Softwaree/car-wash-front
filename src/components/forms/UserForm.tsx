@@ -96,7 +96,7 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
   }, [watch("role_id")]);
 
   useEffect(() => {
-    if (roleParts) {
+    if (roleParts && state == "insert") {
       setSelectedParts(
         roleParts.map((val: RolePart, _index: number) => val.part_id)
       );

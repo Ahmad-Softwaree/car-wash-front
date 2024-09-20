@@ -3,7 +3,7 @@ import Search from "./Search";
 import { useGlobalContext } from "@/context/GlobalContext";
 import DeleteChip from "./DeleteChip";
 import { ENUMs } from "@/lib/enum";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Dialog from "./Dialog";
 import DeleteModal from "../ui/DeleteModal";
 import {
@@ -20,12 +20,26 @@ import { CONTEXT_TYPEs } from "@/context/types";
 import TBody from "../ui/TBody";
 import TFoot from "../ui/TFoot";
 import ReservationCard from "../cards/ReservationCard";
+import MyButton from "../ui/MyButton";
 
 const ReservationModal = ({ onClose }: { onClose: () => void }) => {
   const [searchParam, setSearchParam] = useSearchParams();
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const { mutateAsync, isPending } = useDeleteReservation();
+  let filter = searchParam.get(ENUMs.FILTER_PARAM as string);
 
+  const changeFilter = (
+    filter: "all" | "completed" | "not_completed"
+  ): void => {
+    setSearchParam((prev) => {
+      const params = new URLSearchParams(prev);
+      params.set(ENUMs.FILTER_PARAM as string, filter);
+      return params;
+    });
+  };
+  useEffect(() => {
+    if (!filter) changeFilter("all");
+  }, []);
   const {
     dispatch,
     state: { checked, check_type },
@@ -36,6 +50,43 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
         <div className="w-full gap-5 flex flex-row justify-between  my-4">
           <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
             <Search />
+
+            <div className="flex flex-row justify-start items-center gap-5">
+              <MyButton
+                title="all"
+                id="all"
+                name="all"
+                onClick={() => changeFilter("all")}
+                className={`p-2 px-4 rounded-md default-border  !text-sm transition-all duration-200 hover:!text-white hover:!bg-blue-500 ${
+                  filter == "all" ? "!bg-blue-500 text-white" : "dark-light"
+                }`}>
+                گشت
+              </MyButton>
+              <MyButton
+                title="all"
+                id="all"
+                name="all"
+                onClick={() => changeFilter("completed")}
+                className={`p-2 px-4 rounded-md default-border  !text-sm transition-all duration-200 hover:!text-white hover:!bg-blue-500 ${
+                  filter == "completed"
+                    ? "!bg-blue-500 text-white"
+                    : "dark-light"
+                }`}>
+                تەواوبووەکان
+              </MyButton>
+              <MyButton
+                title="all"
+                id="all"
+                name="all"
+                onClick={() => changeFilter("not_completed")}
+                className={`p-2 px-4 rounded-md default-border  !text-sm transition-all duration-200 hover:!text-white hover:!bg-blue-500 ${
+                  filter == "not_completed"
+                    ? "!bg-blue-500 text-white"
+                    : "dark-light"
+                }`}>
+                تەواونەبووەکان
+              </MyButton>
+            </div>
           </div>
           <div className=" flex flex-row justify-end items-center gap-3">
             {checked?.length > 0 && (
@@ -49,6 +100,7 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
             )}
           </div>
         </div>
+
         <Pagination<Reservation[]>
           queryFn={() =>
             useGetReservations(
@@ -56,7 +108,8 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
                 decodeURIComponent(
                   searchParam.get(ENUMs.RESERVATION_PARAM as string) || ""
                 )
-              ) || ""
+              ) || "",
+              searchParam.get(ENUMs.FILTER_PARAM as string) || ""
             )
           }
           searchQueryFn={() =>
@@ -92,14 +145,13 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
                   : [],
               [data, searchData, isSearched]
             );
-            console.log(allData);
 
             return (
               <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
                 <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
                   <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
                     <Tr>
-                      <Th className="text-right text-sm !p-4 !min-w-[100px]">
+                      <Th className="text-right text-sm !p-4">
                         <InputGroup className="checkbox-input">
                           <Input
                             onChange={() => {
@@ -150,6 +202,9 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
                         <p className="pr-3 table-head-border">ڕەنگ</p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">دۆخ</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
                         <p className="pr-3 table-head-border">کردارەکان</p>
                       </Th>
                     </Tr>
@@ -167,7 +222,7 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
                   </TBody>
                   <TFoot className="sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
                     <Tr>
-                      <Td className="text-center" colSpan={9}>
+                      <Td className="text-center" colSpan={12}>
                         ژمارەی داتا {allData.length}
                       </Td>
                     </Tr>

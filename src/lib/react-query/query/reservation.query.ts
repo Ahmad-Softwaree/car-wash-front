@@ -16,6 +16,7 @@ import {
 } from "@/types/reservation";
 import {
   addReservation,
+  completeReservation,
   deleteReservation,
   getDeletedReservation,
   getPanelReservation,
@@ -28,6 +29,7 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { useGlobalContext } from "@/context/GlobalContext";
 import {
+  Filter,
   From,
   Id,
   NestError,
@@ -51,7 +53,7 @@ export const useGetPanelReservation = (date: Date) => {
   });
 };
 
-export const useGetReservations = (date: Date) => {
+export const useGetReservations = (date: Date, filter: Filter) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.RESERVATIONS],
@@ -60,7 +62,7 @@ export const useGetReservations = (date: Date) => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetReservationsQ>> =>
-      getReservations(toast, pageParam, ENUMs.LIMIT as number, date),
+      getReservations(toast, pageParam, ENUMs.LIMIT as number, date, filter),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
@@ -176,6 +178,9 @@ export const useDeleteReservation = () => {
         queryKey: [QUERY_KEYs.PANEL_RESERVATIONS],
       });
       queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.RESERVATIONS],
+      });
+      queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.SEARCH_RESERVATIONS],
       });
       return queryClient.invalidateQueries({
@@ -207,6 +212,51 @@ export const useRestoreReservation = () => {
       });
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.PANEL_RESERVATIONS],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.RESERVATIONS],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.SEARCH_DELETED_RESERVATIONS],
+      });
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.DELETED_RESERVATIONS],
+      });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+  });
+};
+
+export const useCompleteReservation = () => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const { dispatch } = useGlobalContext();
+
+  return useMutation({
+    mutationFn: ({
+      ids,
+      complete,
+    }: {
+      ids: Id[];
+      complete: boolean;
+    }): Promise<DeleteReservationQ> => completeReservation(ids, complete),
+    onSuccess: (data: DeleteReservationQ) => {
+      toast({
+        title: "سەرکەوتووبوو",
+        description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
+        alertType: "success",
+      });
+      dispatch({
+        type: CONTEXT_TYPEs.CHECK,
+        payload: [],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.PANEL_RESERVATIONS],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.RESERVATIONS],
       });
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.SEARCH_DELETED_RESERVATIONS],

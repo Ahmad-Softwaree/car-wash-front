@@ -86,7 +86,10 @@ export type QUERY_KEYS =
   | "PARTS"
   | "ROLE_PARTS"
   //AUTH
-  | "AUTH";
+  | "AUTH"
+  //BACKUP
+  | "BACKUPS"
+  | "BACKUP";
 
 export const QUERY_KEYs: { [key in QUERY_KEYS]: key } = {
   //USER
@@ -185,4 +188,8 @@ export const QUERY_KEYs: { [key in QUERY_KEYS]: key } = {
 
   //AUTH
   AUTH: "AUTH",
+
+  //BACKUP
+  BACKUPS: "BACKUPS",
+  BACKUP: "BACKUP",
 };

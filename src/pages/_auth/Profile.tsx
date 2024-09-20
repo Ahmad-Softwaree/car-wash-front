@@ -51,7 +51,7 @@ const Profile = () => {
         as={`div`}
         className="w-full gap-10 flex flex-col justify-start items-center ">
         <Form
-          className="space-y-4 mt-5 !text-primary-800 dark:!text-white  rounded-lg border-2 border-solid border-primary-400 border-opacity-40 bg-white dark:bg-primary-500 py-2 w-full max-w-2xl"
+          className="space-y-4 mt-5 !text-primary-800 dark:!text-white  rounded-lg border-2 border-solid border-primary-400 border-opacity-40 bg-secondary-100 dark:bg-primary-500 py-2 w-full max-w-2xl"
           ref={form}
           onSubmit={handleSubmit(onSubmit)}
           id="profileForm">

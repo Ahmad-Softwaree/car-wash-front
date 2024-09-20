@@ -21,6 +21,7 @@ import Services from "@/pages/_auth/Services";
 import CreatePsula from "@/pages/_auth/CreatePsula";
 import Sells from "@/pages/_auth/Sells";
 import Reservations from "@/pages/_auth/Reservations";
+import Backups from "@/pages/_auth/Backups";
 const RootLayout = lazy(() => import("@/pages/_root/RootLayout"));
 const AuthRouterProvider = lazy(() => import("@/providers/AuthRouterProvider"));
 const UserNullRouterProvider = lazy(
@@ -63,6 +64,19 @@ const router = createBrowserRouter(
             />
           }
         />
+        {/* BACKUP */}
+        <Route path={ENUMs.BACKUP_SECTION as string} errorElement={<Error />}>
+          <Route
+            path={ENUMs.NORMAL_BACKUP_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[ENUMs.NORMAL_BACKUP_PART as string]}
+                Component={Backups}
+              />
+            }
+          />
+        </Route>
 
         {/* GENERAL */}
         <Route path={ENUMs.GENERAL_SECTION as string} errorElement={<Error />}>

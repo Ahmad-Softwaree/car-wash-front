@@ -19,11 +19,15 @@ export type Reservation = {
   created_at: Date | null;
   updated_at: Date | null;
   deleted: boolean;
+  completed: boolean;
 };
 
 export type PanelReservation = {
   date_time: Date | string;
   customer_name: string;
+  total_reservations: number;
+  completed_reservations: number;
+  not_completed_reservations: number;
   id: Id;
 };
 

@@ -20,13 +20,13 @@ export function Combobox<T extends ComboboxExtendTypes>({
         type="button"
         role="combobox"
         onClick={() => setOpen(!open)}
-        className="justify-between border-2 border-solid bg-white text-black hover:!bg-white h-full border-gray-200  rounded-md  p-3 w-full  flex  flex-row    items-center  gap-3">
+        className="justify-between border-2 border-solid bg-secondary-100 text-black hover:!bg-secondary-100 h-full border-gray-200  rounded-md  p-3 w-full  flex  flex-row    items-center  gap-3">
         {value != 0 ? holder : "هەڵبژاردنی کارمەند"}
         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
       </MyButton>
 
       {open && (
-        <div className=" w-full  absolute bg-white max-h-[200px] shadow-md p-2  overflow-y-auto flex flex-col gap-4">
+        <div className=" w-full  absolute bg-secondary-100 max-h-[200px] shadow-md p-2  overflow-y-auto flex flex-col gap-4">
           {data?.map((one: T) => (
             <MyButton
               name="roleButton"

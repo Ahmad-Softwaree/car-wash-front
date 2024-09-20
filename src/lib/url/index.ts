@@ -139,6 +139,7 @@ export type URLS =
   | "GET_RESERVATIONS"
   | "GET_DELETED_RESERVATIONS"
   | "RESTORE_RESERVATION"
+  | "COMPLETE_RESERVATION"
   | "SEARCH_DELETED_RESERVATIONS"
   | "ADD_RESERVATION"
   | "UPDATE_RESERVATION"
@@ -153,7 +154,10 @@ export type URLS =
   //AUTH
   | "GET_AUTH"
   | "CHANGE_PROFILE"
-  | "LOGIN";
+  | "LOGIN"
+  //BACKUP
+  | "GET_BACKUPS"
+  | "BACKUP";
 
 export const URLs: { [key in URLS]: string } = {
   //USER
@@ -310,6 +314,8 @@ export const URLs: { [key in URLS]: string } = {
   GET_RESERVATIONS: `${API}/reservation`,
   GET_DELETED_RESERVATIONS: `${API}/reservation/deleted`,
   RESTORE_RESERVATION: `${API}/reservation/restore`,
+  COMPLETE_RESERVATION: `${API}/reservation/complete`,
+
   SEARCH_DELETED_RESERVATIONS: `${API}/reservation/deleted_search`,
   SEARCH_RESERVATIONS: `${API}/reservation/search`,
   ADD_RESERVATION: `${API}/reservation`,
@@ -326,4 +332,9 @@ export const URLs: { [key in URLS]: string } = {
   GET_AUTH: `${API}/auth`,
   CHANGE_PROFILE: `${API}/auth/change_profile`,
   LOGIN: `${API}/auth/login`,
+
+  //BACKUPS
+
+  GET_BACKUPS: `${API}/backup/all_table`,
+  BACKUP: `${API}/backup`,
 };

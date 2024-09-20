@@ -10,7 +10,7 @@ const MostItemCard = ({
   sold,
 }: MostItemCardProps) => {
   return (
-    <article className="w-[210px] h-[360px]  bg-white shadow-lg rounded-xl items-center gap-2 flex flex-col">
+    <article className="w-[210px] h-[360px]  bg-secondary-100 shadow-lg rounded-xl items-center gap-2 flex flex-col">
       <Image
         height={`80%`}
         width={`100%`}

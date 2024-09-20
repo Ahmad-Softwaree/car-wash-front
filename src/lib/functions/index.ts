@@ -5,6 +5,17 @@ import { User } from "@/types/auth";
 import { Part } from "@/types/part";
 
 const { VITE_JWT_SECRET, VITE_COOKIE_NAME } = import.meta.env;
+
+export const downloadFile = (data: Blob, fileName: string) => {
+  const url = window.URL.createObjectURL(new Blob([data]));
+  const link = document.createElement("a");
+  link.href = url;
+  link.setAttribute("download", fileName); // file name
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
 export function timestampToDateString(timestamp: number): string {
   // Create a Date object from the timestamp
   const date = new Date(timestamp);

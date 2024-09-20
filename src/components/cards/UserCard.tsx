@@ -1,12 +1,5 @@
 import { UserCardProps } from "@/types/auth";
-import {
-  ArchiveRestore,
-  Info,
-  PenTool,
-  RotateCcw,
-  Trash2,
-  X,
-} from "lucide-react";
+import { Info, PenTool, RotateCcw, Trash2 } from "lucide-react";
 import { useState } from "react";
 import Dialog from "../shared/Dialog";
 import UserDetailCard from "./UserDetailCard";

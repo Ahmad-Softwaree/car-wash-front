@@ -35,7 +35,6 @@ const Reservations = () => {
   const [isAdd, setIsAdd] = useState<boolean>(false);
   const { deleted_page } = useCheckDeletedPage();
   const [isRestore, setIsRestore] = useState<boolean>(false);
-  const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
   const { mutateAsync, isPending } = useRestoreReservation();
 
   const {
@@ -63,7 +62,7 @@ const Reservations = () => {
                 </p>
               </div>
             )}
-            {!deleted_page && <AddButton onClick={() => setIsAddOpen(true)} />}
+            {!deleted_page && <AddButton onClick={() => setIsAdd(true)} />}
           </div>
         </div>
         {!deleted_page && <Calendar />}

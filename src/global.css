@@ -100,14 +100,14 @@ aside::-webkit-scrollbar {
   }
 
   .dark-light {
-    @apply !bg-white dark:!bg-primary-800 !text-primary-800 dark:!text-white;
+    @apply !bg-secondary-100 dark:!bg-primary-600 !text-primary-600 dark:!text-white;
   }
   .light-dark {
-    @apply dark:!bg-white !bg-primary-800 dark:!text-primary-800 !text-white;
+    @apply dark:!bg-secondary-100 !bg-primary-600 dark:!text-primary-600 !text-white;
   }
 
   .table-dark-light {
-    @apply !bg-white dark:!bg-[#0e1214];
+    @apply !bg-secondary-100 dark:!bg-[#0e1214];
   }
 
   .table-row-hover {
@@ -118,18 +118,18 @@ aside::-webkit-scrollbar {
     @apply bg-sky-300 dark:bg-sky-800;
   }
   .table-row-normal {
-    @apply bg-white dark:bg-[#0e1214];
+    @apply bg-secondary-100 dark:bg-[#0e1214];
   }
 
   .default-border {
-    @apply border-2 border-solid border-primary-400 border-opacity-80;
+    @apply border-4 border-solid border-secondary-500 dark:border-primary-500 border-opacity-100;
   }
 
   .table-head-border {
-    @apply border-r-2 border-solid border-primary-400 border-opacity-80;
+    @apply border-r-4 border-solid border-secondary-500 dark:border-primary-500 border-opacity-100;
   }
   a.active {
-    @apply !bg-white !bg-opacity-20;
+    @apply !bg-secondary-100 !bg-opacity-20;
   }
 }
 

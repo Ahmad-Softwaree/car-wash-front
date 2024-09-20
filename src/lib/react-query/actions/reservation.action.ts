@@ -2,6 +2,7 @@ import { authApi } from "@/lib/config/api.config";
 import { generateNestErrors } from "@/lib/functions";
 import { URLs } from "@/lib/url";
 import {
+  Filter,
   From,
   Id,
   Limit,
@@ -39,12 +40,19 @@ export const getReservations = async (
   toast: ToastType,
   page: Page,
   limit: Limit,
-  date: Date
+  date: Date,
+  filter: Filter
 ): Promise<PaginationReturnType<GetReservationsQ>> => {
   try {
     const { data, status } = await authApi.get<
       PaginationReturnType<GetReservationsQ>
-    >(`${URLs.GET_RESERVATIONS}?page=${page}&limit=${limit}&date=${date}`);
+    >(
+      `${
+        URLs.GET_RESERVATIONS
+      }?page=${page}&limit=${limit}&date=${date}&filter=${
+        filter != "" ? filter : ""
+      }`
+    );
     return data;
   } catch (error: any) {
     throw generateNestErrors(error, toast);
@@ -164,6 +172,32 @@ export const restoreReservation = async (
       }
       const { data, status } = await authApi.put(
         `${URLs.RESTORE_RESERVATION}/${id}`
+      );
+      return id;
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  // Wait for all requests to complete
+  const results = await Promise.all(requests);
+
+  return results.filter((result) => result !== null);
+};
+
+export const completeReservation = async (
+  ids: Id[],
+  complete: boolean
+): Promise<DeleteReservationQ> => {
+  const idArray = Array.isArray(ids) ? ids : [ids];
+  const requests = idArray.map(async (id, index) => {
+    try {
+      // Add a timeout between requests
+      if (index > 0) {
+        await new Promise((resolve) => setTimeout(resolve, 1000)); // Adjust the timeout duration as needed
+      }
+      const { data, status } = await authApi.put(
+        `${URLs.COMPLETE_RESERVATION}/${id}/${complete}`
       );
       return id;
     } catch (error) {

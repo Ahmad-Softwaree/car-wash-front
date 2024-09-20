@@ -252,7 +252,7 @@ const ItemForm = ({
 
           <InputGroup error={errors.image} className="w-full space-y-2">
             <Label
-              className="mb-1 block text-sm font-medium !text-white"
+              className="mb-1 block text-sm font-medium !dark-light"
               htmlFor={`item_image`}>
               وێنە
             </Label>
@@ -273,8 +273,8 @@ const ItemForm = ({
                     />
                   </svg>
                 </div>
-                <div className="text-white">
-                  <a href="#" className="font-medium text-white ">
+                <div className="dark-light">
+                  <a href="#" className="font-medium dark-light ">
                     وێنە داگرە
                   </a>{" "}
                   یان وێنەکە لێرە دابنێ
@@ -302,7 +302,7 @@ const ItemForm = ({
           {watch("image") && watch("image")[0] && (
             <div className="w-full relative">
               <CircleX
-                className="bg-white rounded-md absolute -right-2 -top-2 z-10 text-red-500 cursor-pointer w-[30px] h-[30px]"
+                className="bg-secondary-100 rounded-md absolute -right-2 -top-2 z-10 text-red-500 cursor-pointer w-[30px] h-[30px]"
                 onClick={() => resetField("image")}
               />
               <Image image={watch("image")[0]} />
