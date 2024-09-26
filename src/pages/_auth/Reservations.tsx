@@ -45,7 +45,7 @@ const Reservations = () => {
     <>
       <Container
         as={`div`}
-        className="w-full gap-10 flex flex-col justify-start items-start">
+        className="w-full gap-0 flex flex-col justify-start items-start">
         <div className="w-full gap-5 flex flex-row justify-between ">
           {deleted_page && (
             <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
@@ -103,7 +103,6 @@ const Reservations = () => {
                       : [],
                   [data, searchData, isSearched]
                 );
-                console.log(allData);
 
                 return (
                   <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
@@ -118,7 +117,7 @@ const Reservations = () => {
                                     dispatch({
                                       type: CONTEXT_TYPEs.CHECK,
                                       payload: allData
-                                        .slice(0, 30)
+                                        .slice(0, ENUMs.CHECK_LIMIT as number)
                                         .map(
                                           (val: Reservation, _index: number) =>
                                             val.id

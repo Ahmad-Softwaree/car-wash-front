@@ -1,5 +1,5 @@
 import Container from "@/components/ui/Container";
-import { lazy, useMemo, useState } from "react";
+import { lazy, useMemo, useRef, useState } from "react";
 const Dialog = lazy(() => import("@/components/shared/Dialog"));
 const CustomerCard = lazy(() => import("@/components/cards/CustomerCard"));
 
@@ -34,13 +34,13 @@ import RestoreChip from "@/components/shared/RestoreChip";
 import Search from "@/components/shared/Search";
 import AddButton from "@/components/shared/AddButton";
 import RestoreModal from "@/components/ui/RestoreModal";
-import DatePicker from "@/components/shared/DatePicker";
 
 const Customers = () => {
   const { deleted_page } = useCheckDeletedPage();
   const { mutateAsync, isPending } = useDeleteCustomer();
   const { mutateAsync: restore, isPending: restoreLoading } =
     useRestoreCustomer();
+  const tableRef = useRef<HTMLDivElement>(null);
 
   const [searchParam, setSearchParam] = useSearchParams();
   const [isDelete, setIsDelete] = useState<boolean>(false);
@@ -123,7 +123,9 @@ const Customers = () => {
             );
 
             return (
-              <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
+              <div
+                ref={tableRef}
+                className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
                 <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
                   <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
                     <Tr>
@@ -131,11 +133,15 @@ const Customers = () => {
                         <InputGroup className="checkbox-input">
                           <Input
                             onChange={() => {
+                              tableRef.current?.scrollTo({
+                                top: 0,
+                                behavior: "smooth",
+                              });
                               if (checked.length == 0) {
                                 dispatch({
                                   type: CONTEXT_TYPEs.CHECK,
                                   payload: allData
-                                    .slice(0, 30)
+                                    .slice(0, ENUMs.CHECK_LIMIT as number)
                                     .map(
                                       (val: Customer, _index: number) => val.id
                                     ),
@@ -165,7 +171,12 @@ const Customers = () => {
                       <Th className="text-right text-sm !p-4">
                         <p className="pr-3 table-head-border">ژمارە تەلەفۆن</p>
                       </Th>
-
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">داغڵکار</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">چاککار</p>
+                      </Th>
                       <Th className="text-right text-sm !p-4">
                         <p className="pr-3 table-head-border">کرادرەکان</p>
                       </Th>

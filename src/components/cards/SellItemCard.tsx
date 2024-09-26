@@ -31,6 +31,8 @@ const SellItemCard = ({
   sell_id,
   item_purchase_price,
   item_sell_price,
+  created_by,
+  updated_by,
   item_name,
   index = -1,
   state,
@@ -216,7 +218,16 @@ const SellItemCard = ({
             {quantity * item_sell_price}
           </p>
         </Td>
-
+        <Td className="!p-3">
+          <p className="text-right font-light font-bukra text-sm">
+            {created_by}
+          </p>
+        </Td>
+        <Td className="!p-3">
+          <p className="text-right font-light font-bukra text-sm">
+            {updated_by}
+          </p>
+        </Td>
         <Td className="!p-3 cup flex flex-row gap-2">
           {!deleted_page && (
             <>

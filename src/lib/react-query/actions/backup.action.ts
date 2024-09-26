@@ -5,6 +5,7 @@ import { User } from "@/types/auth";
 import { GetBackupsQ } from "@/types/backup";
 
 import {
+  Filter,
   From,
   Limit,
   Page,
@@ -15,10 +16,22 @@ import {
 import { QueryClient } from "@tanstack/react-query";
 import { QUERY_KEYs } from "../key";
 
+export const getTableNames = async (toast: ToastType): Promise<string[]> => {
+  try {
+    const { data, status } = await authApi.get<string[]>(
+      `${URLs.GET_TABLE_NAMES}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
 export const getBackups = async (
   toast: ToastType,
   page: Page,
   limit: Limit,
+  filter: Filter,
   from: From,
   to: To
 ): Promise<PaginationReturnType<GetBackupsQ>> => {
@@ -26,9 +39,9 @@ export const getBackups = async (
     const { data, status } = await authApi.get<
       PaginationReturnType<GetBackupsQ>
     >(
-      `${URLs.GET_BACKUPS}?page=${page}&limit=${limit}&from=${
-        from != "" ? from : ""
-      }&to=${to != "" ? to : ""}`
+      `${URLs.GET_BACKUPS}?page=${page}&limit=${limit}&filter=${
+        filter != "" ? filter : ""
+      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}`
     );
     return data;
   } catch (error: any) {

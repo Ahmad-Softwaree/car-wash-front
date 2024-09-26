@@ -1,7 +1,7 @@
 import { Id } from "./global";
 
 export type AddExpenseInputs = {
-  expense_type_id: Id;
+  type_id: Id;
   price: number;
   date: Date | string;
   note: string;
@@ -15,6 +15,8 @@ export type Expense = {
   note: string;
   created_at: Date | null;
   updated_at: Date | null;
+  created_by: string;
+  updated_by: string;
   deleted: boolean;
 };
 export type ExpenseCardProps = Expense & {

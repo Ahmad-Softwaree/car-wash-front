@@ -40,6 +40,8 @@ const ReservationCard = ({
   price,
   note,
   date_time,
+  created_by,
+  updated_by,
   id,
   completed,
   index = -1,
@@ -150,6 +152,16 @@ const ReservationCard = ({
               {completed ? "تەواوبوو" : "تەواونەبوو"}
             </p>
           </Chip>
+        </Td>
+        <Td className="!p-3">
+          <p className="text-right font-light font-bukra text-sm">
+            {created_by}
+          </p>
+        </Td>
+        <Td className="!p-3">
+          <p className="text-right font-light font-bukra text-sm">
+            {updated_by}
+          </p>
         </Td>
         <Td className="!p-3 cup flex flex-row gap-2">
           {!completed && (
@@ -270,6 +282,8 @@ const ReservationCard = ({
           <CustomClose onClick={() => setDetail(false)} />
           <ReservationDetailCard
             id={id}
+            updated_by={updated_by}
+            created_by={created_by}
             completed={completed}
             customer_first_name={customer_first_name}
             customer_last_name={customer_last_name}

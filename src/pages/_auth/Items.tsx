@@ -1,5 +1,5 @@
 import Container from "@/components/ui/Container";
-import { lazy, useMemo, useState } from "react";
+import { lazy, useMemo, useRef, useState } from "react";
 const Dialog = lazy(() => import("@/components/shared/Dialog"));
 
 import Pagination from "@/components/providers/Pagination";
@@ -34,17 +34,16 @@ import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import DeleteChip from "@/components/shared/DeleteChip";
 import RestoreChip from "@/components/shared/RestoreChip";
 import AddButton from "@/components/shared/AddButton";
-import DatePicker from "@/components/shared/DatePicker";
 import RestoreModal from "@/components/ui/RestoreModal";
 import Search from "@/components/shared/Search";
 
-const items = () => {
+const Items = () => {
   const { mutateAsync, isPending } = useDeleteItem();
   const { mutateAsync: restore, isPending: restoreLoading } = useRestoreItem();
 
   const [searchParam, setSearchParam] = useSearchParams();
   const [isDelete, setIsDelete] = useState<boolean>(false);
-
+  const tableRef = useRef<HTMLDivElement>(null);
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
   const { data: types } = useGetItemTypesSelection();
   const { deleted_page } = useCheckDeletedPage();
@@ -113,14 +112,10 @@ const items = () => {
           {({
             isFetchingNextPage,
             hasNextPage,
-            isLoading,
             ref,
             data,
-            refetch,
             isSearched,
             searchData,
-            searchRefetch,
-            fetchNextPage,
           }) => {
             const allData = useMemo(
               () =>
@@ -135,7 +130,9 @@ const items = () => {
             );
 
             return (
-              <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
+              <div
+                ref={tableRef}
+                className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
                 <Table className="relative  w-full table-dark-light  default-border">
                   <THead className="sticky -top-1 z-[100]  table-dark-light w-full  default-border">
                     <Tr>
@@ -143,6 +140,10 @@ const items = () => {
                         <InputGroup className="checkbox-input">
                           <Input
                             onClick={() => {
+                              tableRef.current?.scrollTo({
+                                top: 0,
+                                behavior: "smooth",
+                              });
                               if (checked.length == 0) {
                                 dispatch({
                                   type: CONTEXT_TYPEs.CHECK,
@@ -185,6 +186,12 @@ const items = () => {
                         <p className="pr-3 table-head-border">نرخی تێچوو</p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">داغڵکار</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">چاککار</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
                         <p className="pr-3 table-head-border">کردارەکان</p>
                       </Th>
                     </Tr>
@@ -202,7 +209,7 @@ const items = () => {
                   </TBody>
                   <TFoot className="sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
                     <Tr>
-                      <Td className="text-center" colSpan={9}>
+                      <Td className="text-center" colSpan={11}>
                         ژمارەی داتا {allData.length}
                       </Td>
                     </Tr>
@@ -257,4 +264,4 @@ const items = () => {
   );
 };
 
-export default items;
+export default Items;

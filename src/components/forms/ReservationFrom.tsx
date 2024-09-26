@@ -41,6 +41,7 @@ import CarTypeForm from "./CarTypeForm";
 import { Service } from "@/types/service";
 import { CarType } from "@/types/car-type";
 import Textarea from "../ui/Textarea";
+import { formatDateString } from "@/lib/functions";
 const ReservationForm = ({
   onClose,
   state,
@@ -78,6 +79,7 @@ const ReservationForm = ({
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<AddReservationInputs>({});
 
@@ -106,9 +108,21 @@ const ReservationForm = ({
 
   useEffect(() => {
     if (globalState.oldData) {
-      let { deleted, updated_at, created_at, id, ...others } =
-        globalState.oldData;
+      let {
+        deleted,
+        updated_at,
+        created_at,
+        car_type_name,
+        car_model_name,
+        color_name,
+        customer_first_name,
+        customer_last_name,
+        service_name,
+        id,
+        ...others
+      } = globalState.oldData;
       reset(others);
+      setValue("date_time", formatDateString(others.date_time));
     }
   }, [state, globalState]);
   return (

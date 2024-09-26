@@ -93,7 +93,8 @@ const ItemForm = ({
 
   useEffect(() => {
     if (globalState.oldData) {
-      let { image_name, image_url, ...others } = globalState.oldData;
+      let { image_name, image_url, actual_quantity, type_name, ...others } =
+        globalState.oldData;
       reset(others);
     }
   }, [state]);

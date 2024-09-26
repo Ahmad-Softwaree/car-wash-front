@@ -6,13 +6,26 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { backupEntity, getBackups } from "../actions/backup.action";
+import {
+  backupEntity,
+  getBackups,
+  getTableNames,
+} from "../actions/backup.action";
 import { QUERY_KEYs } from "../key";
-import { From, Page, PaginationReturnType, To } from "@/types/global";
+import { Filter, From, Page, PaginationReturnType, To } from "@/types/global";
 import { ENUMs } from "@/lib/enum";
 import { GetBackupsQ } from "@/types/backup";
 
-export const useGetBackups = (from: From, to: To) => {
+export const useGetTableNames = () => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.TABLE_NAMES],
+    queryFn: (): Promise<string[]> => getTableNames(toast),
+    retry: 0,
+  });
+};
+
+export const useGetBackups = (filter: Filter, from: From, to: To) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.BACKUPS],
@@ -21,7 +34,7 @@ export const useGetBackups = (from: From, to: To) => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetBackupsQ>> =>
-      getBackups(toast, pageParam, ENUMs.LIMIT as number, from, to),
+      getBackups(toast, pageParam, ENUMs.LIMIT as number, filter, from, to),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;

@@ -6,7 +6,7 @@ import {
   GlobalFormProps,
 } from "@/types/global";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { getCurrentDate } from "@/lib/functions";
+import { timestampToDateString } from "@/lib/functions";
 import Input from "@/components/ui/Input";
 import Textarea from "../ui/Textarea";
 import {
@@ -47,13 +47,15 @@ const ExpenseForm = ({
     register,
     reset,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<AddExpenseInputs>({});
   const onSubmit: SubmitHandler<AddExpenseInputs> = async (data) => {
     let formData = {
       ...data,
-      date: getCurrentDate(),
       price: Number(data.price),
+      type_id: Number(data.type_id),
     };
     if (state == "insert") await mutateAsync(formData);
     else updateMutate(formData);
@@ -62,9 +64,15 @@ const ExpenseForm = ({
   };
   useEffect(() => {
     if (globalState.oldData) {
-      reset(globalState.oldData);
+      let { deleted, created_at, updated_at, type_name, ...other } =
+        globalState.oldData;
+      reset(other);
+      setValue("date", timestampToDateString(other.date));
     }
   }, [state, globalState]);
+
+  console.log(watch("date"));
+
   return (
     <>
       <Form
@@ -85,19 +93,19 @@ const ExpenseForm = ({
           <>
             <div className="w-full space-y-4 flex flex-col">
               <Label
-                htmlFor="expense_type_id"
+                htmlFor="type_id"
                 className="w-full text-sm  flex flex-row gap-2">
                 <p>جۆری خەرجی</p>
               </Label>{" "}
               <div className="w-full flex flex-row justify-start items-center gap-3">
                 <InputGroup
-                  error={errors.expense_type_id}
+                  error={errors.type_id}
                   className="w-full space-y-2  text-input col-span-full md:col-span-1">
                   <Select
-                    title="expense_type_id"
-                    {...register("expense_type_id", { required: true })}
-                    name="expense_type_id"
-                    id="expense_type_id"
+                    title="type_id"
+                    {...register("type_id", { required: true })}
+                    name="type_id"
+                    id="type_id"
                     className="w-full dark-light text-sm">
                     <Option className="dark-light text-sm" value={-1}>
                       جۆری خەرجی هەڵبژێرە
@@ -138,6 +146,26 @@ const ExpenseForm = ({
                     id="price"
                     placeholder="بڕی پارەی خەرجکراو"
                     className="w-full text-sm"
+                  />
+                </InputGroup>
+              </div>
+              <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
+                <Label
+                  htmlFor="time"
+                  className="w-full text-sm  flex flex-row gap-2">
+                  <p>بەروار </p>
+                </Label>{" "}
+                <InputGroup
+                  error={errors.date}
+                  className="w-full space-y-2  text-input col-span-full md:col-span-1">
+                  <Input
+                    id="time"
+                    type="date"
+                    {...register("date", { required: true })}
+                    name="date"
+                    placeholder="بەروار  "
+                    className="w-full text-sm"
+                    aria-invalid={errors.date ? "true" : "false"}
                   />
                 </InputGroup>
               </div>

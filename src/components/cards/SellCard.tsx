@@ -1,10 +1,11 @@
 import { SellCardProps } from "@/types/sell";
-import { Info, PenTool, RotateCcw, Trash2 } from "lucide-react";
+import { Info, PenTool, Printer, RotateCcw, Trash2 } from "lucide-react";
 import { useState } from "react";
 import Dialog from "../shared/Dialog";
 import DeleteModal from "../ui/DeleteModal";
 import {
   useDeleteSell,
+  useGetSellPrint,
   useRestoreSell,
 } from "@/lib/react-query/query/sell.query";
 import { useGlobalContext } from "@/context/GlobalContext";
@@ -22,28 +23,36 @@ import { ENUMs } from "@/lib/enum";
 import SellRestoreConfirm from "./SellRestoreConfirm";
 import CustomClose from "../shared/CustomClose";
 import { formatDateToDDMMYY } from "@/lib/functions";
+import PrintModal from "../ui/PrintModal";
+import useCheckReportPage from "@/hooks/useCheckReportPage";
+import { formatMoney } from "../shared/FormatMoney";
 
 const SellCard = ({
   discount,
   date,
   id,
+  created_by,
+  updated_by,
   index = -1,
+  total_item_sell_price,
   ...others
 }: SellCardProps) => {
   const navigate = useNavigate();
   const { deleted_page } = useCheckDeletedPage();
+  const { report_page } = useCheckReportPage();
   const [searchParam, setSearchParam] = useSearchParams();
   const [detail, setDetail] = useState<boolean>(false);
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const [isRestore, setIsRestore] = useState<boolean>(false);
   const [isConfirm, setIsConfirm] = useState<boolean>(false);
+  const [isPrint, setIsPrint] = useState<boolean>(false);
 
   const {
     dispatch,
     state: { checked },
   } = useGlobalContext();
   const { mutateAsync, isPending } = useDeleteSell();
-
+  let sell_id_param = searchParam.get(ENUMs.SELL_PARAM as string);
   return (
     <>
       <Tr
@@ -51,7 +60,7 @@ const SellCard = ({
           checked?.includes(id) ? "table-row-include" : "table-row-normal"
         }`}
         key={id}>
-        {!deleted_page && (
+        {!deleted_page && !report_page && (
           <Td className="!p-3">
             <InputGroup className="checkbox-input">
               <Input
@@ -88,72 +97,126 @@ const SellCard = ({
             {formatDateToDDMMYY(date.toLocaleString())}
           </p>
         </Td>
+        {report_page && (
+          <Td className="!p-3">
+            <p className="text-right font-light font-bukra text-sm">
+              {formatMoney(total_item_sell_price)}
+            </p>
+          </Td>
+        )}
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">{discount}</p>
+          <p className="text-right font-light font-bukra text-sm">
+            {formatMoney(discount)}
+          </p>
         </Td>
+        {report_page && (
+          <Td className="!p-3">
+            <p className="text-right font-light font-bukra text-sm">
+              {formatMoney(total_item_sell_price - discount)}
+            </p>
+          </Td>
+        )}
+        <Td className="!p-3">
+          <p className="text-right font-light font-bukra text-sm">
+            {created_by}
+          </p>
+        </Td>{" "}
+        <Td className="!p-3">
+          <p className="text-right font-light font-bukra text-sm">
+            {updated_by}
+          </p>
+        </Td>
+        {!report_page && (
+          <>
+            <Td className="!p-3 cup flex flex-row gap-2">
+              {!deleted_page && (
+                <>
+                  <Tooltip
+                    placement="top"
+                    title="پرنتکردن"
+                    color="warning"
+                    variant="soft">
+                    <Chip
+                      onClick={() => setIsPrint(true)}
+                      variant="soft"
+                      color="warning">
+                      <Printer className="w-7 h-7 p-1 cursor-pointer" />
+                    </Chip>
+                  </Tooltip>
+                  <Tooltip
+                    placement="top"
+                    title="سڕینەوە"
+                    color="danger"
+                    variant="soft">
+                    <Chip
+                      onClick={() => setIsDelete(true)}
+                      variant="soft"
+                      color="danger">
+                      <Trash2 className="w-7 h-7 p-1 cursor-pointer" />
+                    </Chip>
+                  </Tooltip>
+                  <Tooltip
+                    placement="top"
+                    title="چاککردن"
+                    color="success"
+                    variant="soft">
+                    <Chip
+                      onClick={async () => {
+                        navigate(
+                          `/${ENUMs.GENERAL_SECTION}/${ENUMs.CREATE_PSULA_PART}?sell_id=${id}`
+                        );
+                      }}
+                      variant="soft"
+                      color="success">
+                      <PenTool className="w-7 h-7 p-1 cursor-pointer" />
+                    </Chip>
+                  </Tooltip>
+                </>
+              )}
 
-        <Td className="!p-3 cup flex flex-row gap-2">
-          {!deleted_page && (
-            <>
+              {deleted_page && (
+                <Tooltip
+                  placement="top"
+                  title="گێڕانەوە"
+                  color="warning"
+                  variant="soft">
+                  <Chip
+                    onClick={() => setIsRestore(true)}
+                    variant="soft"
+                    color="warning">
+                    <RotateCcw className="w-7 h-7 p-1 cursor-pointer" />
+                  </Chip>
+                </Tooltip>
+              )}
               <Tooltip
                 placement="top"
-                title="سڕینەوە"
-                color="danger"
+                title="زانیاری"
+                color="primary"
                 variant="soft">
                 <Chip
-                  onClick={() => setIsDelete(true)}
+                  onClick={() => setDetail(true)}
                   variant="soft"
-                  color="danger">
-                  <Trash2 className="w-7 h-7 p-1 cursor-pointer" />
+                  color="primary">
+                  <Info className="w-7 h-7 p-1 cursor-pointer" />
                 </Chip>
               </Tooltip>
-              <Tooltip
-                placement="top"
-                title="چاککردن"
-                color="success"
-                variant="soft">
-                <Chip
-                  onClick={async () => {
-                    navigate(
-                      `/${ENUMs.GENERAL_SECTION}/${ENUMs.CREATE_PSULA_PART}?sell_id=${id}`
-                    );
-                  }}
-                  variant="soft"
-                  color="success">
-                  <PenTool className="w-7 h-7 p-1 cursor-pointer" />
-                </Chip>
-              </Tooltip>
-            </>
-          )}
-          {deleted_page && (
-            <Tooltip
-              placement="top"
-              title="گێڕانەوە"
-              color="warning"
-              variant="soft">
-              <Chip
-                onClick={() => setIsRestore(true)}
-                variant="soft"
-                color="warning">
-                <RotateCcw className="w-7 h-7 p-1 cursor-pointer" />
-              </Chip>
-            </Tooltip>
-          )}
-          <Tooltip
-            placement="top"
-            title="زانیاری"
-            color="primary"
-            variant="soft">
-            <Chip
-              onClick={() => setDetail(true)}
-              variant="soft"
-              color="primary">
-              <Info className="w-7 h-7 p-1 cursor-pointer" />
-            </Chip>
-          </Tooltip>
-        </Td>
+            </Td>
+          </>
+        )}
       </Tr>
-
+      {isPrint && (
+        <Dialog
+          className="!p-5 rounded-md"
+          maxWidth={500}
+          maxHeight={`90%`}
+          isOpen={isPrint}
+          onClose={() => setIsPrint(false)}>
+          <PrintModal
+            printFn={() => useGetSellPrint(Number(sell_id_param) || id || 0)}
+            onClose={() => setIsPrint(false)}
+          />
+        </Dialog>
+      )}
       {isDelete && (
         <Dialog
           className="!p-5 rounded-md"
@@ -192,6 +255,8 @@ const SellCard = ({
           <CustomClose onClick={() => setDetail(false)} />
           <SellDetailCard
             discount={discount}
+            created_by={created_by}
+            updated_by={updated_by}
             id={id}
             date={date}
             index={index}
@@ -209,6 +274,8 @@ const SellCard = ({
           <CustomClose onClick={() => setIsConfirm(false)} />
 
           <SellRestoreConfirm
+            created_by={created_by}
+            updated_by={updated_by}
             discount={discount}
             id={id}
             date={date}

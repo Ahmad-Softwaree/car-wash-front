@@ -4,9 +4,12 @@ export type Sell = {
   id: number;
   discount: number;
   date: Date | string;
-  created_at: Date | null;
-  updated_at: Date | null;
-  deleted: boolean;
+  created_at?: Date | null;
+  updated_at?: Date | null;
+  created_by: string;
+  updated_by: string;
+  deleted?: boolean;
+  total_item_sell_price?: number;
 };
 
 export type SellItem = {
@@ -14,24 +17,21 @@ export type SellItem = {
   sell_id: number;
   item_id: number;
   item_name: string;
-
+  created_by: string;
+  updated_by: string;
   quantity: number;
   item_purchase_price: number;
   item_sell_price: number;
-  created_at: Date | null;
-  updated_at: Date | null;
-  deleted: boolean;
+  created_at?: Date | null;
+  updated_at?: Date | null;
+  deleted?: boolean;
 };
 
 export type UpdateSellItemInputs = {
   quantity: number;
 };
 
-export type SellCardProps = {
-  id: number;
-  discount: number;
-  date: Date | string;
-} & { index?: number };
+export type SellCardProps = Sell & { index?: number };
 export type SellItemCardProps = SellItem & {
   index?: number;
   state?: "insert" | "read";
@@ -64,6 +64,7 @@ export type UpdateSellF = {
 
 export type AddItemToSellF = {
   item_id: number;
+  barcode: boolean;
 };
 
 export type UpdateItemInSellF = {

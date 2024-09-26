@@ -20,12 +20,15 @@ import CustomClose from "../shared/CustomClose";
 import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import RestoreModal from "../ui/RestoreModal";
 import { formatDateToDDMMYY } from "@/lib/functions";
+import { formatMoney } from "../shared/FormatMoney";
 
 const ExpenseCard = ({
   date,
   price,
   type_name,
   id,
+  created_by,
+  updated_by,
   index = -1,
   ...others
 }: ExpenseCardProps) => {
@@ -93,11 +96,23 @@ const ExpenseCard = ({
           </Chip>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">{price}</p>
+          <p className="text-right font-light font-bukra text-sm">
+            {formatMoney(price)}
+          </p>
         </Td>
         <Td className="!p-3">
           <p className="text-right font-light font-bukra text-sm">
             {formatDateToDDMMYY(date as string)}
+          </p>
+        </Td>
+        <Td className="!p-3">
+          <p className="text-right font-light font-bukra text-sm">
+            {created_by}
+          </p>
+        </Td>
+        <Td className="!p-3">
+          <p className="text-right font-light font-bukra text-sm">
+            {updated_by}
           </p>
         </Td>
 
@@ -173,13 +188,15 @@ const ExpenseCard = ({
       {detail && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={500}
+          maxWidth={1000}
           maxHeight={`90%`}
           isOpen={detail}
           onClose={() => setDetail(false)}>
           <CustomClose onClick={() => setDetail(false)} />
           <ExpenseDetailCard
             id={id}
+            created_by={created_by}
+            updated_by={updated_by}
             price={price}
             type_name={type_name}
             date={date}

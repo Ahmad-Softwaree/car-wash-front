@@ -5,14 +5,9 @@ import { PrintModalProps } from "@/types/global";
 import Loading from "./Loading";
 import { TailSpin } from "react-loader-spinner";
 import PDFViewer from "../shared/PDFViewer";
-import { useGetSellPrint } from "@/lib/react-query/query/sell.query";
-import { useSearchParams } from "react-router-dom";
-import { ENUMs } from "@/lib/enum";
 
-export default function PrintModal({ onClose }: PrintModalProps) {
-  const [searchParam, setSearchParam] = useSearchParams();
-  let sell_id_param = searchParam.get(ENUMs.SELL_PARAM as string);
-  const { data, isLoading, isPending } = useGetSellPrint(Number(sell_id_param));
+export default function PrintModal({ onClose, id, printFn }: PrintModalProps) {
+  const { data, isLoading, isPending } = printFn();
   return (
     <div className="w-full  h-full flex flex-col justify-center bg-transparent items-center gap-5">
       <Chip variant="soft" color="warning">

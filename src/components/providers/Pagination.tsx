@@ -2,7 +2,7 @@ import useDebounce from "@/hooks/useDebounce";
 import { ENUMs } from "@/lib/enum";
 import { DataTypes, PaginationProps } from "@/types/global";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useInView } from "react-intersection-observer";
 import { useSearchParams } from "react-router-dom";
 

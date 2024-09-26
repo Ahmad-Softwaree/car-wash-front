@@ -2,12 +2,8 @@ import { useToast } from "@/components/ui/use-toast";
 import {
   AddItemF,
   AddItemQ,
-  CountItemF,
-  CountItemQ,
   DeleteItemQ,
   GetItemByIdQ,
-  GetItemsInAddQ,
-  GetItemsLessQ,
   GetItemsQ,
   UpdateItemF,
   UpdateItemQ,
@@ -30,7 +26,6 @@ import {
 import { QUERY_KEYs } from "../key";
 import {
   addItem,
-  countItem,
   deleteItem,
   getItemById,
   getItems,

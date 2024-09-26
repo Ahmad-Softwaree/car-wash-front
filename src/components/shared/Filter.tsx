@@ -1,15 +1,14 @@
 import Select, { SelectStaticProps } from "@mui/joy/Select";
 import Option from "@mui/joy/Option";
 import { IconButton } from "@mui/joy";
-import { Role } from "@/types/role";
 import { Id } from "@/types/global";
 import { useSearchParams } from "react-router-dom";
 import { ENUMs } from "@/lib/enum";
-import React from "react";
+import React, { useState } from "react";
 import { CircleX } from "lucide-react";
 
 type OptionType = {
-  value: Id;
+  value: Id | string;
   label: string;
 };
 
@@ -17,10 +16,11 @@ const Filter = ({ options }: { options: OptionType[] }) => {
   const [searchParam, setSearchParam] = useSearchParams();
   const action: SelectStaticProps["action"] = React.useRef(null);
   let filter = searchParam.get(ENUMs.FILTER_PARAM as string);
+  const [filterString, setFilterString] = useState<string>("");
   return (
     <Select
       action={action}
-      value={filter}
+      value={filterString}
       placeholder="فلتەر"
       className="!dark-light  !font-bukra !text-xs !default-border !border-4"
       onChange={(e, newValue) => {
@@ -29,6 +29,7 @@ const Filter = ({ options }: { options: OptionType[] }) => {
           if (newValue) params.set(ENUMs.FILTER_PARAM as string, newValue);
           return params;
         });
+        setFilterString(newValue);
       }}
       {...(filter && {
         endDecorator: (
@@ -47,6 +48,7 @@ const Filter = ({ options }: { options: OptionType[] }) => {
                 params.delete(ENUMs.FILTER_PARAM as string);
                 return params;
               });
+              setFilterString("");
             }}>
             <CircleX />
           </IconButton>

@@ -8,7 +8,7 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import items from "@/pages/_auth/Items";
+import Items from "@/pages/_auth/Items";
 import Profile from "@/pages/_auth/Profile";
 import { ENUMs } from "@/lib/enum";
 import Roles from "@/pages/_auth/Roles";
@@ -22,6 +22,7 @@ import CreatePsula from "@/pages/_auth/CreatePsula";
 import Sells from "@/pages/_auth/Sells";
 import Reservations from "@/pages/_auth/Reservations";
 import Backups from "@/pages/_auth/Backups";
+import SellReport from "@/pages/_auth/SellReport";
 const RootLayout = lazy(() => import("@/pages/_root/RootLayout"));
 const AuthRouterProvider = lazy(() => import("@/providers/AuthRouterProvider"));
 const UserNullRouterProvider = lazy(
@@ -94,7 +95,7 @@ const router = createBrowserRouter(
             path={ENUMs.KOGA_PART as string}
             errorElement={<Error />}
             element={
-              <CheckPart part={[ENUMs.KOGA_PART as string]} Component={items} />
+              <CheckPart part={[ENUMs.KOGA_PART as string]} Component={Items} />
             }
           />
           <Route
@@ -135,6 +136,16 @@ const router = createBrowserRouter(
               <CheckPart
                 part={[ENUMs.EXPENSE_PART as string]}
                 Component={Expense}
+              />
+            }
+          />
+          <Route
+            path={ENUMs.SELL_REPORT_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[ENUMs.SELL_REPORT_PART as string]}
+                Component={SellReport}
               />
             }
           />
@@ -282,7 +293,7 @@ const router = createBrowserRouter(
                   ENUMs.KOGA_PART as string,
                   ENUMs.DELETED_SECTION as string,
                 ]}
-                Component={items}
+                Component={Items}
               />
             }
           />

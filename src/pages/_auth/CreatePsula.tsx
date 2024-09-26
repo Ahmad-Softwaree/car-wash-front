@@ -1,17 +1,18 @@
 import PsulaItemCard from "@/components/cards/PsulaItemCard";
 import SellItemCard from "@/components/cards/SellItemCard";
 import Pagination from "@/components/providers/Pagination";
-import DatePicker from "@/components/shared/DatePicker";
+import CustomClose from "@/components/shared/CustomClose";
 import DeleteChip from "@/components/shared/DeleteChip";
 import Dialog from "@/components/shared/Dialog";
 import Filter from "@/components/shared/Filter";
+import { formatMoney } from "@/components/shared/FormatMoney";
 import Search from "@/components/shared/Search";
 import { Table, Td, Th, THead, Tr } from "@/components/ui";
+import CalculatorModal from "@/components/ui/Calculator";
 import Container from "@/components/ui/Container";
 import DeleteModal from "@/components/ui/DeleteModal";
 import Input from "@/components/ui/Input";
 import InputGroup from "@/components/ui/InputGroup";
-import Label from "@/components/ui/Label";
 import Loading from "@/components/ui/Loading";
 import MyButton from "@/components/ui/MyButton";
 import PrintModal from "@/components/ui/PrintModal";
@@ -32,6 +33,7 @@ import {
   useDeleteSell,
   useGetSell,
   useGetSellItems,
+  useGetSellPrint,
   useUpdateSell,
 } from "@/lib/react-query/query/sell.query";
 import { Id } from "@/types/global";
@@ -39,13 +41,15 @@ import { ItemType } from "@/types/item-type";
 import { Item, ItemCard, ItemInformation } from "@/types/items";
 import { SellItem } from "@/types/sell";
 import { Button } from "@mui/joy";
-import { CirclePlus, Printer, Trash2 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { Calculator, CirclePlus, Printer, Trash2 } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { TailSpin } from "react-loader-spinner";
 import { useSearchParams } from "react-router-dom";
 
 const CreatePsula = () => {
+  const [calculate, setCalculate] = useState<boolean>(false);
   const [discount, setDiscount] = useState<number>(0);
+  const [discountMoney, setDiscountMoney] = useState<number>(0);
   const [searchParam, setSearchParam] = useSearchParams();
   let sell_id_param = searchParam.get(ENUMs.SELL_PARAM as string);
   const { mutateAsync: addItem, isPending: addItemPending } = useAddItemToSell(
@@ -66,10 +70,8 @@ const CreatePsula = () => {
   const [isPrint, setIsPrint] = useState<boolean>(false);
 
   const [isItemDelete, setIsItemDelete] = useState<boolean>(false);
-
   const { mutateAsync: deleteItemInSell, isPending: deleteItemInSellPending } =
     useDeleteItemInSell(Number(sell_id_param));
-
   const {
     data: sellItems,
     isLoading: sellItemsLoading,
@@ -83,8 +85,6 @@ const CreatePsula = () => {
   } = useGlobalContext();
   useEffect(() => {
     if (!sell_id_param || sell_id_param === "") {
-      console.log("here");
-
       setSearchParam((prev) => {
         const params = new URLSearchParams(prev);
         params.set(ENUMs.SELL_PARAM as string, "0");
@@ -96,19 +96,75 @@ const CreatePsula = () => {
     }
   }, [sell_id_param, setSearchParam]);
 
-  const onClick = (item_id: Id) => addItem({ item_id });
+  useEffect(() => {
+    let barcodeBuffer = "";
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Enter") {
+        console.log("Barcode scanned:", barcodeBuffer);
+        // Call your addItem function here with the scanned barcode
+        addItem({ item_id: Number(barcodeBuffer), barcode: true });
+
+        // Clear the buffer after processing
+        barcodeBuffer = "";
+      } else {
+        // Append the key to the buffer if it's a number
+        if (!isNaN(Number(e.key))) {
+          barcodeBuffer += e.key;
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  const onClick = (item_id: Id) => addItem({ item_id, barcode: false });
+
+  let sellTotal = formatMoney(
+    sellItems?.reduce((accumulator: number, val: SellItem) => {
+      return accumulator + Number(val.item_sell_price) * val.quantity;
+    }, 0)
+  );
+  let sellTotalAfterDiscount = formatMoney(
+    (
+      sellItems?.reduce((accumulator: number, val: SellItem) => {
+        return accumulator + Number(val.item_sell_price) * val.quantity;
+      }, 0) - sell?.discount
+    ).toFixed(0)
+  );
+
+  let discountPercent = (
+    (sell?.discount /
+      sellItems?.reduce((accumulator: number, val: SellItem) => {
+        return accumulator + Number(val.item_sell_price) * val.quantity;
+      }, 0)) *
+    100
+  ).toFixed(0);
+
+  let discountMoneyCalculation: string = formatMoney(
+    (
+      sellItems?.reduce((accumulator: number, val: SellItem) => {
+        return accumulator + Number(val.item_sell_price) * val.quantity;
+      }, 0) - sell?.discount
+    ).toFixed(0)
+  );
+
   return (
     <>
       <Container
         as={`div`}
-        className="w-full grid grid-cols-3 gap-5 min-h-[700px]">
+        className="w-full grid grid-cols-1 xl:grid-cols-5  gap-5 min-h-[700px]">
         {createPending ? (
           <Loading>
             <TailSpin />
           </Loading>
         ) : (
           <>
-            <div className="col-span-full 2xl:col-span-1 flex flex-col justify-start items-start gap-5 border-t-2 lg:border-t-0 lg:border-l-2 border-solid border-gray-500 px-0 lg:px-5">
+            <div className="col-span-full  2xl:col-span-2 flex flex-col justify-start items-start gap-5 border-b-2 lg:border-t-0 lg:border-l-2 border-solid border-gray-500 px-0 pl-2">
               <div className="w-full gap-5 flex flex-row justify-start items-center flex-wrap">
                 <Search />
                 {types && (
@@ -177,6 +233,7 @@ const CreatePsula = () => {
                                       (one: SellItem, _index: number) =>
                                         one.item_id == val.id
                                     ) != -1 &&
+                                    !sellItemsLoading &&
                                     sell_id_param != "0" &&
                                     sell_id_param &&
                                     "!border-yellow-500"
@@ -207,10 +264,10 @@ const CreatePsula = () => {
                 }}
               </Pagination>
             </div>
-            <div className="col-span-full 2xl:col-span-2   px-0 lg:px-5 flex flex-col justify-start items-start gap-5">
+            <div className="col-span-full 2xl:col-span-3   px-0  flex flex-col justify-start items-start gap-5">
               {" "}
               {checked?.length > 0 && (
-                <div className=" flex flex-row justify-end items-center gap-3">
+                <div className="w-full flex flex-row justify-end items-center gap-3">
                   <div className="flex flex-row justify-center items-center gap-2 dark-light">
                     <DeleteChip onClick={() => setIsItemDelete(true)} />
 
@@ -220,12 +277,12 @@ const CreatePsula = () => {
                   </div>
                 </div>
               )}
-              <div className="grid grid-rows-8 grid-cols-1 gap-5 place-items-start ">
-                <div className="row-span-6 w-full max-w-full overflow-x-auto h-[600px] default-border hide-scroll">
+              <div className="w-full grid grid-rows-6 grid-cols-1 gap-0 place-items-start ">
+                <div className="row-span-3 w-full max-w-full overflow-x-auto h-[500px] default-border hide-scroll">
                   <Table className="relative  w-full table-dark-light  default-border">
                     <THead className="sticky -top-1 z-[100]  table-dark-light w-full  default-border">
                       <Tr>
-                        <Th className="text-right text-sm !p-4 !min-w-[100px]">
+                        <Th className="text-right text-sm !p-4">
                           <InputGroup className="checkbox-input">
                             <Input
                               onClick={() => {
@@ -266,6 +323,12 @@ const CreatePsula = () => {
                           <p className="pr-3 table-head-border">کۆ</p>
                         </Th>
                         <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">داغڵکار</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">چاککار</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
                           <p className="pr-3 table-head-border">کردارەکان</p>
                         </Th>
                       </Tr>
@@ -283,95 +346,156 @@ const CreatePsula = () => {
                     <TFoot className="sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
                       {sellItems && sellItems?.length > 0 && sell && (
                         <Tr>
-                          <Td className="text-center" colSpan={4}>
-                            کۆی گشتی :{" "}
-                            {(
-                              sellItems?.reduce(
-                                (accumulator: number, val: SellItem) => {
-                                  return (
-                                    accumulator +
-                                    Number(val.item_sell_price) * val.quantity
-                                  );
-                                },
-                                0
-                              ) *
-                              (1 - Number(sell?.discount) / 100)
-                            ).toFixed(0)}
-                          </Td>
                           <Td className="text-center" colSpan={3}>
-                            داشکاندن : {sell?.discount}
+                            کۆی گشتی : {sellTotal}
+                          </Td>
+                          <Td className="text-center" colSpan={4}>
+                            کۆی گشتی دوای داشکان : {sellTotalAfterDiscount}
+                          </Td>
+                          <Td className="text-center" colSpan={2}>
+                            داشکاندن : {formatMoney(sell?.discount)}
                           </Td>
                         </Tr>
                       )}
                     </TFoot>
                   </Table>
                 </div>
-                <div className="row-span-2 w-full flex flex-col justify-center items-center gap-5 default-border p-5">
-                  <div className=" w-full flex flex-row justify-center items-end gap-5">
-                    <div className="w-[200px] flex flex-col gap-2">
-                      <Label
-                        htmlFor="discount"
-                        className="w-full text-sm  flex flex-row gap-2">
-                        <p>داشکاندن</p>
-                      </Label>{" "}
-                      <div className="w-full flex flex-row justify-start items-center gap-2">
-                        <InputGroup className="w-full space-y-2  text-input col-span-full md:col-span-1">
-                          <Input
-                            onChange={(e) =>
-                              setDiscount(Number(e.target.value))
-                            }
-                            id="discount"
-                            type="number"
-                            max={`100`}
-                            min={`0`}
-                            name="discount"
-                            placeholder="داشکاندن"
-                            className="w-full text-sm"
-                          />
-                        </InputGroup>
-                      </div>
-                    </div>
-                    <MyButton
-                      onClick={() => update({ discount })}
-                      disabled={updatePending}
-                      name="addDiscountButton"
-                      type="submit"
-                      className=" bg-sky-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2">
-                      <p className="font-light text-sm font-bukra">
-                        جێبەجێکردن
+                <div className="row-span-3 w-full grid grid-cols-1 grid-rows-3 default-border h-[250px]">
+                  <div className=" w-full grid grid-cols-3 col-span-full row-span-2">
+                    <div className="flex flex-col gap-2 col-span-1 row-span-full h-full my-2 justify-center items-center">
+                      <p className="text-sm text-center w-full">
+                        کۆی گشتی : {sellTotal}
                       </p>
-                    </MyButton>
+                      <p className="text-sm text-center w-full">
+                        داشکان بە ڕێژە : {discountPercent} %
+                      </p>{" "}
+                      <p className="text-sm text-center w-full">
+                        داشکان بەپارە : {sell?.discount}
+                      </p>
+                      <p className="text-sm text-center w-full">
+                        کۆی گشتی دوای داشکان : {sellTotalAfterDiscount}
+                      </p>
+                    </div>
+                    <div className="flex flex-col  col-span-1 row-span-full h-full">
+                      <InputGroup className="w-full   text-input !rounded-none h-1/2">
+                        <Input
+                          onChange={(e) => setDiscount(Number(e.target.value))}
+                          value={discount ? discount : discountPercent}
+                          id="discount"
+                          type="number"
+                          max={`100`}
+                          min={`0`}
+                          name="discount"
+                          placeholder="داشکاندن بە ڕێژەی سەدی"
+                          className="w-full text-md h-full"
+                        />
+                      </InputGroup>
+                      <MyButton
+                        onClick={async () => {
+                          await update({
+                            discount: Number(
+                              (
+                                sellItems?.reduce(
+                                  (accumulator: number, val: SellItem) => {
+                                    return (
+                                      accumulator +
+                                      Number(val.item_sell_price) * val.quantity
+                                    );
+                                  },
+                                  0
+                                ) * Number(discount / 100)
+                              ).toFixed(0)
+                            ),
+                          });
+                          setDiscount(0);
+                          setDiscountMoney(0);
+                        }}
+                        disabled={updatePending}
+                        name="addDiscountButton"
+                        type="submit"
+                        className=" bg-sky-600 h-1/2  p-2 px-4 text-white flex flex-row justify-center items-center gap-2 col-span-1 bg-opacity-60 hover:bg-opacity-100 transition-all duration-200">
+                        <p className="font-light text-md font-bukra">
+                          جێبەجێکردن
+                        </p>
+                      </MyButton>
+                    </div>
+                    <div className="flex flex-col  col-span-1 row-span-full h-full">
+                      <InputGroup className="w-full h-1/2 text-input !rounded-none">
+                        <Input
+                          onChange={(e) =>
+                            setDiscountMoney(Number(e.target.value))
+                          }
+                          value={
+                            discountMoney
+                              ? discountMoney
+                              : formatMoney(sell?.discount)
+                          }
+                          id="discountMoney"
+                          type="text"
+                          min={`0`}
+                          name="discountMoney"
+                          placeholder="داشکاندن بە پارە"
+                          className="w-full text-md h-full"
+                        />
+                      </InputGroup>
+                      <MyButton
+                        onClick={async () => {
+                          await update({
+                            discount: discountMoney,
+                          });
+                          setDiscount(0);
+                          setDiscountMoney(0);
+                        }}
+                        disabled={updatePending}
+                        name="addDiscountButton"
+                        type="submit"
+                        className=" bg-sky-600 h-1/2  p-2 px-4 text-white flex flex-row justify-center items-center gap-2 col-span-1 bg-opacity-60 hover:bg-opacity-100 transition-all duration-200">
+                        <p className="font-light text-md font-bukra">
+                          جێبەجێکردن
+                        </p>
+                      </MyButton>
+                    </div>
                   </div>
-                  <div className=" w-full flex flex-row justify-center items-start gap-5">
+                  <div className="w-full grid  grid-cols-4 col-span-full row-span-1">
                     <Button
                       onClick={() => setIsDelete(true)}
-                      className="flex flex-row justify-center items-center gap-2"
+                      className="flex flex-row justify-center items-center gap-2 col-span-1 !rounded-none row-span-1"
                       variant="soft"
                       color="danger">
-                      <p className="!font-bukra text-right font-light  text-xs">
+                      <p className="!font-bukra text-right font-light  text-md">
                         سڕینەوەی پسولە
                       </p>
                       <Trash2 className="w-7 h-7 p-1 cursor-pointer" />
                     </Button>
                     <Button
                       onClick={() => create()}
-                      className="flex flex-row justify-center items-center gap-2"
+                      className="flex flex-row justify-center items-center gap-2 col-span-1 !rounded-none row-span-1"
                       variant="soft"
                       color="success">
-                      <p className="!font-bukra text-right font-light  text-xs">
+                      <p className="!font-bukra text-right font-light  text-md">
                         پسولەی نوێ
                       </p>
                       <CirclePlus className="w-7 h-7 p-1 cursor-pointer" />
                     </Button>
                     <Button
                       onClick={() => setIsPrint(true)}
-                      className="flex flex-row justify-center items-center gap-2"
+                      className="flex flex-row justify-center items-center gap-2 col-span-1 !rounded-none row-span-1"
                       variant="soft"
                       color="primary">
-                      <p className="!font-bukra text-right font-light  text-xs">
+                      <p className="!font-bukra text-right font-light  text-md">
                         چاپکردن
                       </p>
                       <Printer className="w-7 h-7 p-1 cursor-pointer" />
+                    </Button>
+                    <Button
+                      onClick={() => setCalculate(true)}
+                      className="flex flex-row justify-center items-center gap-2 col-span-1 !rounded-none row-span-1"
+                      variant="soft"
+                      color="warning">
+                      <p className="!font-bukra text-right font-light  text-md">
+                        بژمێر
+                      </p>
+                      <Calculator className="w-7 h-7 p-1 cursor-pointer" />
                     </Button>
                   </div>
                 </div>
@@ -401,7 +525,10 @@ const CreatePsula = () => {
           maxHeight={`90%`}
           isOpen={isPrint}
           onClose={() => setIsPrint(false)}>
-          <PrintModal onClose={() => setIsPrint(false)} />
+          <PrintModal
+            printFn={() => useGetSellPrint(Number(sell_id_param) || 0)}
+            onClose={() => setIsPrint(false)}
+          />
         </Dialog>
       )}
       {isItemDelete && (
@@ -415,6 +542,27 @@ const CreatePsula = () => {
             deleteFunction={() => deleteItemInSell(checked)}
             loading={deleteItemInSellPending}
             onClose={() => setIsItemDelete(false)}
+          />
+        </Dialog>
+      )}
+      {calculate && (
+        <Dialog
+          className="!p-5 rounded-md"
+          maxWidth={500}
+          maxHeight={`90%`}
+          isOpen={calculate}
+          onClose={() => setCalculate(false)}>
+          <CustomClose onClick={() => setCalculate(false)} />
+          <CalculatorModal
+            money={Number(
+              (
+                sellItems?.reduce((accumulator: number, val: SellItem) => {
+                  return (
+                    accumulator + Number(val.item_sell_price) * val.quantity
+                  );
+                }, 0) || 0 * (1 - Number(sell?.discount) / 100)
+              ).toFixed(0)
+            )}
           />
         </Dialog>
       )}

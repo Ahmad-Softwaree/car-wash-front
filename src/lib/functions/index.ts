@@ -10,6 +10,7 @@ export const downloadFile = (data: Blob, fileName: string) => {
   const url = window.URL.createObjectURL(new Blob([data]));
   const link = document.createElement("a");
   link.href = url;
+
   link.setAttribute("download", fileName); // file name
   document.body.appendChild(link);
   link.click();
@@ -22,8 +23,8 @@ export function timestampToDateString(timestamp: number): string {
 
   // Extract year, month, and day from the Date object
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
-  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // Months are zero-based
+  const day = String(date.getUTCDate()).padStart(2, "0");
 
   // Format the date string as YYYY-MM-DD
   return `${year}-${month}-${day}`;
@@ -39,10 +40,10 @@ export function formatDateString(dateString: string): string {
 
   // Get the components you need: year, month, day, hour, and minute
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed, so add 1
-  const day = String(date.getDate()).padStart(2, "0");
-  const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // Months are 0-indexed, so add 1
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  const hours = String(date.getUTCHours()).padStart(2, "0");
+  const minutes = String(date.getUTCMinutes()).padStart(2, "0");
 
   // Format the date string
   return `${year}-${month}-${day} ${hours}:${minutes}`;
@@ -63,8 +64,8 @@ export function getCurrentTime(): string {
   const now: Date = new Date();
 
   // Extract hours, minutes, and seconds
-  let hours: number = now.getHours();
-  const minutes: number = now.getMinutes();
+  let hours: number = now.getUTCHours();
+  const minutes: number = now.getUTCMinutes();
 
   // Determine AM or PM
   const amPm: string = hours >= 12 ? "PM" : "AM";
@@ -85,8 +86,8 @@ export function getCurrentTime(): string {
 export function getCurrentDate(): string {
   const now: Date = new Date();
 
-  const day: number = now.getDate();
-  const month: number = now.getMonth() + 1; // Months are zero-based
+  const day: number = now.getUTCDate();
+  const month: number = now.getUTCMonth() + 1; // Months are zero-based
   const year: number = now.getFullYear();
 
   // Add leading zero to day and month if needed

@@ -1,4 +1,4 @@
-import {
+import React, {
   ComponentPropsWithoutRef,
   ComponentPropsWithRef,
   Dispatch,
@@ -133,8 +133,14 @@ export type DeleteModalProps = {
   deleteFunction: any;
   loading: boolean;
 };
+
+export type CalculatorProps = {
+  money: number;
+};
 export type PrintModalProps = {
   onClose: () => void;
+  id?: Id;
+  printFn: any;
 };
 export type RestoreModalProps = {
   onClose: () => void;

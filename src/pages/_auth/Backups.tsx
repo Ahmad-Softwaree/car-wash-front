@@ -13,15 +13,18 @@ import TFoot from "@/components/ui/TFoot";
 import {
   useBackupEntity,
   useGetBackups,
+  useGetTableNames,
 } from "@/lib/react-query/query/backup.query";
 import BackupCard from "@/components/cards/BackupCard";
 import { Backup } from "@/types/backup";
 import { downloadFile } from "@/lib/functions";
+import Filter from "@/components/shared/Filter";
 
 const Backups = () => {
   const [searchParam, setSearchParam] = useSearchParams();
   const [entityName, setEntityName] = useState<string>("");
   const { data, isFetching, refetch } = useBackupEntity(entityName || "");
+  const { data: tables, isLoading } = useGetTableNames();
 
   useEffect(() => {
     if (data && entityName != "") {
@@ -42,6 +45,16 @@ const Backups = () => {
         className="w-full gap-10 flex flex-col justify-start items-start">
         <div className="w-full gap-5 flex flex-row justify-between ">
           <DatePicker />
+          {tables && tables.length > 0 && (
+            <Filter
+              options={tables.map((val: string, _index: number) => {
+                return {
+                  value: val,
+                  label: val,
+                };
+              })}
+            />
+          )}
         </div>
         <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap p-5 default-border dark-light rounded-xl">
           <button
@@ -175,6 +188,7 @@ const Backups = () => {
         <Pagination<Backup[]>
           queryFn={() =>
             useGetBackups(
+              searchParam.get(ENUMs.FILTER_PARAM as string) || "",
               searchParam.get(ENUMs.FROM_PARAM as string) || "",
               searchParam.get(ENUMs.TO_PARAM as string) || ""
             )

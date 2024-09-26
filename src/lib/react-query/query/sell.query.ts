@@ -150,6 +150,7 @@ export function useGetSellPrint(sell_id: Id) {
   return useQuery({
     queryKey: [QUERY_KEYs.SELL_PRINT],
     queryFn: (): Promise<Blob | null> => getSellPrint(toast, sell_id),
+    enabled: !!sell_id,
     retry: 0,
   });
 }

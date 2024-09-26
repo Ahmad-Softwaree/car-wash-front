@@ -3,7 +3,7 @@ import Search from "./Search";
 import { useGlobalContext } from "@/context/GlobalContext";
 import DeleteChip from "./DeleteChip";
 import { ENUMs } from "@/lib/enum";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Dialog from "./Dialog";
 import DeleteModal from "../ui/DeleteModal";
 import {
@@ -27,6 +27,7 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const { mutateAsync, isPending } = useDeleteReservation();
   let filter = searchParam.get(ENUMs.FILTER_PARAM as string);
+  const tableRef = useRef<HTMLDivElement>(null);
 
   const changeFilter = (
     filter: "all" | "completed" | "not_completed"
@@ -125,14 +126,10 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
           {({
             isFetchingNextPage,
             hasNextPage,
-            isLoading,
             ref,
             data,
-            refetch,
             isSearched,
             searchData,
-            searchRefetch,
-            fetchNextPage,
           }) => {
             const allData = useMemo(
               () =>
@@ -147,7 +144,9 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
             );
 
             return (
-              <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
+              <div
+                ref={tableRef}
+                className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
                 <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
                   <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
                     <Tr>
@@ -155,11 +154,15 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
                         <InputGroup className="checkbox-input">
                           <Input
                             onChange={() => {
+                              tableRef.current?.scrollTo({
+                                top: 0,
+                                behavior: "smooth",
+                              });
                               if (checked.length == 0) {
                                 dispatch({
                                   type: CONTEXT_TYPEs.CHECK,
                                   payload: allData
-                                    .slice(0, 30)
+                                    .slice(0, ENUMs.CHECK_LIMIT as number)
                                     .map(
                                       (val: Reservation, _index: number) =>
                                         val.id
@@ -203,6 +206,12 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
                       </Th>
                       <Th className="text-right text-sm !p-4">
                         <p className="pr-3 table-head-border">دۆخ</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">داغڵکار</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">چاککار</p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
                         <p className="pr-3 table-head-border">کردارەکان</p>

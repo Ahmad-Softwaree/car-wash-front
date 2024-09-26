@@ -25,13 +25,11 @@ const LoginForm = () => {
 
   return (
     <Form
-      className="space-y-4 mt-5 !text-primary-800 dark:!text-white"
+      className="space-y-4 mt-5 !text-primary-800 dark:!text-white w-full"
       ref={form}
       onSubmit={handleSubmit(onSubmit)}
       id="login-form">
-      <InputGroup
-        className="w-[300px] md:w-[400px] text-input"
-        error={errors.username}>
+      <InputGroup className="w-full text-input" error={errors.username}>
         <InputAddon className="w-[20%] md:w-[10%]">
           <User />
         </InputAddon>
@@ -45,9 +43,7 @@ const LoginForm = () => {
           className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:!font-bukra text-sm md:text-md"
         />
       </InputGroup>
-      <InputGroup
-        className="w-[300px] md:w-[400px] text-input"
-        error={errors.password}>
+      <InputGroup className="w-full text-input" error={errors.password}>
         <InputAddon className="w-[20%] md:w-[10%]">
           <Lock />
         </InputAddon>

@@ -131,8 +131,7 @@ module.exports = {
 
       fontFamily: {
         sans: ["Inter", ...defaultTheme.fontFamily.sans],
-        speda: "speda",
-        speda_bold: "speda_bold",
+
         bukra: "bukra",
         bukra_bold: "bukra_bold",
 

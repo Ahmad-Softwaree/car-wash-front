@@ -135,7 +135,7 @@ const Colors = () => {
                                 dispatch({
                                   type: CONTEXT_TYPEs.CHECK,
                                   payload: allData
-                                    .slice(0, 30)
+                                    .slice(0, ENUMs.CHECK_LIMIT as number)
                                     .map(
                                       (val: Color, _index: number) => val.id
                                     ),

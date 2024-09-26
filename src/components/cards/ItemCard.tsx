@@ -9,12 +9,18 @@ import InputGroup from "../ui/InputGroup";
 import Input from "../ui/Input";
 import Tooltip from "@mui/joy/Tooltip";
 import Chip from "@mui/joy/Chip";
-import { ItemCardProps } from "@/types/items";
+import { ItemCardProps, ItemReport } from "@/types/items";
 import FormatMoney from "../shared/FormatMoney";
 import ItemDetailCard from "./ItemDetailCard";
 import ItemForm from "../forms/ItemForm";
 import { useDeleteItem } from "@/lib/react-query/query/item.query";
 import CustomClose from "../shared/CustomClose";
+import useCheckReportPage from "@/hooks/useCheckReportPage";
+import {
+  formatDateString,
+  formatDateToDDMMYY,
+  timestampToDateString,
+} from "@/lib/functions";
 
 const ItemCard = ({
   name,
@@ -28,13 +34,20 @@ const ItemCard = ({
   item_sell_price,
   actual_quantity,
   note,
+  created_by,
+  updated_by,
+  sell_id,
   id,
   index = -1,
+  total_quantity,
+  created_at,
   ...others
-}: ItemCardProps) => {
+}: ItemCardProps & ItemReport) => {
   const [detail, setDetail] = useState<boolean>(false);
   const [update, setUpdate] = useState<boolean>(false);
   const [isDelete, setIsDelete] = useState<boolean>(false);
+  const { report_page } = useCheckReportPage();
+
   const {
     dispatch,
     state: { checked },
@@ -55,33 +68,42 @@ const ItemCard = ({
           checked?.includes(id) ? "table-row-include" : "table-row-normal"
         }`}
         key={id}>
-        <Td className="!p-3">
-          <InputGroup className="checkbox-input">
-            <Input
-              onClick={() => {
-                if (checked?.includes(id)) {
-                  dispatch({
-                    type: CONTEXT_TYPEs.UNCHECK,
-                    payload: id,
-                  });
-                } else {
-                  dispatch({
-                    type: CONTEXT_TYPEs.CHECK,
-                    payload: id,
-                  });
-                }
-              }}
-              checked={checked.includes(id)}
-              type="checkbox"
-              className="cursor-pointer"
-            />
-          </InputGroup>
-        </Td>
+        {!report_page && (
+          <Td className="!p-3">
+            <InputGroup className="checkbox-input">
+              <Input
+                onClick={() => {
+                  if (checked?.includes(id)) {
+                    dispatch({
+                      type: CONTEXT_TYPEs.UNCHECK,
+                      payload: id,
+                    });
+                  } else {
+                    dispatch({
+                      type: CONTEXT_TYPEs.CHECK,
+                      payload: id,
+                    });
+                  }
+                }}
+                checked={checked.includes(id)}
+                type="checkbox"
+                className="cursor-pointer"
+              />
+            </InputGroup>
+          </Td>
+        )}
         <Td className="!p-3">
           <p className="text-right font-light font-poppins text-sm">
             {index != -1 ? index + 1 : 0}
           </p>
         </Td>
+        {report_page && (
+          <Td className="!p-3">
+            <p className="text-right font-light font-poppins text-sm">
+              {sell_id}
+            </p>
+          </Td>
+        )}
         <Td className="!p-3">
           <p className="text-right font-light font-bukra text-sm">{name}</p>
         </Td>
@@ -96,83 +118,133 @@ const ItemCard = ({
           </p>
         </Td>
 
-        <Td className="!p-3 flex flex-row justify-start items-center gap-1">
-          <Chip
-            variant="soft"
-            color={actual_quantity < 30 ? "danger" : "neutral"}>
-            <p className="!font-bukra text-right font-light  text-xs">
-              {actual_quantity}
-            </p>
-          </Chip>
-        </Td>
+        {!report_page && (
+          <Td className="!p-3 flex flex-row justify-start items-center gap-1">
+            <Chip
+              variant="soft"
+              color={actual_quantity < 30 ? "danger" : "neutral"}>
+              <p className="!font-bukra text-right font-light  text-xs">
+                {actual_quantity}
+              </p>
+            </Chip>
+          </Td>
+        )}
+        {report_page && (
+          <Td className="!p-3 flex flex-row justify-start items-center gap-1">
+            <Chip
+              variant="soft"
+              color={Number(total_quantity) < 30 ? "danger" : "neutral"}>
+              <p className="!font-bukra text-right font-light  text-xs">
+                {Number(total_quantity)}
+              </p>
+            </Chip>
+          </Td>
+        )}
         <Td className="!p-3">
           <p className="text-right font-light font-bukra text-sm">
             <FormatMoney>{item_sell_price}</FormatMoney>
           </p>
         </Td>
+
+        {report_page && (
+          <Td className="!p-3">
+            <p className="text-right font-light font-bukra text-sm">
+              <FormatMoney>
+                {item_sell_price * Number(total_quantity)}
+              </FormatMoney>
+            </p>
+          </Td>
+        )}
+        {!report_page && (
+          <Td className="!p-3">
+            <p className="text-right font-light font-bukra text-sm">
+              <FormatMoney>{item_purchase_price}</FormatMoney>
+            </p>
+          </Td>
+        )}
         <Td className="!p-3">
           <p className="text-right font-light font-bukra text-sm">
-            <FormatMoney>{item_purchase_price}</FormatMoney>
+            {created_by}
           </p>
         </Td>
-        <Td className="!p-3 cup flex flex-row gap-2">
-          <Tooltip
-            placement="top"
-            title="سڕینەوە"
-            color="danger"
-            variant="soft">
-            <Chip
-              onClick={() => setIsDelete(true)}
-              variant="soft"
-              color="danger">
-              <Trash2 className="w-7 h-7 p-1 cursor-pointer" />
-            </Chip>
-          </Tooltip>
-          <Tooltip
-            placement="top"
-            title="چاککردن"
-            color="success"
-            variant="soft">
-            <Chip
-              onClick={() => {
-                dispatch({
-                  type: CONTEXT_TYPEs.SET_OLD_DATA,
-                  payload: {
-                    name,
-                    quantity,
-                    actual_quantity,
-                    image_name,
-                    image_url,
-                    barcode,
-                    type_name,
-                    type_id,
-                    item_purchase_price,
-                    item_sell_price,
-                    note,
-                    id,
-                    ...others,
-                  },
-                });
-                setUpdate(true);
-              }}
-              variant="soft"
-              color="success">
-              <PenTool className="w-7 h-7 p-1 cursor-pointer" />
-            </Chip>
-          </Tooltip>
-          <Tooltip
-            placement="top"
-            title="زانیاری"
-            color="primary"
-            variant="soft">
-            <Chip
-              onClick={() => setDetail(true)}
-              variant="soft"
-              color="primary">
-              <Info className="w-7 h-7 p-1 cursor-pointer" />
-            </Chip>
-          </Tooltip>
+        <Td className="!p-3">
+          <p className="text-right font-light font-bukra text-sm">
+            {updated_by}
+          </p>
         </Td>
+
+        {report_page && (
+          <>
+            {created_at && (
+              <Td className="!p-3">
+                <p className="text-right font-light font-bukra text-sm">
+                  {formatDateToDDMMYY(created_at.toString())}
+                </p>
+              </Td>
+            )}
+          </>
+        )}
+        {!report_page && (
+          <Td className="!p-3 cup flex flex-row gap-2">
+            <Tooltip
+              placement="top"
+              title="سڕینەوە"
+              color="danger"
+              variant="soft">
+              <Chip
+                onClick={() => setIsDelete(true)}
+                variant="soft"
+                color="danger">
+                <Trash2 className="w-7 h-7 p-1 cursor-pointer" />
+              </Chip>
+            </Tooltip>
+            <Tooltip
+              placement="top"
+              title="چاککردن"
+              color="success"
+              variant="soft">
+              <Chip
+                onClick={() => {
+                  dispatch({
+                    type: CONTEXT_TYPEs.SET_OLD_DATA,
+                    payload: {
+                      name,
+                      quantity,
+                      actual_quantity,
+                      image_name,
+                      image_url,
+                      barcode,
+                      type_name,
+                      type_id,
+
+                      item_purchase_price,
+                      item_sell_price,
+                      note,
+                      id,
+                      ...others,
+                    },
+                  });
+                  setUpdate(true);
+                }}
+                variant="soft"
+                color="success">
+                <PenTool className="w-7 h-7 p-1 cursor-pointer" />
+              </Chip>
+            </Tooltip>
+            <Tooltip
+              placement="top"
+              title="زانیاری"
+              color="primary"
+              variant="soft">
+              <Chip
+                onClick={() => setDetail(true)}
+                variant="soft"
+                color="primary">
+                <Info className="w-7 h-7 p-1 cursor-pointer" />
+              </Chip>
+            </Tooltip>
+          </Td>
+        )}
       </Tr>
       {detail && (
         <Dialog
@@ -185,6 +257,8 @@ const ItemCard = ({
           <ItemDetailCard
             id={id}
             name={name}
+            created_by={created_by}
+            updated_by={updated_by}
             quantity={quantity}
             actual_quantity={actual_quantity}
             barcode={barcode}

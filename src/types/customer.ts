@@ -5,9 +5,11 @@ export type Customer = {
   first_name: string;
   last_name: string;
   phone: string;
-  created_at: Date | null;
-  updated_at: Date | null;
-  deleted: boolean;
+  updated_by: string;
+  created_by: string;
+  created_at?: Date | null;
+  updated_at?: Date | null;
+  deleted?: boolean;
 };
 
 export type CustomerCardProps = Customer & { index?: number };

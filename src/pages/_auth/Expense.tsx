@@ -1,5 +1,5 @@
 import Container from "@/components/ui/Container";
-import { lazy, useMemo, useState } from "react";
+import { lazy, useMemo, useRef, useState } from "react";
 const Dialog = lazy(() => import("@/components/shared/Dialog"));
 const ExpenseCard = lazy(() => import("@/components/cards/ExpenseCard"));
 
@@ -32,7 +32,6 @@ import RestoreChip from "@/components/shared/RestoreChip";
 import AddButton from "@/components/shared/AddButton";
 import RestoreModal from "@/components/ui/RestoreModal";
 import Filter from "@/components/shared/Filter";
-import { Role } from "@/types/role";
 import { useGetExpenseTypesSelection } from "@/lib/react-query/query/expense-type.query";
 import { ExpenseType } from "@/types/expense-type";
 import DatePicker from "@/components/shared/DatePicker";
@@ -42,6 +41,7 @@ const Expenses = () => {
   const { mutateAsync, isPending } = useDeleteExpense();
   const { mutateAsync: restore, isPending: restoreLoading } =
     useRestoreExpense();
+  const tableRef = useRef<HTMLDivElement>(null);
 
   const [searchParam, setSearchParam] = useSearchParams();
   const [isDelete, setIsDelete] = useState<boolean>(false);
@@ -102,14 +102,7 @@ const Expenses = () => {
                   searchParam.get(ENUMs.TO_PARAM as string) || ""
                 )
           }>
-          {({
-            isFetchingNextPage,
-            hasNextPage,
-            isLoading,
-            ref,
-            data,
-            refetch,
-          }) => {
+          {({ isFetchingNextPage, hasNextPage, ref, data }) => {
             const allData = useMemo(
               () =>
                 data?.pages && data?.pages?.length > 0
@@ -119,7 +112,9 @@ const Expenses = () => {
             );
 
             return (
-              <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
+              <div
+                ref={tableRef}
+                className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
                 <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
                   <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
                     <Tr>
@@ -127,11 +122,15 @@ const Expenses = () => {
                         <InputGroup className="checkbox-input">
                           <Input
                             onChange={() => {
+                              tableRef.current?.scrollTo({
+                                top: 0,
+                                behavior: "smooth",
+                              });
                               if (checked.length == 0) {
                                 dispatch({
                                   type: CONTEXT_TYPEs.CHECK,
                                   payload: allData
-                                    .slice(0, 30)
+                                    .slice(0, ENUMs.CHECK_LIMIT as number)
                                     .map(
                                       (val: Expense, _index: number) => val.id
                                     ),
@@ -160,6 +159,12 @@ const Expenses = () => {
                       </Th>{" "}
                       <Th className="text-right text-sm !p-4">
                         <p className="pr-3 table-head-border">بەروار</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">داغڵکار</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">چاککار</p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
                         <p className="pr-3 table-head-border">کرادرەکان</p>

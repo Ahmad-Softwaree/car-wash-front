@@ -157,7 +157,21 @@ export type URLS =
   | "LOGIN"
   //BACKUP
   | "GET_BACKUPS"
-  | "BACKUP";
+  | "GET_TABLE_NAMES"
+  | "BACKUP"
+  //DASHBOARD
+  | "GET_DASHBOARD_DATA"
+  //REPORT
+  | "GET_SELL_REPORTS"
+  | "GET_SELL_REPORTS_INFORMATION"
+  | "GET_SELL_REPORTS_SEARCH"
+  | "GET_SELL_REPORTS_INFORMATION_SEARCH"
+  | "SELL_PRINT_DATA"
+  | "GET_ITEM_REPORTS"
+  | "GET_ITEM_REPORTS_INFORMATION"
+  | "GET_ITEM_REPORTS_SEARCH"
+  | "GET_ITEM_REPORTS_INFORMATION_SEARCH"
+  | "ITEM_PRINT_DATA";
 
 export const URLs: { [key in URLS]: string } = {
   //USER
@@ -336,5 +350,26 @@ export const URLs: { [key in URLS]: string } = {
   //BACKUPS
 
   GET_BACKUPS: `${API}/backup/all_table`,
+  GET_TABLE_NAMES: `${API}/backup/table_names`,
+
   BACKUP: `${API}/backup`,
+
+  //DASHBOARD
+  GET_DASHBOARD_DATA: `${API}/dashboard`,
+
+  //REPORT
+
+  GET_SELL_REPORTS: `${API}/report/sell`,
+  GET_SELL_REPORTS_INFORMATION: `${API}/report/sell/information`,
+
+  GET_SELL_REPORTS_SEARCH: `${API}/report/sell_search`,
+  GET_SELL_REPORTS_INFORMATION_SEARCH: `${API}/report/sell_search/information`,
+  SELL_PRINT_DATA: `${API}/report/sell/print`,
+
+  GET_ITEM_REPORTS: `${API}/report/item`,
+  GET_ITEM_REPORTS_INFORMATION: `${API}/report/item/information`,
+
+  GET_ITEM_REPORTS_SEARCH: `${API}/report/item_search`,
+  GET_ITEM_REPORTS_INFORMATION_SEARCH: `${API}/report/item_search/information`,
+  ITEM_PRINT_DATA: `${API}/report/item/print`,
 };

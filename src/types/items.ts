@@ -4,6 +4,7 @@ import {
   ImageTypeInForm,
   MaybeImageTypeInDatabase,
 } from "./global";
+import { Sell, SellItem } from "./sell";
 
 export type ItemCard = {
   id: Id;
@@ -12,6 +13,8 @@ export type ItemCard = {
   name: string;
   quantity: number;
   actual_quantity: number;
+  created_by: string;
+  updated_by: string;
 };
 export type ItemInformation = {
   barcode: string;
@@ -21,9 +24,6 @@ export type ItemInformation = {
   item_sell_price: number;
   note: string;
 };
-
-export type ItemLess = ItemCard & {};
-export type LessItemCardProps = ItemCard & {};
 
 export type PsulaItemCardProps = ItemCard &
   ItemInformation & {
@@ -35,7 +35,6 @@ export type AddItemCardProps = ItemCard & {
   onClick: (id: Id) => void;
 };
 export type ItemCardProps = ItemCard & ItemInformation & { index?: number };
-export type MostItemCardProps = Item;
 export type AddItemInputs = {
   name: string;
   barcode: string;
@@ -63,6 +62,12 @@ export type UpdateItemF = AddItemInputs &
 
 export type GetItemsQ = Item[];
 
+export type ItemReport = Item &
+  SellItem &
+  Sell & { index?: number; total_quantity?: number | string };
+
+export type GetItemsReportQ = ItemReport[];
+
 export type AddItemQ = Item;
 export type UpdateItemQ = Item;
 
@@ -72,4 +77,3 @@ export type DeleteItemQ = Id[];
 export type GetItemByIdQ = Item | null | undefined;
 
 export type GetItemsInAddQ = ItemInformation[];
-export type GetItemsLessQ = ItemLess[];

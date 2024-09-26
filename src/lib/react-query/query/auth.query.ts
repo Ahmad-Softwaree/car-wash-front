@@ -45,7 +45,7 @@ export const useLogin = () => {
         payload: data,
       });
       queryClient.setQueryData([QUERY_KEYs.AUTH], data.user);
-      return navigate(`${ENUMs.GENERAL_SECTION}/${ENUMs.DASHBOARD_PART}`);
+      return navigate(`/${ENUMs.GENERAL_SECTION}/${ENUMs.DASHBOARD_PART}`);
     },
     onError: (error: NestError) => {
       return generateNestErrors(error, toast);

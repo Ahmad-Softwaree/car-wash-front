@@ -3,27 +3,6 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "speda";
-  src: url("../public/fonts/Speda.ttf") format("truetype");
-  font-display: swap;
-}
-@font-face {
-  font-family: "speda_bold";
-  src: url("../public/fonts/Speda-Bold.ttf") format("truetype");
-  font-display: swap;
-}
-@font-face {
-  font-family: "rudawreguler";
-  src: url("../public/fonts/rudawregular2.ttf") format("truetype");
-  font-display: swap;
-}
-@font-face {
-  font-family: "rudawbold";
-  src: url("../public/fonts/rudawbold.ttf") format("truetype");
-  font-display: swap;
-}
-
-@font-face {
   font-family: "bukra";
   src: url("../public/fonts/UNIQAIDAR_BUKRA 002.ttf") format("truetype");
   font-display: swap;
@@ -56,18 +35,41 @@ aside::-webkit-scrollbar {
   display: none;
 }
 
+* {
+  scroll-behavior: smooth !important;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.inset-0 {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.bg-black {
+  background-color: rgba(0, 0, 0, 0.7); /* Adjust the alpha for darkness */
+}
+
+.opacity-50 {
+  opacity: 0.5; /* Adjust as needed */
+}
+
 @layer components {
   body {
     @apply dark-light;
   }
   section:not(.auth).home {
-    @apply mb-20 p-5 md:p-10 lg:p-10 xl:!pl-20;
+    @apply mb-20 p-5 md:p-10 lg:p-10 xl:!pl-20 !pt-0;
   }
   section {
     @apply overflow-hidden min-h-screen dark-light;
   }
   section.out {
-    @apply mb-20 p-5 md:p-7 xl:!px-20;
+    @apply mb-20 p-5 md:p-7 xl:!px-20 !pt-0;
   }
   header {
     @apply p-5 md:p-7  xl:!px-20;
@@ -96,7 +98,7 @@ aside::-webkit-scrollbar {
 
   th,
   td {
-    @apply min-w-[150px];
+    @apply min-w-fit;
   }
 
   .dark-light {

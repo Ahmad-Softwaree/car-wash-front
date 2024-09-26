@@ -86,7 +86,7 @@ const Calendar: React.FC = () => {
                 }
               }}
               key={day}
-              className={`cursor-pointer col-span-2 dark-light rounded-2xl h-[200px] flex items-center justify-center  bg-gray-100 text-sm transition-all duration-300 default-border border-4 ${
+              className={`cursor-pointer col-span-2 dark-light rounded-2xl h-[200px]  flex items-center justify-center  bg-gray-100 text-sm transition-all duration-300 default-border border-4 ${
                 include
                   ? "!border-yellow-500 hover:scale-125"
                   : "cursor-not-allowed"
@@ -103,48 +103,36 @@ const Calendar: React.FC = () => {
                   <p className="text-center text-xl">
                     {day} / {currentMonth} / {currentYear}
                   </p>{" "}
-                  {customers.map((val: PanelReservation) => {
-                    const date = new Date(val.date_time);
-                    const hours = date
-                      .getUTCHours()
-                      .toString()
-                      .padStart(2, "0");
-                    const minutes = date
-                      .getUTCMinutes()
-                      .toString()
-                      .padStart(2, "0");
-                    const timeString = `${hours}:${minutes}`;
-                    return (
-                      <div
-                        className="w-full flex flex-col justify-center items-center gap-2"
-                        key={val.id}>
-                        <Chip variant="soft" color="primary">
-                          <div className="flex flex-row justify-center items-center gap-1">
-                            <p className="text-sm">{val.total_reservations}</p>
-                            <p className="text-sm">ژمارەی نۆرەکان</p>
-                          </div>{" "}
-                        </Chip>
+                  <div
+                    className="w-full flex flex-col justify-center items-center gap-2"
+                    key={customers[0].id}>
+                    <Chip variant="soft" color="primary">
+                      <div className="flex flex-row justify-center items-center gap-1">
+                        <p className="text-sm">
+                          {customers[0].total_reservations}
+                        </p>
+                        <p className="text-sm">ژمارەی نۆرەکان</p>
+                      </div>{" "}
+                    </Chip>
 
-                        <Chip variant="soft" color="danger">
-                          <div className="flex flex-row justify-center items-center gap-1">
-                            <p className="text-sm">
-                              {val.not_completed_reservations}
-                            </p>
-                            <p className="text-sm">نۆرە تەواو نەبووەکان</p>
-                          </div>
-                        </Chip>
-
-                        <Chip variant="soft" color="success">
-                          <div className="flex flex-row justify-center items-center gap-1">
-                            <p className="text-sm">
-                              {val.completed_reservations}
-                            </p>
-                            <p className="text-sm">نۆرە تەواو بووەکان</p>
-                          </div>
-                        </Chip>
+                    <Chip variant="soft" color="danger">
+                      <div className="flex flex-row justify-center items-center gap-1">
+                        <p className="text-sm">
+                          {customers[0].not_completed_reservations}
+                        </p>
+                        <p className="text-sm">نۆرە تەواو نەبووەکان</p>
                       </div>
-                    );
-                  })}
+                    </Chip>
+
+                    <Chip variant="soft" color="success">
+                      <div className="flex flex-row justify-center items-center gap-1">
+                        <p className="text-sm">
+                          {customers[0].completed_reservations}
+                        </p>
+                        <p className="text-sm">نۆرە تەواو بووەکان</p>
+                      </div>
+                    </Chip>
+                  </div>
                 </div>
               )}
             </article>
@@ -179,8 +167,8 @@ const Calendar: React.FC = () => {
 
   // Handle previous month click
   const handlePreviousMonth = () => {
-    if (currentMonth === 0) {
-      setCurrentMonth(11);
+    if (currentMonth === 1) {
+      setCurrentMonth(12);
       setCurrentYear((prevYear) => prevYear - 1);
     } else {
       setCurrentMonth((prevMonth) => prevMonth - 1);
@@ -189,8 +177,8 @@ const Calendar: React.FC = () => {
 
   // Handle next month click
   const handleNextMonth = () => {
-    if (currentMonth === 11) {
-      setCurrentMonth(0);
+    if (currentMonth === 12) {
+      setCurrentMonth(1);
       setCurrentYear((prevYear) => prevYear + 1);
     } else {
       setCurrentMonth((prevMonth) => prevMonth + 1);
@@ -208,7 +196,7 @@ const Calendar: React.FC = () => {
           />
 
           <p className="text-2xl">
-            {monthNames[currentMonth]} {currentYear}
+            {monthNames[currentMonth - 1]} {currentYear}
           </p>
           <ChevronLeft
             onClick={handlePreviousMonth}
@@ -222,7 +210,7 @@ const Calendar: React.FC = () => {
             <TailSpin />
           </Loading>
         ) : (
-          <div className="w-full grid grid-cols-2 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-12 rounded-md gap-2">
+          <div className="w-full grid grid-cols-2 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 2xl:grid-cols-14 3xl:grid-cols-16 rounded-md gap-2">
             {daysGrid}
           </div>
         )}

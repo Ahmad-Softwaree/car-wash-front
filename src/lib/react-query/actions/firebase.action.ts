@@ -1,6 +1,8 @@
 import {
   deleteObject,
   getDownloadURL,
+  getMetadata,
+  listAll,
   ref,
   StorageReference,
   uploadBytes,
@@ -14,6 +16,28 @@ import {
   InsertImageReturnType,
 } from "@/types/firebase";
 import { firebaseStorage } from "@/lib/config/firebase.config";
+import { generateNestErrors } from "@/lib/functions";
+
+export const getFirebaseSize = async (toast: ToastType): Promise<number> => {
+  try {
+    const directoryRef = ref(
+      firebaseStorage,
+      import.meta.env.VITE_FIREBASE_STORAGE_BUCKET
+    );
+    let totalStorageUsed = 0;
+
+    let files = await listAll(directoryRef);
+
+    files.items.forEach((itemRef) => {
+      getMetadata(itemRef).then((metadata) => {
+        totalStorageUsed += metadata.size;
+      });
+    });
+    return totalStorageUsed;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
 
 export const deleteImage = async (
   imageRef: StorageReference,

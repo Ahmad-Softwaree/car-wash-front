@@ -24,7 +24,10 @@ export type ENUM_TYPES =
   | "USERS_PART"
   | "CUSTOMER_PART"
   | "EXPENSE_PART"
-  | "REPORT_PART"
+  | "SELL_REPORT_PART"
+  | "KOGA_REPORT_PART"
+  | "PROFIT_REPORT_PART"
+  | "CASE_REPORT_PART"
   | "EXPENSE_TYPE_PART"
   | "ROLE_PART"
   | "COLOR_PART"
@@ -53,9 +56,9 @@ export const ENUMs: { [key in ENUM_TYPES]: key | string | number } = {
   API: import.meta.env.VITE_API_URL,
   COOKIE_NAME: import.meta.env.VITE_COOKIE_NAME,
   PAGINATION: 2,
-  LIMIT: 10,
-  DEBOUNCE: 1000,
-  CHECK_LIMIT: 30,
+  LIMIT: 50,
+  DEBOUNCE: 100,
+  CHECK_LIMIT: 50,
 
   //PARAM
   SEARCH_PARAM: `search`,
@@ -74,7 +77,11 @@ export const ENUMs: { [key in ENUM_TYPES]: key | string | number } = {
   USERS_PART: "بەکارهێنەران",
   CUSTOMER_PART: "کڕیارەکان",
   EXPENSE_PART: "خەرجی",
-  REPORT_PART: "ڕاپۆرتەکان",
+  SELL_REPORT_PART: "ڕاپۆرتی فرۆشتن",
+  CASE_REPORT_PART: "ڕاپۆرتی قاسە",
+  PROFIT_REPORT_PART: "ڕاپۆرتی قازانج",
+  KOGA_REPORT_PART: "ڕاپۆرتی کۆگا",
+
   EXPENSE_TYPE_PART: "جۆرەکانی خەرجی",
   ROLE_PART: "ڕۆڵەکان",
   COLOR_PART: "ڕەنگەکان",
@@ -85,7 +92,7 @@ export const ENUMs: { [key in ENUM_TYPES]: key | string | number } = {
   DASHBOARD_PART: "داشبۆرد",
   RESERVATION_PART: "نۆرەکان",
   KOGA_PART: "کۆگا",
-  CREATE_PSULA_PART: "دروستکردنی پسولە",
+  CREATE_PSULA_PART: "پسولەی فرۆشتن",
   SELL_PART: "پسولەکان",
   NORMAL_BACKUP_PART: "باکئەپی ئاسایی",
   SERVER_BACKUP_PART: "باکئەپی سێرڤەر",

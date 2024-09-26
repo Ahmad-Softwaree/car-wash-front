@@ -4,8 +4,8 @@ export default function PDFViewer({ data }: { data: Blob | null }) {
   useEffect(() => {
     if (data && data instanceof Blob) {
       const fileURL = URL.createObjectURL(data); // Create URL from Blob
+
       const iframe = document.querySelector("iframe");
-      console.log(fileURL);
       if (iframe) iframe.src = fileURL;
     }
   }, [data]);
@@ -16,7 +16,7 @@ export default function PDFViewer({ data }: { data: Blob | null }) {
       name="psula"
       src=""
       id="myFrame"
-      className="w-full h-[450px]"
+      className="w-full h-[450px] mt-5"
     />
   );
 }

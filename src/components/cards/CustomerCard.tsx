@@ -25,6 +25,8 @@ const CustomerCard = ({
   last_name,
   phone,
   id,
+  updated_by,
+  created_by,
   index = -1,
   ...others
 }: CustomerCardProps) => {
@@ -97,7 +99,16 @@ const CustomerCard = ({
         <Td className="!p-3">
           <p className="text-right font-light font-bukra text-sm">{phone}</p>
         </Td>
-
+        <Td className="!p-3">
+          <p className="text-right font-light font-bukra text-sm">
+            {created_by}
+          </p>
+        </Td>
+        <Td className="!p-3">
+          <p className="text-right font-light font-bukra text-sm">
+            {updated_by}
+          </p>
+        </Td>
         <Td className="!p-3 cup flex flex-row gap-2">
           {!deleted_page && (
             <>
@@ -170,13 +181,15 @@ const CustomerCard = ({
       {detail && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={500}
+          maxWidth={1000}
           maxHeight={`90%`}
           isOpen={detail}
           onClose={() => setDetail(false)}>
           <CustomClose onClick={() => setDetail(false)} />
           <CustomerDetailCard
             id={id}
+            updated_by={updated_by}
+            created_by={created_by}
             first_name={first_name}
             last_name={last_name}
             phone={phone}

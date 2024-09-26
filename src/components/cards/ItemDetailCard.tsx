@@ -1,7 +1,7 @@
 import { FormFinalOperation } from "@/types/global";
 import Chip from "@mui/joy/Chip";
 import Divider from "@mui/joy/Divider";
-import { BadgePercent, Barcode, FolderPen, Hash } from "lucide-react";
+import { BadgePercent, Barcode, FolderPen, Hash, User } from "lucide-react";
 import InputGroup from "../ui/InputGroup";
 import InputAddon from "../ui/InputAddon";
 import Label from "../ui/Label";
@@ -19,6 +19,8 @@ const ItemDetailCard = ({
   barcode,
   type_name,
   type_id,
+  created_by,
+  updated_by,
   item_purchase_price,
   item_sell_price,
   note,
@@ -189,6 +191,47 @@ const ItemDetailCard = ({
             <Input
               value={actual_quantity}
               name="actual_quantity"
+              disabled
+              type="text"
+              dir="ltr"
+              className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:!font-bukra text-xs md:!text-sm placeholder:!text-sm"
+            />
+          </InputGroup>
+        </div>
+      </div>
+      <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap md:flex-nowrap px-3">
+        <div className="w-full md:w-1/2 flex flex-col gap-2">
+          <Label className="w-full text-sm  flex flex-row gap-2">
+            <p>داغڵکراوە لەلایەن</p>
+          </Label>
+          <InputGroup className="w-full text-input 0">
+            <InputAddon className="w-[20%] md:w-[10%]">
+              <User />
+            </InputAddon>
+
+            <Input
+              value={created_by}
+              name="created_by"
+              disabled
+              type="text"
+              dir="ltr"
+              className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:!font-bukra text-xs md:!text-sm placeholder:!text-sm"
+            />
+          </InputGroup>
+        </div>
+
+        <div className="w-full md:w-1/2 flex flex-col gap-2">
+          <Label className="w-full text-sm  flex flex-row gap-2">
+            <p>چاککراوە لەلایەن</p>
+          </Label>
+          <InputGroup className="w-full text-input 0">
+            <InputAddon className="w-[20%] md:w-[10%]">
+              <User />
+            </InputAddon>
+
+            <Input
+              value={updated_by}
+              name="updated_by"
               disabled
               type="text"
               dir="ltr"

@@ -14,11 +14,13 @@ export type Reservation = {
   car_type_id: number;
   car_type_name: string;
   note: string | null;
+  created_by: string;
+  updated_by: string;
   price: number;
   date_time: Date | string;
-  created_at: Date | null;
-  updated_at: Date | null;
-  deleted: boolean;
+  created_at?: Date | null;
+  updated_at?: Date | null;
+  deleted?: boolean;
   completed: boolean;
 };
 

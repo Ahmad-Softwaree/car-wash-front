@@ -1,5 +1,5 @@
 import Container from "@/components/ui/Container";
-import { lazy, useMemo, useState } from "react";
+import { lazy, useMemo, useRef, useState } from "react";
 const Dialog = lazy(() => import("@/components/shared/Dialog"));
 const SellCard = lazy(() => import("@/components/cards/SellCard"));
 
@@ -9,7 +9,6 @@ import {
   useGetSelfDeletedSellItems,
   useGetSells,
   useRestoreSelfDeletedSellItem,
-  useRestoreSell,
   useSearchDeletedSells,
   useSearchSelfDeletedSellItems,
   useSearchSells,
@@ -44,6 +43,7 @@ const Sells = () => {
 
   const { deleted_page } = useCheckDeletedPage();
   const { mutateAsync, isPending } = useDeleteSell();
+  const tableRef = useRef<HTMLDivElement>(null);
 
   const [searchParam, setSearchParam] = useSearchParams();
   const [isDelete, setIsDelete] = useState<boolean>(false);
@@ -52,7 +52,7 @@ const Sells = () => {
     useRestoreSelfDeletedSellItem();
   const {
     dispatch,
-    state: { checked, check_type },
+    state: { checked, check_type, theme },
   } = useGlobalContext();
   return (
     <>
@@ -63,6 +63,8 @@ const Sells = () => {
           <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
             <Search />
           </div>
+          {index == 0 && <DatePicker />}
+
           <div className=" flex flex-row justify-end items-center gap-3">
             {checked?.length > 0 && (
               <div className="flex flex-row justify-center items-center gap-2 dark-light">
@@ -78,7 +80,6 @@ const Sells = () => {
             )}
           </div>
         </div>
-        {index == 0 && <DatePicker />}
 
         {deleted_page && (
           <Tabs
@@ -99,13 +100,9 @@ const Sells = () => {
                   transition: "color 300ms ease", // Adding transition for color change
                   fontFamily: "bukra",
                   borderRadius: "10px",
-                  color:
-                    localStorage.getItem("theme") == "dark" ? "white" : "black",
+                  color: theme == "dark" ? "white" : "black",
                   "&.Mui-selected": {
-                    color:
-                      localStorage.getItem("theme") === "dark"
-                        ? "black"
-                        : "black", // Active text color
+                    color: theme === "dark" ? "black" : "black", // Active text color
                   },
                 }}>
                 وەصڵە سڕاوەکان
@@ -117,13 +114,9 @@ const Sells = () => {
                   transition: "color 300ms ease", // Adding transition for color change
                   fontFamily: "bukra",
                   borderRadius: "10px",
-                  color:
-                    localStorage.getItem("theme") == "dark" ? "white" : "black",
+                  color: theme == "dark" ? "white" : "black",
                   "&.Mui-selected": {
-                    color:
-                      localStorage.getItem("theme") === "dark"
-                        ? "black"
-                        : "black", // Active text color
+                    color: theme === "dark" ? "black" : "black", // Active text color
                   },
                 }}>
                 موادە سڕآوەکان کە وەصڵیان هەیە
@@ -179,7 +172,9 @@ const Sells = () => {
               );
 
               return (
-                <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
+                <div
+                  ref={tableRef}
+                  className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
                   <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
                     <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
                       <Tr>
@@ -188,11 +183,15 @@ const Sells = () => {
                             <InputGroup className="checkbox-input">
                               <Input
                                 onChange={() => {
+                                  tableRef.current?.scrollTo({
+                                    top: 0,
+                                    behavior: "smooth",
+                                  });
                                   if (checked.length == 0) {
                                     dispatch({
                                       type: CONTEXT_TYPEs.CHECK,
                                       payload: allData
-                                        .slice(0, 30)
+                                        .slice(0, ENUMs.CHECK_LIMIT as number)
                                         .map(
                                           (val: Sell, _index: number) => val.id
                                         ),
@@ -223,6 +222,12 @@ const Sells = () => {
                         <Th className="text-right text-sm !p-4">
                           <p className="pr-3 table-head-border">داشکاندن</p>
                         </Th>{" "}
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">داغڵکار</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">چاککار</p>
+                        </Th>
                         <Th className="text-right text-sm !p-4">
                           <p className="pr-3 table-head-border">کرادرەکان</p>
                         </Th>
@@ -296,7 +301,7 @@ const Sells = () => {
                                   dispatch({
                                     type: CONTEXT_TYPEs.CHECK,
                                     payload: allData
-                                      .slice(0, 30)
+                                      .slice(0, ENUMs.CHECK_LIMIT as number)
                                       .map(
                                         (val: SellItem, _index: number) =>
                                           val.item_id

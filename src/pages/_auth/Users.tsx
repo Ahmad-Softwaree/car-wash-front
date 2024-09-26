@@ -1,5 +1,5 @@
 import Container from "@/components/ui/Container";
-import { lazy, useMemo, useState } from "react";
+import { lazy, useMemo, useRef, useState } from "react";
 const Dialog = lazy(() => import("@/components/shared/Dialog"));
 const UserCard = lazy(() => import("@/components/cards/UserCard"));
 
@@ -43,6 +43,7 @@ const Users = () => {
   const { deleted_page } = useCheckDeletedPage();
   const { mutateAsync, isPending } = useDeleteUser();
   const { mutateAsync: restore, isPending: restoreLoading } = useRestoreUser();
+  const tableRef = useRef<HTMLDivElement>(null);
 
   const [searchParam, setSearchParam] = useSearchParams();
   const [isDelete, setIsDelete] = useState<boolean>(false);
@@ -113,14 +114,11 @@ const Users = () => {
           {({
             isFetchingNextPage,
             hasNextPage,
-            isLoading,
             ref,
             data,
-            refetch,
+
             isSearched,
             searchData,
-            searchRefetch,
-            fetchNextPage,
           }) => {
             const allData = useMemo(
               () =>
@@ -135,7 +133,9 @@ const Users = () => {
             );
 
             return (
-              <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
+              <div
+                ref={tableRef}
+                className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
                 <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
                   <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
                     <Tr>
@@ -143,11 +143,15 @@ const Users = () => {
                         <InputGroup className="checkbox-input">
                           <Input
                             onChange={() => {
+                              tableRef.current?.scrollTo({
+                                top: 0,
+                                behavior: "smooth",
+                              });
                               if (checked.length == 0) {
                                 dispatch({
                                   type: CONTEXT_TYPEs.CHECK,
                                   payload: allData
-                                    .slice(0, 30)
+                                    .slice(0, ENUMs.CHECK_LIMIT as number)
                                     .map((val: User, _index: number) => val.id),
                                 });
                               } else {

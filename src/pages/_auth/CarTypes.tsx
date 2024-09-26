@@ -137,7 +137,7 @@ const CarTypes = () => {
                                 dispatch({
                                   type: CONTEXT_TYPEs.CHECK,
                                   payload: allData
-                                    .slice(0, 30)
+                                    .slice(0, ENUMs.CHECK_LIMIT as number)
                                     .map(
                                       (val: CarType, _index: number) => val.id
                                     ),
