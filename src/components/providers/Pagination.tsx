@@ -19,7 +19,14 @@ const Pagination = <T extends DataTypes>({
   });
   const [searchParam] = useSearchParams();
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string);
+  let item_type = searchParam.get(ENUMs.ITEM_TYPE_PARAM as string);
+  let expense_type = searchParam.get(ENUMs.EXPENSE_TYPE_PARAM as string);
+  let table_name = searchParam.get(ENUMs.TABLE_NAME_PARAM as string);
+  let user_param = searchParam.get(ENUMs.USER_PARAM as string);
+
   let filter = searchParam.get(ENUMs.FILTER_PARAM as string);
+  let role = searchParam.get(ENUMs.ROLE_FILTER_PARAM as string);
+
   let from = searchParam.get(ENUMs.FROM_PARAM as string);
   let to = searchParam.get(ENUMs.TO_PARAM as string);
 
@@ -35,14 +42,19 @@ const Pagination = <T extends DataTypes>({
     if (inView && hasNextPage) fetchNextPage();
   }, [inView]);
 
-  const debounceValue = useDebounce(search, ENUMs.DEBOUNCE as number);
-  const debounceFilter = useDebounce(filter, ENUMs.DEBOUNCE as number);
-  const debounceFrom = useDebounce(from, ENUMs.DEBOUNCE as number);
-  const debounceTo = useDebounce(to, ENUMs.DEBOUNCE as number);
-
   useEffect(() => {
     refetch();
-  }, [debounceFilter, debounceFrom, debounceTo, refetch]);
+  }, [
+    filter,
+    item_type,
+    expense_type,
+    table_name,
+    user_param,
+    from,
+    role,
+    to,
+    refetch,
+  ]);
   const {
     data: searchData,
     isLoading: searchLoading,
@@ -51,10 +63,10 @@ const Pagination = <T extends DataTypes>({
     ? searchQueryFn()
     : { data: null, isLoading: false, refetch: () => {} };
   useEffect(() => {
-    if (debounceValue && debounceValue !== "") searchRefetch();
-  }, [debounceValue, searchRefetch]);
+    if (search && search !== "") searchRefetch();
+  }, [search, searchRefetch]);
 
-  const isSearched = Boolean(debounceValue);
+  const isSearched = Boolean(search);
 
   return children({
     isFetchingNextPage,
@@ -67,6 +79,7 @@ const Pagination = <T extends DataTypes>({
     searchData,
     searchRefetch,
     fetchNextPage,
+    searchLoading,
   });
 };
 

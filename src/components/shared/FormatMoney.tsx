@@ -5,7 +5,6 @@ export function formatMoney(value: any): string {
   if (isNaN(value) || !value) {
     return "0";
   }
-  console.log(value);
   return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 const FormatMoney = ({ children, ...props }: FormatMoneyProps) => {

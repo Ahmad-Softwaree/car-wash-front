@@ -1,5 +1,5 @@
 import Container from "@/components/ui/Container";
-import { lazy, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import Pagination from "@/components/providers/Pagination";
 import TBody from "@/components/ui/TBody";
@@ -8,23 +8,27 @@ import { Table, Td, Th, THead, Tr } from "@/components/ui";
 import { useSearchParams } from "react-router-dom";
 import { ENUMs } from "@/lib/enum";
 
-import DatePicker from "@/components/shared/DatePicker";
 import TFoot from "@/components/ui/TFoot";
 import {
   useBackupEntity,
   useGetBackups,
-  useGetTableNames,
 } from "@/lib/react-query/query/backup.query";
 import BackupCard from "@/components/cards/BackupCard";
 import { Backup } from "@/types/backup";
 import { downloadFile } from "@/lib/functions";
-import Filter from "@/components/shared/Filter";
+import { Badge, Button } from "@mui/joy";
+import { Filter } from "lucide-react";
+import Dialog from "@/components/shared/Dialog";
+import CustomClose from "@/components/shared/CustomClose";
+import FilterModal from "@/components/shared/FilterModal";
+import Loading from "@/components/ui/Loading";
+import { TailSpin } from "react-loader-spinner";
 
 const Backups = () => {
   const [searchParam, setSearchParam] = useSearchParams();
   const [entityName, setEntityName] = useState<string>("");
   const { data, isFetching, refetch } = useBackupEntity(entityName || "");
-  const { data: tables, isLoading } = useGetTableNames();
+  const [filter, setFilter] = useState<boolean>(false);
 
   useEffect(() => {
     if (data && entityName != "") {
@@ -43,18 +47,42 @@ const Backups = () => {
       <Container
         as={`div`}
         className="w-full gap-10 flex flex-col justify-start items-start">
-        <div className="w-full gap-5 flex flex-row justify-between ">
-          <DatePicker />
-          {tables && tables.length > 0 && (
+        <div className="w-full gap-5 flex flex-row justify-start ">
+          <Badge
+            invisible={
+              !searchParam.get(ENUMs.FROM_PARAM as string) &&
+              !searchParam.get(ENUMs.TO_PARAM as string) &&
+              !searchParam.get(ENUMs.TABLE_NAME_PARAM as string)
+            }
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}>
             <Filter
-              options={tables.map((val: string, _index: number) => {
-                return {
-                  value: val,
-                  label: val,
-                };
-              })}
+              onClick={() => setFilter(true)}
+              className="w-11 h-11 p-2 rounded-md dark-light hover:light-dark cursor-pointer default-border transition-all duration-200"
             />
-          )}
+          </Badge>
+          {(searchParam.get(ENUMs.FROM_PARAM as string) &&
+            searchParam.get(ENUMs.TO_PARAM as string)) ||
+          searchParam.get(ENUMs.TABLE_NAME_PARAM as string) ? (
+            <Button
+              onClick={() => {
+                setSearchParam((prev) => {
+                  const params = new URLSearchParams(prev);
+                  params.delete(ENUMs.FROM_PARAM as string);
+                  params.delete(ENUMs.TO_PARAM as string);
+                  params.delete(ENUMs.TABLE_NAME_PARAM as string);
+                  return params;
+                });
+              }}
+              className="!font-bukra !text-xs text-nowrap "
+              size="md"
+              variant="soft"
+              color="danger">
+              سڕینەوەی فلتەر
+            </Button>
+          ) : null}
         </div>
         <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap p-5 default-border dark-light rounded-xl">
           <button
@@ -188,12 +216,12 @@ const Backups = () => {
         <Pagination<Backup[]>
           queryFn={() =>
             useGetBackups(
-              searchParam.get(ENUMs.FILTER_PARAM as string) || "",
+              searchParam.get(ENUMs.TABLE_NAME_PARAM as string) || "",
               searchParam.get(ENUMs.FROM_PARAM as string) || "",
               searchParam.get(ENUMs.TO_PARAM as string) || ""
             )
           }>
-          {({ isFetchingNextPage, hasNextPage, ref, data }) => {
+          {({ isFetchingNextPage, hasNextPage, ref, data, isLoading }) => {
             const allData = useMemo(
               () =>
                 data?.pages && data?.pages?.length > 0
@@ -201,6 +229,13 @@ const Backups = () => {
                   : [],
               [data]
             );
+            if (isLoading) {
+              return (
+                <Loading>
+                  <TailSpin />
+                </Loading>
+              );
+            }
 
             return (
               <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
@@ -245,6 +280,17 @@ const Backups = () => {
           }}
         </Pagination>
       </Container>
+      {filter && (
+        <Dialog
+          className="!p-5 rounded-md"
+          maxWidth={400}
+          maxHeight={`90%`}
+          isOpen={filter}
+          onClose={() => setFilter(false)}>
+          <CustomClose onClick={() => setFilter(false)} />
+          <FilterModal onClose={() => setFilter(false)} type="backup" />
+        </Dialog>
+      )}
     </>
   );
 };

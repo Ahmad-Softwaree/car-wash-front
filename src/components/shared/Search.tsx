@@ -6,7 +6,7 @@ import InputAddon from "../ui/InputAddon";
 import { Search as SearchIcon } from "lucide-react";
 import CustomClose from "./CustomClose";
 
-const Search = () => {
+const Search = ({ placeholder }: { placeholder?: string }) => {
   const [searchParam, setSearchParam] = useSearchParams();
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string) || "";
 
@@ -17,11 +17,17 @@ const Search = () => {
           setSearchParam((prev) => {
             const params = new URLSearchParams(prev);
             params.set(ENUMs.SEARCH_PARAM as string, e.target.value);
+            params.delete(ENUMs.ITEM_TYPE_PARAM as string);
+            params.delete(ENUMs.FILTER_PARAM as string);
+
+            params.delete(ENUMs.TO_PARAM as string);
+            params.delete(ENUMs.FROM_PARAM as string);
+
             return params;
           })
         }
         value={search}
-        placeholder="گەڕان"
+        placeholder={placeholder ? placeholder : "گەڕان"}
         className="w-[85%] text-xs"
         type="input"
       />

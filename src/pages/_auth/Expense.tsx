@@ -31,10 +31,10 @@ import DeleteChip from "@/components/shared/DeleteChip";
 import RestoreChip from "@/components/shared/RestoreChip";
 import AddButton from "@/components/shared/AddButton";
 import RestoreModal from "@/components/ui/RestoreModal";
-import Filter from "@/components/shared/Filter";
-import { useGetExpenseTypesSelection } from "@/lib/react-query/query/expense-type.query";
-import { ExpenseType } from "@/types/expense-type";
-import DatePicker from "@/components/shared/DatePicker";
+
+import { Badge, Button } from "@mui/joy";
+import { Filter } from "lucide-react";
+import FilterModal from "@/components/shared/FilterModal";
 
 const Expenses = () => {
   const { deleted_page } = useCheckDeletedPage();
@@ -48,7 +48,7 @@ const Expenses = () => {
   const [isRestore, setIsRestore] = useState<boolean>(false);
 
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
-  const { data: expense_types } = useGetExpenseTypesSelection();
+  const [filter, setFilter] = useState<boolean>(false);
   const {
     dispatch,
     state: { checked, check_type },
@@ -60,15 +60,41 @@ const Expenses = () => {
         className="w-full gap-10 flex flex-col justify-start items-start">
         <div className="w-full gap-5 flex flex-row justify-between ">
           <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
-            {expense_types && (
+            <Badge
+              invisible={
+                !searchParam.get(ENUMs.FROM_PARAM as string) &&
+                !searchParam.get(ENUMs.TO_PARAM as string) &&
+                !searchParam.get(ENUMs.EXPENSE_TYPE_PARAM as string)
+              }
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}>
               <Filter
-                options={expense_types.map(
-                  (val: ExpenseType, _index: number) => {
-                    return { value: val.id, label: val.name };
-                  }
-                )}
+                onClick={() => setFilter(true)}
+                className="w-11 h-11 p-2 rounded-md dark-light hover:light-dark cursor-pointer default-border transition-all duration-200"
               />
-            )}
+            </Badge>
+            {(searchParam.get(ENUMs.FROM_PARAM as string) &&
+              searchParam.get(ENUMs.TO_PARAM as string)) ||
+            searchParam.get(ENUMs.EXPENSE_TYPE_PARAM as string) ? (
+              <Button
+                onClick={() => {
+                  setSearchParam((prev) => {
+                    const params = new URLSearchParams(prev);
+                    params.delete(ENUMs.FROM_PARAM as string);
+                    params.delete(ENUMs.TO_PARAM as string);
+                    params.delete(ENUMs.EXPENSE_TYPE_PARAM as string);
+                    return params;
+                  });
+                }}
+                className="!font-bukra !text-xs text-nowrap "
+                size="md"
+                variant="soft"
+                color="danger">
+                سڕینەوەی فلتەر
+              </Button>
+            ) : null}
           </div>
           <div className="w-full flex flex-row justify-end items-center gap-3">
             {checked?.length > 0 && (
@@ -86,18 +112,17 @@ const Expenses = () => {
             {!deleted_page && <AddButton onClick={() => setIsAddOpen(true)} />}
           </div>
         </div>
-        <DatePicker />
 
         <Pagination<Expense[]>
           queryFn={() =>
             deleted_page
               ? useGetDeletedExpenses(
-                  searchParam.get(ENUMs.FILTER_PARAM as string) || "",
+                  searchParam.get(ENUMs.EXPENSE_TYPE_PARAM as string) || "",
                   searchParam.get(ENUMs.FROM_PARAM as string) || "",
                   searchParam.get(ENUMs.TO_PARAM as string) || ""
                 )
               : useGetExpenses(
-                  searchParam.get(ENUMs.FILTER_PARAM as string) || "",
+                  searchParam.get(ENUMs.EXPENSE_TYPE_PARAM as string) || "",
                   searchParam.get(ENUMs.FROM_PARAM as string) || "",
                   searchParam.get(ENUMs.TO_PARAM as string) || ""
                 )
@@ -232,6 +257,17 @@ const Expenses = () => {
           onClose={() => setIsAddOpen(false)}>
           <CustomClose onClick={() => setIsAddOpen(false)} />
           <ExpenseForm state="insert" onClose={() => setIsAddOpen(false)} />
+        </Dialog>
+      )}
+      {filter && (
+        <Dialog
+          className="!p-5 rounded-md"
+          maxWidth={400}
+          maxHeight={`90%`}
+          isOpen={filter}
+          onClose={() => setFilter(false)}>
+          <CustomClose onClick={() => setFilter(false)} />
+          <FilterModal onClose={() => setFilter(false)} type="expense" />
         </Dialog>
       )}
     </>

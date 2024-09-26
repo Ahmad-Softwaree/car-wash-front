@@ -16,11 +16,7 @@ import ItemForm from "../forms/ItemForm";
 import { useDeleteItem } from "@/lib/react-query/query/item.query";
 import CustomClose from "../shared/CustomClose";
 import useCheckReportPage from "@/hooks/useCheckReportPage";
-import {
-  formatDateString,
-  formatDateToDDMMYY,
-  timestampToDateString,
-} from "@/lib/functions";
+import { formatDateToDDMMYY } from "@/lib/functions";
 
 const ItemCard = ({
   name,

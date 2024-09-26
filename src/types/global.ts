@@ -98,6 +98,7 @@ export type PaginationChildrenProps<T extends DataTypes> = {
   data: PaginationReturnType<T> | undefined;
   hasNextPage: boolean;
   isLoading: boolean;
+  searchLoading: boolean;
   ref: (node?: Element | null) => void;
   refetch: (options?: RefetchOptions) => void;
   isSearched: boolean;

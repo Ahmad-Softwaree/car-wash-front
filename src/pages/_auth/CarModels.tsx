@@ -34,7 +34,6 @@ import RestoreChip from "@/components/shared/RestoreChip";
 import Search from "@/components/shared/Search";
 import AddButton from "@/components/shared/AddButton";
 import RestoreModal from "@/components/ui/RestoreModal";
-import DatePicker from "@/components/shared/DatePicker";
 
 const CarModels = () => {
   const { deleted_page } = useCheckDeletedPage();
@@ -58,7 +57,7 @@ const CarModels = () => {
         className="w-full gap-10 flex flex-col justify-start items-start">
         <div className="w-full gap-5 flex flex-row justify-between">
           <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
-            <Search />
+            <Search placeholder="گەڕان بەپێی ناو" />
           </div>
           <div className="w-full flex flex-row justify-end items-center gap-3">
             {checked?.length > 0 && (

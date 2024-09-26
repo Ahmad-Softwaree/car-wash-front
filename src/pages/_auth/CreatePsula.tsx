@@ -4,7 +4,7 @@ import Pagination from "@/components/providers/Pagination";
 import CustomClose from "@/components/shared/CustomClose";
 import DeleteChip from "@/components/shared/DeleteChip";
 import Dialog from "@/components/shared/Dialog";
-import Filter from "@/components/shared/Filter";
+import FilterModal from "@/components/shared/FilterModal";
 import { formatMoney } from "@/components/shared/FormatMoney";
 import Search from "@/components/shared/Search";
 import { Table, Td, Th, THead, Tr } from "@/components/ui";
@@ -21,7 +21,6 @@ import TFoot from "@/components/ui/TFoot";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 import { ENUMs } from "@/lib/enum";
-import { useGetItemTypesSelection } from "@/lib/react-query/query/item-type.query";
 import {
   useGetItems,
   useSearchItems,
@@ -37,11 +36,10 @@ import {
   useUpdateSell,
 } from "@/lib/react-query/query/sell.query";
 import { Id } from "@/types/global";
-import { ItemType } from "@/types/item-type";
 import { Item, ItemCard, ItemInformation } from "@/types/items";
 import { SellItem } from "@/types/sell";
-import { Button } from "@mui/joy";
-import { Calculator, CirclePlus, Printer, Trash2 } from "lucide-react";
+import { Badge, Button } from "@mui/joy";
+import { Calculator, CirclePlus, Filter, Printer, Trash2 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { TailSpin } from "react-loader-spinner";
 import { useSearchParams } from "react-router-dom";
@@ -72,13 +70,11 @@ const CreatePsula = () => {
   const [isItemDelete, setIsItemDelete] = useState<boolean>(false);
   const { mutateAsync: deleteItemInSell, isPending: deleteItemInSellPending } =
     useDeleteItemInSell(Number(sell_id_param));
-  const {
-    data: sellItems,
-    isLoading: sellItemsLoading,
-    refetch,
-  } = useGetSellItems(Number(sell_id_param));
+  const { data: sellItems, isLoading: sellItemsLoading } = useGetSellItems(
+    Number(sell_id_param)
+  );
+  const [filter, setFilter] = useState<boolean>(false);
 
-  const { data: types } = useGetItemTypesSelection();
   const {
     dispatch,
     state: { checked, check_type },
@@ -166,13 +162,34 @@ const CreatePsula = () => {
           <>
             <div className="col-span-full  2xl:col-span-2 flex flex-col justify-start items-start gap-5 border-b-2 lg:border-t-0 lg:border-l-2 border-solid border-gray-500 px-0 pl-2">
               <div className="w-full gap-5 flex flex-row justify-start items-center flex-wrap">
-                <Search />
-                {types && (
+                <Search placeholder="گەڕان بەپێێ ناو/بارکۆد" />
+
+                <Badge
+                  invisible={!searchParam.get(ENUMs.FILTER_PARAM as string)}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
+                  }}>
                   <Filter
-                    options={types.map((val: ItemType, _index: number) => {
-                      return { value: val.id, label: val.name };
-                    })}
+                    onClick={() => setFilter(true)}
+                    className="w-11 h-11 p-2 rounded-md dark-light hover:light-dark cursor-pointer default-border transition-all duration-200"
                   />
+                </Badge>
+                {searchParam.get(ENUMs.FILTER_PARAM as string) && (
+                  <Button
+                    onClick={() => {
+                      setSearchParam((prev) => {
+                        const params = new URLSearchParams(prev);
+                        params.delete(ENUMs.FILTER_PARAM as string);
+                        return params;
+                      });
+                    }}
+                    className="!font-bukra !text-xs"
+                    size="md"
+                    variant="soft"
+                    color="danger">
+                    سڕینەوەی فلتەر
+                  </Button>
                 )}
               </div>
 
@@ -195,11 +212,9 @@ const CreatePsula = () => {
                   isLoading,
                   ref,
                   data,
-                  refetch,
                   isSearched,
                   searchData,
-                  searchRefetch,
-                  fetchNextPage,
+                  searchLoading,
                 }) => {
                   const allData = useMemo(
                     () =>
@@ -212,54 +227,47 @@ const CreatePsula = () => {
                         : [],
                     [data, searchData, isSearched]
                   );
+                  if (isLoading || searchLoading) {
+                    return (
+                      <Loading>
+                        <TailSpin />
+                      </Loading>
+                    );
+                  }
                   return (
-                    <>
-                      {isLoading ? (
-                        <Loading>
-                          <TailSpin />
-                        </Loading>
-                      ) : (
-                        <div className="tableDiv w-full flex flex-row justify-start items-start gap-5 flex-wrap h-full content-start overflow-y-scroll max-h-[700px] hide-scroll">
-                          {allData.length > 0 &&
-                            allData.map(
-                              (
-                                val: ItemCard & ItemInformation,
-                                _index: number
-                              ) => (
-                                <article
-                                  key={val.id}
-                                  className={`w-[150px] h-[270px] rounded-xl default-border cursor-pointer ${
-                                    sellItems?.findIndex(
-                                      (one: SellItem, _index: number) =>
-                                        one.item_id == val.id
-                                    ) != -1 &&
-                                    !sellItemsLoading &&
-                                    sell_id_param != "0" &&
-                                    sell_id_param &&
-                                    "!border-yellow-500"
-                                  }`}>
-                                  <PsulaItemCard
-                                    onClick={onClick}
-                                    key={val.id}
-                                    {...val}
-                                  />
-                                </article>
-                              )
-                            )}
+                    <div className="tableDiv w-full flex flex-row justify-start items-start gap-5 flex-wrap h-full content-start overflow-y-scroll max-h-[700px] hide-scroll">
+                      {allData.length > 0 &&
+                        allData.map(
+                          (val: ItemCard & ItemInformation, _index: number) => (
+                            <article
+                              key={val.id}
+                              className={`w-[150px] h-[270px] rounded-xl default-border cursor-pointer ${
+                                sellItems?.findIndex(
+                                  (one: SellItem, _index: number) =>
+                                    one.item_id == val.id
+                                ) != -1 &&
+                                !sellItemsLoading &&
+                                sell_id_param != "0" &&
+                                sell_id_param &&
+                                "!border-yellow-500"
+                              }`}>
+                              <PsulaItemCard
+                                onClick={onClick}
+                                key={val.id}
+                                {...val}
+                              />
+                            </article>
+                          )
+                        )}
 
-                          {!isFetchingNextPage && hasNextPage && (
-                            <div
-                              title="test"
-                              className="block w-full"
-                              ref={ref}>
-                              <Loading>
-                                <TailSpin />
-                              </Loading>
-                            </div>
-                          )}
+                      {!isFetchingNextPage && hasNextPage && (
+                        <div title="test" className="block w-full" ref={ref}>
+                          <Loading>
+                            <TailSpin />
+                          </Loading>
                         </div>
                       )}
-                    </>
+                    </div>
                   );
                 }}
               </Pagination>
@@ -564,6 +572,17 @@ const CreatePsula = () => {
               ).toFixed(0)
             )}
           />
+        </Dialog>
+      )}
+      {filter && (
+        <Dialog
+          className="!p-5 rounded-md"
+          maxWidth={400}
+          maxHeight={`90%`}
+          isOpen={filter}
+          onClose={() => setFilter(false)}>
+          <CustomClose onClick={() => setFilter(false)} />
+          <FilterModal onClose={() => setFilter(false)} type="item" />
         </Dialog>
       )}
     </>

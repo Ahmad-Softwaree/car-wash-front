@@ -34,23 +34,23 @@ import RestoreChip from "@/components/shared/RestoreChip";
 import Search from "@/components/shared/Search";
 import AddButton from "@/components/shared/AddButton";
 import RestoreModal from "@/components/ui/RestoreModal";
-import Filter from "@/components/shared/Filter";
-import { Role } from "@/types/role";
 
-import { useGetRolesSelection } from "@/lib/react-query/query/role.query";
+import FilterModal from "@/components/shared/FilterModal";
+import { Badge, Button } from "@mui/joy";
+import { Filter } from "lucide-react";
 
 const Users = () => {
   const { deleted_page } = useCheckDeletedPage();
   const { mutateAsync, isPending } = useDeleteUser();
   const { mutateAsync: restore, isPending: restoreLoading } = useRestoreUser();
   const tableRef = useRef<HTMLDivElement>(null);
+  const [filter, setFilter] = useState<boolean>(false);
 
   const [searchParam, setSearchParam] = useSearchParams();
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const [isRestore, setIsRestore] = useState<boolean>(false);
 
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
-  const { data: roles } = useGetRolesSelection();
   const {
     dispatch,
     state: { checked, check_type },
@@ -62,13 +62,33 @@ const Users = () => {
         className="w-full gap-10 flex flex-col justify-start items-start">
         <div className="w-full gap-5 flex flex-row justify-between ">
           <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
-            <Search />
-            {roles && (
+            <Search placeholder="گەڕان بەپێی ناو/ژ.تەل/ناوی بەکارهێنەر" />
+            <Badge
+              invisible={!searchParam.get(ENUMs.ROLE_FILTER_PARAM as string)}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}>
               <Filter
-                options={roles.map((val: Role, _index: number) => {
-                  return { value: val.id, label: val.name };
-                })}
+                onClick={() => setFilter(true)}
+                className="w-11 h-11 p-2 rounded-md dark-light hover:light-dark cursor-pointer default-border transition-all duration-200"
               />
+            </Badge>
+            {searchParam.get(ENUMs.ROLE_FILTER_PARAM as string) && (
+              <Button
+                onClick={() => {
+                  setSearchParam((prev) => {
+                    const params = new URLSearchParams(prev);
+                    params.delete(ENUMs.ROLE_FILTER_PARAM as string);
+                    return params;
+                  });
+                }}
+                className="!font-bukra !text-xs"
+                size="md"
+                variant="soft"
+                color="danger">
+                سڕینەوەی فلتەر
+              </Button>
             )}
           </div>
           <div className=" flex flex-row justify-end items-center gap-3">
@@ -92,12 +112,12 @@ const Users = () => {
           queryFn={() =>
             deleted_page
               ? useGetDeletedUsers(
-                  searchParam.get(ENUMs.FILTER_PARAM as string) || "",
+                  searchParam.get(ENUMs.ROLE_FILTER_PARAM as string) || "",
                   searchParam.get(ENUMs.FROM_PARAM as string) || "",
                   searchParam.get(ENUMs.TO_PARAM as string) || ""
                 )
               : useGetUsers(
-                  searchParam.get(ENUMs.FILTER_PARAM as string) || "",
+                  searchParam.get(ENUMs.ROLE_FILTER_PARAM as string) || "",
                   searchParam.get(ENUMs.FROM_PARAM as string) || "",
                   searchParam.get(ENUMs.TO_PARAM as string) || ""
                 )
@@ -250,6 +270,17 @@ const Users = () => {
           onClose={() => setIsAddOpen(false)}>
           <CustomClose onClick={() => setIsAddOpen(false)} />
           <UserForm state="insert" onClose={() => setIsAddOpen(false)} />
+        </Dialog>
+      )}
+      {filter && (
+        <Dialog
+          className="!p-5 rounded-md"
+          maxWidth={400}
+          maxHeight={`90%`}
+          isOpen={filter}
+          onClose={() => setFilter(false)}>
+          <CustomClose onClick={() => setFilter(false)} />
+          <FilterModal onClose={() => setFilter(false)} type="user" />
         </Dialog>
       )}
     </>

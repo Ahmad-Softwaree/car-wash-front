@@ -31,7 +31,7 @@ aside::-webkit-scrollbar {
   display: none;
 }
 
-.hide-scroll::-webkit-scrollbar {
+*::-webkit-scrollbar {
   display: none;
 }
 

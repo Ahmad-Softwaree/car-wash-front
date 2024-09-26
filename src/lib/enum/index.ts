@@ -10,10 +10,15 @@ export type ENUM_TYPES =
   //PARAM
   | "SEARCH_PARAM"
   | "FILTER_PARAM"
+  | "ITEM_TYPE_PARAM"
+  | "EXPENSE_TYPE_PARAM"
+  | "USER_PARAM"
   | "FROM_PARAM"
   | "TO_PARAM"
   | "SELL_PARAM"
   | "RESERVATION_PARAM"
+  | "TABLE_NAME_PARAM"
+  | "ROLE_FILTER_PARAM"
 
   //FIREBASE
   | "ITEM_BUCKET"
@@ -63,10 +68,15 @@ export const ENUMs: { [key in ENUM_TYPES]: key | string | number } = {
   //PARAM
   SEARCH_PARAM: `search`,
   FILTER_PARAM: `filter`,
+  ITEM_TYPE_PARAM: "item_type",
+  EXPENSE_TYPE_PARAM: "expense_type",
+  USER_PARAM: "user",
   FROM_PARAM: `from`,
   TO_PARAM: `to`,
   SELL_PARAM: "sell_id",
   RESERVATION_PARAM: "date_time",
+  TABLE_NAME_PARAM: "table_name",
+  ROLE_FILTER_PARAM: "role",
 
   //FIREBASE
   ITEM_BUCKET: "item",

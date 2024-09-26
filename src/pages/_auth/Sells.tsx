@@ -32,18 +32,24 @@ import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import DeleteChip from "@/components/shared/DeleteChip";
 import RestoreChip from "@/components/shared/RestoreChip";
 import Search from "@/components/shared/Search";
-import DatePicker from "@/components/shared/DatePicker";
 import Tabs from "@mui/joy/Tabs";
 import TabList from "@mui/joy/TabList";
 import Tab from "@mui/joy/Tab";
 import SellItemCard from "@/components/cards/SellItemCard";
 import RestoreModal from "@/components/ui/RestoreModal";
+import { Badge, Button } from "@mui/joy";
+import { Filter } from "lucide-react";
+import FilterModal from "@/components/shared/FilterModal";
+import CustomClose from "@/components/shared/CustomClose";
+import Loading from "@/components/ui/Loading";
+import { TailSpin } from "react-loader-spinner";
 const Sells = () => {
   const [index, setIndex] = useState(0);
 
   const { deleted_page } = useCheckDeletedPage();
   const { mutateAsync, isPending } = useDeleteSell();
   const tableRef = useRef<HTMLDivElement>(null);
+  const [filter, setFilter] = useState<boolean>(false);
 
   const [searchParam, setSearchParam] = useSearchParams();
   const [isDelete, setIsDelete] = useState<boolean>(false);
@@ -61,9 +67,45 @@ const Sells = () => {
         className="w-full gap-10 flex flex-col justify-start items-start">
         <div className="w-full gap-5 flex flex-row justify-between ">
           <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
-            <Search />
+            <Search placeholder="گەڕان بەپێێ ژ.وەصڵ" />{" "}
+            {index == 0 && (
+              <>
+                <Badge
+                  invisible={
+                    !searchParam.get(ENUMs.FROM_PARAM as string) &&
+                    !searchParam.get(ENUMs.TO_PARAM as string)
+                  }
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
+                  }}>
+                  <Filter
+                    onClick={() => setFilter(true)}
+                    className="w-11 h-11 p-2 rounded-md dark-light hover:light-dark cursor-pointer default-border transition-all duration-200"
+                  />
+                </Badge>
+                {searchParam.get(ENUMs.FROM_PARAM as string) &&
+                  searchParam.get(ENUMs.TO_PARAM as string) && (
+                    <Button
+                      onClick={() => {
+                        setSearchParam((prev) => {
+                          const params = new URLSearchParams(prev);
+                          params.delete(ENUMs.FROM_PARAM as string);
+                          params.delete(ENUMs.TO_PARAM as string);
+
+                          return params;
+                        });
+                      }}
+                      className="!font-bukra !text-xs"
+                      size="md"
+                      variant="soft"
+                      color="danger">
+                      سڕینەوەی فلتەر
+                    </Button>
+                  )}
+              </>
+            )}
           </div>
-          {index == 0 && <DatePicker />}
 
           <div className=" flex flex-row justify-end items-center gap-3">
             {checked?.length > 0 && (
@@ -153,11 +195,9 @@ const Sells = () => {
               isLoading,
               ref,
               data,
-              refetch,
               isSearched,
               searchData,
-              searchRefetch,
-              fetchNextPage,
+              searchLoading,
             }) => {
               const allData = useMemo(
                 () =>
@@ -171,6 +211,13 @@ const Sells = () => {
                 [data, searchData, isSearched]
               );
 
+              if (isLoading || searchLoading) {
+                return (
+                  <Loading>
+                    <TailSpin />
+                  </Loading>
+                );
+              }
               return (
                 <div
                   ref={tableRef}
@@ -399,6 +446,17 @@ const Sells = () => {
             loading={selfRestoreLoading}
             onClose={() => setIsRestore(false)}
           />
+        </Dialog>
+      )}
+      {filter && (
+        <Dialog
+          className="!p-5 rounded-md"
+          maxWidth={400}
+          maxHeight={`90%`}
+          isOpen={filter}
+          onClose={() => setFilter(false)}>
+          <CustomClose onClick={() => setFilter(false)} />
+          <FilterModal onClose={() => setFilter(false)} type="sell" />
         </Dialog>
       )}
     </>

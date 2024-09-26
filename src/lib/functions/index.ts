@@ -54,7 +54,7 @@ export function formatDateToDDMMYY(dateString: string): string {
 
   const day = String(date.getUTCDate()).padStart(2, "0");
   const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // Months are zero-indexed
-  const year = String(date.getUTCFullYear()).slice(-2); // Get last two digits of the year
+  const year = String(date.getUTCFullYear()); // Get last two digits of the year
 
   return `${day}/${month}/${year}`;
 }
