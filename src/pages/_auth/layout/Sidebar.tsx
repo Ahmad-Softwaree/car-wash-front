@@ -375,15 +375,6 @@ export const sideLinks: SideLink[] = [
     link: `/${ENUMs.DELETED_SECTION as string}/${ENUMs.EXPENSE_PART as string}`,
     type: "deleted",
   },
-  {
-    id: crypto.randomUUID() as string,
-    icon: <ClipboardPlus />,
-    name: ENUMs.SELL_REPORT_PART as string,
-    link: `/${ENUMs.DELETED_SECTION as string}/${
-      ENUMs.SELL_REPORT_PART as string
-    }`,
-    type: "deleted",
-  },
 
   {
     id: crypto.randomUUID() as string,

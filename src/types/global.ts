@@ -9,7 +9,7 @@ import React, {
 } from "react";
 import { FieldError, FieldValues, SubmitHandler } from "react-hook-form";
 import { ChangeProfileQ, GetAuthQ, GetUsersQ, User } from "./auth";
-import { Item, ItemCard, ItemInformation, ItemLess } from "./items";
+import { Item, ItemCard, ItemInformation } from "./items";
 import { Expense } from "./expense";
 import {
   FetchNextPageOptions,
@@ -79,7 +79,6 @@ export type DataTypes =
   | ItemCard[]
   | Item[]
   | ItemInformation[]
-  | ItemLess[]
   | Customer[]
   | Role[]
   | ExpenseType[]

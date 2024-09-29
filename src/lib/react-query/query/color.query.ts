@@ -110,6 +110,9 @@ export const useAddColor = () => {
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.COLORS_SELECTION],
+      });
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.COLORS],
       });

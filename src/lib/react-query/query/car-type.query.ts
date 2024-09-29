@@ -110,6 +110,9 @@ export const useAddCarType = () => {
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.CAR_TYPES_SELECTION],
+      });
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.CAR_TYPES],
       });

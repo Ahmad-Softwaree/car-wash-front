@@ -112,6 +112,9 @@ export const useAddExpenseType = () => {
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.EXPENSE_TYPES_SELECTION],
+      });
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.EXPENSE_TYPES],
       });

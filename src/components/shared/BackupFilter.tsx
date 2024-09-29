@@ -1,4 +1,3 @@
-import { ItemType } from "@/types/item-type";
 import Label from "../ui/Label";
 import Input from "../ui/Input";
 import Option from "../ui/Option";
@@ -22,7 +21,7 @@ const BackupFilter = ({ onClose }: { onClose: () => void }) => {
   const [selectedValue, setSelectedValue] = useState(
     data?.find(
       (val: string, _index: number) =>
-        val.toString() == searchParam.get(ENUMs.ITEM_TYPE_PARAM as string)
+        val.toString() == searchParam.get(ENUMs.TABLE_NAME_PARAM as string)
     ) || ""
   );
   const [selectedStartDate, setSelectedStartDate] = useState<NullableDate>(

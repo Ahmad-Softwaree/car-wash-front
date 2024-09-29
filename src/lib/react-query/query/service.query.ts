@@ -110,6 +110,9 @@ export const useAddService = () => {
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.SERVICES_SELECTION],
+      });
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.SERVICES],
       });

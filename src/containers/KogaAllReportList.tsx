@@ -3,14 +3,15 @@ import DatePicker from "@/components/shared/DatePicker";
 import TFoot from "@/components/ui/TFoot";
 import { Table, Td, Th, THead, Tr } from "@/components/ui";
 import TBody from "@/components/ui/TBody";
-import ItemCard from "@/components/cards/ItemCard";
+import { Sell } from "@/types/sell";
+import SellCard from "@/components/cards/SellCard";
 import { useSearchParams } from "react-router-dom";
 import {
-  useGetItemReport,
-  useGetItemReportInformation,
-  useGetItemReportInformationSearch,
-  useGetItemReportSearch,
-  useItemPrint,
+  useGetSellReport,
+  useGetSellReportInformation,
+  useGetSellReportInformationSearch,
+  useGetSellReportSearch,
+  useSellPrint,
 } from "@/lib/react-query/query/report.query";
 import { ENUMs } from "@/lib/enum";
 import Pagination from "@/components/providers/Pagination";
@@ -21,12 +22,11 @@ import { Filter, Printer } from "lucide-react";
 import { Badge, Button, Chip } from "@mui/joy";
 import PrintModal from "@/components/ui/PrintModal";
 import Dialog from "@/components/shared/Dialog";
-import { ItemReport } from "@/types/items";
 import Loading from "@/components/ui/Loading";
 import { TailSpin } from "react-loader-spinner";
 import CustomClose from "@/components/shared/CustomClose";
 import FilterModal from "@/components/shared/FilterModal";
-const ItemReportList = () => {
+const KogaAllReportList = () => {
   const [searchParam, setSearchParam] = useSearchParams();
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string);
   let from = searchParam.get(ENUMs.FROM_PARAM as string);
@@ -41,7 +41,7 @@ const ItemReportList = () => {
     data: reportData,
     isLoading,
     refetch,
-  } = useGetItemReportInformation(from || "", to || "");
+  } = useGetSellReportInformation(from || "", to || "");
   useEffect(() => {
     refetch();
   }, [debounceFrom, debounceTo, refetch]);
@@ -50,7 +50,7 @@ const ItemReportList = () => {
     data: searchReportData,
     isLoading: searchLoading,
     refetch: searchRefetch,
-  } = useGetItemReportInformationSearch(search || "");
+  } = useGetSellReportInformationSearch(search || "");
   useEffect(() => {
     searchRefetch();
   }, [searchRefetch, debounceValue]);
@@ -59,7 +59,6 @@ const ItemReportList = () => {
     <>
       <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap">
         <Search />
-
         <Badge
           invisible={
             !searchParam.get(ENUMs.FROM_PARAM as string) &&
@@ -102,15 +101,15 @@ const ItemReportList = () => {
           />
         </Chip>
       </div>
-      <Pagination<ItemReport[]>
+      <Pagination<Sell[]>
         queryFn={() =>
-          useGetItemReport(
+          useGetSellReport(
             searchParam.get(ENUMs.FROM_PARAM as string) || "",
             searchParam.get(ENUMs.TO_PARAM as string) || ""
           )
         }
         searchQueryFn={() =>
-          useGetItemReportSearch(
+          useGetSellReportSearch(
             searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
           )
         }>
@@ -141,7 +140,6 @@ const ItemReportList = () => {
               </Loading>
             );
           }
-
           return (
             <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
               <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
@@ -154,38 +152,29 @@ const ItemReportList = () => {
                       <p className="pr-3 table-head-border">ژمارەی وەصڵ</p>
                     </Th>
                     <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">ناوی کاڵا</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">بارکۆد</p>
-                    </Th>{" "}
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">جۆری کاڵا</p>
-                    </Th>{" "}
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">دانەی فرۆشراو</p>
-                    </Th>{" "}
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">نرخی فرۆشتن</p>
+                      <p className="pr-3 table-head-border">بەروار</p>
                     </Th>
                     <Th className="text-right text-sm !p-4">
                       <p className="pr-3 table-head-border">کۆی گشتی</p>
-                    </Th>
+                    </Th>{" "}
+                    <Th className="text-right text-sm !p-4">
+                      <p className="pr-3 table-head-border">داشکاندن</p>
+                    </Th>{" "}
+                    <Th className="text-right text-sm !p-4">
+                      <p className="pr-3 table-head-border">نرخ دوای داشکان</p>
+                    </Th>{" "}
                     <Th className="text-right text-sm !p-4">
                       <p className="pr-3 table-head-border">داغڵکار</p>
                     </Th>
                     <Th className="text-right text-sm !p-4">
                       <p className="pr-3 table-head-border">چاککار</p>
                     </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">بەروار</p>
-                    </Th>
                   </Tr>
                 </THead>
                 <TBody className="w-full ">
                   <>
-                    {allData?.map((val: ItemReport, index: number) => (
-                      <ItemCard key={val.id} index={index} {...val} />
+                    {allData?.map((val: Sell, index: number) => (
+                      <SellCard key={val.id} index={index} {...val} />
                     ))}
                     {!isFetchingNextPage && hasNextPage && !isSearched && (
                       <div className="h-[20px]" ref={ref}></div>
@@ -194,43 +183,53 @@ const ItemReportList = () => {
                 </TBody>
                 <TFoot className="sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
                   <Tr className="!default-border">
-                    <Td className="text-center" colSpan={6}>
+                    <Td className="text-center" colSpan={4}>
                       <p>
-                        کۆی ژمارەی کاڵا :{" "}
+                        کۆی پسولە :{" "}
                         {!isSearched
-                          ? reportData?.total_count
-                          : searchReportData?.total_count}
+                          ? reportData?.sellData.sell_count
+                          : searchReportData?.sellData.sell_count}
                       </p>
                     </Td>
-                    <Td className="text-center" colSpan={5}>
+                    <Td className="text-center" colSpan={4}>
                       <p>
-                        کۆی دانەی فرۆشراو :{" "}
+                        کۆی گشتی پسولە :{" "}
                         {!isSearched
-                          ? formatMoney(reportData?.total_quantity)
-                          : formatMoney(searchReportData?.total_quantity)}
+                          ? formatMoney(
+                              reportData?.sellData.total_item_sell_price
+                            )
+                          : formatMoney(
+                              searchReportData?.sellData.total_item_sell_price
+                            )}
                       </p>
                     </Td>
                   </Tr>
                   <Tr className="!default-border">
-                    <Td className="text-center" colSpan={6}>
+                    <Td className="text-center" colSpan={4}>
                       <p>
-                        کۆی نرخی فرۆشراو :{" "}
+                        کۆی داشکاندنی پسولە :{" "}
                         {!isSearched
-                          ? formatMoney(reportData?.total_sell_price)
-                          : formatMoney(searchReportData?.total_sell_price)}
+                          ? formatMoney(reportData?.discountData)
+                          : formatMoney(searchReportData?.discountData)}
                       </p>
                     </Td>
-                    <Td className="text-center" colSpan={5}>
+                    <Td className="text-center" colSpan={4}>
                       <p>
-                        کۆی گشتی :{" "}
+                        کۆی دوای داشکان :{" "}
                         {!isSearched
-                          ? formatMoney(reportData?.total_price)
-                          : formatMoney(searchReportData?.total_price)}
+                          ? formatMoney(
+                              reportData?.sellData.total_item_sell_price -
+                                reportData?.discountData
+                            )
+                          : formatMoney(
+                              searchReportData?.sellData.total_item_sell_price -
+                                searchReportData?.discountData
+                            )}
                       </p>
                     </Td>
                   </Tr>
                   <Tr>
-                    <Td className="text-center" colSpan={11}>
+                    <Td className="text-center" colSpan={9}>
                       ژمارەی داتا {allData.length}
                     </Td>
                   </Tr>
@@ -248,7 +247,7 @@ const ItemReportList = () => {
           isOpen={print}
           onClose={() => setPrint(false)}>
           <PrintModal
-            printFn={() => useItemPrint(search || "", from || "", to || "")}
+            printFn={() => useSellPrint(search || "", from || "", to || "")}
             onClose={() => setPrint(false)}
           />
         </Dialog>
@@ -261,11 +260,11 @@ const ItemReportList = () => {
           isOpen={filter}
           onClose={() => setFilter(false)}>
           <CustomClose onClick={() => setFilter(false)} />
-          <FilterModal onClose={() => setFilter(false)} type="item_report" />
+          <FilterModal onClose={() => setFilter(false)} type="sell_report" />
         </Dialog>
       )}
     </>
   );
 };
 
-export default ItemReportList;
+export default KogaAllReportList;

@@ -110,6 +110,9 @@ export const useAddRole = () => {
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.ROLES_SELECTION],
+      });
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.ROLES],
       });

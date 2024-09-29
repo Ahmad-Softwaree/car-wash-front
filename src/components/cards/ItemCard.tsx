@@ -1,4 +1,4 @@
-import { Info, Minus, PenTool, Plus, Trash2 } from "lucide-react";
+import { Info, Minus, PenTool, Plus, RotateCcw, Trash2 } from "lucide-react";
 import { useState } from "react";
 import Dialog from "../shared/Dialog";
 import DeleteModal from "../ui/DeleteModal";
@@ -13,10 +13,15 @@ import { ItemCardProps, ItemReport } from "@/types/items";
 import FormatMoney from "../shared/FormatMoney";
 import ItemDetailCard from "./ItemDetailCard";
 import ItemForm from "../forms/ItemForm";
-import { useDeleteItem } from "@/lib/react-query/query/item.query";
+import {
+  useDeleteItem,
+  useRestoreItem,
+} from "@/lib/react-query/query/item.query";
 import CustomClose from "../shared/CustomClose";
 import useCheckReportPage from "@/hooks/useCheckReportPage";
 import { formatDateToDDMMYY } from "@/lib/functions";
+import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
+import RestoreModal from "../ui/RestoreModal";
 
 const ItemCard = ({
   name,
@@ -39,10 +44,15 @@ const ItemCard = ({
   created_at,
   ...others
 }: ItemCardProps & ItemReport) => {
+  const { deleted_page } = useCheckDeletedPage();
+
   const [detail, setDetail] = useState<boolean>(false);
   const [update, setUpdate] = useState<boolean>(false);
   const [isDelete, setIsDelete] = useState<boolean>(false);
+  const [isRestore, setIsRestore] = useState<boolean>(false);
+
   const { report_page } = useCheckReportPage();
+  const { mutateAsync: restore, isPending: restoreLoading } = useRestoreItem();
 
   const {
     dispatch,
@@ -182,51 +192,69 @@ const ItemCard = ({
         )}
         {!report_page && (
           <Td className="!p-3 cup flex flex-row gap-2">
-            <Tooltip
-              placement="top"
-              title="سڕینەوە"
-              color="danger"
-              variant="soft">
-              <Chip
-                onClick={() => setIsDelete(true)}
-                variant="soft"
-                color="danger">
-                <Trash2 className="w-7 h-7 p-1 cursor-pointer" />
-              </Chip>
-            </Tooltip>
-            <Tooltip
-              placement="top"
-              title="چاککردن"
-              color="success"
-              variant="soft">
-              <Chip
-                onClick={() => {
-                  dispatch({
-                    type: CONTEXT_TYPEs.SET_OLD_DATA,
-                    payload: {
-                      name,
-                      quantity,
-                      actual_quantity,
-                      image_name,
-                      image_url,
-                      barcode,
-                      type_name,
-                      type_id,
+            {!deleted_page && (
+              <>
+                <Tooltip
+                  placement="top"
+                  title="سڕینەوە"
+                  color="danger"
+                  variant="soft">
+                  <Chip
+                    onClick={() => setIsDelete(true)}
+                    variant="soft"
+                    color="danger">
+                    <Trash2 className="w-7 h-7 p-1 cursor-pointer" />
+                  </Chip>
+                </Tooltip>
+                <Tooltip
+                  placement="top"
+                  title="چاککردن"
+                  color="success"
+                  variant="soft">
+                  <Chip
+                    onClick={() => {
+                      dispatch({
+                        type: CONTEXT_TYPEs.SET_OLD_DATA,
+                        payload: {
+                          name,
+                          quantity,
+                          actual_quantity,
+                          image_name,
+                          image_url,
+                          barcode,
+                          type_name,
+                          type_id,
 
-                      item_purchase_price,
-                      item_sell_price,
-                      note,
-                      id,
-                      ...others,
-                    },
-                  });
-                  setUpdate(true);
-                }}
-                variant="soft"
-                color="success">
-                <PenTool className="w-7 h-7 p-1 cursor-pointer" />
-              </Chip>
-            </Tooltip>
+                          item_purchase_price,
+                          item_sell_price,
+                          note,
+                          id,
+                          ...others,
+                        },
+                      });
+                      setUpdate(true);
+                    }}
+                    variant="soft"
+                    color="success">
+                    <PenTool className="w-7 h-7 p-1 cursor-pointer" />
+                  </Chip>
+                </Tooltip>
+              </>
+            )}
+            {deleted_page && (
+              <Tooltip
+                placement="top"
+                title="گێڕانەوە"
+                color="warning"
+                variant="soft">
+                <Chip
+                  onClick={() => setIsRestore(true)}
+                  variant="soft"
+                  color="warning">
+                  <RotateCcw className="w-7 h-7 p-1 cursor-pointer" />
+                </Chip>
+              </Tooltip>
+            )}
             <Tooltip
               placement="top"
               title="زانیاری"
@@ -281,6 +309,20 @@ const ItemCard = ({
             deleteFunction={() => mutateAsync([id])}
             loading={isPending}
             onClose={() => setIsDelete(false)}
+          />
+        </Dialog>
+      )}
+      {isRestore && (
+        <Dialog
+          className="!p-5 rounded-md"
+          maxWidth={500}
+          maxHeight={`90%`}
+          isOpen={isRestore}
+          onClose={() => setIsRestore(false)}>
+          <RestoreModal
+            deleteFunction={() => restore([id])}
+            loading={restoreLoading}
+            onClose={() => setIsRestore(false)}
           />
         </Dialog>
       )}

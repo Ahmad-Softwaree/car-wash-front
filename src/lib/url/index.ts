@@ -171,7 +171,12 @@ export type URLS =
   | "GET_ITEM_REPORTS_INFORMATION"
   | "GET_ITEM_REPORTS_SEARCH"
   | "GET_ITEM_REPORTS_INFORMATION_SEARCH"
-  | "ITEM_PRINT_DATA";
+  | "ITEM_PRINT_DATA"
+  | "GET_KOGA_ALL_REPORTS"
+  | "GET_KOGA_ALL_REPORTS_INFORMATION"
+  | "GET_KOGA_ALL_REPORTS_SEARCH"
+  | "GET_KOGA_ALL_REPORTS_INFORMATION_SEARCH"
+  | "KOGA_ALL_PRINT_DATA";
 
 export const URLs: { [key in URLS]: string } = {
   //USER
@@ -372,4 +377,11 @@ export const URLs: { [key in URLS]: string } = {
   GET_ITEM_REPORTS_SEARCH: `${API}/report/item_search`,
   GET_ITEM_REPORTS_INFORMATION_SEARCH: `${API}/report/item_search/information`,
   ITEM_PRINT_DATA: `${API}/report/item/print`,
+
+  GET_KOGA_ALL_REPORTS: `${API}/report/item`,
+  GET_KOGA_ALL_REPORTS_INFORMATION: `${API}/report/item/information`,
+
+  GET_KOGA_ALL_REPORTS_SEARCH: `${API}/report/item_search`,
+  GET_KOGA_ALL_REPORTS_INFORMATION_SEARCH: `${API}/report/item_search/information`,
+  KOGA_ALL_PRINT_DATA: `${API}/report/item/print`,
 };

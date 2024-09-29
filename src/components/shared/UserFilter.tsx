@@ -1,4 +1,3 @@
-import { ItemType } from "@/types/item-type";
 import Label from "../ui/Label";
 import Input from "../ui/Input";
 import Option from "../ui/Option";
@@ -9,13 +8,14 @@ import { ENUMs } from "@/lib/enum";
 import { useSearchParams } from "react-router-dom";
 import CustomClose from "./CustomClose";
 import { useGetRolesSelection } from "@/lib/react-query/query/role.query";
+import { Role } from "@/types/role";
 
 const UserFilter = ({ onClose }: { onClose: () => void }) => {
   const [searchParam, setSearchParam] = useSearchParams();
   const { data, isLoading } = useGetRolesSelection();
   const [selectedValue, setSelectedValue] = useState(
     data?.find(
-      (val: ItemType, _index: number) =>
+      (val: Role, _index: number) =>
         val.id.toString() == searchParam.get(ENUMs.ROLE_FILTER_PARAM as string)
     )?.name || ""
   );
@@ -48,7 +48,7 @@ const UserFilter = ({ onClose }: { onClose: () => void }) => {
             )}
           </InputGroup>
           <datalist className="w-full" id="types">
-            {data.map((val: ItemType, _index: number) => (
+            {data.map((val: Role, _index: number) => (
               <Option className="w-full" key={val.id} value={val.name}>
                 {val.name}
               </Option>
@@ -60,7 +60,7 @@ const UserFilter = ({ onClose }: { onClose: () => void }) => {
               setSearchParam((prev: any) => {
                 const params = new URLSearchParams(prev);
                 const selectedItem = data.find(
-                  (val: ItemType) => val.name === selectedValue
+                  (val: Role) => val.name === selectedValue
                 );
                 if (selectedItem) {
                   // Check if selectedItem is defined
