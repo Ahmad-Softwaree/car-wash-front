@@ -24,6 +24,7 @@ import Reservations from "@/pages/_auth/Reservations";
 import Backups from "@/pages/_auth/Backups";
 import SellReport from "@/pages/_auth/SellReport";
 import KogaReport from "@/pages/_auth/KogaReport";
+import ProfitReport from "@/pages/_auth/ProfitReport";
 const RootLayout = lazy(() => import("@/pages/_root/RootLayout"));
 const AuthRouterProvider = lazy(() => import("@/providers/AuthRouterProvider"));
 const UserNullRouterProvider = lazy(
@@ -47,7 +48,8 @@ const router = createBrowserRouter(
       <Route
         path="/"
         errorElement={<Error />}
-        element={<UserNullRouterProvider Component={RootLayout} />}>
+        element={<UserNullRouterProvider Component={RootLayout} />}
+      >
         <Route path="login" errorElement={<Error />} element={<Login />} />
       </Route>
 
@@ -55,7 +57,8 @@ const router = createBrowserRouter(
       <Route
         path="/"
         errorElement={<Error />}
-        element={<AuthRouterProvider Component={AuthLayout} />}>
+        element={<AuthRouterProvider Component={AuthLayout} />}
+      >
         <Route
           index
           errorElement={<Error />}
@@ -157,6 +160,16 @@ const router = createBrowserRouter(
               <CheckPart
                 part={[ENUMs.KOGA_REPORT_PART as string]}
                 Component={KogaReport}
+              />
+            }
+          />
+          <Route
+            path={ENUMs.PROFIT_REPORT_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[ENUMs.PROFIT_REPORT_PART as string]}
+                Component={ProfitReport}
               />
             }
           />

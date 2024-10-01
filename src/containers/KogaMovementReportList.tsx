@@ -4,32 +4,36 @@ import { Table, Td, Th, THead, Tr } from "@/components/ui";
 import TBody from "@/components/ui/TBody";
 import { useSearchParams } from "react-router-dom";
 import {
-  useGetItemReport,
-  useGetItemReportInformation,
-  useGetItemReportInformationSearch,
-  useGetItemReportSearch,
-  useItemPrint,
+  useGetKogaMovementReport,
+  useGetKogaMovementReportInformation,
+  useGetKogaMovementReportInformationSearch,
+  useGetKogaMovementReportSearch,
+  useKogaMovementPrint,
+  useSellPrint,
 } from "@/lib/react-query/query/report.query";
 import { ENUMs } from "@/lib/enum";
 import Pagination from "@/components/providers/Pagination";
 import { useEffect, useMemo, useState } from "react";
 import { formatMoney } from "@/components/shared/FormatMoney";
+import useDebounce from "@/hooks/useDebounce";
 import { Filter, Printer } from "lucide-react";
 import { Badge, Button, Chip } from "@mui/joy";
 import PrintModal from "@/components/ui/PrintModal";
 import Dialog from "@/components/shared/Dialog";
-import { ItemReport } from "@/types/items";
 import Loading from "@/components/ui/Loading";
 import { TailSpin } from "react-loader-spinner";
 import CustomClose from "@/components/shared/CustomClose";
 import FilterModal from "@/components/shared/FilterModal";
-import ItemSellReportCard from "@/components/cards/ItemSellReportCard";
-const ItemReportList = () => {
+import { ItemKoga, ItemQuantityHistory } from "@/types/items";
+import ItemKogaReportCard from "@/components/cards/ItemKogaReportCard";
+import ItemMovementCard from "@/components/cards/ItemMovementCard";
+const KogaMovementReportList = () => {
   const [searchParam, setSearchParam] = useSearchParams();
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string);
   let from = searchParam.get(ENUMs.FROM_PARAM as string);
-  let item_filter = searchParam.get(ENUMs.ITEM_TYPE_PARAM as string);
   let to = searchParam.get(ENUMs.TO_PARAM as string);
+  let item_type = searchParam.get(ENUMs.ITEM_TYPE_PARAM as string);
+
   const [print, setPrint] = useState<boolean>(false);
   const [filter, setFilter] = useState<boolean>(false);
 
@@ -37,16 +41,20 @@ const ItemReportList = () => {
     data: reportData,
     isLoading,
     refetch,
-  } = useGetItemReportInformation(item_filter || "", from || "", to || "");
+  } = useGetKogaMovementReportInformation(
+    item_type || "",
+    from || "",
+    to || ""
+  );
   useEffect(() => {
     refetch();
-  }, [from, to, item_filter, refetch]);
+  }, [from, to, item_type, refetch]);
 
   const {
     data: searchReportData,
     isLoading: searchLoading,
     refetch: searchRefetch,
-  } = useGetItemReportInformationSearch(search || "");
+  } = useGetKogaMovementReportInformationSearch(search || "");
   useEffect(() => {
     searchRefetch();
   }, [searchRefetch, search]);
@@ -55,7 +63,6 @@ const ItemReportList = () => {
     <>
       <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap">
         <Search />
-
         <Badge
           invisible={
             !searchParam.get(ENUMs.FROM_PARAM as string) &&
@@ -103,16 +110,17 @@ const ItemReportList = () => {
           />
         </Chip>
       </div>
-      <Pagination<ItemReport[]>
+      <Pagination<ItemQuantityHistory[]>
         queryFn={() =>
-          useGetItemReport(
+          useGetKogaMovementReport(
             searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) || "",
+
             searchParam.get(ENUMs.FROM_PARAM as string) || "",
             searchParam.get(ENUMs.TO_PARAM as string) || ""
           )
         }
         searchQueryFn={() =>
-          useGetItemReportSearch(
+          useGetKogaMovementReportSearch(
             searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
           )
         }
@@ -144,7 +152,6 @@ const ItemReportList = () => {
               </Loading>
             );
           }
-
           return (
             <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
               <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
@@ -154,31 +161,25 @@ const ItemReportList = () => {
                       <p className="pr-1">#</p>
                     </Th>
                     <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">ژمارەی وەصڵ</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">ناوی کاڵا</p>
+                      <p className="pr-3 table-head-border">ناو</p>
                     </Th>
                     <Th className="text-right text-sm !p-4">
                       <p className="pr-3 table-head-border">بارکۆد</p>
                     </Th>{" "}
                     <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">جۆری کاڵا</p>
+                      <p className="pr-3 table-head-border">جۆر</p>
                     </Th>{" "}
                     <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">دانەی فرۆشراو</p>
-                    </Th>{" "}
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">نرخی فرۆشتن</p>
+                      <p className="pr-3 table-head-border">نرخی کڕین</p>
                     </Th>
                     <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">کۆی گشتی</p>
+                      <p className="pr-3 table-head-border">دانەی جوڵاو</p>
+                    </Th>
+                    <Th className="text-right text-sm !p-4">
+                      <p className="pr-3 table-head-border">تێچوو</p>
                     </Th>
                     <Th className="text-right text-sm !p-4">
                       <p className="pr-3 table-head-border">داغڵکار</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">چاککار</p>
                     </Th>
                     <Th className="text-right text-sm !p-4">
                       <p className="pr-3 table-head-border">بەروار</p>
@@ -187,53 +188,62 @@ const ItemReportList = () => {
                 </THead>
                 <TBody className="w-full ">
                   <>
-                    {allData?.map((val: ItemReport, index: number) => (
-                      <ItemSellReportCard key={val.id} index={index} {...val} />
+                    {allData?.map((val: ItemQuantityHistory, index: number) => (
+                      <ItemMovementCard key={val.id} index={index} {...val} />
                     ))}
                     {!isFetchingNextPage && hasNextPage && !isSearched && (
                       <div className="h-[20px]" ref={ref}></div>
                     )}
                   </>
                 </TBody>
-                <TFoot className="sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
+                <TFoot className="dark-light sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
                   <Tr className="!default-border">
                     <Td className="text-center" colSpan={6}>
                       <p>
-                        کۆی ژمارەی کاڵا :{" "}
+                        کۆی ژمارەی کاڵا:{" "}
                         {!isSearched
                           ? reportData?.total_count
                           : searchReportData?.total_count}
                       </p>
                     </Td>
-                    <Td className="text-center" colSpan={5}>
+                    <Td className="text-center" colSpan={6}>
                       <p>
-                        کۆی دانەی فرۆشراو :{" "}
+                        کۆی دانەی جوڵاو :{" "}
                         {!isSearched
-                          ? formatMoney(reportData?.total_quantity)
-                          : formatMoney(searchReportData?.total_quantity)}
+                          ? formatMoney(reportData?.total_item_quantity)
+                          : formatMoney(searchReportData?.total_item_quantity)}
                       </p>
                     </Td>
                   </Tr>
                   <Tr className="!default-border">
                     <Td className="text-center" colSpan={6}>
                       <p>
-                        کۆی نرخی فرۆشراو :{" "}
+                        کۆی نرخی کڕین :{" "}
                         {!isSearched
-                          ? formatMoney(reportData?.total_sell_price)
-                          : formatMoney(searchReportData?.total_sell_price)}
+                          ? formatMoney(reportData?.total_item_purchase_price)
+                          : formatMoney(
+                              searchReportData?.total_item_purchase_price
+                            )}
                       </p>
                     </Td>
-                    <Td className="text-center" colSpan={5}>
+                    <Td className="text-center" colSpan={6}>
                       <p>
-                        کۆی گشتی :{" "}
+                        کۆی تێچوو :{" "}
                         {!isSearched
-                          ? formatMoney(reportData?.total_price)
-                          : formatMoney(searchReportData?.total_price)}
+                          ? formatMoney(
+                              reportData?.total_item_quantity *
+                                reportData?.total_item_purchase_price
+                            )
+                          : formatMoney(
+                              searchReportData?.total_item_quantity *
+                                searchReportData?.total_item_purchase_price
+                            )}
                       </p>
                     </Td>
                   </Tr>
+
                   <Tr>
-                    <Td className="text-center" colSpan={11}>
+                    <Td className="text-center" colSpan={12}>
                       ژمارەی داتا {allData.length}
                     </Td>
                   </Tr>
@@ -253,8 +263,8 @@ const ItemReportList = () => {
         >
           <PrintModal
             printFn={() =>
-              useItemPrint(
-                item_filter || "",
+              useKogaMovementPrint(
+                item_type || "",
                 search || "",
                 from || "",
                 to || ""
@@ -273,11 +283,14 @@ const ItemReportList = () => {
           onClose={() => setFilter(false)}
         >
           <CustomClose onClick={() => setFilter(false)} />
-          <FilterModal onClose={() => setFilter(false)} type="item_report" />
+          <FilterModal
+            onClose={() => setFilter(false)}
+            type="koga_report_movement"
+          />
         </Dialog>
       )}
     </>
   );
 };
 
-export default ItemReportList;
+export default KogaMovementReportList;

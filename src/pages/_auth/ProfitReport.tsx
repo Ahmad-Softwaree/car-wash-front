@@ -8,7 +8,7 @@ import KogaAllReportList from "@/containers/KogaAllReportList";
 import { useGlobalContext } from "@/context/GlobalContext";
 import KogaNullReportList from "@/containers/KogaNullReportList";
 import KogaMovementReportList from "@/containers/KogaMovementReportList";
-const KogaReport = () => {
+const ProfitReport = () => {
   const [index, setIndex] = useState(0);
   const {
     state: { theme },
@@ -45,7 +45,7 @@ const KogaReport = () => {
                 },
               }}
             >
-              جەردی کاڵا - کۆگا
+              قازانجی پسوڵە
             </Tab>
             <Tab
               sx={{
@@ -60,32 +60,16 @@ const KogaReport = () => {
                 },
               }}
             >
-              جەردی کاڵا - تەواوبوو
-            </Tab>
-            <Tab
-              sx={{
-                borderColor: "gray",
-                width: "40%",
-                transition: "color 300ms ease", // Adding transition for color change
-                fontFamily: "bukra",
-                borderRadius: "10px",
-                color: theme == "dark" ? "white" : "black",
-                "&.Mui-selected": {
-                  color: theme === "dark" ? "black" : "black", // Active text color
-                },
-              }}
-            >
-              جوڵەی کاڵا - بەپێی بەروار
+              قازانجی کاڵا
             </Tab>
           </TabList>
         </Tabs>
 
         {index == 0 && <KogaAllReportList />}
         {index == 1 && <KogaNullReportList />}
-        {index == 2 && <KogaMovementReportList />}
       </Container>
     </>
   );
 };
 
-export default KogaReport;
+export default ProfitReport;

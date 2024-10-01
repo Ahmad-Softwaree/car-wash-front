@@ -176,7 +176,17 @@ export type URLS =
   | "GET_KOGA_ALL_REPORTS_INFORMATION"
   | "GET_KOGA_ALL_REPORTS_SEARCH"
   | "GET_KOGA_ALL_REPORTS_INFORMATION_SEARCH"
-  | "KOGA_ALL_PRINT_DATA";
+  | "KOGA_ALL_PRINT_DATA"
+  | "GET_KOGA_NULL_REPORTS"
+  | "GET_KOGA_NULL_REPORTS_INFORMATION"
+  | "GET_KOGA_NULL_REPORTS_SEARCH"
+  | "GET_KOGA_NULL_REPORTS_INFORMATION_SEARCH"
+  | "KOGA_NULL_PRINT_DATA"
+  | "GET_KOGA_MOVEMENT_REPORTS"
+  | "GET_KOGA_MOVEMENT_REPORTS_INFORMATION"
+  | "GET_KOGA_MOVEMENT_REPORTS_SEARCH"
+  | "GET_KOGA_MOVEMENT_REPORTS_INFORMATION_SEARCH"
+  | "KOGA_MOVEMENT_PRINT_DATA";
 
 export const URLs: { [key in URLS]: string } = {
   //USER
@@ -384,4 +394,18 @@ export const URLs: { [key in URLS]: string } = {
   GET_KOGA_ALL_REPORTS_SEARCH: `${API}/report/koga_all_search`,
   GET_KOGA_ALL_REPORTS_INFORMATION_SEARCH: `${API}/report/koga_all_search/information`,
   KOGA_ALL_PRINT_DATA: `${API}/report/koga_all/print`,
+
+  GET_KOGA_NULL_REPORTS: `${API}/report/koga_null`,
+  GET_KOGA_NULL_REPORTS_INFORMATION: `${API}/report/koga_null/information`,
+
+  GET_KOGA_NULL_REPORTS_SEARCH: `${API}/report/koga_null_search`,
+  GET_KOGA_NULL_REPORTS_INFORMATION_SEARCH: `${API}/report/koga_null_search/information`,
+  KOGA_NULL_PRINT_DATA: `${API}/report/koga_null/print`,
+
+  GET_KOGA_MOVEMENT_REPORTS: `${API}/report/koga_movement`,
+  GET_KOGA_MOVEMENT_REPORTS_INFORMATION: `${API}/report/koga_movement/information`,
+
+  GET_KOGA_MOVEMENT_REPORTS_SEARCH: `${API}/report/koga_movement_search`,
+  GET_KOGA_MOVEMENT_REPORTS_INFORMATION_SEARCH: `${API}/report/koga_movement_search/information`,
+  KOGA_MOVEMENT_PRINT_DATA: `${API}/report/koga_movement/print`,
 };

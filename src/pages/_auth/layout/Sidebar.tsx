@@ -34,6 +34,7 @@ import {
   PackageSearch,
   Palette,
   Presentation,
+  Receipt,
   ReceiptText,
   UserCog,
   Users,
@@ -115,7 +116,8 @@ export const sideLinks: SideLink[] = [
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        className="icon icon-tabler icons-tabler-outline icon-tabler-cash-register">
+        className="icon icon-tabler icons-tabler-outline icon-tabler-cash-register"
+      >
         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
         <path d="M21 15h-2.5c-.398 0 -.779 .158 -1.061 .439c-.281 .281 -.439 .663 -.439 1.061c0 .398 .158 .779 .439 1.061c.281 .281 .663 .439 1.061 .439h1c.398 0 .779 .158 1.061 .439c.281 .281 .439 .663 .439 1.061c0 .398 -.158 .779 -.439 1.061c-.281 .281 -.663 .439 -1.061 .439h-2.5" />
         <path d="M19 21v1m0 -8v1" />
@@ -169,7 +171,8 @@ export const sideLinks: SideLink[] = [
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        className="icon icon-tabler icons-tabler-outline icon-tabler-chart-infographic">
+        className="icon icon-tabler icons-tabler-outline icon-tabler-chart-infographic"
+      >
         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
         <path d="M7 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
         <path d="M7 3v4h4" />
@@ -199,7 +202,8 @@ export const sideLinks: SideLink[] = [
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        className="icon icon-tabler icons-tabler-outline icon-tabler-file-database">
+        className="icon icon-tabler icons-tabler-outline icon-tabler-file-database"
+      >
         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
         <path d="M12 12.75m-4 0a4 1.75 0 1 0 8 0a4 1.75 0 1 0 -8 0" />
         <path d="M8 12.5v3.75c0 .966 1.79 1.75 4 1.75s4 -.784 4 -1.75v-3.75" />
@@ -213,28 +217,9 @@ export const sideLinks: SideLink[] = [
     }`,
     type: "report",
   },
-
   {
     id: crypto.randomUUID() as string,
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        className="icon icon-tabler icons-tabler-outline icon-tabler-cash-banknote">
-        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-        <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-        <path d="M3 6m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
-        <path d="M18 12l.01 0" />
-        <path d="M6 12l.01 0" />
-      </svg>
-    ),
+    icon: <Receipt />,
     name: ENUMs.PROFIT_REPORT_PART as string,
     link: `/${ENUMs.REPORT_SECTION as string}/${
       ENUMs.PROFIT_REPORT_PART as string
@@ -255,7 +240,8 @@ export const sideLinks: SideLink[] = [
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        className="icon icon-tabler icons-tabler-outline icon-tabler-moneybag">
+        className="icon icon-tabler icons-tabler-outline icon-tabler-moneybag"
+      >
         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
         <path d="M9.5 3h5a1.5 1.5 0 0 1 1.5 1.5a3.5 3.5 0 0 1 -3.5 3.5h-1a3.5 3.5 0 0 1 -3.5 -3.5a1.5 1.5 0 0 1 1.5 -1.5z" />
         <path d="M4 17v-1a8 8 0 1 1 16 0v1a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z" />
@@ -498,7 +484,8 @@ const Sidebar = ({
       userParts?.includes(text) && (
         <NavLink
           className="!font-bukra w-full !text-white bg-transparent flex flex-row justify-start items-center gap-3 transition-all duration-200 hover:!bg-secondary-100 hover:!bg-opacity-20 p-2 rounded-md my-1"
-          to={link}>
+          to={link}
+        >
           {Icon}
           <p className={`!text-xs ${shrink && "hidden"}`}>{text}</p>
         </NavLink>
@@ -529,11 +516,13 @@ const Sidebar = ({
           expand ? "right-0" : "-right-full"
         } lg:right-0 transition-all duration-500 bg-primary-500 top-0 bottom-0 w-[280px]  border-l-2 p-4 border-solid border-primary-300 border-opacity-40 flex flex-col justify-start items-center gap-2 overflow-y-auto ${
           shrink && "!w-[80px] !border-none !bg-transparent"
-        }`}>
+        }`}
+      >
         <div className={`w-full mb-3 ${shrink && "hidden"}`}>
           <Card
             size="sm"
-            className="w-full !bg-primary-600 !border-2 !border-solid !border-primary-300 !border-opacity-40 !flex !flex-row !justify-center !items-center !gap-5">
+            className="w-full !bg-primary-600 !border-2 !border-solid !border-primary-300 !border-opacity-40 !flex !flex-row !justify-center !items-center !gap-5"
+          >
             <Image
               image="/images/logo.jpg"
               className="w-10 h-10 rounded-full"
@@ -566,19 +555,22 @@ const Sidebar = ({
             width: "240px",
             display: shrink ? "none" : "flex",
           }}
-          transition="0.2s ease">
+          transition="0.2s ease"
+        >
           <>
             <Accordion
               expanded={index === 0}
               onChange={(event, expanded) => {
                 setIndex(expanded ? 0 : null);
-              }}>
+              }}
+            >
               <AccordionSummary>
                 <Chip
                   className="!font-bukra my-3"
                   variant="soft"
                   color="neutral"
-                  size="sm">
+                  size="sm"
+                >
                   گشتی
                 </Chip>
               </AccordionSummary>
@@ -605,13 +597,15 @@ const Sidebar = ({
               onChange={(event, expanded) => {
                 setIndex(expanded ? 1 : null);
               }}
-              defaultExpanded>
+              defaultExpanded
+            >
               <AccordionSummary>
                 <Chip
                   className="!font-bukra my-3"
                   variant="soft"
                   color="neutral"
-                  size="sm">
+                  size="sm"
+                >
                   بەڕێوەبردن
                 </Chip>
               </AccordionSummary>
@@ -637,13 +631,15 @@ const Sidebar = ({
               onChange={(event, expanded) => {
                 setIndex(expanded ? 2 : null);
               }}
-              defaultExpanded>
+              defaultExpanded
+            >
               <AccordionSummary>
                 <Chip
                   className="!font-bukra my-3"
                   variant="soft"
                   color="neutral"
-                  size="sm">
+                  size="sm"
+                >
                   ڕاپۆرت
                 </Chip>
               </AccordionSummary>
@@ -669,13 +665,15 @@ const Sidebar = ({
               onChange={(event, expanded) => {
                 setIndex(expanded ? 3 : null);
               }}
-              defaultExpanded>
+              defaultExpanded
+            >
               <AccordionSummary>
                 <Chip
                   className="!font-bukra my-3"
                   variant="soft"
                   color="neutral"
-                  size="sm">
+                  size="sm"
+                >
                   ڕێکخستن
                 </Chip>
               </AccordionSummary>
@@ -701,13 +699,15 @@ const Sidebar = ({
               onChange={(event, expanded) => {
                 setIndex(expanded ? 4 : null);
               }}
-              defaultExpanded>
+              defaultExpanded
+            >
               <AccordionSummary>
                 <Chip
                   className="!font-bukra my-3"
                   variant="soft"
                   color="neutral"
-                  size="sm">
+                  size="sm"
+                >
                   سڕاوەکان
                 </Chip>
               </AccordionSummary>
@@ -733,13 +733,15 @@ const Sidebar = ({
               onChange={(event, expanded) => {
                 setIndex(expanded ? 5 : null);
               }}
-              defaultExpanded>
+              defaultExpanded
+            >
               <AccordionSummary>
                 <Chip
                   className="!font-bukra my-3"
                   variant="soft"
                   color="neutral"
-                  size="sm">
+                  size="sm"
+                >
                   باکئەپ
                 </Chip>
               </AccordionSummary>
@@ -765,7 +767,8 @@ const Sidebar = ({
                 className="!font-bukra"
                 variant="soft"
                 color="neutral"
-                size="sm">
+                size="sm"
+              >
                 کۆگای وێنە
               </Chip>
             </Divider>
@@ -791,22 +794,26 @@ const Sidebar = ({
                 className="!font-bukra"
                 variant="soft"
                 color="neutral"
-                size="sm">
+                size="sm"
+              >
                 پڕۆفایل
               </Chip>
             </Divider>
             <div className="w-full mt-3">
               <Card
                 size="sm"
-                className="w-full !bg-primary-600 !border-2 !border-solid !border-primary-300 !border-opacity-40 !flex !flex-row !justify-between !items-center !gap-2 !text-white">
+                className="w-full !bg-primary-600 !border-2 !border-solid !border-primary-300 !border-opacity-40 !flex !flex-row !justify-between !items-center !gap-2 !text-white"
+              >
                 <Tooltip
                   placement="top"
                   color="neutral"
                   title="بینینی پڕۆفایل"
-                  variant="soft">
+                  variant="soft"
+                >
                   <Link
                     to={`/پڕۆفایل`}
-                    className="flex flex-col justify-start items-start gap-2">
+                    className="flex flex-col justify-start items-start gap-2"
+                  >
                     <p className="!text-xs !text-white !font-bukra">
                       {user?.username}
                     </p>
@@ -822,12 +829,14 @@ const Sidebar = ({
                   placement="top"
                   color="danger"
                   title="چوونەدەر"
-                  variant="soft">
+                  variant="soft"
+                >
                   <button
                     title="چوونەدەر"
                     type="button"
                     onClick={() => mutateAsync()}
-                    className="text-red-400 hover:!bg-opacity-50 !transition-all !duration-200 !font-bukra !text-xs">
+                    className="text-red-400 hover:!bg-opacity-50 !transition-all !duration-200 !font-bukra !text-xs"
+                  >
                     <LogOut />
                   </button>
                 </Tooltip>

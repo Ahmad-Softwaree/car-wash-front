@@ -13,7 +13,7 @@ import InputGroup from "../ui/InputGroup";
 import Option from "../ui/Option";
 type NullableDate = Date | null;
 
-const ItemReportFilter = ({ onClose }: { onClose: () => void }) => {
+const KogaMovementReportFilter = ({ onClose }: { onClose: () => void }) => {
   const [searchParam, setSearchParam] = useSearchParams();
   const { data, isLoading } = useGetItemTypesSelection();
   const [selectedValue, setSelectedValue] = useState(
@@ -113,4 +113,4 @@ const ItemReportFilter = ({ onClose }: { onClose: () => void }) => {
   );
 };
 
-export default ItemReportFilter;
+export default KogaMovementReportFilter;

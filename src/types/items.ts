@@ -5,6 +5,7 @@ import {
   MaybeImageTypeInDatabase,
 } from "./global";
 import { Sell, SellItem } from "./sell";
+import { ItemQuantityHistory } from "database/types";
 
 export type ItemCard = {
   id: Id;
@@ -85,3 +86,21 @@ export type DeleteItemQ = Id[];
 export type GetItemByIdQ = Item | null | undefined;
 
 export type GetItemsInAddQ = ItemInformation[];
+
+export type ItemQuantityHistory = {
+  id: number;
+  created_by: string;
+  item_id: number;
+  item_name: string;
+  item_type_id: number;
+  item_type_name: string;
+  quantity: number;
+  item_purchase_price: number;
+  item_sell_price: number;
+  created_at: Date;
+  updated_at: Date;
+};
+
+export type GetItemQuantityHistoriesReportQ = ItemQuantityHistory[];
+
+export type ItemMovementProps = ItemQuantityHistory & { index?: number };

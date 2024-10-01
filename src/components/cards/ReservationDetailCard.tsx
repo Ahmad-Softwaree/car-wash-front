@@ -16,7 +16,7 @@ import InputGroup from "../ui/InputGroup";
 import InputAddon from "../ui/InputAddon";
 import Label from "../ui/Label";
 import Input from "../ui/Input";
-import { formatDateString } from "@/lib/functions";
+import { formateDateToYMDHM } from "@/lib/functions";
 import Textarea from "../ui/Textarea";
 
 const ReservationDetailCard = ({
@@ -90,7 +90,7 @@ const ReservationDetailCard = ({
             </InputAddon>
 
             <Input
-              value={formatDateString(date_time as string)}
+              value={formateDateToYMDHM(date_time as string)}
               name="date"
               disabled
               type="text"

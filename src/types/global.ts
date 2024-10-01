@@ -9,7 +9,7 @@ import React, {
 } from "react";
 import { FieldError, FieldValues, SubmitHandler } from "react-hook-form";
 import { ChangeProfileQ, GetAuthQ, GetUsersQ, User } from "./auth";
-import { Item, ItemCard, ItemInformation } from "./items";
+import { Item, ItemCard, ItemInformation, ItemQuantityHistory } from "./items";
 import { Expense } from "./expense";
 import {
   FetchNextPageOptions,
@@ -90,7 +90,8 @@ export type DataTypes =
   | Sell[]
   | SellItem[]
   | Reservation[]
-  | Backup[];
+  | Backup[]
+  | ItemQuantityHistory[s];
 
 export type PaginationChildrenProps<T extends DataTypes> = {
   isFetchingNextPage: boolean;

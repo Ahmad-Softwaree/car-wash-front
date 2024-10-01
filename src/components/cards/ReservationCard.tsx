@@ -27,7 +27,7 @@ import Chip from "@mui/joy/Chip";
 import CustomClose from "../shared/CustomClose";
 import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import RestoreModal from "../ui/RestoreModal";
-import { formatDateString } from "@/lib/functions";
+import { formateDateToYMDHM } from "@/lib/functions";
 import CompleteModal from "../ui/CompleteModal";
 
 const ReservationCard = ({
@@ -79,7 +79,8 @@ const ReservationCard = ({
         className={`default-border table-row-hover  ${
           checked?.includes(id) ? "table-row-include" : "table-row-normal"
         }`}
-        key={id}>
+        key={id}
+      >
         <Td className="!p-3">
           <InputGroup className="checkbox-input">
             <Input
@@ -114,7 +115,7 @@ const ReservationCard = ({
         </Td>
         <Td className="!p-3">
           <p className="text-right font-light font-bukra text-sm">
-            {formatDateString(date_time as string)}
+            {formateDateToYMDHM(date_time as string)}
           </p>
         </Td>
         <Td className="!p-3">
@@ -169,14 +170,16 @@ const ReservationCard = ({
               placement="top"
               title="تەواو بوو"
               color="primary"
-              variant="soft">
+              variant="soft"
+            >
               <Chip
                 onClick={() => {
                   setIsComplete(true);
                   setCompleteState(true);
                 }}
                 variant="soft"
-                color="primary">
+                color="primary"
+              >
                 <CircleCheck className="w-7 h-7 p-1 cursor-pointer" />
               </Chip>
             </Tooltip>
@@ -186,14 +189,16 @@ const ReservationCard = ({
               placement="top"
               title="تەواو نەبوو"
               color="danger"
-              variant="soft">
+              variant="soft"
+            >
               <Chip
                 onClick={() => {
                   setIsComplete(true);
                   setCompleteState(false);
                 }}
                 variant="soft"
-                color="danger">
+                color="danger"
+              >
                 <CircleX className="w-7 h-7 p-1 cursor-pointer" />
               </Chip>
             </Tooltip>
@@ -204,11 +209,13 @@ const ReservationCard = ({
                 placement="top"
                 title="سڕینەوە"
                 color="danger"
-                variant="soft">
+                variant="soft"
+              >
                 <Chip
                   onClick={() => setIsDelete(true)}
                   variant="soft"
-                  color="danger">
+                  color="danger"
+                >
                   <Trash2 className="w-7 h-7 p-1 cursor-pointer" />
                 </Chip>
               </Tooltip>
@@ -216,7 +223,8 @@ const ReservationCard = ({
                 placement="top"
                 title="چاککردن"
                 color="success"
-                variant="soft">
+                variant="soft"
+              >
                 <Chip
                   onClick={() => {
                     dispatch({
@@ -238,7 +246,8 @@ const ReservationCard = ({
                     setUpdate(true);
                   }}
                   variant="soft"
-                  color="success">
+                  color="success"
+                >
                   <PenTool className="w-7 h-7 p-1 cursor-pointer" />
                 </Chip>
               </Tooltip>
@@ -249,11 +258,13 @@ const ReservationCard = ({
               placement="top"
               title="گێڕانەوە"
               color="warning"
-              variant="soft">
+              variant="soft"
+            >
               <Chip
                 onClick={() => setIsRestore(true)}
                 variant="soft"
-                color="warning">
+                color="warning"
+              >
                 <RotateCcw className="w-7 h-7 p-1 cursor-pointer" />
               </Chip>
             </Tooltip>
@@ -262,11 +273,13 @@ const ReservationCard = ({
             placement="top"
             title="زانیاری"
             color="primary"
-            variant="soft">
+            variant="soft"
+          >
             <Chip
               onClick={() => setDetail(true)}
               variant="soft"
-              color="primary">
+              color="primary"
+            >
               <Info className="w-7 h-7 p-1 cursor-pointer" />
             </Chip>
           </Tooltip>
@@ -278,7 +291,8 @@ const ReservationCard = ({
           maxWidth={1000}
           maxHeight={`90%`}
           isOpen={detail}
-          onClose={() => setDetail(false)}>
+          onClose={() => setDetail(false)}
+        >
           <CustomClose onClick={() => setDetail(false)} />
           <ReservationDetailCard
             id={id}
@@ -305,7 +319,8 @@ const ReservationCard = ({
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={isDelete}
-          onClose={() => setIsDelete(false)}>
+          onClose={() => setIsDelete(false)}
+        >
           <DeleteModal
             deleteFunction={() => mutateAsync([id])}
             loading={isPending}
@@ -319,7 +334,8 @@ const ReservationCard = ({
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={isRestore}
-          onClose={() => setIsRestore(false)}>
+          onClose={() => setIsRestore(false)}
+        >
           <RestoreModal
             deleteFunction={() => restore([id])}
             loading={restoreLoading}
@@ -333,7 +349,8 @@ const ReservationCard = ({
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={isComplete}
-          onClose={() => setIsComplete(false)}>
+          onClose={() => setIsComplete(false)}
+        >
           <CompleteModal
             deleteFunction={() =>
               complete({ ids: [id], complete: completeState })
@@ -349,7 +366,8 @@ const ReservationCard = ({
           maxWidth={800}
           maxHeight={`90%`}
           isOpen={update}
-          onClose={updateOnClose}>
+          onClose={updateOnClose}
+        >
           <CustomClose onClick={() => updateOnClose()} />
           <ReservationForm state="update" onClose={updateOnClose} />
         </Dialog>

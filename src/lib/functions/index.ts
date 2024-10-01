@@ -2,9 +2,8 @@ import { NestError, Token, ToastType } from "@/types/global";
 import { setAxiosConfig } from "../config/axios.config";
 import { removeCookie, setCookie } from "../config/cookie.config";
 import { User } from "@/types/auth";
-import { Part } from "@/types/part";
 
-const { VITE_JWT_SECRET, VITE_COOKIE_NAME } = import.meta.env;
+const { VITE_COOKIE_NAME } = import.meta.env;
 
 export const downloadFile = (data: Blob, fileName: string) => {
   const url = window.URL.createObjectURL(new Blob([data]));
@@ -18,29 +17,21 @@ export const downloadFile = (data: Blob, fileName: string) => {
 };
 
 export function timestampToDateString(timestamp: number): string {
-  // Create a Date object from the timestamp
   const date = new Date(timestamp);
-
-  // Extract year, month, and day from the Date object
   const year = date.getFullYear();
-  const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // Months are zero-based
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
   const day = String(date.getUTCDate()).padStart(2, "0");
 
-  // Format the date string as YYYY-MM-DD
   return `${year}-${month}-${day}`;
 }
-export function formatDateString(dateString: string): string {
-  // Parse the input date string
+export function formateDateToYMDHM(dateString: string): string {
   const date = new Date(dateString);
-
-  // Ensure the date is valid
   if (isNaN(date.getTime())) {
     throw new Error("Invalid date format");
   }
 
-  // Get the components you need: year, month, day, hour, and minute
   const year = date.getFullYear();
-  const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // Months are 0-indexed, so add 1
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
   const day = String(date.getUTCDate()).padStart(2, "0");
   const hours = String(date.getUTCHours()).padStart(2, "0");
   const minutes = String(date.getUTCMinutes()).padStart(2, "0");
@@ -53,57 +44,9 @@ export function formatDateToDDMMYY(dateString: string): string {
   const date = new Date(dateString);
 
   const day = String(date.getUTCDate()).padStart(2, "0");
-  const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // Months are zero-indexed
-  const year = String(date.getUTCFullYear()); // Get last two digits of the year
-
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const year = String(date.getUTCFullYear());
   return `${day}/${month}/${year}`;
-}
-
-export function getCurrentTime(): string {
-  // Create a new Date object
-  const now: Date = new Date();
-
-  // Extract hours, minutes, and seconds
-  let hours: number = now.getUTCHours();
-  const minutes: number = now.getUTCMinutes();
-
-  // Determine AM or PM
-  const amPm: string = hours >= 12 ? "PM" : "AM";
-
-  // Convert hours to 12-hour format
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-
-  // Add leading zero to minutes and seconds if needed
-  const formattedMinutes: string =
-    minutes < 10 ? "0" + minutes : minutes.toString();
-
-  // Combine the time parts into a string
-  const currentTime: string = `${hours}:${formattedMinutes} ${amPm}`;
-  return currentTime;
-}
-
-export function getCurrentDate(): string {
-  const now: Date = new Date();
-
-  const day: number = now.getUTCDate();
-  const month: number = now.getUTCMonth() + 1; // Months are zero-based
-  const year: number = now.getFullYear();
-
-  // Add leading zero to day and month if needed
-  const formattedDay: string = day < 10 ? "0" + day : day.toString();
-  const formattedMonth: string = month < 10 ? "0" + month : month.toString();
-
-  return `${formattedDay}/${formattedMonth}/${year}`;
-}
-
-export function parseDate(dateString: string): Date {
-  const [day, month, year] = dateString.split("/").map(Number);
-
-  // Create a Date object from the given dateString with default time as midnight
-  const date = new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0));
-
-  return date;
 }
 
 export const generateToken = async (user: User) => {
@@ -114,6 +57,7 @@ export const generateToken = async (user: User) => {
 export function parseDateToTimestamp(dateString: string): string {
   const decodedDate = decodeURIComponent(dateString);
   const date = new Date(decodedDate);
+  console.log(date);
   return date.getTime().toString();
 }
 

@@ -41,7 +41,7 @@ import CarTypeForm from "./CarTypeForm";
 import { Service } from "@/types/service";
 import { CarType } from "@/types/car-type";
 import Textarea from "../ui/Textarea";
-import { formatDateString } from "@/lib/functions";
+import { formateDateToYMDHM } from "@/lib/functions";
 const ReservationForm = ({
   onClose,
   state,
@@ -122,7 +122,7 @@ const ReservationForm = ({
         ...others
       } = globalState.oldData;
       reset(others);
-      setValue("date_time", formatDateString(others.date_time));
+      setValue("date_time", formateDateToYMDHM(others.date_time));
     }
   }, [state, globalState]);
   return (
@@ -131,7 +131,8 @@ const ReservationForm = ({
         className="w-full flex flex-col justify-center items-start gap-10 min-w-none mt-2"
         ref={form}
         onSubmit={handleSubmit(onSubmit)}
-        id="login-form">
+        id="login-form"
+      >
         <p className="font-bold font-bukra text-lg text-nowrap">
           {state == "insert" ? "زیادکردنی" : "چاککردنی"} سەرە
         </p>
@@ -149,7 +150,8 @@ const ReservationForm = ({
                 </Label>{" "}
                 <InputGroup
                   error={errors.price}
-                  className="w-full space-y-2  text-input col-span-full md:col-span-1">
+                  className="w-full space-y-2  text-input col-span-full md:col-span-1"
+                >
                   <Input
                     type="text"
                     {...register("price", { required: true })}
@@ -168,13 +170,15 @@ const ReservationForm = ({
                 <div className="w-full flex flex-row justify-start items-center gap-3">
                   <InputGroup
                     error={errors.color_id}
-                    className="w-full space-y-2  text-input col-span-full md:col-span-1">
+                    className="w-full space-y-2  text-input col-span-full md:col-span-1"
+                  >
                     <Select
                       title="color_id"
                       {...register("color_id", { required: true })}
                       name="color_id"
                       id="color_id"
-                      className="w-full bg-transparent !text-sm">
+                      className="w-full bg-transparent !text-sm"
+                    >
                       <Option className="!text-sm dark-light" value={-1}>
                         ڕەنگ هەڵبژێرە
                       </Option>
@@ -182,7 +186,8 @@ const ReservationForm = ({
                         <Option
                           className="!text-sm dark-light"
                           key={val.id}
-                          value={val.id}>
+                          value={val.id}
+                        >
                           {val.name}
                         </Option>
                       ))}
@@ -195,7 +200,8 @@ const ReservationForm = ({
                     }}
                     onClick={() => setIsAddColor(true)}
                     variant="soft"
-                    color="success">
+                    color="success"
+                  >
                     <Plus className="w-4 h-4 cursor-pointer" />
                   </Chip>
                 </div>
@@ -208,13 +214,15 @@ const ReservationForm = ({
                 <div className="w-full flex flex-row justify-start items-center gap-3">
                   <InputGroup
                     error={errors.customer_id}
-                    className="w-full space-y-2  text-input col-span-full md:col-span-1">
+                    className="w-full space-y-2  text-input col-span-full md:col-span-1"
+                  >
                     <Select
                       title="customer_id"
                       {...register("customer_id", { required: true })}
                       name="customer_id"
                       id="customer_id"
-                      className="w-full bg-transparent !text-sm">
+                      className="w-full bg-transparent !text-sm"
+                    >
                       <Option className="!text-sm dark-light" value={-1}>
                         موشتەری هەڵبژێرە
                       </Option>
@@ -222,7 +230,8 @@ const ReservationForm = ({
                         <Option
                           className="!text-sm dark-light"
                           key={val.id}
-                          value={val.id}>
+                          value={val.id}
+                        >
                           {val.first_name} - {val.last_name}
                         </Option>
                       ))}
@@ -235,7 +244,8 @@ const ReservationForm = ({
                     }}
                     onClick={() => setIsAddCustomer(true)}
                     variant="soft"
-                    color="success">
+                    color="success"
+                  >
                     <Plus className="w-4 h-4 cursor-pointer" />
                   </Chip>
                 </div>
@@ -248,13 +258,15 @@ const ReservationForm = ({
                 <div className="w-full flex flex-row justify-start items-center gap-3">
                   <InputGroup
                     error={errors.car_type_id}
-                    className="w-full space-y-2  text-input col-span-full md:col-span-1">
+                    className="w-full space-y-2  text-input col-span-full md:col-span-1"
+                  >
                     <Select
                       title="car_type_id"
                       {...register("car_type_id", { required: true })}
                       name="car_type_id"
                       id="car_type_id"
-                      className="w-full bg-transparent !text-sm">
+                      className="w-full bg-transparent !text-sm"
+                    >
                       <Option className="!text-sm dark-light" value={-1}>
                         جۆری ئۆتمبێڵ هەڵبژێرە
                       </Option>
@@ -262,7 +274,8 @@ const ReservationForm = ({
                         <Option
                           className="!text-sm dark-light"
                           key={val.id}
-                          value={val.id}>
+                          value={val.id}
+                        >
                           {val.name}
                         </Option>
                       ))}
@@ -275,7 +288,8 @@ const ReservationForm = ({
                     }}
                     onClick={() => setIsAddCarType(true)}
                     variant="soft"
-                    color="success">
+                    color="success"
+                  >
                     <Plus className="w-4 h-4 cursor-pointer" />
                   </Chip>
                 </div>
@@ -288,13 +302,15 @@ const ReservationForm = ({
                 <div className="w-full flex flex-row justify-start items-center gap-3">
                   <InputGroup
                     error={errors.car_model_id}
-                    className="w-full space-y-2  text-input col-span-full md:col-span-1">
+                    className="w-full space-y-2  text-input col-span-full md:col-span-1"
+                  >
                     <Select
                       title="car_model_id"
                       {...register("car_model_id", { required: true })}
                       name="car_model_id"
                       id="car_model_id"
-                      className="w-full bg-transparent !text-sm">
+                      className="w-full bg-transparent !text-sm"
+                    >
                       <Option className="!text-sm dark-light" value={-1}>
                         مۆدێلی ئۆتمبێڵ هەڵبژێرە
                       </Option>
@@ -302,7 +318,8 @@ const ReservationForm = ({
                         <Option
                           className="!text-sm dark-light"
                           key={val.id}
-                          value={val.id}>
+                          value={val.id}
+                        >
                           {val.name}
                         </Option>
                       ))}
@@ -315,7 +332,8 @@ const ReservationForm = ({
                     }}
                     onClick={() => setIsAddCarModel(true)}
                     variant="soft"
-                    color="success">
+                    color="success"
+                  >
                     <Plus className="w-4 h-4 cursor-pointer" />
                   </Chip>
                 </div>
@@ -328,13 +346,15 @@ const ReservationForm = ({
                 <div className="w-full flex flex-row justify-start items-center gap-3">
                   <InputGroup
                     error={errors.service_id}
-                    className="w-full space-y-2  text-input col-span-full md:col-span-1">
+                    className="w-full space-y-2  text-input col-span-full md:col-span-1"
+                  >
                     <Select
                       title="service_id"
                       {...register("service_id", { required: true })}
                       name="service_id"
                       id="service_id"
-                      className="w-full bg-transparent !text-sm">
+                      className="w-full bg-transparent !text-sm"
+                    >
                       <Option className="!text-sm dark-light" value={-1}>
                         خزمەتگوزاری هەڵبژێرە
                       </Option>
@@ -342,7 +362,8 @@ const ReservationForm = ({
                         <Option
                           className="!text-sm dark-light"
                           key={val.id}
-                          value={val.id}>
+                          value={val.id}
+                        >
                           {val.name}
                         </Option>
                       ))}
@@ -355,7 +376,8 @@ const ReservationForm = ({
                     }}
                     onClick={() => setIsAddService(true)}
                     variant="soft"
-                    color="success">
+                    color="success"
+                  >
                     <Plus className="w-4 h-4 cursor-pointer" />
                   </Chip>
                 </div>
@@ -364,12 +386,14 @@ const ReservationForm = ({
               <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
                 <Label
                   htmlFor="time"
-                  className="w-full text-sm  flex flex-row gap-2">
+                  className="w-full text-sm  flex flex-row gap-2"
+                >
                   <p>بەروار و کات</p>
                 </Label>{" "}
                 <InputGroup
                   error={errors.date_time}
-                  className="w-full space-y-2  text-input col-span-full md:col-span-1">
+                  className="w-full space-y-2  text-input col-span-full md:col-span-1"
+                >
                   <Input
                     id="time"
                     type="datetime-local"
@@ -384,7 +408,8 @@ const ReservationForm = ({
               <div className="flex flex-col justify-start items-start gap-2  w-full h-full">
                 <Label
                   htmlFor="note"
-                  className="w-full text-sm  flex flex-row gap-2">
+                  className="w-full text-sm  flex flex-row gap-2"
+                >
                   <p>تێبینی</p>
                 </Label>{" "}
                 <InputGroup error={errors.note} className="w-full text-input">
@@ -404,7 +429,8 @@ const ReservationForm = ({
           loading={isPending || updatePending}
           name="addReservationButton"
           type="submit"
-          className=" bg-sky-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2">
+          className=" bg-sky-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2"
+        >
           <p className="font-light text-sm font-bukra">جێبەجێکردن</p>
         </MyButton>
       </Form>
@@ -414,7 +440,8 @@ const ReservationForm = ({
           maxWidth={800}
           maxHeight={`90%`}
           isOpen={isAddColor}
-          onClose={() => setIsAddColor(false)}>
+          onClose={() => setIsAddColor(false)}
+        >
           <CustomClose onClick={() => setIsAddColor(false)} />
           <ColorForm state="insert" onClose={() => setIsAddColor(false)} />
         </Dialog>
@@ -426,7 +453,8 @@ const ReservationForm = ({
           maxWidth={800}
           maxHeight={`90%`}
           isOpen={isAddService}
-          onClose={() => setIsAddService(false)}>
+          onClose={() => setIsAddService(false)}
+        >
           <CustomClose onClick={() => setIsAddService(false)} />
           <ServiceForm state="insert" onClose={() => setIsAddService(false)} />
         </Dialog>
@@ -438,7 +466,8 @@ const ReservationForm = ({
           maxWidth={800}
           maxHeight={`90%`}
           isOpen={isAddCustomer}
-          onClose={() => setIsAddCustomer(false)}>
+          onClose={() => setIsAddCustomer(false)}
+        >
           <CustomClose onClick={() => setIsAddCustomer(false)} />
           <CustomerForm
             state="insert"
@@ -453,7 +482,8 @@ const ReservationForm = ({
           maxWidth={800}
           maxHeight={`90%`}
           isOpen={isAddCarModel}
-          onClose={() => setIsAddCarModel(false)}>
+          onClose={() => setIsAddCarModel(false)}
+        >
           <CustomClose onClick={() => setIsAddCarModel(false)} />
           <CarModelForm
             state="insert"
@@ -468,7 +498,8 @@ const ReservationForm = ({
           maxWidth={800}
           maxHeight={`90%`}
           isOpen={isAddCarType}
-          onClose={() => setIsAddCarType(false)}>
+          onClose={() => setIsAddCarType(false)}
+        >
           <CustomClose onClick={() => setIsAddCarType(false)} />
           <CarTypeForm state="insert" onClose={() => setIsAddCarType(false)} />
         </Dialog>

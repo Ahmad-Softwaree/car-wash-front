@@ -31,9 +31,7 @@ const SellReportList = () => {
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string);
   let from = searchParam.get(ENUMs.FROM_PARAM as string);
   let to = searchParam.get(ENUMs.TO_PARAM as string);
-  const debounceValue = useDebounce(search, ENUMs.DEBOUNCE as number);
-  const debounceFrom = useDebounce(from, ENUMs.DEBOUNCE as number);
-  const debounceTo = useDebounce(to, ENUMs.DEBOUNCE as number);
+
   const [print, setPrint] = useState<boolean>(false);
   const [filter, setFilter] = useState<boolean>(false);
 
@@ -44,7 +42,7 @@ const SellReportList = () => {
   } = useGetSellReportInformation(from || "", to || "");
   useEffect(() => {
     refetch();
-  }, [debounceFrom, debounceTo, refetch]);
+  }, [from, to, refetch]);
 
   const {
     data: searchReportData,
@@ -53,7 +51,7 @@ const SellReportList = () => {
   } = useGetSellReportInformationSearch(search || "");
   useEffect(() => {
     searchRefetch();
-  }, [searchRefetch, debounceValue]);
+  }, [searchRefetch, search]);
 
   return (
     <>
@@ -67,7 +65,8 @@ const SellReportList = () => {
           anchorOrigin={{
             vertical: "bottom",
             horizontal: "right",
-          }}>
+          }}
+        >
           <Filter
             onClick={() => setFilter(true)}
             className="w-11 h-11 p-2 rounded-md dark-light hover:light-dark cursor-pointer default-border transition-all duration-200"
@@ -88,7 +87,8 @@ const SellReportList = () => {
               className="!font-bukra !text-xs"
               size="md"
               variant="soft"
-              color="danger">
+              color="danger"
+            >
               سڕینەوەی فلتەر
             </Button>
           )}
@@ -112,7 +112,8 @@ const SellReportList = () => {
           useGetSellReportSearch(
             searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
           )
-        }>
+        }
+      >
         {({
           isFetchingNextPage,
           hasNextPage,
@@ -245,7 +246,8 @@ const SellReportList = () => {
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={print}
-          onClose={() => setPrint(false)}>
+          onClose={() => setPrint(false)}
+        >
           <PrintModal
             printFn={() => useSellPrint(search || "", from || "", to || "")}
             onClose={() => setPrint(false)}
@@ -258,7 +260,8 @@ const SellReportList = () => {
           maxWidth={400}
           maxHeight={`90%`}
           isOpen={filter}
-          onClose={() => setFilter(false)}>
+          onClose={() => setFilter(false)}
+        >
           <CustomClose onClick={() => setFilter(false)} />
           <FilterModal onClose={() => setFilter(false)} type="sell_report" />
         </Dialog>

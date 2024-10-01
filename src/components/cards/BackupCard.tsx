@@ -1,7 +1,7 @@
 import { BackupCardProps } from "@/types/backup";
 import { Td, Tr } from "../ui";
 import Chip from "@mui/joy/Chip";
-import { formatDateString, formatDateToDDMMYY } from "@/lib/functions";
+import { formateDateToYMDHM, formatDateToDDMMYY } from "@/lib/functions";
 
 const BackupCard = ({
   table,
@@ -19,7 +19,8 @@ const BackupCard = ({
       <Tr
         className={`default-border table-row-hover table-row-normal
         }`}
-        key={id}>
+        key={id}
+      >
         <Td className="!p-3">
           <p className="text-right font-light font-poppins text-sm">
             {index != -1 ? index + 1 : 0}
@@ -36,7 +37,8 @@ const BackupCard = ({
         <Td className="!p-3">
           <Chip
             variant="soft"
-            color={user_role == "سوپەر ئەدمین" ? "danger" : "neutral"}>
+            color={user_role == "سوپەر ئەدمین" ? "danger" : "neutral"}
+          >
             <p className="!font-bukra text-right font-light  text-xs">
               {user_role}
             </p>

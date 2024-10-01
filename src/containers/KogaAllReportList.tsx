@@ -8,15 +8,13 @@ import {
   useGetKogaAllReportInformation,
   useGetKogaAllReportInformationSearch,
   useGetKogaAllReportSearch,
-  useGetSellReportInformation,
-  useGetSellReportInformationSearch,
+  useKogaAllPrint,
   useSellPrint,
 } from "@/lib/react-query/query/report.query";
 import { ENUMs } from "@/lib/enum";
 import Pagination from "@/components/providers/Pagination";
 import { useEffect, useMemo, useState } from "react";
 import { formatMoney } from "@/components/shared/FormatMoney";
-import useDebounce from "@/hooks/useDebounce";
 import { Filter, Printer } from "lucide-react";
 import { Badge, Button, Chip } from "@mui/joy";
 import PrintModal from "@/components/ui/PrintModal";
@@ -30,11 +28,8 @@ import ItemKogaReportCard from "@/components/cards/ItemKogaReportCard";
 const KogaAllReportList = () => {
   const [searchParam, setSearchParam] = useSearchParams();
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string);
-  let from = searchParam.get(ENUMs.FROM_PARAM as string);
-  let to = searchParam.get(ENUMs.TO_PARAM as string);
-  const debounceValue = useDebounce(search, ENUMs.DEBOUNCE as number);
-  const debounceFrom = useDebounce(from, ENUMs.DEBOUNCE as number);
-  const debounceTo = useDebounce(to, ENUMs.DEBOUNCE as number);
+  let item_type = searchParam.get(ENUMs.ITEM_TYPE_PARAM as string);
+
   const [print, setPrint] = useState<boolean>(false);
   const [filter, setFilter] = useState<boolean>(false);
 
@@ -42,10 +37,10 @@ const KogaAllReportList = () => {
     data: reportData,
     isLoading,
     refetch,
-  } = useGetKogaAllReportInformation(from || "", to || "");
+  } = useGetKogaAllReportInformation(item_type || "");
   useEffect(() => {
     refetch();
-  }, [debounceFrom, debounceTo, refetch]);
+  }, [item_type, refetch]);
 
   const {
     data: searchReportData,
@@ -54,45 +49,42 @@ const KogaAllReportList = () => {
   } = useGetKogaAllReportInformationSearch(search || "");
   useEffect(() => {
     searchRefetch();
-  }, [searchRefetch, debounceValue]);
+  }, [searchRefetch, search]);
 
   return (
     <>
       <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap">
         <Search />
         <Badge
-          invisible={
-            !searchParam.get(ENUMs.FROM_PARAM as string) &&
-            !searchParam.get(ENUMs.TO_PARAM as string)
-          }
+          invisible={!searchParam.get(ENUMs.ITEM_TYPE_PARAM as string)}
           anchorOrigin={{
             vertical: "bottom",
             horizontal: "right",
-          }}>
+          }}
+        >
           <Filter
             onClick={() => setFilter(true)}
             className="w-11 h-11 p-2 rounded-md dark-light hover:light-dark cursor-pointer default-border transition-all duration-200"
           />
         </Badge>
-        {searchParam.get(ENUMs.FROM_PARAM as string) &&
-          searchParam.get(ENUMs.TO_PARAM as string) && (
-            <Button
-              onClick={() => {
-                setSearchParam((prev) => {
-                  const params = new URLSearchParams(prev);
-                  params.delete(ENUMs.FROM_PARAM as string);
-                  params.delete(ENUMs.TO_PARAM as string);
+        {searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) && (
+          <Button
+            onClick={() => {
+              setSearchParam((prev) => {
+                const params = new URLSearchParams(prev);
+                params.delete(ENUMs.ITEM_TYPE_PARAM as string);
 
-                  return params;
-                });
-              }}
-              className="!font-bukra !text-xs"
-              size="md"
-              variant="soft"
-              color="danger">
-              سڕینەوەی فلتەر
-            </Button>
-          )}
+                return params;
+              });
+            }}
+            className="!font-bukra !text-xs"
+            size="md"
+            variant="soft"
+            color="danger"
+          >
+            سڕینەوەی فلتەر
+          </Button>
+        )}
         <Chip variant="soft" color="warning">
           <Printer
             onClick={() => {
@@ -105,15 +97,15 @@ const KogaAllReportList = () => {
       <Pagination<ItemKoga[]>
         queryFn={() =>
           useGetKogaAllReport(
-            searchParam.get(ENUMs.FROM_PARAM as string) || "",
-            searchParam.get(ENUMs.TO_PARAM as string) || ""
+            searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) || ""
           )
         }
         searchQueryFn={() =>
           useGetKogaAllReportSearch(
             searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
           )
-        }>
+        }
+      >
         {({
           isFetchingNextPage,
           hasNextPage,
@@ -194,7 +186,7 @@ const KogaAllReportList = () => {
                     )}
                   </>
                 </TBody>
-                <TFoot className="sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
+                <TFoot className="dark-light sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
                   <Tr className="!default-border">
                     <Td className="text-center" colSpan={6}>
                       <p>
@@ -294,9 +286,10 @@ const KogaAllReportList = () => {
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={print}
-          onClose={() => setPrint(false)}>
+          onClose={() => setPrint(false)}
+        >
           <PrintModal
-            printFn={() => useSellPrint(search || "", from || "", to || "")}
+            printFn={() => useKogaAllPrint(search || "", item_type || "")}
             onClose={() => setPrint(false)}
           />
         </Dialog>
@@ -307,9 +300,10 @@ const KogaAllReportList = () => {
           maxWidth={400}
           maxHeight={`90%`}
           isOpen={filter}
-          onClose={() => setFilter(false)}>
+          onClose={() => setFilter(false)}
+        >
           <CustomClose onClick={() => setFilter(false)} />
-          <FilterModal onClose={() => setFilter(false)} type="sell_report" />
+          <FilterModal onClose={() => setFilter(false)} type="koga_report" />
         </Dialog>
       )}
     </>
