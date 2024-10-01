@@ -85,7 +85,7 @@ export const useSearchCarTypes = (search: Search) => {
   return useQuery({
     queryKey: [QUERY_KEYs.SEARCH_CAR_TYPES],
     queryFn: (): Promise<GetCarTypesQ> => searchCarTypes(toast, search),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };
@@ -94,7 +94,7 @@ export const useSearchDeletedCarTypes = (search: Search) => {
   return useQuery({
     queryKey: [QUERY_KEYs.SEARCH_DELETED_CAR_TYPES],
     queryFn: (): Promise<GetCarTypesQ> => searchDeletedCarTypes(toast, search),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };

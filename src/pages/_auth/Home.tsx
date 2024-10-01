@@ -7,7 +7,6 @@ import { TailSpin } from "react-loader-spinner";
 
 const Home = () => {
   const { data, isLoading } = useGetDashboardData();
-  console.log(data);
   return (
     <Container as={`div`}>
       {isLoading ? (

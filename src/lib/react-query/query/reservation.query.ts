@@ -92,7 +92,7 @@ export const useSearchReservations = (search: Search, date: Date) => {
     queryKey: [QUERY_KEYs.SEARCH_RESERVATIONS],
     queryFn: (): Promise<GetReservationsQ> =>
       searchReservations(toast, search, date),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };
@@ -102,7 +102,7 @@ export const useSearchDeletedReservations = (search: Search) => {
     queryKey: [QUERY_KEYs.SEARCH_DELETED_RESERVATIONS],
     queryFn: (): Promise<GetReservationsQ> =>
       searchDeletedReservations(toast, search),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };

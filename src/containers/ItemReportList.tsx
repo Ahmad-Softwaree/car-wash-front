@@ -26,6 +26,7 @@ import Loading from "@/components/ui/Loading";
 import { TailSpin } from "react-loader-spinner";
 import CustomClose from "@/components/shared/CustomClose";
 import FilterModal from "@/components/shared/FilterModal";
+import ItemSellReportCard from "@/components/cards/ItemSellReportCard";
 const ItemReportList = () => {
   const [searchParam, setSearchParam] = useSearchParams();
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string);
@@ -185,7 +186,7 @@ const ItemReportList = () => {
                 <TBody className="w-full ">
                   <>
                     {allData?.map((val: ItemReport, index: number) => (
-                      <ItemCard key={val.id} index={index} {...val} />
+                      <ItemSellReportCard key={val.id} index={index} {...val} />
                     ))}
                     {!isFetchingNextPage && hasNextPage && !isSearched && (
                       <div className="h-[20px]" ref={ref}></div>

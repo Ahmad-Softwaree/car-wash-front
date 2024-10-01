@@ -85,7 +85,7 @@ export const useSearchColors = (search: Search) => {
   return useQuery({
     queryKey: [QUERY_KEYs.SEARCH_COLORS],
     queryFn: (): Promise<GetColorsQ> => searchColors(toast, search),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };
@@ -94,7 +94,7 @@ export const useSearchDeletedColors = (search: Search) => {
   return useQuery({
     queryKey: [QUERY_KEYs.SEARCH_DELETED_COLORS],
     queryFn: (): Promise<GetColorsQ> => searchDeletedColors(toast, search),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };

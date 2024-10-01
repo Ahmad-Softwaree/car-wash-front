@@ -66,6 +66,14 @@ export type ItemReport = Item &
   SellItem &
   Sell & { index?: number; total_quantity?: number | string };
 
+export type ItemKoga = Item &
+  SellItem &
+  Sell & { index?: number; total_quantity?: number | string };
+
+export type ItemSellReportCardProps = ItemReport;
+
+export type ItemKogaReportCardProps = ItemKoga;
+
 export type GetItemsReportQ = ItemReport[];
 
 export type AddItemQ = Item;

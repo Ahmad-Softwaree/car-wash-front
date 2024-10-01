@@ -86,7 +86,7 @@ export const useSearchCustomers = (search: Search) => {
   return useQuery({
     queryKey: [QUERY_KEYs.SEARCH_CUSTOMERS],
     queryFn: (): Promise<GetCustomersQ> => searchCustomers(toast, search),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };
@@ -96,7 +96,7 @@ export const useSearchDeletedCustomers = (search: Search) => {
     queryKey: [QUERY_KEYs.SEARCH_DELETED_CUSTOMERS],
     queryFn: (): Promise<GetCustomersQ> =>
       searchDeletedCustomers(toast, search),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };

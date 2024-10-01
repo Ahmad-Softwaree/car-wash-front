@@ -85,7 +85,7 @@ export const useSearchExpenseTypes = (search: Search) => {
   return useQuery({
     queryKey: [QUERY_KEYs.SEARCH_EXPENSE_TYPES],
     queryFn: (): Promise<GetExpenseTypesQ> => searchExpenseTypes(toast, search),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };
@@ -95,7 +95,7 @@ export const useSearchDeletedExpenseTypes = (search: Search) => {
     queryKey: [QUERY_KEYs.SEARCH_DELETED_EXPENSE_TYPES],
     queryFn: (): Promise<GetExpenseTypesQ> =>
       searchDeletedExpenseTypes(toast, search),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };

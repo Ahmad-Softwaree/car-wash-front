@@ -97,7 +97,6 @@ const CreatePsula = () => {
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Enter") {
-        console.log("Barcode scanned:", barcodeBuffer);
         // Call your addItem function here with the scanned barcode
         addItem({ item_id: Number(barcodeBuffer), barcode: true });
 

@@ -85,7 +85,7 @@ export const useSearchServices = (search: Search) => {
   return useQuery({
     queryKey: [QUERY_KEYs.SEARCH_SERVICES],
     queryFn: (): Promise<GetServicesQ> => searchServices(toast, search),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };
@@ -94,7 +94,7 @@ export const useSearchDeletedServices = (search: Search) => {
   return useQuery({
     queryKey: [QUERY_KEYs.SEARCH_DELETED_SERVICES],
     queryFn: (): Promise<GetServicesQ> => searchDeletedServices(toast, search),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };

@@ -1,16 +1,15 @@
 import Search from "@/components/shared/Search";
-import DatePicker from "@/components/shared/DatePicker";
 import TFoot from "@/components/ui/TFoot";
 import { Table, Td, Th, THead, Tr } from "@/components/ui";
 import TBody from "@/components/ui/TBody";
-import { Sell } from "@/types/sell";
-import SellCard from "@/components/cards/SellCard";
 import { useSearchParams } from "react-router-dom";
 import {
-  useGetSellReport,
+  useGetKogaAllReport,
+  useGetKogaAllReportInformation,
+  useGetKogaAllReportInformationSearch,
+  useGetKogaAllReportSearch,
   useGetSellReportInformation,
   useGetSellReportInformationSearch,
-  useGetSellReportSearch,
   useSellPrint,
 } from "@/lib/react-query/query/report.query";
 import { ENUMs } from "@/lib/enum";
@@ -26,6 +25,8 @@ import Loading from "@/components/ui/Loading";
 import { TailSpin } from "react-loader-spinner";
 import CustomClose from "@/components/shared/CustomClose";
 import FilterModal from "@/components/shared/FilterModal";
+import { ItemKoga } from "@/types/items";
+import ItemKogaReportCard from "@/components/cards/ItemKogaReportCard";
 const KogaAllReportList = () => {
   const [searchParam, setSearchParam] = useSearchParams();
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string);
@@ -41,7 +42,7 @@ const KogaAllReportList = () => {
     data: reportData,
     isLoading,
     refetch,
-  } = useGetSellReportInformation(from || "", to || "");
+  } = useGetKogaAllReportInformation(from || "", to || "");
   useEffect(() => {
     refetch();
   }, [debounceFrom, debounceTo, refetch]);
@@ -50,7 +51,7 @@ const KogaAllReportList = () => {
     data: searchReportData,
     isLoading: searchLoading,
     refetch: searchRefetch,
-  } = useGetSellReportInformationSearch(search || "");
+  } = useGetKogaAllReportInformationSearch(search || "");
   useEffect(() => {
     searchRefetch();
   }, [searchRefetch, debounceValue]);
@@ -101,15 +102,15 @@ const KogaAllReportList = () => {
           />
         </Chip>
       </div>
-      <Pagination<Sell[]>
+      <Pagination<ItemKoga[]>
         queryFn={() =>
-          useGetSellReport(
+          useGetKogaAllReport(
             searchParam.get(ENUMs.FROM_PARAM as string) || "",
             searchParam.get(ENUMs.TO_PARAM as string) || ""
           )
         }
         searchQueryFn={() =>
-          useGetSellReportSearch(
+          useGetKogaAllReportSearch(
             searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
           )
         }>
@@ -149,20 +150,32 @@ const KogaAllReportList = () => {
                       <p className="pr-1">#</p>
                     </Th>
                     <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">ژمارەی وەصڵ</p>
+                      <p className="pr-3 table-head-border">ناو</p>
                     </Th>
                     <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">بەروار</p>
+                      <p className="pr-3 table-head-border">بارکۆد</p>
+                    </Th>{" "}
+                    <Th className="text-right text-sm !p-4">
+                      <p className="pr-3 table-head-border">جۆر</p>
+                    </Th>{" "}
+                    <Th className="text-right text-sm !p-4">
+                      <p className="pr-3 table-head-border">نرخی کڕین</p>
                     </Th>
                     <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">کۆی گشتی</p>
-                    </Th>{" "}
+                      <p className="pr-3 table-head-border">دانەی کڕاو</p>
+                    </Th>
                     <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">داشکاندن</p>
-                    </Th>{" "}
+                      <p className="pr-3 table-head-border">نرخی فرۆشتن</p>
+                    </Th>
                     <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">نرخ دوای داشکان</p>
-                    </Th>{" "}
+                      <p className="pr-3 table-head-border">دانەی فرۆشراو</p>
+                    </Th>
+                    <Th className="text-right text-sm !p-4">
+                      <p className="pr-3 table-head-border">دانەی ماوە</p>
+                    </Th>
+                    <Th className="text-right text-sm !p-4">
+                      <p className="pr-3 table-head-border">تێچوو</p>
+                    </Th>
                     <Th className="text-right text-sm !p-4">
                       <p className="pr-3 table-head-border">داغڵکار</p>
                     </Th>
@@ -173,8 +186,8 @@ const KogaAllReportList = () => {
                 </THead>
                 <TBody className="w-full ">
                   <>
-                    {allData?.map((val: Sell, index: number) => (
-                      <SellCard key={val.id} index={index} {...val} />
+                    {allData?.map((val: ItemKoga, index: number) => (
+                      <ItemKogaReportCard key={val.id} index={index} {...val} />
                     ))}
                     {!isFetchingNextPage && hasNextPage && !isSearched && (
                       <div className="h-[20px]" ref={ref}></div>
@@ -183,53 +196,89 @@ const KogaAllReportList = () => {
                 </TBody>
                 <TFoot className="sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
                   <Tr className="!default-border">
-                    <Td className="text-center" colSpan={4}>
+                    <Td className="text-center" colSpan={6}>
                       <p>
-                        کۆی پسولە :{" "}
+                        کۆی ژمارەی کاڵا:{" "}
                         {!isSearched
-                          ? reportData?.sellData.sell_count
-                          : searchReportData?.sellData.sell_count}
+                          ? reportData?.total_count
+                          : searchReportData?.total_count}
                       </p>
                     </Td>
-                    <Td className="text-center" colSpan={4}>
+                    <Td className="text-center" colSpan={6}>
                       <p>
-                        کۆی گشتی پسولە :{" "}
+                        کۆی دانەی کڕاو:{" "}
+                        {!isSearched
+                          ? formatMoney(reportData?.total_item_quantity)
+                          : formatMoney(searchReportData?.total_item_quantity)}
+                      </p>
+                    </Td>
+                  </Tr>
+                  <Tr className="!default-border">
+                    <Td className="text-center" colSpan={6}>
+                      <p>
+                        کۆی دانەی فرۆشراو :{" "}
+                        {!isSearched
+                          ? formatMoney(reportData?.total_actual_quantity)
+                          : formatMoney(
+                              searchReportData?.total_actual_quantity
+                            )}
+                      </p>
+                    </Td>
+                    <Td className="text-center" colSpan={6}>
+                      <p>
+                        کۆی دانەی ماوە :{" "}
                         {!isSearched
                           ? formatMoney(
-                              reportData?.sellData.total_item_sell_price
+                              reportData?.total_item_quantity -
+                                reportData?.total_actual_quantity
                             )
                           : formatMoney(
-                              searchReportData?.sellData.total_item_sell_price
+                              searchReportData?.total_item_quantity -
+                                searchReportData?.total_actual_quantity
                             )}
                       </p>
                     </Td>
                   </Tr>
                   <Tr className="!default-border">
-                    <Td className="text-center" colSpan={4}>
+                    <Td className="text-center" colSpan={6}>
                       <p>
-                        کۆی داشکاندنی پسولە :{" "}
+                        کۆی نرخی کڕاو :{" "}
                         {!isSearched
-                          ? formatMoney(reportData?.discountData)
-                          : formatMoney(searchReportData?.discountData)}
+                          ? formatMoney(reportData?.total_item_purchase_price)
+                          : formatMoney(
+                              searchReportData?.total_item_purchase_price
+                            )}
                       </p>
                     </Td>
-                    <Td className="text-center" colSpan={4}>
+                    <Td className="text-center" colSpan={6}>
                       <p>
-                        کۆی دوای داشکان :{" "}
+                        کۆی نرخی فرۆشراو :{" "}
+                        {!isSearched
+                          ? formatMoney(reportData?.total_actual_quantity_price)
+                          : formatMoney(
+                              searchReportData?.total_actual_quantity_price
+                            )}
+                      </p>
+                    </Td>
+                  </Tr>
+                  <Tr className="!default-border">
+                    <Td className="text-center" colSpan={12}>
+                      <p>
+                        کۆی تێچوو :{" "}
                         {!isSearched
                           ? formatMoney(
-                              reportData?.sellData.total_item_sell_price -
-                                reportData?.discountData
+                              reportData?.total_item_quantity *
+                                reportData?.total_item_purchase_price
                             )
                           : formatMoney(
-                              searchReportData?.sellData.total_item_sell_price -
-                                searchReportData?.discountData
+                              searchReportData?.total_item_quantity *
+                                searchReportData?.total_item_purchase_price
                             )}
                       </p>
                     </Td>
                   </Tr>
                   <Tr>
-                    <Td className="text-center" colSpan={9}>
+                    <Td className="text-center" colSpan={12}>
                       ژمارەی داتا {allData.length}
                     </Td>
                   </Tr>

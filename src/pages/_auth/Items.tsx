@@ -215,7 +215,7 @@ const Items = () => {
                         <p className="pr-3 table-head-border">نرخی فرۆشتن</p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">نرخی تێچوو</p>
+                        <p className="pr-3 table-head-border">نرخی کڕین</p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
                         <p className="pr-3 table-head-border">داغڵکار</p>

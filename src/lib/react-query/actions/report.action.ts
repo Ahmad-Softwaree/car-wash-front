@@ -118,7 +118,6 @@ export const getItemReport = async (
         from != "" ? from : ""
       }&to=${to != "" ? to : ""}`
     );
-    console.log(data);
     return data;
   } catch (error: any) {
     throw generateNestErrors(error, toast);
@@ -208,7 +207,6 @@ export const getKogaAllReport = async (
         from != "" ? from : ""
       }&to=${to != "" ? to : ""}`
     );
-    console.log(data);
     return data;
   } catch (error: any) {
     throw generateNestErrors(error, toast);

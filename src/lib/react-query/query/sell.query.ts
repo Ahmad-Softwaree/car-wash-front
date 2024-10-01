@@ -96,7 +96,7 @@ export const useSearchSelfDeletedSellItems = (search: Search) => {
     queryKey: [QUERY_KEYs.SEARCH_SELF_DELETED_SELL_ITEMS],
     queryFn: (): Promise<GetSellItemsQ> =>
       searchSelfDeletedSellItems(toast, search),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };
@@ -122,7 +122,7 @@ export const useSearchSells = (search: Search) => {
   return useQuery({
     queryKey: [QUERY_KEYs.SEARCH_SELLS],
     queryFn: (): Promise<GetSellsQ> => searchSells(toast, search),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };
@@ -131,7 +131,7 @@ export const useSearchDeletedSells = (search: Search) => {
   return useQuery({
     queryKey: [QUERY_KEYs.SEARCH_DELETED_SELLS],
     queryFn: (): Promise<GetSellsQ> => searchDeletedSells(toast, search),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };

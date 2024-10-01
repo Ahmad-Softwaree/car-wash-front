@@ -378,10 +378,10 @@ export const URLs: { [key in URLS]: string } = {
   GET_ITEM_REPORTS_INFORMATION_SEARCH: `${API}/report/item_search/information`,
   ITEM_PRINT_DATA: `${API}/report/item/print`,
 
-  GET_KOGA_ALL_REPORTS: `${API}/report/item`,
-  GET_KOGA_ALL_REPORTS_INFORMATION: `${API}/report/item/information`,
+  GET_KOGA_ALL_REPORTS: `${API}/report/koga_all`,
+  GET_KOGA_ALL_REPORTS_INFORMATION: `${API}/report/koga_all/information`,
 
-  GET_KOGA_ALL_REPORTS_SEARCH: `${API}/report/item_search`,
-  GET_KOGA_ALL_REPORTS_INFORMATION_SEARCH: `${API}/report/item_search/information`,
-  KOGA_ALL_PRINT_DATA: `${API}/report/item/print`,
+  GET_KOGA_ALL_REPORTS_SEARCH: `${API}/report/koga_all_search`,
+  GET_KOGA_ALL_REPORTS_INFORMATION_SEARCH: `${API}/report/koga_all_search/information`,
+  KOGA_ALL_PRINT_DATA: `${API}/report/koga_all/print`,
 };

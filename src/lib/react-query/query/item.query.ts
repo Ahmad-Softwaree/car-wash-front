@@ -90,7 +90,7 @@ export const useSearchItems = (search: Search) => {
   return useQuery({
     queryKey: [QUERY_KEYs.SEARCH_ITEMS],
     queryFn: (): Promise<GetItemsQ> => searchItems(toast, search),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };
@@ -99,7 +99,7 @@ export const useSearchDeletedItems = (search: Search) => {
   return useQuery({
     queryKey: [QUERY_KEYs.SEARCH_DELETED_ITEMS],
     queryFn: (): Promise<GetItemsQ> => searchDeletedItems(toast, search),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };

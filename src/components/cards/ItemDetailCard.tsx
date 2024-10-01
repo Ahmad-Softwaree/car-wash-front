@@ -100,7 +100,7 @@ const ItemDetailCard = ({
         </div>
         <div className="w-full md:w-1/2 flex flex-col gap-2">
           <Label className="w-full text-sm  flex flex-row gap-2">
-            <p>نرخی تێچوو</p>
+            <p>نرخی کڕین</p>
           </Label>
           <InputGroup className="w-full text-input 0">
             <InputAddon className="w-[20%] md:w-[10%]">

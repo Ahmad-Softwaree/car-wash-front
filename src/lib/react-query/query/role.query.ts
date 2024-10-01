@@ -85,7 +85,7 @@ export const useSearchRoles = (search: Search) => {
   return useQuery({
     queryKey: [QUERY_KEYs.SEARCH_ROLES],
     queryFn: (): Promise<GetRolesQ> => searchRoles(toast, search),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };
@@ -94,7 +94,7 @@ export const useSearchDeletedRoles = (search: Search) => {
   return useQuery({
     queryKey: [QUERY_KEYs.SEARCH_DELETED_ROLES],
     queryFn: (): Promise<GetRolesQ> => searchDeletedRoles(toast, search),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };

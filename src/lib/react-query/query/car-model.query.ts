@@ -85,7 +85,7 @@ export const useSearchCarModels = (search: Search) => {
   return useQuery({
     queryKey: [QUERY_KEYs.SEARCH_CAR_MODELS],
     queryFn: (): Promise<GetCarModelsQ> => searchCarModels(toast, search),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };
@@ -95,7 +95,7 @@ export const useSearchDeletedCarModels = (search: Search) => {
     queryKey: [QUERY_KEYs.SEARCH_DELETED_CAR_MODELS],
     queryFn: (): Promise<GetCarModelsQ> =>
       searchDeletedCarModels(toast, search),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };

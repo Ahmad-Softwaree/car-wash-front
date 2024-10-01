@@ -55,7 +55,7 @@ export const useGetSellReportSearch = (search: Search) => {
     queryKey: [QUERY_KEYs.SELL_REPORT_SEARCH],
     queryFn: (): Promise<GetSellsQ> => getSellReportSearch(toast, search),
     retry: 0,
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
   });
 };
 export const useGetSellReportInformationSearch = (search: Search) => {
@@ -65,7 +65,7 @@ export const useGetSellReportInformationSearch = (search: Search) => {
     queryKey: [QUERY_KEYs.SELL_REPORT_INFORMATION_SEARCH],
     queryFn: (): Promise<any> => getSellReportInformationSearch(toast, search),
     retry: 0,
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
   });
 };
 export const useSellPrint = (search: Search, from: From, to: To) => {
@@ -110,7 +110,7 @@ export const useGetItemReportSearch = (search: Search) => {
     queryKey: [QUERY_KEYs.ITEM_REPORT_SEARCH],
     queryFn: (): Promise<GetItemsQ> => getItemReportSearch(toast, search),
     retry: 0,
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
   });
 };
 export const useGetItemReportInformationSearch = (search: Search) => {
@@ -120,7 +120,7 @@ export const useGetItemReportInformationSearch = (search: Search) => {
     queryKey: [QUERY_KEYs.ITEM_REPORT_INFORMATION_SEARCH],
     queryFn: (): Promise<any> => getItemReportInformationSearch(toast, search),
     retry: 0,
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
   });
 };
 export const useItemPrint = (search: Search, from: From, to: To) => {
@@ -165,7 +165,7 @@ export const useGetKogaAllReportSearch = (search: Search) => {
     queryKey: [QUERY_KEYs.KOGA_ALL_REPORT_SEARCH],
     queryFn: (): Promise<GetItemsQ> => getKogaAllReportSearch(toast, search),
     retry: 0,
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
   });
 };
 export const useGetKogaAllReportInformationSearch = (search: Search) => {
@@ -176,7 +176,7 @@ export const useGetKogaAllReportInformationSearch = (search: Search) => {
     queryFn: (): Promise<any> =>
       getKogaAllReportInformationSearch(toast, search),
     retry: 0,
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
   });
 };
 export const useKogaAllPrint = (search: Search, from: From, to: To) => {

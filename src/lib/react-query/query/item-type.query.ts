@@ -85,7 +85,7 @@ export const useSearchItemTypes = (search: Search) => {
   return useQuery({
     queryKey: [QUERY_KEYs.SEARCH_ITEM_TYPES],
     queryFn: (): Promise<GetItemTypesQ> => searchItemTypes(toast, search),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };
@@ -95,7 +95,7 @@ export const useSearchDeletedItemTypes = (search: Search) => {
     queryKey: [QUERY_KEYs.SEARCH_DELETED_ITEM_TYPES],
     queryFn: (): Promise<GetItemTypesQ> =>
       searchDeletedItemTypes(toast, search),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };

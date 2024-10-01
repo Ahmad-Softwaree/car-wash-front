@@ -77,7 +77,7 @@ export const useSearchUsers = (search: Search) => {
   return useQuery({
     queryKey: [QUERY_KEYs.SEARCH_USERS],
     queryFn: (): Promise<GetUsersQ> => searchUsers(toast, search),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };
@@ -86,7 +86,7 @@ export const useSearchDeletedUsers = (search: Search) => {
   return useQuery({
     queryKey: [QUERY_KEYs.SEARCH_DELETED_USERS],
     queryFn: (): Promise<GetUsersQ> => searchDeletedUsers(toast, search),
-    enabled: !!search,
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };

@@ -71,7 +71,6 @@ const ExpenseForm = ({
     }
   }, [state, globalState]);
 
-  console.log(watch("date"));
 
   return (
     <>
