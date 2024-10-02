@@ -91,7 +91,8 @@ export type DataTypes =
   | SellItem[]
   | Reservation[]
   | Backup[]
-  | ItemQuantityHistory[s];
+  | ItemQuantityHistory[]
+  | CaseReport[];
 
 export type PaginationChildrenProps<T extends DataTypes> = {
   isFetchingNextPage: boolean;
@@ -331,3 +332,15 @@ export type ToastType = ({ ...props }: Toast) => {
 };
 
 export type CatchError = NestError | AxiosError;
+
+export type CaseReport = {
+  id: number;
+  created_by: string;
+  user_id: number;
+  sold: number | string;
+  sold_price: number | string;
+};
+
+export type CaseReportCardProps = CaseReport & { index?: number };
+
+export type GetCasesQ = CaseReport[];

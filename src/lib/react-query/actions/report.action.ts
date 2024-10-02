@@ -5,6 +5,7 @@ import { GetExpensesQ } from "@/types/expense";
 import {
   Filter,
   From,
+  GetCasesQ,
   Limit,
   Page,
   PaginationReturnType,
@@ -636,9 +637,11 @@ export const itemProfitPrint = async (
 ): Promise<Blob | null> => {
   try {
     const { data } = await pdfFileAuthApi.get<any>(
-      `${URLs.ITEM_PRINT_DATA}?search=${search != "" ? search : ""}&from=${
-        from != "" ? from : ""
-      }&to=${to != "" ? to : ""}&filter=${filter != "" ? filter : ""}`
+      `${URLs.ITEM_PROFIT_PRINT_DATA}?search=${
+        search != "" ? search : ""
+      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}&filter=${
+        filter != "" ? filter : ""
+      }`
     );
     const pdfData = new Uint8Array(data);
     const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
@@ -727,9 +730,96 @@ export const expenseReportPrint = async (
 ): Promise<Blob | null> => {
   try {
     const { data } = await pdfFileAuthApi.get<any>(
-      `${URLs.ITEM_PRINT_DATA}?search=${search != "" ? search : ""}&from=${
+      `${URLs.EXPENSE_PRINT_DATA}?search=${search != "" ? search : ""}&from=${
         from != "" ? from : ""
       }&to=${to != "" ? to : ""}&filter=${filter != "" ? filter : ""}`
+    );
+    const pdfData = new Uint8Array(data);
+    const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
+    return pdfBlob;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+//CASE_REPORT
+
+export const getCaseReport = async (
+  toast: ToastType,
+  page: Page,
+  limit: Limit,
+  from: From,
+  to: To
+): Promise<PaginationReturnType<GetCasesQ>> => {
+  try {
+    const { data, status } = await authApi.get<PaginationReturnType<GetCasesQ>>(
+      `${URLs.GET_CASE_REPORTS}?page=${page}&limit=${limit}&from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+export const getCaseReportInformation = async (
+  toast: ToastType,
+  from: From,
+  to: To
+): Promise<any> => {
+  try {
+    const { data, status } = await authApi.get<any>(
+      `${URLs.GET_CASE_REPORTS_INFORMATION}?from=${from != "" ? from : ""}&to=${
+        to != "" ? to : ""
+      }`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+export const getCaseReportSearch = async (
+  toast: ToastType,
+
+  search: Search
+): Promise<GetCasesQ> => {
+  try {
+    const { data, status } = await authApi.get<GetCasesQ>(
+      `${URLs.GET_CASE_REPORTS_SEARCH}?search=${search != "" ? search : ""}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+export const getCaseReportInformationSearch = async (
+  toast: ToastType,
+  search: Search
+): Promise<any> => {
+  try {
+    const { data, status } = await authApi.get<any>(
+      `${URLs.GET_CASE_REPORTS_INFORMATION_SEARCH}?search=${
+        search != "" ? search : ""
+      }`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+export const casePrint = async (
+  toast: ToastType,
+  search: Search,
+  from: From,
+  to: To
+): Promise<Blob | null> => {
+  try {
+    const { data } = await pdfFileAuthApi.get<any>(
+      `${URLs.SELL_PRINT_DATA}?search=${search != "" ? search : ""}&from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}`
     );
     const pdfData = new Uint8Array(data);
     const pdfBlob = new Blob([pdfData], { type: "application/pdf" });

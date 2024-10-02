@@ -130,7 +130,8 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
         className="w-full flex flex-col justify-center items-start gap-10 min-w-none mt-2"
         ref={form}
         onSubmit={handleSubmit(onSubmit)}
-        id="login-form">
+        id="login-form"
+      >
         <p className="font-bold font-bukra text-lg text-nowrap">
           {state == "insert" ? "زیادکردنی" : "چاککردنی"} بەکارهێنەر
         </p>
@@ -148,7 +149,8 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
                 </Label>{" "}
                 <InputGroup
                   error={errors.username}
-                  className="w-full space-y-2  text-input col-span-full md:col-span-1">
+                  className="w-full space-y-2  text-input col-span-full md:col-span-1"
+                >
                   <Input
                     type="text"
                     {...register("username", { required: true })}
@@ -165,7 +167,8 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
                 </Label>{" "}
                 <InputGroup
                   error={errors.name}
-                  className="w-full space-y-2  text-input col-span-full md:col-span-1">
+                  className="w-full space-y-2  text-input col-span-full md:col-span-1"
+                >
                   <Input
                     type="text"
                     {...register("name", { required: true })}
@@ -183,13 +186,15 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
                 <div className="w-full flex flex-row justify-start items-center gap-3">
                   <InputGroup
                     error={errors.role_id}
-                    className="w-full space-y-2  text-input col-span-full md:col-span-1">
+                    className="w-full space-y-2  text-input col-span-full md:col-span-1"
+                  >
                     <Select
                       title="role_id"
                       {...register("role_id", { required: true })}
                       name="role_id"
                       id="role_id"
-                      className="w-full bg-transparent !text-sm">
+                      className="w-full bg-transparent !text-sm"
+                    >
                       <Option className="!text-sm dark-light" value={-1}>
                         ڕۆڵ هەڵبژێرە
                       </Option>
@@ -197,7 +202,8 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
                         <Option
                           className="!text-sm dark-light"
                           key={val.id}
-                          value={val.id}>
+                          value={val.id}
+                        >
                           {val.name}
                         </Option>
                       ))}
@@ -210,7 +216,8 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
                     }}
                     onClick={() => setIsAddRole(true)}
                     variant="soft"
-                    color="success">
+                    color="success"
+                  >
                     <Plus className="w-4 h-4 cursor-pointer" />
                   </Chip>
                 </div>
@@ -221,10 +228,11 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
                 </Label>{" "}
                 <InputGroup
                   error={errors.password}
-                  className="w-full   text-input col-span-full md:col-span-1">
+                  className="w-full   text-input col-span-full md:col-span-1"
+                >
                   <Input
                     type={show ? "text" : "password"}
-                    {...register("password", { required: state == "insert" })}
+                    {...register("password", { required: true })}
                     name="password"
                     placeholder="ووشەی نهێنی"
                     className="w-full !text-sm"
@@ -254,7 +262,8 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
                   return (
                     <InputGroup
                       key={val.id}
-                      className="col-span-full md:col-span-3 lg:col-span-2 checkbox-input">
+                      className="col-span-full md:col-span-3 lg:col-span-2 checkbox-input"
+                    >
                       <Input
                         onChange={() => addPart(val.id)}
                         checked={checked != -1}
@@ -263,7 +272,8 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
                       />
                       <Label
                         className="text-sm text-nowrap  font-light font-bukra"
-                        htmlFor={val.name}>
+                        htmlFor={val.name}
+                      >
                         {val.name}
                       </Label>
                     </InputGroup>
@@ -277,7 +287,8 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
           loading={isPending || updatePending}
           name="addUserButton"
           type="submit"
-          className=" bg-sky-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2">
+          className=" bg-sky-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2"
+        >
           <p className="font-light text-sm font-bukra">جێبەجێکردن</p>
         </MyButton>
       </Form>
@@ -287,7 +298,8 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
           maxWidth={800}
           maxHeight={`90%`}
           isOpen={isAddRole}
-          onClose={() => setIsAddRole(false)}>
+          onClose={() => setIsAddRole(false)}
+        >
           <CustomClose onClick={() => setIsAddRole(false)} />
           <RoleForm state="insert" onClose={() => setIsAddRole(false)} />
         </Dialog>

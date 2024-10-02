@@ -4,11 +4,16 @@ import { QUERY_KEYs } from "../key";
 import { GetSellsQ } from "@/types/sell";
 import {
   billProfitPrint,
+  casePrint,
   expenseReportPrint,
   getBillProfitReport,
   getBillProfitReportInformation,
   getBillProfitReportInformationSearch,
   getBillProfitReportSearch,
+  getCaseReport,
+  getCaseReportInformation,
+  getCaseReportInformationSearch,
+  getCaseReportSearch,
   getExpenseReport,
   getExpenseReportInformation,
   getExpenseReportInformationSearch,
@@ -47,6 +52,7 @@ import {
 import {
   Filter,
   From,
+  GetCasesQ,
   Page,
   PaginationReturnType,
   Search,
@@ -573,6 +579,60 @@ export const useIExpensePrint = (
     queryKey: [QUERY_KEYs.EXPENSE_PRINT_DATA],
     queryFn: (): Promise<Blob | null> =>
       expenseReportPrint(toast, search, filter, from, to),
+    retry: 0,
+  });
+};
+
+//CASE_REPORT
+export const useGetCaseReport = (from: From, to: To) => {
+  const { toast } = useToast();
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEYs.CASE_REPORT],
+    queryFn: ({
+      pageParam,
+    }: {
+      pageParam: Page;
+    }): Promise<PaginationReturnType<GetCasesQ>> =>
+      getCaseReport(toast, pageParam, ENUMs.LIMIT as number, from, to),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage: any, pages: any) => {
+      return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
+    },
+  });
+};
+export const useGetCaseReportInformation = (from: From, to: To) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.CASE_REPORT_INFORMATION],
+    queryFn: (): Promise<any> => getCaseReportInformation(toast, from, to),
+    retry: 0,
+  });
+};
+
+export const useGetCaseReportSearch = (search: Search) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.CASE_REPORT_SEARCH],
+    queryFn: (): Promise<GetCasesQ> => getCaseReportSearch(toast, search),
+    retry: 0,
+    enabled: typeof search === "string" && search.trim() !== "",
+  });
+};
+export const useGetCaseReportInformationSearch = (search: Search) => {
+  const { toast } = useToast();
+
+  return useQuery({
+    queryKey: [QUERY_KEYs.CASE_REPORT_INFORMATION_SEARCH],
+    queryFn: (): Promise<any> => getCaseReportInformationSearch(toast, search),
+    retry: 0,
+    enabled: typeof search === "string" && search.trim() !== "",
+  });
+};
+export const useCasePrint = (search: Search, from: From, to: To) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.SELL_PRINT_DATA],
+    queryFn: (): Promise<Blob | null> => casePrint(toast, search, from, to),
     retry: 0,
   });
 };

@@ -89,7 +89,7 @@ export const ENUMs: { [key in ENUM_TYPES]: key | string | number } = {
   CUSTOMER_PART: "کڕیارەکان",
   EXPENSE_PART: "خەرجی",
   SELL_REPORT_PART: "ڕاپۆرتی فرۆشتن",
-  CASE_REPORT_PART: "ڕاپۆرتی قاسە",
+  CASE_REPORT_PART: "ڕاپۆرتی صندوق",
   PROFIT_REPORT_PART: "ڕاپۆرتی قازانج",
   EXPENSE_REPORT_PART: "ڕاپۆرتی خەرجی",
   KOGA_REPORT_PART: "ڕاپۆرتی کۆگا",
