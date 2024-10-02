@@ -68,7 +68,7 @@ const ItemMovementCard = ({
         </Td>
         <Td className="!p-3">
           <p className="text-right font-light font-bukra text-sm">
-            {formatDateToDDMMYY(created_at)}
+            {formatDateToDDMMYY(created_at.toString())}
           </p>
         </Td>
       </Tr>

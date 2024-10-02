@@ -186,7 +186,22 @@ export type URLS =
   | "GET_KOGA_MOVEMENT_REPORTS_INFORMATION"
   | "GET_KOGA_MOVEMENT_REPORTS_SEARCH"
   | "GET_KOGA_MOVEMENT_REPORTS_INFORMATION_SEARCH"
-  | "KOGA_MOVEMENT_PRINT_DATA";
+  | "KOGA_MOVEMENT_PRINT_DATA"
+  | "GET_BILL_PROFIT_REPORTS"
+  | "GET_BILL_PROFIT_REPORTS_INFORMATION"
+  | "GET_BILL_PROFIT_REPORTS_SEARCH"
+  | "GET_BILL_PROFIT_REPORTS_INFORMATION_SEARCH"
+  | "BILL_PROFIT_PRINT_DATA"
+  | "GET_ITEM_PROFIT_REPORTS"
+  | "GET_ITEM_PROFIT_REPORTS_INFORMATION"
+  | "GET_ITEM_PROFIT_REPORTS_SEARCH"
+  | "GET_ITEM_PROFIT_REPORTS_INFORMATION_SEARCH"
+  | "ITEM_PROFIT_PRINT_DATA"
+  | "GET_EXPENSE_REPORTS"
+  | "GET_EXPENSE_REPORTS_INFORMATION"
+  | "GET_EXPENSE_REPORTS_SEARCH"
+  | "GET_EXPENSE_REPORTS_INFORMATION_SEARCH"
+  | "EXPENSE_PRINT_DATA";
 
 export const URLs: { [key in URLS]: string } = {
   //USER
@@ -408,4 +423,25 @@ export const URLs: { [key in URLS]: string } = {
   GET_KOGA_MOVEMENT_REPORTS_SEARCH: `${API}/report/koga_movement_search`,
   GET_KOGA_MOVEMENT_REPORTS_INFORMATION_SEARCH: `${API}/report/koga_movement_search/information`,
   KOGA_MOVEMENT_PRINT_DATA: `${API}/report/koga_movement/print`,
+
+  GET_BILL_PROFIT_REPORTS: `${API}/report/bill_profit`,
+  GET_BILL_PROFIT_REPORTS_INFORMATION: `${API}/report/bill_profit/information`,
+
+  GET_BILL_PROFIT_REPORTS_SEARCH: `${API}/report/bill_profit_search`,
+  GET_BILL_PROFIT_REPORTS_INFORMATION_SEARCH: `${API}/report/bill_profit_search/information`,
+  BILL_PROFIT_PRINT_DATA: `${API}/report/bill_profit/print`,
+
+  GET_ITEM_PROFIT_REPORTS: `${API}/report/item_profit`,
+  GET_ITEM_PROFIT_REPORTS_INFORMATION: `${API}/report/item_profit/information`,
+
+  GET_ITEM_PROFIT_REPORTS_SEARCH: `${API}/report/item_profit_search`,
+  GET_ITEM_PROFIT_REPORTS_INFORMATION_SEARCH: `${API}/report/item_profit_search/information`,
+  ITEM_PROFIT_PRINT_DATA: `${API}/report/item_profit/print`,
+
+  GET_EXPENSE_REPORTS: `${API}/report/expense`,
+  GET_EXPENSE_REPORTS_INFORMATION: `${API}/report/expense/information`,
+
+  GET_EXPENSE_REPORTS_SEARCH: `${API}/report/expense_search`,
+  GET_EXPENSE_REPORTS_INFORMATION_SEARCH: `${API}/report/expense_search/information`,
+  EXPENSE_PRINT_DATA: `${API}/report/expense/print`,
 };

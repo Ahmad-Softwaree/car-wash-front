@@ -3,6 +3,20 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { QUERY_KEYs } from "../key";
 import { GetSellsQ } from "@/types/sell";
 import {
+  billProfitPrint,
+  expenseReportPrint,
+  getBillProfitReport,
+  getBillProfitReportInformation,
+  getBillProfitReportInformationSearch,
+  getBillProfitReportSearch,
+  getExpenseReport,
+  getExpenseReportInformation,
+  getExpenseReportInformationSearch,
+  getExpenseReportSearch,
+  getItemProfitReport,
+  getItemProfitReportInformation,
+  getItemProfitReportInformationSearch,
+  getItemProfitReportSearch,
   getItemReport,
   getItemReportInformation,
   getItemReportInformationSearch,
@@ -24,6 +38,7 @@ import {
   getSellReportInformationSearch,
   getSellReportSearch,
   itemPrint,
+  itemProfitPrint,
   kogaAllPrint,
   kogaMovementPrint,
   kogaNullPrint,
@@ -43,6 +58,7 @@ import {
   GetItemsQ,
   GetItemsReportQ,
 } from "@/types/items";
+import { GetExpensesQ } from "@/types/expense";
 
 //SELL REPORT
 export const useGetSellReport = (from: From, to: To) => {
@@ -351,6 +367,212 @@ export const useKogaMovementPrint = (
     queryKey: [QUERY_KEYs.KOGA_MOVEMENT_PRINT_DATA],
     queryFn: (): Promise<Blob | null> =>
       kogaMovementPrint(toast, filter, search, from, to),
+    retry: 0,
+  });
+};
+
+//BILL PROFIT REPORT
+
+export const useGetBillProfitReport = (from: From, to: To) => {
+  const { toast } = useToast();
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEYs.BILL_PROFIT_REPORT],
+    queryFn: ({
+      pageParam,
+    }: {
+      pageParam: Page;
+    }): Promise<PaginationReturnType<GetSellsQ>> =>
+      getBillProfitReport(toast, pageParam, ENUMs.LIMIT as number, from, to),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage: any, pages: any) => {
+      return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
+    },
+  });
+};
+export const useGetBillProfitReportInformation = (from: From, to: To) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.BILL_PROFIT_REPORT_INFORMATION],
+    queryFn: (): Promise<any> =>
+      getBillProfitReportInformation(toast, from, to),
+    retry: 0,
+  });
+};
+
+export const useGetBillProfitReportSearch = (search: Search) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.BILL_PROFIT_REPORT_SEARCH],
+    queryFn: (): Promise<GetSellsQ> => getBillProfitReportSearch(toast, search),
+    retry: 0,
+    enabled: typeof search === "string" && search.trim() !== "",
+  });
+};
+export const useGetBillProfitReportInformationSearch = (search: Search) => {
+  const { toast } = useToast();
+
+  return useQuery({
+    queryKey: [QUERY_KEYs.BILL_PROFIT_REPORT_INFORMATION_SEARCH],
+    queryFn: (): Promise<any> =>
+      getBillProfitReportInformationSearch(toast, search),
+    retry: 0,
+    enabled: typeof search === "string" && search.trim() !== "",
+  });
+};
+export const useBillProfitPrint = (search: Search, from: From, to: To) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.BILL_PROFIT_PRINT_DATA],
+    queryFn: (): Promise<Blob | null> =>
+      billProfitPrint(toast, search, from, to),
+    retry: 0,
+  });
+};
+
+//ITEM_PROFIT_REPORT
+
+export const useGetItemProfitReport = (filter: Filter, from: From, to: To) => {
+  const { toast } = useToast();
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEYs.ITEM_PROFIT_REPORT],
+    queryFn: ({
+      pageParam,
+    }: {
+      pageParam: Page;
+    }): Promise<PaginationReturnType<GetItemsReportQ>> =>
+      getItemProfitReport(
+        toast,
+        pageParam,
+        ENUMs.LIMIT as number,
+        filter,
+        from,
+        to
+      ),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage: any, pages: any) => {
+      return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
+    },
+  });
+};
+export const useGetItemProfitReportInformation = (
+  filter: Filter,
+  from: From,
+  to: To
+) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.ITEM_PROFIT_REPORT_INFORMATION],
+    queryFn: (): Promise<any> =>
+      getItemProfitReportInformation(toast, filter, from, to),
+    retry: 0,
+  });
+};
+
+export const useGetItemProfitReportSearch = (search: Search) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.ITEM_PROFIT_REPORT_SEARCH],
+    queryFn: (): Promise<GetItemsQ> => getItemProfitReportSearch(toast, search),
+    retry: 0,
+    enabled: typeof search === "string" && search.trim() !== "",
+  });
+};
+export const useGetItemProfitReportInformationSearch = (search: Search) => {
+  const { toast } = useToast();
+
+  return useQuery({
+    queryKey: [QUERY_KEYs.ITEM_PROFIT_REPORT_INFORMATION_SEARCH],
+    queryFn: (): Promise<any> =>
+      getItemProfitReportInformationSearch(toast, search),
+    retry: 0,
+    enabled: typeof search === "string" && search.trim() !== "",
+  });
+};
+export const useItemProfitPrint = (
+  filter: Filter,
+  search: Search,
+  from: From,
+  to: To
+) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.ITEM_PRINT_DATA],
+    queryFn: (): Promise<Blob | null> =>
+      itemPrint(toast, search, filter, from, to),
+    retry: 0,
+  });
+};
+
+//EXPENSE_REPORT
+
+export const useGetExpenseReport = (filter: Filter, from: From, to: To) => {
+  const { toast } = useToast();
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEYs.EXPENSE_REPORT],
+    queryFn: ({
+      pageParam,
+    }: {
+      pageParam: Page;
+    }): Promise<PaginationReturnType<GetExpensesQ>> =>
+      getExpenseReport(
+        toast,
+        pageParam,
+        ENUMs.LIMIT as number,
+        filter,
+        from,
+        to
+      ),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage: any, pages: any) => {
+      return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
+    },
+  });
+};
+export const useGetExpenseReportInformation = (
+  filter: Filter,
+  from: From,
+  to: To
+) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.EXPENSE_REPORT_INFORMATION],
+    queryFn: (): Promise<any> =>
+      getExpenseReportInformation(toast, filter, from, to),
+    retry: 0,
+  });
+};
+
+export const useGetExpenseReportSearch = (search: Search) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.EXPENSE_REPORT_SEARCH],
+    queryFn: (): Promise<GetExpensesQ> => getExpenseReportSearch(toast, search),
+    retry: 0,
+    enabled: typeof search === "string" && search.trim() !== "",
+  });
+};
+export const useGetExpenseReportInformationSearch = (search: Search) => {
+  const { toast } = useToast();
+
+  return useQuery({
+    queryKey: [QUERY_KEYs.EXPENSE_REPORT_INFORMATION_SEARCH],
+    queryFn: (): Promise<any> =>
+      getExpenseReportInformationSearch(toast, search),
+    retry: 0,
+    enabled: typeof search === "string" && search.trim() !== "",
+  });
+};
+export const useIExpensePrint = (
+  filter: Filter,
+  search: Search,
+  from: From,
+  to: To
+) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.EXPENSE_PRINT_DATA],
+    queryFn: (): Promise<Blob | null> =>
+      expenseReportPrint(toast, search, filter, from, to),
     retry: 0,
   });
 };

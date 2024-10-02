@@ -226,7 +226,15 @@ export const sideLinks: SideLink[] = [
     }`,
     type: "report",
   },
-
+  {
+    id: crypto.randomUUID() as string,
+    icon: <HandCoins />,
+    name: ENUMs.EXPENSE_REPORT_PART as string,
+    link: `/${ENUMs.REPORT_SECTION as string}/${
+      ENUMs.EXPENSE_REPORT_PART as string
+    }`,
+    type: "report",
+  },
   {
     id: crypto.randomUUID() as string,
     icon: (
@@ -470,7 +478,6 @@ const Sidebar = ({
   let userParts: string[] = user?.parts.map(
     (val: Part, _index: number) => val.name
   );
-
   const Item = ({
     Icon,
     link,

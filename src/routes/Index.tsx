@@ -25,6 +25,7 @@ import Backups from "@/pages/_auth/Backups";
 import SellReport from "@/pages/_auth/SellReport";
 import KogaReport from "@/pages/_auth/KogaReport";
 import ProfitReport from "@/pages/_auth/ProfitReport";
+import ExpenseReport from "@/pages/_auth/ExpenseReport";
 const RootLayout = lazy(() => import("@/pages/_root/RootLayout"));
 const AuthRouterProvider = lazy(() => import("@/providers/AuthRouterProvider"));
 const UserNullRouterProvider = lazy(
@@ -170,6 +171,16 @@ const router = createBrowserRouter(
               <CheckPart
                 part={[ENUMs.PROFIT_REPORT_PART as string]}
                 Component={ProfitReport}
+              />
+            }
+          />
+          <Route
+            path={ENUMs.EXPENSE_REPORT_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[ENUMs.EXPENSE_REPORT_PART as string]}
+                Component={ExpenseReport}
               />
             }
           />

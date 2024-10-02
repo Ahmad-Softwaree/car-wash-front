@@ -1,6 +1,7 @@
 import { authApi, pdfFileAuthApi } from "@/lib/config/api.config";
 import { downloadFile, generateNestErrors } from "@/lib/functions";
 import { URLs } from "@/lib/url";
+import { GetExpensesQ } from "@/types/expense";
 import {
   Filter,
   From,
@@ -105,7 +106,7 @@ export const sellPrint = async (
   }
 };
 
-//ITEM REPORT
+//ITEM_REPORT
 
 export const getItemReport = async (
   toast: ToastType,
@@ -196,7 +197,7 @@ export const itemPrint = async (
   }
 };
 
-//KOGA ALL REPORT
+//KOGA_ALL REPORT
 
 export const getKogaAllReport = async (
   toast: ToastType,
@@ -456,6 +457,279 @@ export const kogaMovementPrint = async (
       }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}&filter=${
         filter != "" ? filter : ""
       }`
+    );
+    const pdfData = new Uint8Array(data);
+    const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
+    return pdfBlob;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+//BILL_PROFIT REPORT
+
+export const getBillProfitReport = async (
+  toast: ToastType,
+  page: Page,
+  limit: Limit,
+  from: From,
+  to: To
+): Promise<PaginationReturnType<GetSellsQ>> => {
+  try {
+    const { data, status } = await authApi.get<PaginationReturnType<GetSellsQ>>(
+      `${URLs.GET_BILL_PROFIT_REPORTS}?page=${page}&limit=${limit}&from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+export const getBillProfitReportInformation = async (
+  toast: ToastType,
+  from: From,
+  to: To
+): Promise<any> => {
+  try {
+    const { data, status } = await authApi.get<any>(
+      `${URLs.GET_BILL_PROFIT_REPORTS_INFORMATION}?from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+export const getBillProfitReportSearch = async (
+  toast: ToastType,
+
+  search: Search
+): Promise<GetSellsQ> => {
+  try {
+    const { data, status } = await authApi.get<GetSellsQ>(
+      `${URLs.GET_BILL_PROFIT_REPORTS_SEARCH}?search=${
+        search != "" ? search : ""
+      }`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+export const getBillProfitReportInformationSearch = async (
+  toast: ToastType,
+  search: Search
+): Promise<any> => {
+  try {
+    const { data, status } = await authApi.get<any>(
+      `${URLs.GET_BILL_PROFIT_REPORTS_INFORMATION_SEARCH}?search=${
+        search != "" ? search : ""
+      }`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+export const billProfitPrint = async (
+  toast: ToastType,
+  search: Search,
+  from: From,
+  to: To
+): Promise<Blob | null> => {
+  try {
+    const { data } = await pdfFileAuthApi.get<any>(
+      `${URLs.BILL_PROFIT_PRINT_DATA}?search=${
+        search != "" ? search : ""
+      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}`
+    );
+    const pdfData = new Uint8Array(data);
+    const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
+    return pdfBlob;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+//ITEM_PROFIT
+
+export const getItemProfitReport = async (
+  toast: ToastType,
+  page: Page,
+  limit: Limit,
+  filter: Filter,
+  from: From,
+  to: To
+): Promise<PaginationReturnType<GetItemsReportQ>> => {
+  try {
+    const { data, status } = await authApi.get<
+      PaginationReturnType<GetItemsReportQ>
+    >(
+      `${URLs.GET_ITEM_PROFIT_REPORTS}?page=${page}&limit=${limit}&from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}&filter=${filter != "" ? filter : ""}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+export const getItemProfitReportInformation = async (
+  toast: ToastType,
+  filter: Filter,
+  from: From,
+  to: To
+): Promise<any> => {
+  try {
+    const { data, status } = await authApi.get<any>(
+      `${URLs.GET_ITEM_PROFIT_REPORTS_INFORMATION}?from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}&filter=${filter != "" ? filter : ""}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+export const getItemProfitReportSearch = async (
+  toast: ToastType,
+  search: Search
+): Promise<GetItemsQ> => {
+  try {
+    const { data, status } = await authApi.get<GetItemsQ>(
+      `${URLs.GET_ITEM_PROFIT_REPORTS_SEARCH}?search=${
+        search != "" ? search : ""
+      }`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+export const getItemProfitReportInformationSearch = async (
+  toast: ToastType,
+  search: Search
+): Promise<any> => {
+  try {
+    const { data, status } = await authApi.get<any>(
+      `${URLs.GET_ITEM_PROFIT_REPORTS_INFORMATION_SEARCH}?search=${
+        search != "" ? search : ""
+      }`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+export const itemProfitPrint = async (
+  toast: ToastType,
+  search: Search,
+  filter: Filter,
+  from: From,
+  to: To
+): Promise<Blob | null> => {
+  try {
+    const { data } = await pdfFileAuthApi.get<any>(
+      `${URLs.ITEM_PRINT_DATA}?search=${search != "" ? search : ""}&from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}&filter=${filter != "" ? filter : ""}`
+    );
+    const pdfData = new Uint8Array(data);
+    const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
+    return pdfBlob;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+//EXPENSE_REPORT
+
+export const getExpenseReport = async (
+  toast: ToastType,
+  page: Page,
+  limit: Limit,
+  filter: Filter,
+  from: From,
+  to: To
+): Promise<PaginationReturnType<GetExpensesQ>> => {
+  try {
+    const { data, status } = await authApi.get<
+      PaginationReturnType<GetExpensesQ>
+    >(
+      `${URLs.GET_EXPENSE_REPORTS}?page=${page}&limit=${limit}&from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}&filter=${filter != "" ? filter : ""}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+export const getExpenseReportInformation = async (
+  toast: ToastType,
+  filter: Filter,
+  from: From,
+  to: To
+): Promise<any> => {
+  try {
+    const { data, status } = await authApi.get<any>(
+      `${URLs.GET_EXPENSE_REPORTS_INFORMATION}?from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}&filter=${filter != "" ? filter : ""}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+export const getExpenseReportSearch = async (
+  toast: ToastType,
+  search: Search
+): Promise<GetExpensesQ> => {
+  try {
+    const { data, status } = await authApi.get<GetExpensesQ>(
+      `${URLs.GET_EXPENSE_REPORTS_SEARCH}?search=${search != "" ? search : ""}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+export const getExpenseReportInformationSearch = async (
+  toast: ToastType,
+  search: Search
+): Promise<any> => {
+  try {
+    const { data, status } = await authApi.get<any>(
+      `${URLs.GET_EXPENSE_REPORTS_INFORMATION_SEARCH}?search=${
+        search != "" ? search : ""
+      }`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+export const expenseReportPrint = async (
+  toast: ToastType,
+  search: Search,
+  filter: Filter,
+  from: From,
+  to: To
+): Promise<Blob | null> => {
+  try {
+    const { data } = await pdfFileAuthApi.get<any>(
+      `${URLs.ITEM_PRINT_DATA}?search=${search != "" ? search : ""}&from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}&filter=${filter != "" ? filter : ""}`
     );
     const pdfData = new Uint8Array(data);
     const pdfBlob = new Blob([pdfData], { type: "application/pdf" });

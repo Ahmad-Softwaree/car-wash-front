@@ -7,12 +7,14 @@ import InputGroup from "../ui/InputGroup";
 import InputAddon from "../ui/InputAddon";
 import Label from "../ui/Label";
 import Input from "../ui/Input";
+import { Part } from "@/types/part";
 
 const UserDetailCard = ({
   name,
   role_id,
   role_name,
   id,
+  parts,
   phone,
   username,
   onClose,
@@ -27,7 +29,8 @@ const UserDetailCard = ({
           className="!font-bukra my-5"
           variant="soft"
           color="neutral"
-          size="sm">
+          size="sm"
+        >
           زانیاری گشتی
         </Chip>
       </Divider>
@@ -78,7 +81,8 @@ const UserDetailCard = ({
           className="!font-bukra my-5"
           variant="soft"
           color="neutral"
-          size="sm">
+          size="sm"
+        >
           زانیاری تایبەت
         </Chip>
       </Divider>
@@ -124,6 +128,22 @@ const UserDetailCard = ({
           </InputGroup>
         </div>
       </div>
+      {parts.length > 0 && (
+        <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap md:flex-nowrap px-3">
+          <div className="w-full  flex flex-col gap-2">
+            <Label className="w-full text-sm  flex flex-row gap-2">
+              <p>بەشەکان</p>
+            </Label>
+            <InputGroup className="w-full text-input 0 flex-wrap">
+              {parts.map((val: Part, _index: number) => (
+                <div className="w-fit p-2 rounded-md default-border dark-light font-bukra text-xs">
+                  <p>{val.name}</p>
+                </div>
+              ))}
+            </InputGroup>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

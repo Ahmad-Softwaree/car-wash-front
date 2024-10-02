@@ -6,7 +6,6 @@ import DeleteModal from "../ui/DeleteModal";
 import {
   useDeleteSell,
   useGetSellPrint,
-  useRestoreSell,
 } from "@/lib/react-query/query/sell.query";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
@@ -59,7 +58,8 @@ const SellCard = ({
         className={`default-border table-row-hover  ${
           checked?.includes(id) ? "table-row-include" : "table-row-normal"
         }`}
-        key={id}>
+        key={id}
+      >
         {!deleted_page && !report_page && (
           <Td className="!p-3">
             <InputGroup className="checkbox-input">
@@ -109,7 +109,7 @@ const SellCard = ({
             {formatMoney(discount)}
           </p>
         </Td>
-        {report_page && (
+        {report_page && total_item_sell_price && (
           <Td className="!p-3">
             <p className="text-right font-light font-bukra text-sm">
               {formatMoney(total_item_sell_price - discount)}
@@ -135,11 +135,13 @@ const SellCard = ({
                     placement="top"
                     title="پرنتکردن"
                     color="warning"
-                    variant="soft">
+                    variant="soft"
+                  >
                     <Chip
                       onClick={() => setIsPrint(true)}
                       variant="soft"
-                      color="warning">
+                      color="warning"
+                    >
                       <Printer className="w-7 h-7 p-1 cursor-pointer" />
                     </Chip>
                   </Tooltip>
@@ -147,11 +149,13 @@ const SellCard = ({
                     placement="top"
                     title="سڕینەوە"
                     color="danger"
-                    variant="soft">
+                    variant="soft"
+                  >
                     <Chip
                       onClick={() => setIsDelete(true)}
                       variant="soft"
-                      color="danger">
+                      color="danger"
+                    >
                       <Trash2 className="w-7 h-7 p-1 cursor-pointer" />
                     </Chip>
                   </Tooltip>
@@ -159,7 +163,8 @@ const SellCard = ({
                     placement="top"
                     title="چاککردن"
                     color="success"
-                    variant="soft">
+                    variant="soft"
+                  >
                     <Chip
                       onClick={async () => {
                         navigate(
@@ -167,7 +172,8 @@ const SellCard = ({
                         );
                       }}
                       variant="soft"
-                      color="success">
+                      color="success"
+                    >
                       <PenTool className="w-7 h-7 p-1 cursor-pointer" />
                     </Chip>
                   </Tooltip>
@@ -179,11 +185,13 @@ const SellCard = ({
                   placement="top"
                   title="گێڕانەوە"
                   color="warning"
-                  variant="soft">
+                  variant="soft"
+                >
                   <Chip
                     onClick={() => setIsRestore(true)}
                     variant="soft"
-                    color="warning">
+                    color="warning"
+                  >
                     <RotateCcw className="w-7 h-7 p-1 cursor-pointer" />
                   </Chip>
                 </Tooltip>
@@ -192,11 +200,13 @@ const SellCard = ({
                 placement="top"
                 title="زانیاری"
                 color="primary"
-                variant="soft">
+                variant="soft"
+              >
                 <Chip
                   onClick={() => setDetail(true)}
                   variant="soft"
-                  color="primary">
+                  color="primary"
+                >
                   <Info className="w-7 h-7 p-1 cursor-pointer" />
                 </Chip>
               </Tooltip>
@@ -210,7 +220,8 @@ const SellCard = ({
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={isPrint}
-          onClose={() => setIsPrint(false)}>
+          onClose={() => setIsPrint(false)}
+        >
           <PrintModal
             printFn={() => useGetSellPrint(Number(sell_id_param) || id || 0)}
             onClose={() => setIsPrint(false)}
@@ -223,7 +234,8 @@ const SellCard = ({
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={isDelete}
-          onClose={() => setIsDelete(false)}>
+          onClose={() => setIsDelete(false)}
+        >
           <DeleteModal
             deleteFunction={() => mutateAsync([id])}
             loading={isPending}
@@ -237,7 +249,8 @@ const SellCard = ({
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={isRestore}
-          onClose={() => setIsRestore(false)}>
+          onClose={() => setIsRestore(false)}
+        >
           <RestoreModal
             deleteFunction={() => setIsConfirm(true)}
             loading={false}
@@ -251,7 +264,8 @@ const SellCard = ({
           maxWidth={2000}
           maxHeight={`90%`}
           isOpen={detail}
-          onClose={() => setDetail(false)}>
+          onClose={() => setDetail(false)}
+        >
           <CustomClose onClick={() => setDetail(false)} />
           <SellDetailCard
             discount={discount}
@@ -270,7 +284,8 @@ const SellCard = ({
           maxWidth={2000}
           maxHeight={`90%`}
           isOpen={isConfirm}
-          onClose={() => setIsConfirm(false)}>
+          onClose={() => setIsConfirm(false)}
+        >
           <CustomClose onClick={() => setIsConfirm(false)} />
 
           <SellRestoreConfirm

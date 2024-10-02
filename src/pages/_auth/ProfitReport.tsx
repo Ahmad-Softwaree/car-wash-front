@@ -4,10 +4,9 @@ import TabList from "@mui/joy/TabList";
 import Tab from "@mui/joy/Tab";
 import { useState } from "react";
 
-import KogaAllReportList from "@/containers/KogaAllReportList";
 import { useGlobalContext } from "@/context/GlobalContext";
-import KogaNullReportList from "@/containers/KogaNullReportList";
-import KogaMovementReportList from "@/containers/KogaMovementReportList";
+import BillProfitReportList from "@/containers/BillProfitReportList";
+import ItemProfitReportList from "@/containers/ItemProfitReportList";
 const ProfitReport = () => {
   const [index, setIndex] = useState(0);
   const {
@@ -65,8 +64,8 @@ const ProfitReport = () => {
           </TabList>
         </Tabs>
 
-        {index == 0 && <KogaAllReportList />}
-        {index == 1 && <KogaNullReportList />}
+        {index == 0 && <BillProfitReportList />}
+        {index == 1 && <ItemProfitReportList />}
       </Container>
     </>
   );

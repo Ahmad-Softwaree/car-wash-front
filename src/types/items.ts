@@ -5,7 +5,6 @@ import {
   MaybeImageTypeInDatabase,
 } from "./global";
 import { Sell, SellItem } from "./sell";
-import { ItemQuantityHistory } from "database/types";
 
 export type ItemCard = {
   id: Id;
@@ -71,7 +70,13 @@ export type ItemKoga = Item &
   SellItem &
   Sell & { index?: number; total_quantity?: number | string };
 
+export type ItemProfit = Item &
+  SellItem &
+  Sell & { index?: number; total_quantity?: number | string };
+
 export type ItemSellReportCardProps = ItemReport;
+
+export type ItemProfitReportCardProps = ItemProfit;
 
 export type ItemKogaReportCardProps = ItemKoga;
 
@@ -92,8 +97,9 @@ export type ItemQuantityHistory = {
   created_by: string;
   item_id: number;
   item_name: string;
-  item_type_id: number;
-  item_type_name: string;
+  item_barcode: string;
+  type_id: number;
+  type_name: string;
   quantity: number;
   item_purchase_price: number;
   item_sell_price: number;
