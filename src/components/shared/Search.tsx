@@ -11,7 +11,10 @@ const Search = ({ placeholder }: { placeholder?: string }) => {
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string) || "";
 
   return (
-    <InputGroup className="text-input w-[200px] md:w-[300px] dark-light">
+    <InputGroup
+      parentDivClass="w-fit"
+      className="text-input w-[200px] md:w-[300px] dark-light"
+    >
       <Input
         onChange={(e) =>
           setSearchParam((prev) => {

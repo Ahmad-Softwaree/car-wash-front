@@ -28,6 +28,8 @@ import TBody from "@/components/ui/TBody";
 import ReservationCard from "@/components/cards/ReservationCard";
 import TFoot from "@/components/ui/TFoot";
 import DeleteModal from "@/components/ui/DeleteModal";
+import Loading from "@/components/ui/Loading";
+import { TailSpin } from "react-loader-spinner";
 
 const Reservations = () => {
   const [searchParam, setSearchParam] = useSearchParams();
@@ -45,7 +47,8 @@ const Reservations = () => {
     <>
       <Container
         as={`div`}
-        className="w-full gap-0 flex flex-col justify-start items-start">
+        className="w-full gap-0 flex flex-col justify-start items-start"
+      >
         <div className="w-full gap-5 flex flex-row justify-between ">
           {deleted_page && (
             <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
@@ -79,18 +82,17 @@ const Reservations = () => {
                 useSearchDeletedReservations(
                   searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
                 )
-              }>
+              }
+            >
               {({
                 isFetchingNextPage,
                 hasNextPage,
                 isLoading,
                 ref,
                 data,
-                refetch,
+                searchLoading,
                 isSearched,
                 searchData,
-                searchRefetch,
-                fetchNextPage,
               }) => {
                 const allData = useMemo(
                   () =>
@@ -103,6 +105,13 @@ const Reservations = () => {
                       : [],
                   [data, searchData, isSearched]
                 );
+                if (searchLoading || isLoading) {
+                  return (
+                    <Loading>
+                      <TailSpin />
+                    </Loading>
+                  );
+                }
 
                 return (
                   <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
@@ -203,10 +212,11 @@ const Reservations = () => {
       {isAdd && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={800}
+          maxWidth={1500}
           maxHeight={`90%`}
           isOpen={isAdd}
-          onClose={() => setIsAdd(false)}>
+          onClose={() => setIsAdd(false)}
+        >
           <CustomClose onClick={() => setIsAdd(false)} />
           <ReservationForm state="insert" onClose={() => setIsAdd(false)} />
         </Dialog>
@@ -217,7 +227,8 @@ const Reservations = () => {
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={isRestore}
-          onClose={() => setIsRestore(false)}>
+          onClose={() => setIsRestore(false)}
+        >
           <DeleteModal
             deleteFunction={() => mutateAsync(checked)}
             loading={isPending}

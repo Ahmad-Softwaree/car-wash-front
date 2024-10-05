@@ -57,7 +57,8 @@ const Expenses = () => {
     <>
       <Container
         as={`div`}
-        className="w-full gap-10 flex flex-col justify-start items-start">
+        className="w-full gap-10 flex flex-col justify-start items-start"
+      >
         <div className="w-full gap-5 flex flex-row justify-between ">
           <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
             <Badge
@@ -69,7 +70,8 @@ const Expenses = () => {
               anchorOrigin={{
                 vertical: "bottom",
                 horizontal: "right",
-              }}>
+              }}
+            >
               <Filter
                 onClick={() => setFilter(true)}
                 className="w-11 h-11 p-2 rounded-md dark-light hover:light-dark cursor-pointer default-border transition-all duration-200"
@@ -91,7 +93,8 @@ const Expenses = () => {
                 className="!font-bukra !text-xs text-nowrap "
                 size="md"
                 variant="soft"
-                color="danger">
+                color="danger"
+              >
                 سڕینەوەی فلتەر
               </Button>
             ) : null}
@@ -126,7 +129,8 @@ const Expenses = () => {
                   searchParam.get(ENUMs.FROM_PARAM as string) || "",
                   searchParam.get(ENUMs.TO_PARAM as string) || ""
                 )
-          }>
+          }
+        >
           {({ isFetchingNextPage, hasNextPage, ref, data }) => {
             const allData = useMemo(
               () =>
@@ -139,7 +143,8 @@ const Expenses = () => {
             return (
               <div
                 ref={tableRef}
-                className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
+                className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll"
+              >
                 <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
                   <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
                     <Tr>
@@ -226,7 +231,8 @@ const Expenses = () => {
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={isDelete}
-          onClose={() => setIsDelete(false)}>
+          onClose={() => setIsDelete(false)}
+        >
           <DeleteModal
             deleteFunction={() => mutateAsync(checked)}
             loading={isPending}
@@ -240,7 +246,8 @@ const Expenses = () => {
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={isRestore}
-          onClose={() => setIsRestore(false)}>
+          onClose={() => setIsRestore(false)}
+        >
           <RestoreModal
             deleteFunction={() => restore(checked)}
             loading={restoreLoading}
@@ -251,10 +258,11 @@ const Expenses = () => {
       {isAddOpen && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={800}
+          maxWidth={1500}
           maxHeight={`90%`}
           isOpen={isAddOpen}
-          onClose={() => setIsAddOpen(false)}>
+          onClose={() => setIsAddOpen(false)}
+        >
           <CustomClose onClick={() => setIsAddOpen(false)} />
           <ExpenseForm state="insert" onClose={() => setIsAddOpen(false)} />
         </Dialog>
@@ -265,7 +273,8 @@ const Expenses = () => {
           maxWidth={400}
           maxHeight={`90%`}
           isOpen={filter}
-          onClose={() => setFilter(false)}>
+          onClose={() => setFilter(false)}
+        >
           <CustomClose onClick={() => setFilter(false)} />
           <FilterModal onClose={() => setFilter(false)} type="expense" />
         </Dialog>

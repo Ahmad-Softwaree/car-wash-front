@@ -18,6 +18,7 @@ import MyButton from "@/components/ui/MyButton";
 import PrintModal from "@/components/ui/PrintModal";
 import TBody from "@/components/ui/TBody";
 import TFoot from "@/components/ui/TFoot";
+import { useToast } from "@/components/ui/use-toast";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 import { ENUMs } from "@/lib/enum";
@@ -45,6 +46,7 @@ import { TailSpin } from "react-loader-spinner";
 import { useSearchParams } from "react-router-dom";
 
 const CreatePsula = () => {
+  const { toast } = useToast();
   const [calculate, setCalculate] = useState<boolean>(false);
   const [discount, setDiscount] = useState<number>(0);
   const [discountMoney, setDiscountMoney] = useState<number>(0);
@@ -132,6 +134,16 @@ const CreatePsula = () => {
     ).toFixed(0)
   );
 
+  let totalItems = formatMoney(
+    sellItems?.reduce((accumulator: number, val: SellItem) => {
+      if (val.quantity != 0) {
+        return accumulator + Number(val.quantity);
+      } else {
+        return 0;
+      }
+    }, 0) || (0).toFixed(0)
+  );
+
   let discountPercent = (
     (sell?.discount /
       sellItems?.reduce((accumulator: number, val: SellItem) => {
@@ -152,7 +164,8 @@ const CreatePsula = () => {
     <>
       <Container
         as={`div`}
-        className="w-full grid grid-cols-1 xl:grid-cols-5  gap-5 min-h-[700px]">
+        className="w-full grid grid-cols-1 xl:grid-cols-5  gap-5 min-h-[700px]"
+      >
         {createPending ? (
           <Loading>
             <TailSpin />
@@ -168,7 +181,8 @@ const CreatePsula = () => {
                   anchorOrigin={{
                     vertical: "bottom",
                     horizontal: "right",
-                  }}>
+                  }}
+                >
                   <Filter
                     onClick={() => setFilter(true)}
                     className="w-11 h-11 p-2 rounded-md dark-light hover:light-dark cursor-pointer default-border transition-all duration-200"
@@ -186,7 +200,8 @@ const CreatePsula = () => {
                     className="!font-bukra !text-xs"
                     size="md"
                     variant="soft"
-                    color="danger">
+                    color="danger"
+                  >
                     سڕینەوەی فلتەر
                   </Button>
                 )}
@@ -204,7 +219,8 @@ const CreatePsula = () => {
                   useSearchItems(
                     searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
                   )
-                }>
+                }
+              >
                 {({
                   isFetchingNextPage,
                   hasNextPage,
@@ -249,7 +265,8 @@ const CreatePsula = () => {
                                 sell_id_param != "0" &&
                                 sell_id_param &&
                                 "!border-yellow-500"
-                              }`}>
+                              }`}
+                            >
                               <PsulaItemCard
                                 onClick={onClick}
                                 key={val.id}
@@ -285,7 +302,7 @@ const CreatePsula = () => {
                 </div>
               )}
               <div className="w-full grid grid-rows-6 grid-cols-1 gap-0 place-items-start ">
-                <div className="row-span-3 w-full max-w-full overflow-x-auto h-[500px] default-border hide-scroll">
+                <div className="row-span-3 w-full max-w-full overflow-x-auto max-h-[500px] default-border hide-scroll">
                   <Table className="relative  w-full table-dark-light  default-border">
                     <THead className="sticky -top-1 z-[100]  table-dark-light w-full  default-border">
                       <Tr>
@@ -350,22 +367,25 @@ const CreatePsula = () => {
                         />
                       ))}
                     </TBody>
-                    <TFoot className="sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
-                      {sellItems && sellItems?.length > 0 && sell && (
-                        <Tr>
-                          <Td className="text-center" colSpan={3}>
-                            کۆی گشتی : {sellTotal}
-                          </Td>
-                          <Td className="text-center" colSpan={4}>
-                            کۆی گشتی دوای داشکان : {sellTotalAfterDiscount}
-                          </Td>
-                          <Td className="text-center" colSpan={2}>
-                            داشکاندن : {formatMoney(sell?.discount)}
-                          </Td>
-                        </Tr>
-                      )}
-                    </TFoot>
                   </Table>
+                </div>
+                <div className="flex flex-row justify-between items-center gap-10  table-dark-light w-full  default-border p-4">
+                  {sellItems && sellItems?.length > 0 && sell && (
+                    <>
+                      <p className="text-center text-xs">
+                        کۆی مەواد : {totalItems}
+                      </p>
+                      <p className="text-center text-xs">
+                        کۆی گشتی : {sellTotal} IQD
+                      </p>
+                      <p className="text-center text-xs">
+                        داشکاندن : {formatMoney(sell?.discount)} IQD
+                      </p>
+                      <p className="text-center text-xs">
+                        کۆی گشتی دوای داشکان : {sellTotalAfterDiscount} IQD
+                      </p>
+                    </>
+                  )}
                 </div>
                 <div className="row-span-3 w-full grid grid-cols-1 grid-rows-3 default-border h-[250px]">
                   <div className=" w-full grid grid-cols-3 col-span-full row-span-2">
@@ -377,86 +397,105 @@ const CreatePsula = () => {
                         داشکان بە ڕێژە : {discountPercent} %
                       </p>{" "}
                       <p className="text-sm text-center w-full">
-                        داشکان بەپارە : {sell?.discount}
+                        داشکان بەپارە : {formatMoney(sell?.discount)}
                       </p>
                       <p className="text-sm text-center w-full">
                         کۆی گشتی دوای داشکان : {sellTotalAfterDiscount}
                       </p>
                     </div>
                     <div className="flex flex-col  col-span-1 row-span-full h-full">
-                      <InputGroup className="w-full   text-input !rounded-none h-1/2">
-                        <Input
-                          onChange={(e) => setDiscount(Number(e.target.value))}
-                          value={discount ? discount : discountPercent}
-                          id="discount"
-                          type="number"
-                          max={`100`}
-                          min={`0`}
-                          name="discount"
-                          placeholder="داشکاندن بە ڕێژەی سەدی"
-                          className="w-full text-md h-full"
-                        />
-                      </InputGroup>
+                      <Input
+                        onChange={(e) => setDiscount(Number(e.target.value))}
+                        value={discount}
+                        id="discount"
+                        type="number"
+                        max={`100`}
+                        min={`0`}
+                        name="discount"
+                        placeholder="داشکاندن بە ڕێژەی سەدی"
+                        className="w-full text-md h-1/2"
+                      />
+
                       <MyButton
                         onClick={async () => {
-                          await update({
-                            discount: Number(
-                              (
-                                sellItems?.reduce(
-                                  (accumulator: number, val: SellItem) => {
-                                    return (
-                                      accumulator +
-                                      Number(val.item_sell_price) * val.quantity
-                                    );
-                                  },
-                                  0
-                                ) * Number(discount / 100)
-                              ).toFixed(0)
-                            ),
-                          });
-                          setDiscount(0);
-                          setDiscountMoney(0);
+                          if (sell_id_param == "0") {
+                            throw toast({
+                              alertType: "error",
+                              title: "هەڵە",
+                              description: "سەرەتا وەصڵ دروسکە",
+                            });
+                          }
+                          try {
+                            await update({
+                              discount: Number(
+                                (
+                                  sellItems?.reduce(
+                                    (accumulator: number, val: SellItem) => {
+                                      return (
+                                        accumulator +
+                                        Number(val.item_sell_price) *
+                                          val.quantity
+                                      );
+                                    },
+                                    0
+                                  ) * Number(discount / 100)
+                                ).toFixed(0)
+                              ),
+                            });
+                          } catch (error) {
+                          } finally {
+                            setDiscount(0);
+                            setDiscountMoney(0);
+                          }
                         }}
                         disabled={updatePending}
                         name="addDiscountButton"
                         type="submit"
-                        className=" bg-sky-600 h-1/2  p-2 px-4 text-white flex flex-row justify-center items-center gap-2 col-span-1 bg-opacity-60 hover:bg-opacity-100 transition-all duration-200">
+                        className=" bg-sky-600 h-1/2  p-2 px-4 text-white flex flex-row justify-center items-center gap-2 col-span-1 bg-opacity-60 hover:bg-opacity-100 transition-all duration-200"
+                      >
                         <p className="font-light text-md font-bukra">
                           جێبەجێکردن
                         </p>
                       </MyButton>
                     </div>
                     <div className="flex flex-col  col-span-1 row-span-full h-full">
-                      <InputGroup className="w-full h-1/2 text-input !rounded-none">
-                        <Input
-                          onChange={(e) =>
-                            setDiscountMoney(Number(e.target.value))
-                          }
-                          value={
-                            discountMoney
-                              ? discountMoney
-                              : formatMoney(sell?.discount)
-                          }
-                          id="discountMoney"
-                          type="text"
-                          min={`0`}
-                          name="discountMoney"
-                          placeholder="داشکاندن بە پارە"
-                          className="w-full text-md h-full"
-                        />
-                      </InputGroup>
+                      <Input
+                        onChange={(e) =>
+                          setDiscountMoney(Number(e.target.value))
+                        }
+                        value={discountMoney}
+                        id="discountMoney"
+                        type="text"
+                        min={`0`}
+                        name="discountMoney"
+                        placeholder="داشکاندن بە پارە"
+                        className="w-full text-md h-1/2"
+                      />
+
                       <MyButton
                         onClick={async () => {
-                          await update({
-                            discount: discountMoney,
-                          });
-                          setDiscount(0);
-                          setDiscountMoney(0);
+                          if (sell_id_param == "0") {
+                            throw toast({
+                              alertType: "error",
+                              title: "هەڵە",
+                              description: "سەرەتا وەصڵ دروسکە",
+                            });
+                          }
+                          try {
+                            await update({
+                              discount: discountMoney,
+                            });
+                          } catch (error) {
+                          } finally {
+                            setDiscount(0);
+                            setDiscountMoney(0);
+                          }
                         }}
                         disabled={updatePending}
                         name="addDiscountButton"
                         type="submit"
-                        className=" bg-sky-600 h-1/2  p-2 px-4 text-white flex flex-row justify-center items-center gap-2 col-span-1 bg-opacity-60 hover:bg-opacity-100 transition-all duration-200">
+                        className=" bg-sky-600 h-1/2  p-2 px-4 text-white flex flex-row justify-center items-center gap-2 col-span-1 bg-opacity-60 hover:bg-opacity-100 transition-all duration-200"
+                      >
                         <p className="font-light text-md font-bukra">
                           جێبەجێکردن
                         </p>
@@ -468,7 +507,8 @@ const CreatePsula = () => {
                       onClick={() => setIsDelete(true)}
                       className="flex flex-row justify-center items-center gap-2 col-span-1 !rounded-none row-span-1"
                       variant="soft"
-                      color="danger">
+                      color="danger"
+                    >
                       <p className="!font-bukra text-right font-light  text-md">
                         سڕینەوەی پسولە
                       </p>
@@ -478,7 +518,8 @@ const CreatePsula = () => {
                       onClick={() => create()}
                       className="flex flex-row justify-center items-center gap-2 col-span-1 !rounded-none row-span-1"
                       variant="soft"
-                      color="success">
+                      color="success"
+                    >
                       <p className="!font-bukra text-right font-light  text-md">
                         پسولەی نوێ
                       </p>
@@ -488,7 +529,8 @@ const CreatePsula = () => {
                       onClick={() => setIsPrint(true)}
                       className="flex flex-row justify-center items-center gap-2 col-span-1 !rounded-none row-span-1"
                       variant="soft"
-                      color="primary">
+                      color="primary"
+                    >
                       <p className="!font-bukra text-right font-light  text-md">
                         چاپکردن
                       </p>
@@ -498,7 +540,8 @@ const CreatePsula = () => {
                       onClick={() => setCalculate(true)}
                       className="flex flex-row justify-center items-center gap-2 col-span-1 !rounded-none row-span-1"
                       variant="soft"
-                      color="warning">
+                      color="warning"
+                    >
                       <p className="!font-bukra text-right font-light  text-md">
                         بژمێر
                       </p>
@@ -517,7 +560,8 @@ const CreatePsula = () => {
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={isDelete}
-          onClose={() => setIsDelete(false)}>
+          onClose={() => setIsDelete(false)}
+        >
           <DeleteModal
             deleteFunction={() => deleteSell([Number(sell_id_param)])}
             loading={deletePending}
@@ -531,7 +575,8 @@ const CreatePsula = () => {
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={isPrint}
-          onClose={() => setIsPrint(false)}>
+          onClose={() => setIsPrint(false)}
+        >
           <PrintModal
             printFn={() => useGetSellPrint(Number(sell_id_param) || 0)}
             onClose={() => setIsPrint(false)}
@@ -544,7 +589,8 @@ const CreatePsula = () => {
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={isItemDelete}
-          onClose={() => setIsItemDelete(false)}>
+          onClose={() => setIsItemDelete(false)}
+        >
           <DeleteModal
             deleteFunction={() => deleteItemInSell(checked)}
             loading={deleteItemInSellPending}
@@ -558,7 +604,8 @@ const CreatePsula = () => {
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={calculate}
-          onClose={() => setCalculate(false)}>
+          onClose={() => setCalculate(false)}
+        >
           <CustomClose onClick={() => setCalculate(false)} />
           <CalculatorModal
             money={Number(
@@ -579,7 +626,8 @@ const CreatePsula = () => {
           maxWidth={400}
           maxHeight={`90%`}
           isOpen={filter}
-          onClose={() => setFilter(false)}>
+          onClose={() => setFilter(false)}
+        >
           <CustomClose onClick={() => setFilter(false)} />
           <FilterModal onClose={() => setFilter(false)} type="item" />
         </Dialog>

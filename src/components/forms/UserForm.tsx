@@ -32,6 +32,7 @@ import { Chip } from "@mui/joy";
 import Dialog from "../shared/Dialog";
 import CustomClose from "../shared/CustomClose";
 import RoleForm from "./RoleForm";
+import Required from "../shared/Required";
 const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
   const { state: globalState } = useGlobalContext();
   const form = useRef<FormHandle>(null);
@@ -146,6 +147,7 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
               <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
                 <Label className="w-full text-sm  flex flex-row gap-2">
                   <p>ناوی بەکارهێنەر</p>
+                  <Required />
                 </Label>{" "}
                 <InputGroup
                   error={errors.username}
@@ -164,6 +166,7 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
               <div className=" col-span-full md:col-span-1 w-full flex flex-col gap-2">
                 <Label className="w-full text-sm  flex flex-row gap-2">
                   <p>ناو</p>
+                  <Required />
                 </Label>{" "}
                 <InputGroup
                   error={errors.name}
@@ -182,6 +185,7 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
               <div className=" col-span-full md:col-span-1 w-full flex flex-col gap-2">
                 <Label className="w-full text-sm  flex flex-row gap-2">
                   <p>ڕۆڵ</p>
+                  <Required />
                 </Label>{" "}
                 <div className="w-full flex flex-row justify-start items-center gap-3">
                   <InputGroup
@@ -195,7 +199,7 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
                       id="role_id"
                       className="w-full bg-transparent !text-sm"
                     >
-                      <Option className="!text-sm dark-light" value={-1}>
+                      <Option className="!text-sm dark-light" value={""}>
                         ڕۆڵ هەڵبژێرە
                       </Option>
                       {roles.map((val: Role, _index: number) => (
@@ -225,6 +229,7 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
               <div className=" col-span-full md:col-span-1 w-full flex flex-col gap-2">
                 <Label className="w-full text-sm  flex flex-row gap-2">
                   <p>ووشەی نهێنی</p>
+                  <Required />
                 </Label>{" "}
                 <InputGroup
                   error={errors.password}
@@ -261,6 +266,7 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
                   );
                   return (
                     <InputGroup
+                      parentDivClass="!w-fit"
                       key={val.id}
                       className="col-span-full md:col-span-3 lg:col-span-2 checkbox-input"
                     >
@@ -295,7 +301,7 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
       {isAddRole && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={800}
+          maxWidth={1500}
           maxHeight={`90%`}
           isOpen={isAddRole}
           onClose={() => setIsAddRole(false)}

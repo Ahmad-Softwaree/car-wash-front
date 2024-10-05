@@ -25,7 +25,6 @@ import {
 import { Item } from "@/types/items";
 import ItemCard from "@/components/cards/ItemCard";
 import ItemForm from "@/components/forms/ItemForm";
-import TFoot from "@/components/ui/TFoot";
 import CustomClose from "@/components/shared/CustomClose";
 import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import DeleteChip from "@/components/shared/DeleteChip";
@@ -58,7 +57,8 @@ const Items = () => {
     <>
       <Container
         as={`div`}
-        className="w-full gap-10 flex flex-col justify-start items-start">
+        className="w-full gap-10 flex flex-col justify-start items-start"
+      >
         <div className="w-full gap-5 flex flex-row justify-between ">
           <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
             <Search placeholder="گەڕان بەپێێ ناو/بارکۆد" />
@@ -68,7 +68,8 @@ const Items = () => {
               anchorOrigin={{
                 vertical: "bottom",
                 horizontal: "right",
-              }}>
+              }}
+            >
               <Filter
                 onClick={() => setFilter(true)}
                 className="w-11 h-11 p-2 rounded-md dark-light hover:light-dark cursor-pointer default-border transition-all duration-200"
@@ -86,7 +87,8 @@ const Items = () => {
                 className="!font-bukra !text-xs"
                 size="md"
                 variant="soft"
-                color="danger">
+                color="danger"
+              >
                 سڕینەوەی فلتەر
               </Button>
             )}
@@ -130,7 +132,8 @@ const Items = () => {
               : useSearchItems(
                   searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
                 )
-          }>
+          }
+        >
           {({
             isFetchingNextPage,
             hasNextPage,
@@ -162,92 +165,94 @@ const Items = () => {
             }
 
             return (
-              <div
-                ref={tableRef}
-                className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
-                <Table className="relative  w-full table-dark-light  default-border">
-                  <THead className="sticky -top-1 z-[100]  table-dark-light w-full  default-border">
-                    <Tr>
-                      <Th className="text-right text-sm !p-4 !min-w-[100px]">
-                        <InputGroup className="checkbox-input">
-                          <Input
-                            onClick={() => {
-                              tableRef.current?.scrollTo({
-                                top: 0,
-                                behavior: "smooth",
-                              });
-                              if (checked.length == 0) {
-                                dispatch({
-                                  type: CONTEXT_TYPEs.CHECK,
-                                  payload: allData
-                                    .slice(0, ENUMs.CHECK_LIMIT as number)
-                                    .map((val: Item, _index: number) => val.id),
+              <>
+                {" "}
+                <div
+                  ref={tableRef}
+                  className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll"
+                >
+                  <Table className="relative  w-full table-dark-light  default-border">
+                    <THead className="sticky -top-1 z-[100]  table-dark-light w-full  default-border">
+                      <Tr>
+                        <Th className="text-right text-sm !p-4 !min-w-[100px]">
+                          <InputGroup className="checkbox-input">
+                            <Input
+                              onClick={() => {
+                                tableRef.current?.scrollTo({
+                                  top: 0,
+                                  behavior: "smooth",
                                 });
-                              } else {
-                                dispatch({
-                                  type: CONTEXT_TYPEs.CHECK,
-                                  payload: [],
-                                });
-                              }
-                            }}
-                            checked={check_type == "all"}
-                            type="checkbox"
-                            className="cursor-pointer"
-                          />
-                        </InputGroup>
-                      </Th>
-                      <Th className="text-right text-sm !p-4">
-                        <p className="pr-1">#</p>
-                      </Th>
-                      <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">ناو</p>
-                      </Th>
-                      <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">بارکۆد</p>
-                      </Th>{" "}
-                      <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">جۆر</p>
-                      </Th>
-                      <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">عەدەد</p>
-                      </Th>
-                      <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">نرخی فرۆشتن</p>
-                      </Th>
-                      <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">نرخی کڕین</p>
-                      </Th>
-                      <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">داغڵکار</p>
-                      </Th>
-                      <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">چاککار</p>
-                      </Th>
-                      <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">کردارەکان</p>
-                      </Th>
-                    </Tr>
-                  </THead>
-                  <TBody className="w-full">
-                    <>
-                      {allData?.map((val: Item, index: number) => (
-                        <ItemCard key={val.id} index={index} {...val} />
-                      ))}
+                                if (checked.length == 0) {
+                                  dispatch({
+                                    type: CONTEXT_TYPEs.CHECK,
+                                    payload: allData
+                                      .slice(0, ENUMs.CHECK_LIMIT as number)
+                                      .map(
+                                        (val: Item, _index: number) => val.id
+                                      ),
+                                  });
+                                } else {
+                                  dispatch({
+                                    type: CONTEXT_TYPEs.CHECK,
+                                    payload: [],
+                                  });
+                                }
+                              }}
+                              checked={check_type == "all"}
+                              type="checkbox"
+                              className="cursor-pointer"
+                            />
+                          </InputGroup>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-1">#</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">ناو</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">بارکۆد</p>
+                        </Th>{" "}
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">جۆر</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">عەدەد</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">نرخی فرۆشتن</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">نرخی کڕین</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">داغڵکار</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">چاککار</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">کردارەکان</p>
+                        </Th>
+                      </Tr>
+                    </THead>
+                    <TBody className="w-full">
+                      <>
+                        {allData?.map((val: Item, index: number) => (
+                          <ItemCard key={val.id} index={index} {...val} />
+                        ))}
 
-                      {!isFetchingNextPage && hasNextPage && !isSearched && (
-                        <div className="h-[20px]" ref={ref}></div>
-                      )}
-                    </>
-                  </TBody>
-                  <TFoot className="sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
-                    <Tr>
-                      <Td className="text-center" colSpan={11}>
-                        ژمارەی داتا {allData.length}
-                      </Td>
-                    </Tr>
-                  </TFoot>
-                </Table>
-              </div>
+                        {!isFetchingNextPage && hasNextPage && !isSearched && (
+                          <div className="h-[20px]" ref={ref}></div>
+                        )}
+                      </>
+                    </TBody>
+                  </Table>
+                </div>
+                <div className="w-full flex flex-row justify-center items-center z-[100]  table-dark-light   default-border p-2 ">
+                  <p className="text-center">ژمارەی داتا {allData.length}</p>
+                </div>
+              </>
             );
           }}
         </Pagination>
@@ -258,7 +263,8 @@ const Items = () => {
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={isDelete}
-          onClose={() => setIsDelete(false)}>
+          onClose={() => setIsDelete(false)}
+        >
           <DeleteModal
             deleteFunction={() => mutateAsync(checked)}
             loading={isPending}
@@ -272,7 +278,8 @@ const Items = () => {
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={isRestore}
-          onClose={() => setIsRestore(false)}>
+          onClose={() => setIsRestore(false)}
+        >
           <RestoreModal
             deleteFunction={() => restore(checked)}
             loading={restoreLoading}
@@ -286,7 +293,8 @@ const Items = () => {
           maxWidth={1500}
           maxHeight={`90%`}
           isOpen={isAddOpen}
-          onClose={() => setIsAddOpen(false)}>
+          onClose={() => setIsAddOpen(false)}
+        >
           <CustomClose onClick={() => setIsAddOpen(false)} />
 
           <ItemForm state="insert" onClose={() => setIsAddOpen(false)} />
@@ -298,7 +306,8 @@ const Items = () => {
           maxWidth={400}
           maxHeight={`90%`}
           isOpen={filter}
-          onClose={() => setFilter(false)}>
+          onClose={() => setFilter(false)}
+        >
           <CustomClose onClick={() => setFilter(false)} />
           <FilterModal onClose={() => setFilter(false)} type="item" />
         </Dialog>

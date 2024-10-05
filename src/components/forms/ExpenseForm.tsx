@@ -71,14 +71,14 @@ const ExpenseForm = ({
     }
   }, [state, globalState]);
 
-
   return (
     <>
       <Form
         className="w-full flex flex-col justify-center items-start gap-10 min-w-none mt-2"
         ref={form}
         onSubmit={handleSubmit(onSubmit)}
-        id="login-form">
+        id="login-form"
+      >
         <div className="w-full flex flex-row justify-between items-center">
           <p className="font-bold font-bukra text-lg text-nowrap">
             خەرجی {state == "insert" ? "نوێ" : "کۆن"}
@@ -93,27 +93,31 @@ const ExpenseForm = ({
             <div className="w-full space-y-4 flex flex-col">
               <Label
                 htmlFor="type_id"
-                className="w-full text-sm  flex flex-row gap-2">
+                className="w-full text-sm  flex flex-row gap-2"
+              >
                 <p>جۆری خەرجی</p>
               </Label>{" "}
               <div className="w-full flex flex-row justify-start items-center gap-3">
                 <InputGroup
                   error={errors.type_id}
-                  className="w-full space-y-2  text-input col-span-full md:col-span-1">
+                  className="w-full space-y-2  text-input col-span-full md:col-span-1"
+                >
                   <Select
                     title="type_id"
                     {...register("type_id", { required: true })}
                     name="type_id"
                     id="type_id"
-                    className="w-full dark-light text-sm">
-                    <Option className="dark-light text-sm" value={-1}>
+                    className="w-full dark-light text-sm"
+                  >
+                    <Option className="dark-light text-sm" value={""}>
                       جۆری خەرجی هەڵبژێرە
                     </Option>
                     {types.map((val: ExpenseType, _index: number) => (
                       <Option
                         className="dark-light text-sm"
                         key={val.id}
-                        value={val.id}>
+                        value={val.id}
+                      >
                         {val.name}
                       </Option>
                     ))}
@@ -125,19 +129,22 @@ const ExpenseForm = ({
                   }}
                   onClick={() => setIsAddType(true)}
                   variant="soft"
-                  color="success">
+                  color="success"
+                >
                   <Plus className="w-4 h-4 cursor-pointer" />
                 </Chip>
               </div>
               <div className="w-full flex flex-col justify-start items-start gap-2 flex-wrap">
                 <Label
                   htmlFor="price"
-                  className="w-full text-sm  flex flex-row gap-2">
+                  className="w-full text-sm  flex flex-row gap-2"
+                >
                   <p>بڕی خەرجکراوە</p>
                 </Label>{" "}
                 <InputGroup
                   error={errors.price}
-                  className="w-full lg:w-[35%] text-input">
+                  className="w-full lg:w-[35%] text-input"
+                >
                   <Input
                     type="text"
                     {...register("price", { required: true })}
@@ -151,12 +158,14 @@ const ExpenseForm = ({
               <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
                 <Label
                   htmlFor="time"
-                  className="w-full text-sm  flex flex-row gap-2">
+                  className="w-full text-sm  flex flex-row gap-2"
+                >
                   <p>بەروار </p>
                 </Label>{" "}
                 <InputGroup
                   error={errors.date}
-                  className="w-full space-y-2  text-input col-span-full md:col-span-1">
+                  className="w-full space-y-2  text-input col-span-full md:col-span-1"
+                >
                   <Input
                     id="time"
                     type="date"
@@ -170,10 +179,12 @@ const ExpenseForm = ({
               </div>
               <InputGroup
                 error={errors.note}
-                className="flex flex-col justify-start items-start gap-2 flex-wra">
+                className="flex flex-col justify-start items-start gap-2 flex-wra"
+              >
                 <Label
                   htmlFor="note"
-                  className="w-full text-sm  flex flex-row gap-2">
+                  className="w-full text-sm  flex flex-row gap-2"
+                >
                   <p>تێبینی</p>
                 </Label>{" "}
                 <Textarea
@@ -192,17 +203,19 @@ const ExpenseForm = ({
           loading={isPending || updateLoading}
           name="addUserButton"
           type="submit"
-          className=" bg-sky-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2">
+          className=" bg-sky-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2"
+        >
           <p className="font-light text-sm font-bukra">جێبەجێکردن</p>
         </MyButton>
       </Form>
       {isAddType && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={800}
+          maxWidth={1500}
           maxHeight={`90%`}
           isOpen={isAddType}
-          onClose={() => setIsAddType(false)}>
+          onClose={() => setIsAddType(false)}
+        >
           <CustomClose onClick={() => setIsAddType(false)} />
           <ExpenseTypeForm state="insert" onClose={() => setIsAddType(false)} />
         </Dialog>

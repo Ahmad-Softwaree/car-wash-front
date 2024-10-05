@@ -47,7 +47,8 @@ const ServiceCard = ({ name, id, index = -1, ...others }: ServiceCardProps) => {
         className={`default-border table-row-hover  ${
           checked?.includes(id) ? "table-row-include" : "table-row-normal"
         }`}
-        key={id}>
+        key={id}
+      >
         <Td className="!p-3">
           <InputGroup className="checkbox-input">
             <Input
@@ -86,11 +87,13 @@ const ServiceCard = ({ name, id, index = -1, ...others }: ServiceCardProps) => {
                 placement="top"
                 title="سڕینەوە"
                 color="danger"
-                variant="soft">
+                variant="soft"
+              >
                 <Chip
                   onClick={() => setIsDelete(true)}
                   variant="soft"
-                  color="danger">
+                  color="danger"
+                >
                   <Trash2 className="w-7 h-7 p-1 cursor-pointer" />
                 </Chip>
               </Tooltip>
@@ -98,7 +101,8 @@ const ServiceCard = ({ name, id, index = -1, ...others }: ServiceCardProps) => {
                 placement="top"
                 title="چاککردن"
                 color="success"
-                variant="soft">
+                variant="soft"
+              >
                 <Chip
                   onClick={() => {
                     dispatch({
@@ -112,7 +116,8 @@ const ServiceCard = ({ name, id, index = -1, ...others }: ServiceCardProps) => {
                     setUpdate(true);
                   }}
                   variant="soft"
-                  color="success">
+                  color="success"
+                >
                   <PenTool className="w-7 h-7 p-1 cursor-pointer" />
                 </Chip>
               </Tooltip>
@@ -123,11 +128,13 @@ const ServiceCard = ({ name, id, index = -1, ...others }: ServiceCardProps) => {
               placement="top"
               title="گێڕانەوە"
               color="warning"
-              variant="soft">
+              variant="soft"
+            >
               <Chip
                 onClick={() => setIsRestore(true)}
                 variant="soft"
-                color="warning">
+                color="warning"
+              >
                 <RotateCcw className="w-7 h-7 p-1 cursor-pointer" />
               </Chip>
             </Tooltip>
@@ -141,7 +148,8 @@ const ServiceCard = ({ name, id, index = -1, ...others }: ServiceCardProps) => {
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={isDelete}
-          onClose={() => setIsDelete(false)}>
+          onClose={() => setIsDelete(false)}
+        >
           <DeleteModal
             deleteFunction={() => mutateAsync([id])}
             loading={isPending}
@@ -155,7 +163,8 @@ const ServiceCard = ({ name, id, index = -1, ...others }: ServiceCardProps) => {
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={isRestore}
-          onClose={() => setIsRestore(false)}>
+          onClose={() => setIsRestore(false)}
+        >
           <RestoreModal
             deleteFunction={() => restore([id])}
             loading={restoreLoading}
@@ -166,10 +175,11 @@ const ServiceCard = ({ name, id, index = -1, ...others }: ServiceCardProps) => {
       {update && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={800}
+          maxWidth={1500}
           maxHeight={`90%`}
           isOpen={update}
-          onClose={updateOnClose}>
+          onClose={updateOnClose}
+        >
           <CustomClose onClick={() => updateOnClose()} />
           <ServiceForm state="update" onClose={updateOnClose} />
         </Dialog>

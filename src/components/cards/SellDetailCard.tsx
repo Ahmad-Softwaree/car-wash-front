@@ -174,79 +174,76 @@ const SellDetailCard = ({
             <TailSpin />
           </Loading>
         ) : (
-          <div className="row-span-6 w-full max-w-full overflow-x-auto h-[600px] default-border hide-scroll">
-            <Table className="relative  w-full table-dark-light  default-border">
-              <THead className="sticky -top-1 z-[100]  table-dark-light w-full  default-border">
-                <Tr>
-                  {!deleted_page && (
-                    <Th className="text-right text-sm !p-4 !min-w-[100px]">
-                      <InputGroup className="checkbox-input">
-                        <Input
-                          onClick={() => {
-                            if (checked.length == 0) {
-                              dispatch({
-                                type: CONTEXT_TYPEs.CHECK,
-                                payload: data?.map(
-                                  (val: SellItem, _index: number) => val.item_id
-                                ),
-                              });
-                            } else {
-                              dispatch({
-                                type: CONTEXT_TYPEs.CHECK,
-                                payload: [],
-                              });
-                            }
-                          }}
-                          checked={check_type == "all"}
-                          type="checkbox"
-                          className="cursor-pointer"
-                        />
-                      </InputGroup>
-                    </Th>
-                  )}
-                  <Th className="text-right text-sm !p-4">
-                    <p className="pr-1">#</p>
-                  </Th>
-                  <Th className="text-right text-sm !p-4">
-                    <p className="pr-3 table-head-border">ناوی کاڵا</p>
-                  </Th>
-                  <Th className="text-right text-sm !p-4">
-                    <p className="pr-3 table-head-border">دانە</p>
-                  </Th>{" "}
-                  <Th className="text-right text-sm !p-4">
-                    <p className="pr-3 table-head-border">نرخ</p>
-                  </Th>
-                  <Th className="text-right text-sm !p-4">
-                    <p className="pr-3 table-head-border">کۆ</p>
-                  </Th>
-                  {!deleted_page && (
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">کردارەکان</p>
-                    </Th>
-                  )}
-                </Tr>
-              </THead>
-              <TBody className="w-full">
-                {data?.map((val: SellItem, _index: number) => (
-                  <SellItemCard
-                    state="read"
-                    index={_index}
-                    key={val.id}
-                    {...val}
-                  />
-                ))}
-              </TBody>
-              <TFoot className="sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
-                {data && data?.length > 0 && (
+          <>
+            <div className="row-span-6 w-full max-w-full overflow-x-auto max-h-[600px] default-border hide-scroll">
+              <Table className="relative  w-full table-dark-light  default-border">
+                <THead className="sticky -top-1 z-[100]  table-dark-light w-full  default-border">
                   <Tr>
-                    <Td className="text-center" colSpan={7}>
-                      گشتی : {data.length}
-                    </Td>
+                    {!deleted_page && (
+                      <Th className="text-right text-sm !p-4 !min-w-[100px]">
+                        <InputGroup className="checkbox-input">
+                          <Input
+                            onClick={() => {
+                              if (checked.length == 0) {
+                                dispatch({
+                                  type: CONTEXT_TYPEs.CHECK,
+                                  payload: data?.map(
+                                    (val: SellItem, _index: number) =>
+                                      val.item_id
+                                  ),
+                                });
+                              } else {
+                                dispatch({
+                                  type: CONTEXT_TYPEs.CHECK,
+                                  payload: [],
+                                });
+                              }
+                            }}
+                            checked={check_type == "all"}
+                            type="checkbox"
+                            className="cursor-pointer"
+                          />
+                        </InputGroup>
+                      </Th>
+                    )}
+                    <Th className="text-right text-sm !p-4">
+                      <p className="pr-1">#</p>
+                    </Th>
+                    <Th className="text-right text-sm !p-4">
+                      <p className="pr-3 table-head-border">ناوی کاڵا</p>
+                    </Th>
+                    <Th className="text-right text-sm !p-4">
+                      <p className="pr-3 table-head-border">دانە</p>
+                    </Th>{" "}
+                    <Th className="text-right text-sm !p-4">
+                      <p className="pr-3 table-head-border">نرخ</p>
+                    </Th>
+                    <Th className="text-right text-sm !p-4">
+                      <p className="pr-3 table-head-border">کۆ</p>
+                    </Th>
+                    {!deleted_page && (
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">کردارەکان</p>
+                      </Th>
+                    )}
                   </Tr>
-                )}
-              </TFoot>
-            </Table>
-          </div>
+                </THead>
+                <TBody className="w-full">
+                  {data?.map((val: SellItem, _index: number) => (
+                    <SellItemCard
+                      state="read"
+                      index={_index}
+                      key={val.id}
+                      {...val}
+                    />
+                  ))}
+                </TBody>
+              </Table>
+            </div>
+            <div className="w-full flex flex-row justify-center items-center z-[100]  table-dark-light   default-border p-2 ">
+              <p className="text-center">ژمارەی داتا {data?.length}</p>
+            </div>
+          </>
         )}
       </div>
       {isDelete && (
@@ -255,7 +252,8 @@ const SellDetailCard = ({
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={isDelete}
-          onClose={() => setIsDelete(false)}>
+          onClose={() => setIsDelete(false)}
+        >
           <DeleteModal
             deleteFunction={() => mutateAsync(checked)}
             loading={isPending}

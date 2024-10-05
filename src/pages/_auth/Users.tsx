@@ -26,7 +26,6 @@ import { useSearchParams } from "react-router-dom";
 import { ENUMs } from "@/lib/enum";
 
 import DeleteModal from "@/components/ui/DeleteModal";
-import TFoot from "@/components/ui/TFoot";
 import CustomClose from "@/components/shared/CustomClose";
 import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import DeleteChip from "@/components/shared/DeleteChip";
@@ -38,6 +37,8 @@ import RestoreModal from "@/components/ui/RestoreModal";
 import FilterModal from "@/components/shared/FilterModal";
 import { Badge, Button } from "@mui/joy";
 import { Filter } from "lucide-react";
+import Loading from "@/components/ui/Loading";
+import { TailSpin } from "react-loader-spinner";
 
 const Users = () => {
   const { deleted_page } = useCheckDeletedPage();
@@ -59,7 +60,8 @@ const Users = () => {
     <>
       <Container
         as={`div`}
-        className="w-full gap-10 flex flex-col justify-start items-start">
+        className="w-full gap-10 flex flex-col justify-start items-start"
+      >
         <div className="w-full gap-5 flex flex-row justify-between ">
           <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
             <Search placeholder="گەڕان بەپێی ناو/ژ.تەل/ناوی بەکارهێنەر" />
@@ -68,7 +70,8 @@ const Users = () => {
               anchorOrigin={{
                 vertical: "bottom",
                 horizontal: "right",
-              }}>
+              }}
+            >
               <Filter
                 onClick={() => setFilter(true)}
                 className="w-11 h-11 p-2 rounded-md dark-light hover:light-dark cursor-pointer default-border transition-all duration-200"
@@ -86,7 +89,8 @@ const Users = () => {
                 className="!font-bukra !text-xs"
                 size="md"
                 variant="soft"
-                color="danger">
+                color="danger"
+              >
                 سڕینەوەی فلتەر
               </Button>
             )}
@@ -130,13 +134,15 @@ const Users = () => {
               : useSearchUsers(
                   searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
                 )
-          }>
+          }
+        >
           {({
             isFetchingNextPage,
             hasNextPage,
             ref,
             data,
-
+            isLoading,
+            searchLoading,
             isSearched,
             searchData,
           }) => {
@@ -151,84 +157,94 @@ const Users = () => {
                   : [],
               [data, searchData, isSearched]
             );
+            if (searchLoading || isLoading) {
+              return (
+                <Loading>
+                  <TailSpin />
+                </Loading>
+              );
+            }
 
             return (
-              <div
-                ref={tableRef}
-                className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
-                <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
-                  <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
-                    <Tr>
-                      <Th className="text-right text-sm !p-4 !min-w-[100px]">
-                        <InputGroup className="checkbox-input">
-                          <Input
-                            onChange={() => {
-                              tableRef.current?.scrollTo({
-                                top: 0,
-                                behavior: "smooth",
-                              });
-                              if (checked.length == 0) {
-                                dispatch({
-                                  type: CONTEXT_TYPEs.CHECK,
-                                  payload: allData
-                                    .slice(0, ENUMs.CHECK_LIMIT as number)
-                                    .map((val: User, _index: number) => val.id),
+              <>
+                <div
+                  ref={tableRef}
+                  className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll"
+                >
+                  <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
+                    <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
+                      <Tr>
+                        <Th className="text-right text-sm !p-4 !min-w-[100px]">
+                          <InputGroup className="checkbox-input">
+                            <Input
+                              onChange={() => {
+                                tableRef.current?.scrollTo({
+                                  top: 0,
+                                  behavior: "smooth",
                                 });
-                              } else {
-                                dispatch({
-                                  type: CONTEXT_TYPEs.CHECK,
-                                  payload: [],
-                                });
-                              }
-                            }}
-                            checked={check_type == "all"}
-                            type="checkbox"
-                            className="cursor-pointer"
-                          />
-                        </InputGroup>
-                      </Th>
-                      <Th className="text-right text-sm !p-4">
-                        <p className="pr-1">#</p>
-                      </Th>
-                      <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">ناو</p>
-                      </Th>
-                      <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">
-                          ناوی بەکارهێنەر
-                        </p>
-                      </Th>{" "}
-                      <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">ژمارە تەلەفۆن</p>
-                      </Th>
-                      <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">ڕۆڵ</p>
-                      </Th>
-                      <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">کرادرەکان</p>
-                      </Th>
-                    </Tr>
-                  </THead>
-                  <TBody className="w-full ">
-                    <>
-                      {allData?.map((val: User, index: number) => (
-                        <UserCard key={val.id} index={index} {...val} />
-                      ))}
+                                if (checked.length == 0) {
+                                  dispatch({
+                                    type: CONTEXT_TYPEs.CHECK,
+                                    payload: allData
+                                      .slice(0, ENUMs.CHECK_LIMIT as number)
+                                      .map(
+                                        (val: User, _index: number) => val.id
+                                      ),
+                                  });
+                                } else {
+                                  dispatch({
+                                    type: CONTEXT_TYPEs.CHECK,
+                                    payload: [],
+                                  });
+                                }
+                              }}
+                              checked={check_type == "all"}
+                              type="checkbox"
+                              className="cursor-pointer"
+                            />
+                          </InputGroup>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-1">#</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">ناو</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">
+                            ناوی بەکارهێنەر
+                          </p>
+                        </Th>{" "}
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">
+                            ژمارە تەلەفۆن
+                          </p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">ڕۆڵ</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">کرادرەکان</p>
+                        </Th>
+                      </Tr>
+                    </THead>
+                    <TBody className="w-full ">
+                      <>
+                        {allData?.map((val: User, index: number) => (
+                          <UserCard key={val.id} index={index} {...val} />
+                        ))}
 
-                      {!isFetchingNextPage && hasNextPage && !isSearched && (
-                        <div className="h-[20px]" ref={ref}></div>
-                      )}
-                    </>
-                  </TBody>
-                  <TFoot className="sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
-                    <Tr>
-                      <Td className="text-center" colSpan={9}>
-                        ژمارەی داتا {allData.length}
-                      </Td>
-                    </Tr>
-                  </TFoot>
-                </Table>
-              </div>
+                        {!isFetchingNextPage && hasNextPage && !isSearched && (
+                          <div className="h-[20px]" ref={ref}></div>
+                        )}
+                      </>
+                    </TBody>
+                  </Table>
+                </div>
+                <div className="w-full flex flex-row justify-center items-center z-[100]  table-dark-light   default-border p-2 ">
+                  <p className="text-center">ژمارەی داتا {allData.length}</p>
+                </div>
+              </>
             );
           }}
         </Pagination>
@@ -239,7 +255,8 @@ const Users = () => {
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={isDelete}
-          onClose={() => setIsDelete(false)}>
+          onClose={() => setIsDelete(false)}
+        >
           <DeleteModal
             deleteFunction={() => mutateAsync(checked)}
             loading={isPending}
@@ -253,7 +270,8 @@ const Users = () => {
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={isRestore}
-          onClose={() => setIsRestore(false)}>
+          onClose={() => setIsRestore(false)}
+        >
           <RestoreModal
             deleteFunction={() => restore(checked)}
             loading={restoreLoading}
@@ -264,10 +282,11 @@ const Users = () => {
       {isAddOpen && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={800}
+          maxWidth={1500}
           maxHeight={`90%`}
           isOpen={isAddOpen}
-          onClose={() => setIsAddOpen(false)}>
+          onClose={() => setIsAddOpen(false)}
+        >
           <CustomClose onClick={() => setIsAddOpen(false)} />
           <UserForm state="insert" onClose={() => setIsAddOpen(false)} />
         </Dialog>
@@ -278,7 +297,8 @@ const Users = () => {
           maxWidth={400}
           maxHeight={`90%`}
           isOpen={filter}
-          onClose={() => setFilter(false)}>
+          onClose={() => setFilter(false)}
+        >
           <CustomClose onClick={() => setFilter(false)} />
           <FilterModal onClose={() => setFilter(false)} type="user" />
         </Dialog>

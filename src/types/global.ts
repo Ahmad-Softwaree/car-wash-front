@@ -187,6 +187,7 @@ export type InputAddonProps = PropsWithChildren<
 export type InputGroupProps = PropsWithChildren<
   {
     error?: FieldError;
+    parentDivClass?: string;
   } & ComponentPropsWithRef<"div">
 >;
 

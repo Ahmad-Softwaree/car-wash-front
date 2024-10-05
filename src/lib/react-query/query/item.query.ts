@@ -122,19 +122,30 @@ export const useAddItem = () => {
       let imageRef: StorageReference | null = null;
 
       try {
-        const {
-          image_url,
-          image_name,
-          imageRef: ref,
-        } = await insertImage(
-          form.image[0],
-          ENUMs.ITEM_BUCKET as string,
-          toast
-        );
-        imageRef = ref;
-        let { image, ...others } = form;
-        let finalForm = { image_url, image_name, ...others };
+        let the_image_url = "";
+        let the_image_name = "";
 
+        if (form.image[0]) {
+          const {
+            image_url,
+            image_name,
+            imageRef: ref,
+          } = await insertImage(
+            form.image[0],
+            ENUMs.ITEM_BUCKET as string,
+            toast
+          );
+          the_image_url = image_url;
+          the_image_name = image_name;
+          imageRef = ref;
+        }
+
+        let { image, ...others } = form;
+        let finalForm = {
+          image_url: the_image_url,
+          image_name: the_image_name,
+          ...others,
+        };
         const result = await addItem(finalForm);
 
         return result;
@@ -169,7 +180,10 @@ export const useUpdateItem = (id: Id) => {
       let oldImageRef: StorageReference | null = null;
 
       //if new image uploaded -> delete old -> upload new
+      console.log(form.image);
+      console.log(form.image[0]);
       if (form.image && form.image[0]) {
+        console.log("hi");
         if (form.old_image_url != "") {
           oldImageRef = ref(firebaseStorage, form.old_image_url);
           await deleteImage(oldImageRef, toast);
@@ -203,7 +217,7 @@ export const useUpdateItem = (id: Id) => {
         let image_url = form.old_image_url;
         let image_name = form.old_image_name;
         let finalForm = { image_url, image_name, ...form };
-        let { old_image_name, old_image_url, ...final } = finalForm;
+        let { old_image_name, old_image_url, image, ...final } = finalForm;
 
         return await updateItem(final, id);
       }

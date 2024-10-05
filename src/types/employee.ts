@@ -8,8 +8,6 @@ export type Employee = {
   phone1?: string;
   city: string;
   street?: string;
-  image_name?: string;
-  image_url?: string;
 };
 
 export type GetEmployeesComboboxQ = Employee[];

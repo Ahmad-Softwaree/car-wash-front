@@ -19,6 +19,7 @@ import { TailSpin } from "react-loader-spinner";
 import NoData from "./../shared/NoData";
 import { Part } from "@/types/part";
 import Label from "../ui/Label";
+import Required from "../shared/Required";
 const RoleForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
   const form = useRef<FormHandle>(null);
   const { state: globalState } = useGlobalContext();
@@ -69,11 +70,13 @@ const RoleForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
       className="w-full flex flex-col justify-center items-start gap-5 min-w-none mt-2"
       ref={form}
       onSubmit={handleSubmit(onSubmit)}
-      id="login-form">
+      id="login-form"
+    >
       <p className="font-bold font-bukra text-lg text-nowrap">فۆڕمی ڕۆل</p>
       <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
         <Label htmlFor="name" className="w-full text-sm  flex flex-row gap-2">
           <p>ناو</p>
+          <Required />
         </Label>{" "}
         <InputGroup error={errors.name} className="w-full text-input">
           <Input
@@ -86,7 +89,7 @@ const RoleForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
         </InputGroup>
       </div>
       <p className="font-bold font-bukra text-md text-nowrap mt-5">
-        چ بەشێکی بۆ کراوە بێ؟
+        چ بەشێکی بۆ کراوە بێ؟ <Required />
       </p>
 
       <div className="w-full flex flex-row justify-start items-center gap-3 flex-wrap mb-2 dark-light">
@@ -105,7 +108,8 @@ const RoleForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
                   className={`p-3 rounded-md cursor-pointer flex justify-between items-center shadow-md  px-5 w-fit text-sm ${
                     checked != -1 ? "!bg-blue-500 !text-white" : "light-dark"
                   }`}
-                  id={val.id.toLocaleString()}>
+                  id={val.id.toLocaleString()}
+                >
                   <p className="text-sm font-bold font-bukra">{val.name}</p>
                 </article>
               );
@@ -122,7 +126,8 @@ const RoleForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
         loading={loading}
         name="addUserButton"
         type="submit"
-        className=" bg-sky-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2">
+        className=" bg-sky-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2"
+      >
         <p className="font-light text-sm font-bukra">جێبەجێکردن</p>
       </MyButton>
     </Form>

@@ -36,6 +36,7 @@ import Option from "../ui/Option";
 import { ItemType } from "@/types/item-type";
 import InputAddon from "../ui/InputAddon";
 import { Chip } from "@mui/joy";
+import Required from "../shared/Required";
 
 const ItemForm = ({
   state = "insert",
@@ -112,12 +113,14 @@ const ItemForm = ({
       className="w-full flex flex-col justify-center items-start gap-10 min-w-none mt-2"
       ref={form}
       onSubmit={handleSubmit(onSubmit)}
-      id="login-form">
+      id="login-form"
+    >
       <p className="font-bold font-bukra text-lg">فۆڕمی مواد</p>
       <div
         className={`w-full grid grid-cols-1 ${
           state == "insert" ? "lg:grid-cols-17" : "lg:grid-cols-23"
-        } gap-10 place-items-start`}>
+        } gap-10 place-items-start`}
+      >
         <div className="col-span-full lg:col-span-5 flex flex-col justify-center items-start gap-5 py-5 w-full">
           {itemTypesLoading ? (
             <Loading>
@@ -128,8 +131,10 @@ const ItemForm = ({
               <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
                 <Label
                   htmlFor="name"
-                  className="w-full text-sm  flex flex-row gap-2">
+                  className="w-full text-sm  flex flex-row gap-2"
+                >
                   <p>ناوی کاڵا</p>
+                  <Required />
                 </Label>{" "}
                 <InputGroup error={errors.name} className="w-full text-input">
                   <Input
@@ -144,12 +149,15 @@ const ItemForm = ({
               <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
                 <Label
                   htmlFor="barcode"
-                  className="w-full text-sm  flex flex-row gap-2">
+                  className="w-full text-sm  flex flex-row gap-2"
+                >
                   <p>بارکۆد</p>
+                  <Required />
                 </Label>{" "}
                 <InputGroup
                   error={errors.barcode}
-                  className="w-full text-input">
+                  className="w-full text-input"
+                >
                   <Input
                     type="text"
                     id="barcode"
@@ -162,26 +170,31 @@ const ItemForm = ({
               <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
                 <Label
                   htmlFor="type_id"
-                  className="w-full text-sm  flex flex-row gap-2">
+                  className="w-full text-sm  flex flex-row gap-2"
+                >
                   <p>جۆری کاڵا</p>
+                  <Required />
                 </Label>{" "}
                 <InputGroup
                   error={errors.type_id}
-                  className="w-full text-input">
+                  className="w-full text-input"
+                >
                   <Select
                     title="type_id"
                     {...register("type_id", { required: true })}
                     name="type_id"
                     id="type_id"
-                    className="w-full bg-transparent !text-sm">
-                    <Option className="!text-sm dark-light" value={-1}>
+                    className="w-full bg-transparent !text-sm"
+                  >
+                    <Option className="!text-sm dark-light" value={""}>
                       جۆر هەڵبژێرە
                     </Option>
                     {itemTypes?.map((val: ItemType, _index: number) => (
                       <Option
                         className="!text-sm dark-light"
                         key={val.id}
-                        value={val.id}>
+                        value={val.id}
+                      >
                         {val.name}
                       </Option>
                     ))}
@@ -192,12 +205,15 @@ const ItemForm = ({
                 <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
                   <Label
                     htmlFor="quantity"
-                    className="w-full text-sm  flex flex-row gap-2">
+                    className="w-full text-sm  flex flex-row gap-2"
+                  >
                     <p>عەدەد</p>
+                    <Required />
                   </Label>{" "}
                   <InputGroup
                     error={errors.quantity}
-                    className="w-full text-input">
+                    className="w-full text-input"
+                  >
                     <Input
                       type="text"
                       id="quantity"
@@ -217,12 +233,15 @@ const ItemForm = ({
           <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
             <Label
               htmlFor="item_purchase_price"
-              className="w-full text-sm  flex flex-row gap-2">
+              className="w-full text-sm  flex flex-row gap-2"
+            >
               <p>بڕی تێچوو</p>
+              <Required />
             </Label>{" "}
             <InputGroup
               error={errors.item_purchase_price}
-              className="w-full text-input">
+              className="w-full text-input"
+            >
               <Input
                 type="text"
                 id="item_purchase_price"
@@ -235,12 +254,15 @@ const ItemForm = ({
           <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
             <Label
               htmlFor="item_sell_price"
-              className="w-full text-sm  flex flex-row gap-2">
+              className="w-full text-sm  flex flex-row gap-2"
+            >
               <p>نرخی فرۆشتن</p>
+              <Required />
             </Label>{" "}
             <InputGroup
               error={errors.item_sell_price}
-              className="w-full text-input">
+              className="w-full text-input"
+            >
               <Input
                 type="text"
                 id="item_sell_price"
@@ -254,7 +276,8 @@ const ItemForm = ({
           <InputGroup error={errors.image} className="w-full space-y-2">
             <Label
               className="mb-1 block text-sm font-medium !dark-light"
-              htmlFor={`item_image`}>
+              htmlFor={`item_image`}
+            >
               وێنە
             </Label>
             <Label className="flex w-full cursor-pointer appearance-none items-center justify-center rounded-md border-2 border-dashed border-gray-200 p-6 transition-all hover:border-primary-300">
@@ -266,7 +289,8 @@ const ItemForm = ({
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
                     stroke="currentColor"
-                    className="h-6 w-6 text-gray-500">
+                    className="h-6 w-6 text-gray-500"
+                  >
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
@@ -288,14 +312,7 @@ const ItemForm = ({
                 className="sr-only"
                 id="item_image"
                 type="file"
-                {...register("image", {
-                  required:
-                    state == "insert"
-                      ? true
-                      : !globalState.oldData?.image_url
-                      ? true
-                      : false,
-                })}
+                {...register("image")}
                 name="image"
               />
             </Label>
@@ -321,7 +338,8 @@ const ItemForm = ({
               <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
                 <Label
                   htmlFor="quantity"
-                  className="w-full text-sm  flex flex-row gap-2">
+                  className="w-full text-sm  flex flex-row gap-2"
+                >
                   <p>عەدەد</p>
                 </Label>{" "}
                 <div className="w-full flex flex-row justify-start items-center gap-3">
@@ -341,7 +359,8 @@ const ItemForm = ({
                     }}
                     onClick={() => quantityFunction("increase")}
                     variant="soft"
-                    color="success">
+                    color="success"
+                  >
                     <Plus className="w-4 h-4 cursor-pointer" />
                   </Chip>
                   <Chip
@@ -350,7 +369,8 @@ const ItemForm = ({
                     }}
                     onClick={() => quantityFunction("decrease")}
                     variant="soft"
-                    color="danger">
+                    color="danger"
+                  >
                     <Minus className="w-4 h-4 cursor-pointer" />
                   </Chip>
                 </div>
@@ -429,7 +449,7 @@ const ItemForm = ({
               id="note"
               placeholder="تێبینی (ئارەزوومەندانە)"
               className="w-full h-full text-sm !bg-transparent"
-              {...register("note", { required: true })}
+              {...register("note")}
             />
           </InputGroup>
         </div>
@@ -438,7 +458,8 @@ const ItemForm = ({
         loading={isPending || updatePending}
         name="addItemButton"
         type="submit"
-        className=" bg-sky-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2">
+        className=" bg-sky-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2"
+      >
         <p className="font-light text-sm font-bukra">جێبەجێکردن</p>
       </MyButton>
     </Form>

@@ -29,6 +29,7 @@ import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import RestoreModal from "../ui/RestoreModal";
 import { formateDateToYMDHM } from "@/lib/functions";
 import CompleteModal from "../ui/CompleteModal";
+import FormatMoney from "../shared/FormatMoney";
 
 const ReservationCard = ({
   customer_first_name,
@@ -107,6 +108,11 @@ const ReservationCard = ({
           <p className="text-right font-light font-poppins text-sm">
             {index != -1 ? index + 1 : 0}
           </p>
+        </Td>{" "}
+        <Td className="!p-3">
+          <p className="text-right font-light font-bukra text-sm flex flex-row gap-1">
+            <FormatMoney>{price}</FormatMoney> IQD
+          </p>
         </Td>
         <Td className="!p-3">
           <p className="text-right font-light font-bukra text-sm">
@@ -139,7 +145,6 @@ const ReservationCard = ({
             </p>
           </Chip>
         </Td>
-
         <Td className="!p-3">
           <Chip variant="soft" color={"neutral"}>
             <p className="!font-bukra text-right font-light  text-xs">
@@ -363,7 +368,7 @@ const ReservationCard = ({
       {update && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={800}
+          maxWidth={1500}
           maxHeight={`90%`}
           isOpen={update}
           onClose={updateOnClose}

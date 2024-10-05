@@ -46,7 +46,8 @@ const ColorCard = ({ name, id, index = -1, ...others }: ColorCardProps) => {
         className={`default-border table-row-hover  ${
           checked?.includes(id) ? "table-row-include" : "table-row-normal"
         }`}
-        key={id}>
+        key={id}
+      >
         <Td className="!p-3">
           <InputGroup className="checkbox-input">
             <Input
@@ -85,11 +86,13 @@ const ColorCard = ({ name, id, index = -1, ...others }: ColorCardProps) => {
                 placement="top"
                 title="سڕینەوە"
                 color="danger"
-                variant="soft">
+                variant="soft"
+              >
                 <Chip
                   onClick={() => setIsDelete(true)}
                   variant="soft"
-                  color="danger">
+                  color="danger"
+                >
                   <Trash2 className="w-7 h-7 p-1 cursor-pointer" />
                 </Chip>
               </Tooltip>
@@ -97,7 +100,8 @@ const ColorCard = ({ name, id, index = -1, ...others }: ColorCardProps) => {
                 placement="top"
                 title="چاککردن"
                 color="success"
-                variant="soft">
+                variant="soft"
+              >
                 <Chip
                   onClick={() => {
                     dispatch({
@@ -111,7 +115,8 @@ const ColorCard = ({ name, id, index = -1, ...others }: ColorCardProps) => {
                     setUpdate(true);
                   }}
                   variant="soft"
-                  color="success">
+                  color="success"
+                >
                   <PenTool className="w-7 h-7 p-1 cursor-pointer" />
                 </Chip>
               </Tooltip>
@@ -122,11 +127,13 @@ const ColorCard = ({ name, id, index = -1, ...others }: ColorCardProps) => {
               placement="top"
               title="گێڕانەوە"
               color="warning"
-              variant="soft">
+              variant="soft"
+            >
               <Chip
                 onClick={() => setIsRestore(true)}
                 variant="soft"
-                color="warning">
+                color="warning"
+              >
                 <RotateCcw className="w-7 h-7 p-1 cursor-pointer" />
               </Chip>
             </Tooltip>
@@ -140,7 +147,8 @@ const ColorCard = ({ name, id, index = -1, ...others }: ColorCardProps) => {
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={isDelete}
-          onClose={() => setIsDelete(false)}>
+          onClose={() => setIsDelete(false)}
+        >
           <DeleteModal
             deleteFunction={() => mutateAsync([id])}
             loading={isPending}
@@ -154,7 +162,8 @@ const ColorCard = ({ name, id, index = -1, ...others }: ColorCardProps) => {
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={isRestore}
-          onClose={() => setIsRestore(false)}>
+          onClose={() => setIsRestore(false)}
+        >
           <RestoreModal
             deleteFunction={() => restore([id])}
             loading={restoreLoading}
@@ -165,10 +174,11 @@ const ColorCard = ({ name, id, index = -1, ...others }: ColorCardProps) => {
       {update && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={800}
+          maxWidth={1500}
           maxHeight={`90%`}
           isOpen={update}
-          onClose={updateOnClose}>
+          onClose={updateOnClose}
+        >
           <CustomClose onClick={() => updateOnClose()} />
           <ColorForm state="update" onClose={updateOnClose} />
         </Dialog>

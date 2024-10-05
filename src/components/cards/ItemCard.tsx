@@ -68,7 +68,8 @@ const ItemCard = ({
         className={`default-border table-row-hover  ${
           checked?.includes(id) ? "table-row-include" : "table-row-normal"
         }`}
-        key={id}>
+        key={id}
+      >
         <Td className="!p-3">
           <InputGroup className="checkbox-input">
             <Input
@@ -115,7 +116,8 @@ const ItemCard = ({
         <Td className="!p-3 flex flex-row justify-start items-center gap-1">
           <Chip
             variant="soft"
-            color={actual_quantity < 30 ? "danger" : "neutral"}>
+            color={actual_quantity < 30 ? "danger" : "neutral"}
+          >
             <p className="!font-bukra text-right font-light  text-xs">
               {actual_quantity}
             </p>
@@ -123,14 +125,14 @@ const ItemCard = ({
         </Td>
 
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
-            <FormatMoney>{item_sell_price}</FormatMoney>
+          <p className="text-right font-light font-bukra text-sm flex flex-row gap-1">
+            <FormatMoney>{item_sell_price}</FormatMoney> IQD
           </p>
         </Td>
 
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
-            <FormatMoney>{item_purchase_price}</FormatMoney>
+          <p className="text-right font-light font-bukra text-sm flex flex-rwo gap-1">
+            <FormatMoney>{item_purchase_price}</FormatMoney> IQD
           </p>
         </Td>
 
@@ -152,11 +154,13 @@ const ItemCard = ({
                 placement="top"
                 title="سڕینەوە"
                 color="danger"
-                variant="soft">
+                variant="soft"
+              >
                 <Chip
                   onClick={() => setIsDelete(true)}
                   variant="soft"
-                  color="danger">
+                  color="danger"
+                >
                   <Trash2 className="w-7 h-7 p-1 cursor-pointer" />
                 </Chip>
               </Tooltip>
@@ -164,7 +168,8 @@ const ItemCard = ({
                 placement="top"
                 title="چاککردن"
                 color="success"
-                variant="soft">
+                variant="soft"
+              >
                 <Chip
                   onClick={() => {
                     dispatch({
@@ -189,7 +194,8 @@ const ItemCard = ({
                     setUpdate(true);
                   }}
                   variant="soft"
-                  color="success">
+                  color="success"
+                >
                   <PenTool className="w-7 h-7 p-1 cursor-pointer" />
                 </Chip>
               </Tooltip>
@@ -200,11 +206,13 @@ const ItemCard = ({
               placement="top"
               title="گێڕانەوە"
               color="warning"
-              variant="soft">
+              variant="soft"
+            >
               <Chip
                 onClick={() => setIsRestore(true)}
                 variant="soft"
-                color="warning">
+                color="warning"
+              >
                 <RotateCcw className="w-7 h-7 p-1 cursor-pointer" />
               </Chip>
             </Tooltip>
@@ -213,11 +221,13 @@ const ItemCard = ({
             placement="top"
             title="زانیاری"
             color="primary"
-            variant="soft">
+            variant="soft"
+          >
             <Chip
               onClick={() => setDetail(true)}
               variant="soft"
-              color="primary">
+              color="primary"
+            >
               <Info className="w-7 h-7 p-1 cursor-pointer" />
             </Chip>
           </Tooltip>
@@ -229,7 +239,8 @@ const ItemCard = ({
           maxWidth={1000}
           maxHeight={`90%`}
           isOpen={detail}
-          onClose={() => setDetail(false)}>
+          onClose={() => setDetail(false)}
+        >
           <CustomClose onClick={() => setDetail(false)} />
           <ItemDetailCard
             id={id}
@@ -257,7 +268,8 @@ const ItemCard = ({
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={isDelete}
-          onClose={() => setIsDelete(false)}>
+          onClose={() => setIsDelete(false)}
+        >
           <DeleteModal
             deleteFunction={() => mutateAsync([id])}
             loading={isPending}
@@ -271,7 +283,8 @@ const ItemCard = ({
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={isRestore}
-          onClose={() => setIsRestore(false)}>
+          onClose={() => setIsRestore(false)}
+        >
           <RestoreModal
             deleteFunction={() => restore([id])}
             loading={restoreLoading}
@@ -285,7 +298,8 @@ const ItemCard = ({
           maxWidth={2000}
           maxHeight={700}
           isOpen={update}
-          onClose={updateOnClose}>
+          onClose={updateOnClose}
+        >
           <CustomClose onClick={() => updateOnClose()} />
 
           <ItemForm state="update" onClose={updateOnClose} />
