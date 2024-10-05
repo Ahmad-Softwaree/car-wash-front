@@ -114,6 +114,7 @@ const KogaAllReportList = () => {
           isSearched,
           searchData,
           isLoading,
+          searchLoading,
         }) => {
           const allData = useMemo(
             () =>
@@ -126,7 +127,7 @@ const KogaAllReportList = () => {
                 : [],
             [data, searchData, isSearched]
           );
-          if (isLoading) {
+          if (isLoading || searchLoading) {
             return (
               <Loading>
                 <TailSpin />
@@ -134,149 +135,140 @@ const KogaAllReportList = () => {
             );
           }
           return (
-            <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
-              <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
-                <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
-                  <Tr>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-1">#</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">ناو</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">بارکۆد</p>
-                    </Th>{" "}
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">جۆر</p>
-                    </Th>{" "}
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">نرخی کڕین</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">دانەی کڕاو</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">نرخی فرۆشتن</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">دانەی فرۆشراو</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">دانەی ماوە</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">تێچوو</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">داغڵکار</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">چاککار</p>
-                    </Th>
-                  </Tr>
-                </THead>
-                <TBody className="w-full ">
-                  <>
-                    {allData?.map((val: ItemKoga, index: number) => (
-                      <ItemKogaReportCard key={val.id} index={index} {...val} />
-                    ))}
-                    {!isFetchingNextPage && hasNextPage && !isSearched && (
-                      <div className="h-[20px]" ref={ref}></div>
-                    )}
-                  </>
-                </TBody>
-                <TFoot className="dark-light sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
-                  <Tr className="!default-border">
-                    <Td className="text-center" colSpan={6}>
-                      <p>
-                        کۆی ژمارەی کاڵا:{" "}
-                        {!isSearched
-                          ? reportData?.total_count
-                          : searchReportData?.total_count}
-                      </p>
-                    </Td>
-                    <Td className="text-center" colSpan={6}>
-                      <p>
-                        کۆی دانەی کڕاو:{" "}
-                        {!isSearched
-                          ? formatMoney(reportData?.total_item_quantity)
-                          : formatMoney(searchReportData?.total_item_quantity)}
-                      </p>
-                    </Td>
-                  </Tr>
-                  <Tr className="!default-border">
-                    <Td className="text-center" colSpan={6}>
-                      <p>
-                        کۆی دانەی فرۆشراو :{" "}
-                        {!isSearched
-                          ? formatMoney(reportData?.total_actual_quantity)
-                          : formatMoney(
-                              searchReportData?.total_actual_quantity
-                            )}
-                      </p>
-                    </Td>
-                    <Td className="text-center" colSpan={6}>
-                      <p>
-                        کۆی دانەی ماوە :{" "}
-                        {!isSearched
-                          ? formatMoney(
-                              reportData?.total_item_quantity -
-                                reportData?.total_actual_quantity
-                            )
-                          : formatMoney(
-                              searchReportData?.total_item_quantity -
-                                searchReportData?.total_actual_quantity
-                            )}
-                      </p>
-                    </Td>
-                  </Tr>
-                  <Tr className="!default-border">
-                    <Td className="text-center" colSpan={6}>
-                      <p>
-                        کۆی نرخی کڕاو :{" "}
-                        {!isSearched
-                          ? formatMoney(reportData?.total_item_purchase_price)
-                          : formatMoney(
-                              searchReportData?.total_item_purchase_price
-                            )}
-                      </p>
-                    </Td>
-                    <Td className="text-center" colSpan={6}>
-                      <p>
-                        کۆی نرخی فرۆشراو :{" "}
-                        {!isSearched
-                          ? formatMoney(reportData?.total_actual_quantity_price)
-                          : formatMoney(
-                              searchReportData?.total_actual_quantity_price
-                            )}
-                      </p>
-                    </Td>
-                  </Tr>
-                  <Tr className="!default-border">
-                    <Td className="text-center" colSpan={12}>
-                      <p>
-                        کۆی تێچوو :{" "}
-                        {!isSearched
-                          ? formatMoney(
-                              reportData?.total_item_quantity *
-                                reportData?.total_item_purchase_price
-                            )
-                          : formatMoney(
-                              searchReportData?.total_item_quantity *
-                                searchReportData?.total_item_purchase_price
-                            )}
-                      </p>
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Td className="text-center" colSpan={12}>
-                      ژمارەی داتا {allData.length}
-                    </Td>
-                  </Tr>
-                </TFoot>
-              </Table>
-            </div>
+            <>
+              <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
+                <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
+                  <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
+                    <Tr>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-1">#</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">ناو</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">بارکۆد</p>
+                      </Th>{" "}
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">جۆر</p>
+                      </Th>{" "}
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">نرخی کڕین</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">دانەی کڕاو</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">نرخی فرۆشتن</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">دانەی فرۆشراو</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">دانەی ماوە</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">تێچوو</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">داغڵکار</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">چاککار</p>
+                      </Th>
+                    </Tr>
+                  </THead>
+                  <TBody className="w-full ">
+                    <>
+                      {allData?.map((val: ItemKoga, index: number) => (
+                        <ItemKogaReportCard
+                          key={val.id}
+                          index={index}
+                          {...val}
+                        />
+                      ))}
+                      {!isFetchingNextPage && hasNextPage && !isSearched && (
+                        <div className="h-[20px]" ref={ref}></div>
+                      )}
+                    </>
+                  </TBody>
+                </Table>
+              </div>
+              <div className="w-full flex flex-col justify-center items-center z-[100]  table-dark-light   default-border p-2 gap-5">
+                <div className="w-full flex flex-row justify-evenly items-center">
+                  <p>
+                    کۆی ژمارەی کاڵا:{" "}
+                    {!isSearched
+                      ? reportData?.total_count
+                      : searchReportData?.total_count}
+                  </p>
+
+                  <p>
+                    کۆی دانەی کڕاو:{" "}
+                    {!isSearched
+                      ? formatMoney(reportData?.total_item_quantity)
+                      : formatMoney(searchReportData?.total_item_quantity)}
+                  </p>
+                </div>
+                <div className="w-full flex flex-row justify-evenly items-center">
+                  <p>
+                    کۆی دانەی فرۆشراو :{" "}
+                    {!isSearched
+                      ? formatMoney(reportData?.total_actual_quantity)
+                      : formatMoney(searchReportData?.total_actual_quantity)}
+                  </p>
+
+                  <p>
+                    کۆی دانەی ماوە :{" "}
+                    {!isSearched
+                      ? formatMoney(
+                          reportData?.total_item_quantity -
+                            reportData?.total_actual_quantity
+                        )
+                      : formatMoney(
+                          searchReportData?.total_item_quantity -
+                            searchReportData?.total_actual_quantity
+                        )}
+                  </p>
+                </div>
+                <div className="w-full flex flex-row justify-evenly items-center">
+                  <p>
+                    کۆی نرخی کڕاو :{" "}
+                    {!isSearched
+                      ? formatMoney(reportData?.total_item_purchase_price)
+                      : formatMoney(
+                          searchReportData?.total_item_purchase_price
+                        )}
+                  </p>
+
+                  <p>
+                    کۆی نرخی فرۆشراو :{" "}
+                    {!isSearched
+                      ? formatMoney(reportData?.total_actual_quantity_price)
+                      : formatMoney(
+                          searchReportData?.total_actual_quantity_price
+                        )}
+                  </p>
+                </div>
+                <div className="w-full flex flex-row justify-evenly items-center">
+                  <p>
+                    کۆی تێچوو :{" "}
+                    {!isSearched
+                      ? formatMoney(
+                          reportData?.total_item_quantity *
+                            reportData?.total_item_purchase_price
+                        )
+                      : formatMoney(
+                          searchReportData?.total_item_quantity *
+                            searchReportData?.total_item_purchase_price
+                        )}
+                  </p>
+                </div>
+                <div className="w-full flex flex-row justify-evenly items-center">
+                  ژمارەی داتا {allData.length}
+                </div>
+              </div>
+            </>
           );
         }}
       </Pagination>

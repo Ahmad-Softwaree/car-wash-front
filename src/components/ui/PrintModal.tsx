@@ -8,13 +8,14 @@ import PDFViewer from "../shared/PDFViewer";
 
 export default function PrintModal({ onClose, id, printFn }: PrintModalProps) {
   const { data, isLoading, isPending } = printFn();
+
   return (
-    <div className="w-full  h-full flex flex-col justify-center bg-transparent items-center gap-5">
+    <div className="w-full  h-full flex flex-col justify-center bg-transparent items-center gap-2">
       <Chip variant="soft" color="warning">
         <Printer className="w-11 h-11 p-2 cursor-pointer" />
       </Chip>
       <p className="w-full text-center text-md text-black">
-        دڵنیای لە پرنتکردنی ئەم وەصڵە
+        دڵنیای لە پرنتکردنی ئەم ڕاپۆرتە
       </p>
       {isLoading || isPending ? (
         <Loading>
@@ -28,7 +29,8 @@ export default function PrintModal({ onClose, id, printFn }: PrintModalProps) {
           name="closeDeleteModal"
           onClick={onClose}
           type="button"
-          className="my-2 bg-red-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2">
+          className="my-2 bg-red-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2"
+        >
           <p className="font-light text-sm font-bukra">نەخێر</p>
         </MyButton>
 
@@ -43,7 +45,8 @@ export default function PrintModal({ onClose, id, printFn }: PrintModalProps) {
           }}
           disabled={isLoading}
           type="button"
-          className="my-2 bg-green-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2">
+          className="my-2 bg-green-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2"
+        >
           <p className="font-light text-sm font-bukra">بەڵێ</p>
         </MyButton>
       </div>

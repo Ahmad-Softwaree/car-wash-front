@@ -29,6 +29,7 @@ import { Plus } from "lucide-react";
 import CustomClose from "../shared/CustomClose";
 import Dialog from "../shared/Dialog";
 import ExpenseTypeForm from "./ExpenseTypeForm";
+import Required from "../shared/Required";
 const ExpenseForm = ({
   state,
   onClose,
@@ -96,6 +97,7 @@ const ExpenseForm = ({
                 className="w-full text-sm  flex flex-row gap-2"
               >
                 <p>جۆری خەرجی</p>
+                <Required />
               </Label>{" "}
               <div className="w-full flex flex-row justify-start items-center gap-3">
                 <InputGroup
@@ -140,6 +142,7 @@ const ExpenseForm = ({
                   className="w-full text-sm  flex flex-row gap-2"
                 >
                   <p>بڕی خەرجکراوە</p>
+                  <Required />
                 </Label>{" "}
                 <InputGroup
                   error={errors.price}
@@ -161,6 +164,7 @@ const ExpenseForm = ({
                   className="w-full text-sm  flex flex-row gap-2"
                 >
                   <p>بەروار </p>
+                  <Required />
                 </Label>{" "}
                 <InputGroup
                   error={errors.date}
