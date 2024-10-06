@@ -1,5 +1,4 @@
 import Search from "@/components/shared/Search";
-import TFoot from "@/components/ui/TFoot";
 import { Table, Td, Th, THead, Tr } from "@/components/ui";
 import TBody from "@/components/ui/TBody";
 import { useSearchParams } from "react-router-dom";
@@ -50,6 +49,8 @@ const ItemReportList = () => {
   useEffect(() => {
     searchRefetch();
   }, [searchRefetch, search]);
+
+  let loading = isLoading || searchLoading;
 
   return (
     <>
@@ -146,108 +147,109 @@ const ItemReportList = () => {
           }
 
           return (
-            <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
-              <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
-                <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
-                  <Tr>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-1">#</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">ژمارەی وەصڵ</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">ناوی کاڵا</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">بارکۆد</p>
-                    </Th>{" "}
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">جۆری کاڵا</p>
-                    </Th>{" "}
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">دانەی فرۆشراو</p>
-                    </Th>{" "}
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">نرخی فرۆشتن</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">کۆی گشتی</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">داغڵکار</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">چاککار</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">بەروار</p>
-                    </Th>
-                  </Tr>
-                </THead>
-                <TBody className="w-full ">
-                  <>
-                    {allData?.map((val: ItemReport, index: number) => (
-                      <ItemSellReportCard key={val.id} index={index} {...val} />
-                    ))}
-                    {!isFetchingNextPage && hasNextPage && !isSearched && (
-                      <div className="h-[20px]" ref={ref}></div>
-                    )}
-                  </>
-                </TBody>
-                <TFoot className="sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
-                  <Tr className="!default-border">
-                    <Td className="text-center" colSpan={6}>
-                      <p>
-                        کۆی ژمارەی کاڵا :{" "}
-                        {!isSearched
-                          ? reportData?.total_count
-                          : searchReportData?.total_count}
-                      </p>
-                    </Td>
-                    <Td className="text-center" colSpan={5}>
-                      <p>
-                        کۆی دانەی فرۆشراو :{" "}
-                        {!isSearched
-                          ? formatMoney(reportData?.total_quantity)
-                          : formatMoney(searchReportData?.total_quantity)}
-                      </p>
-                    </Td>
-                  </Tr>
-                  <Tr className="!default-border">
-                    <Td className="text-center" colSpan={6}>
-                      <p>
-                        کۆی نرخی فرۆشراو :{" "}
-                        {!isSearched
-                          ? formatMoney(reportData?.total_sell_price)
-                          : formatMoney(searchReportData?.total_sell_price)}
-                      </p>
-                    </Td>
-                    <Td className="text-center" colSpan={5}>
-                      <p>
-                        کۆی گشتی :{" "}
-                        {!isSearched
-                          ? formatMoney(reportData?.total_price)
-                          : formatMoney(searchReportData?.total_price)}
-                      </p>
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Td className="text-center" colSpan={11}>
-                      ژمارەی داتا {allData.length}
-                    </Td>
-                  </Tr>
-                </TFoot>
-              </Table>
-            </div>
+            <>
+              <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
+                <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
+                  <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
+                    <Tr>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-1">#</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">ژمارەی وەصڵ</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">ناوی کاڵا</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">بارکۆد</p>
+                      </Th>{" "}
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">جۆری کاڵا</p>
+                      </Th>{" "}
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">دانەی فرۆشراو</p>
+                      </Th>{" "}
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">نرخی فرۆشتن</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">کۆی گشتی</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">داغڵکار</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">چاککار</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">بەروار</p>
+                      </Th>
+                    </Tr>
+                  </THead>
+                  <TBody className="w-full ">
+                    <>
+                      {allData?.map((val: ItemReport, index: number) => (
+                        <ItemSellReportCard
+                          key={val.id}
+                          index={index}
+                          {...val}
+                        />
+                      ))}
+                      {!isFetchingNextPage && hasNextPage && !isSearched && (
+                        <div className="h-[20px]" ref={ref}></div>
+                      )}
+                    </>
+                  </TBody>
+                </Table>
+              </div>
+              {!loading && reportData && searchReportData && (
+                <div className="w-full flex flex-col justify-center items-center z-[100]  table-dark-light   default-border p-2 gap-5">
+                  <div className="w-full flex flex-row justify-evenly items-center">
+                    <p>
+                      کۆی ژمارەی کاڵا :{" "}
+                      {!isSearched
+                        ? reportData?.total_count
+                        : searchReportData?.total_count}
+                    </p>
+
+                    <p>
+                      کۆی دانەی فرۆشراو :{" "}
+                      {!isSearched
+                        ? formatMoney(reportData?.total_quantity)
+                        : formatMoney(searchReportData?.total_quantity)}
+                    </p>
+                  </div>
+                  <div className="w-full flex flex-row justify-evenly items-center">
+                    <p>
+                      کۆی نرخی فرۆشراو :{" "}
+                      {!isSearched
+                        ? formatMoney(reportData?.total_sell_price)
+                        : formatMoney(searchReportData?.total_sell_price)}
+                    </p>
+
+                    <p>
+                      کۆی گشتی :{" "}
+                      {!isSearched
+                        ? formatMoney(reportData?.total_price)
+                        : formatMoney(searchReportData?.total_price)}
+                    </p>
+                  </div>
+                  <div className="w-full flex flex-row justify-evenly items-center">
+                    ژمارەی داتا {allData.length}
+                  </div>
+                </div>
+              )}
+            </>
           );
         }}
       </Pagination>
       {print && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={500}
-          maxHeight={`90%`}
+          maxWidth={1500}
+          height={`90%`}
+          maxHeight={1000}
           isOpen={print}
           onClose={() => setPrint(false)}
         >

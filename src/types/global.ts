@@ -31,6 +31,7 @@ import { Service } from "./service";
 import { Sell, SellItem } from "./sell";
 import { Reservation } from "./reservation";
 import { Backup } from "./backup";
+import { CaseReport } from "./report";
 
 export type GlobalFormProps = {
   state?: "update" | "insert";
@@ -333,15 +334,3 @@ export type ToastType = ({ ...props }: Toast) => {
 };
 
 export type CatchError = NestError | AxiosError;
-
-export type CaseReport = {
-  id: number;
-  created_by: string;
-  user_id: number;
-  sold: number | string;
-  sold_price: number | string;
-};
-
-export type CaseReportCardProps = CaseReport & { index?: number };
-
-export type GetCasesQ = CaseReport[];

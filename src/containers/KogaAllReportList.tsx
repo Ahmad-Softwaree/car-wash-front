@@ -1,5 +1,4 @@
 import Search from "@/components/shared/Search";
-import TFoot from "@/components/ui/TFoot";
 import { Table, Td, Th, THead, Tr } from "@/components/ui";
 import TBody from "@/components/ui/TBody";
 import { useSearchParams } from "react-router-dom";
@@ -9,7 +8,6 @@ import {
   useGetKogaAllReportInformationSearch,
   useGetKogaAllReportSearch,
   useKogaAllPrint,
-  useSellPrint,
 } from "@/lib/react-query/query/report.query";
 import { ENUMs } from "@/lib/enum";
 import Pagination from "@/components/providers/Pagination";
@@ -50,6 +48,8 @@ const KogaAllReportList = () => {
   useEffect(() => {
     searchRefetch();
   }, [searchRefetch, search]);
+
+  let loading = isLoading || searchLoading;
 
   return (
     <>
@@ -194,80 +194,76 @@ const KogaAllReportList = () => {
                   </TBody>
                 </Table>
               </div>
-              <div className="w-full flex flex-col justify-center items-center z-[100]  table-dark-light   default-border p-2 gap-5">
-                <div className="w-full flex flex-row justify-evenly items-center">
-                  <p>
-                    کۆی ژمارەی کاڵا:{" "}
-                    {!isSearched
-                      ? reportData?.total_count
-                      : searchReportData?.total_count}
-                  </p>
+              {!loading && reportData && searchReportData && (
+                <div className="w-full flex flex-col justify-center items-center z-[100]  table-dark-light   default-border p-2 gap-5">
+                  <div className="w-full flex flex-row justify-evenly items-center">
+                    <p>
+                      کۆی ژمارەی کاڵا:{" "}
+                      {!isSearched
+                        ? reportData?.total_count
+                        : searchReportData?.total_count}
+                    </p>
 
-                  <p>
-                    کۆی دانەی کڕاو:{" "}
-                    {!isSearched
-                      ? formatMoney(reportData?.total_item_quantity)
-                      : formatMoney(searchReportData?.total_item_quantity)}
-                  </p>
-                </div>
-                <div className="w-full flex flex-row justify-evenly items-center">
-                  <p>
-                    کۆی دانەی فرۆشراو :{" "}
-                    {!isSearched
-                      ? formatMoney(reportData?.total_actual_quantity)
-                      : formatMoney(searchReportData?.total_actual_quantity)}
-                  </p>
+                    <p>
+                      کۆی دانەی کڕاو:{" "}
+                      {!isSearched
+                        ? formatMoney(reportData?.total_item_quantity)
+                        : formatMoney(searchReportData?.total_item_quantity)}
+                    </p>
+                  </div>
+                  <div className="w-full flex flex-row justify-evenly items-center">
+                    <p>
+                      کۆی دانەی فرۆشراو :{" "}
+                      {!isSearched
+                        ? formatMoney(reportData?.total_actual_quantity)
+                        : formatMoney(searchReportData?.total_actual_quantity)}
+                    </p>
 
-                  <p>
-                    کۆی دانەی ماوە :{" "}
-                    {!isSearched
-                      ? formatMoney(
-                          reportData?.total_item_quantity -
-                            reportData?.total_actual_quantity
-                        )
-                      : formatMoney(
-                          searchReportData?.total_item_quantity -
-                            searchReportData?.total_actual_quantity
-                        )}
-                  </p>
-                </div>
-                <div className="w-full flex flex-row justify-evenly items-center">
-                  <p>
-                    کۆی نرخی کڕاو :{" "}
-                    {!isSearched
-                      ? formatMoney(reportData?.total_item_purchase_price)
-                      : formatMoney(
-                          searchReportData?.total_item_purchase_price
-                        )}
-                  </p>
-
-                  <p>
-                    کۆی نرخی فرۆشراو :{" "}
-                    {!isSearched
-                      ? formatMoney(reportData?.total_actual_quantity_price)
-                      : formatMoney(
-                          searchReportData?.total_actual_quantity_price
-                        )}
-                  </p>
-                </div>
-                <div className="w-full flex flex-row justify-evenly items-center">
-                  <p>
-                    کۆی تێچوو :{" "}
-                    {!isSearched
-                      ? formatMoney(
-                          reportData?.total_item_quantity *
-                            reportData?.total_item_purchase_price
-                        )
-                      : formatMoney(
-                          searchReportData?.total_item_quantity *
+                    <p>
+                      کۆی دانەی ماوە :{" "}
+                      {!isSearched
+                        ? formatMoney(
+                            reportData?.total_item_quantity -
+                              reportData?.total_actual_quantity
+                          )
+                        : formatMoney(
+                            searchReportData?.total_item_quantity -
+                              searchReportData?.total_actual_quantity
+                          )}
+                    </p>
+                  </div>
+                  <div className="w-full flex flex-row justify-evenly items-center">
+                    <p>
+                      کۆی نرخی کڕاو :{" "}
+                      {!isSearched
+                        ? formatMoney(reportData?.total_item_purchase_price)
+                        : formatMoney(
                             searchReportData?.total_item_purchase_price
-                        )}
-                  </p>
+                          )}
+                    </p>
+
+                    <p>
+                      کۆی نرخی فرۆشراو :{" "}
+                      {!isSearched
+                        ? formatMoney(reportData?.total_actual_quantity_price)
+                        : formatMoney(
+                            searchReportData?.total_actual_quantity_price
+                          )}
+                    </p>
+                  </div>
+                  <div className="w-full flex flex-row justify-evenly items-center">
+                    <p>
+                      کۆی تێچوو :{" "}
+                      {!isSearched
+                        ? formatMoney(reportData?.total_cost)
+                        : formatMoney(searchReportData?.total_cost)}
+                    </p>
+                  </div>
+                  <div className="w-full flex flex-row justify-evenly items-center">
+                    ژمارەی داتا {allData.length}
+                  </div>
                 </div>
-                <div className="w-full flex flex-row justify-evenly items-center">
-                  ژمارەی داتا {allData.length}
-                </div>
-              </div>
+              )}
             </>
           );
         }}
@@ -275,8 +271,9 @@ const KogaAllReportList = () => {
       {print && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={500}
-          maxHeight={`90%`}
+          maxWidth={1500}
+          height={`90%`}
+          maxHeight={1000}
           isOpen={print}
           onClose={() => setPrint(false)}
         >

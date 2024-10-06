@@ -52,7 +52,6 @@ import {
 import {
   Filter,
   From,
-  GetCasesQ,
   Page,
   PaginationReturnType,
   Search,
@@ -65,6 +64,13 @@ import {
   GetItemsReportQ,
 } from "@/types/items";
 import { GetExpensesQ } from "@/types/expense";
+import {
+  GetCasesQ,
+  ItemReportInfo,
+  KogaAllReportInfo,
+  KogaNullReportInfo,
+  SellReportInfo,
+} from "@/types/report";
 
 //SELL REPORT
 export const useGetSellReport = (from: From, to: To) => {
@@ -87,7 +93,8 @@ export const useGetSellReportInformation = (from: From, to: To) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.SELL_REPORT_INFORMATION],
-    queryFn: (): Promise<any> => getSellReportInformation(toast, from, to),
+    queryFn: (): Promise<SellReportInfo> =>
+      getSellReportInformation(toast, from, to),
     retry: 0,
   });
 };
@@ -106,7 +113,8 @@ export const useGetSellReportInformationSearch = (search: Search) => {
 
   return useQuery({
     queryKey: [QUERY_KEYs.SELL_REPORT_INFORMATION_SEARCH],
-    queryFn: (): Promise<any> => getSellReportInformationSearch(toast, search),
+    queryFn: (): Promise<SellReportInfo> =>
+      getSellReportInformationSearch(toast, search),
     retry: 0,
     enabled: typeof search === "string" && search.trim() !== "",
   });
@@ -146,7 +154,7 @@ export const useGetItemReportInformation = (
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.ITEM_REPORT_INFORMATION],
-    queryFn: (): Promise<any> =>
+    queryFn: (): Promise<ItemReportInfo> =>
       getItemReportInformation(toast, filter, from, to),
     retry: 0,
   });
@@ -166,7 +174,8 @@ export const useGetItemReportInformationSearch = (search: Search) => {
 
   return useQuery({
     queryKey: [QUERY_KEYs.ITEM_REPORT_INFORMATION_SEARCH],
-    queryFn: (): Promise<any> => getItemReportInformationSearch(toast, search),
+    queryFn: (): Promise<ItemReportInfo> =>
+      getItemReportInformationSearch(toast, search),
     retry: 0,
     enabled: typeof search === "string" && search.trim() !== "",
   });
@@ -208,7 +217,8 @@ export const useGetKogaAllReportInformation = (filter: Filter) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.KOGA_ALL_REPORT_INFORMATION],
-    queryFn: (): Promise<any> => getKogaAllReportInformation(toast, filter),
+    queryFn: (): Promise<KogaAllReportInfo> =>
+      getKogaAllReportInformation(toast, filter),
     retry: 0,
   });
 };
@@ -227,7 +237,7 @@ export const useGetKogaAllReportInformationSearch = (search: Search) => {
 
   return useQuery({
     queryKey: [QUERY_KEYs.KOGA_ALL_REPORT_INFORMATION_SEARCH],
-    queryFn: (): Promise<any> =>
+    queryFn: (): Promise<KogaAllReportInfo> =>
       getKogaAllReportInformationSearch(toast, search),
     retry: 0,
     enabled: typeof search === "string" && search.trim() !== "",
@@ -264,7 +274,8 @@ export const useGetKogaNullReportInformation = (filter: Filter) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.KOGA_NULL_REPORT_INFORMATION],
-    queryFn: (): Promise<any> => getKogaNullReportInformation(toast, filter),
+    queryFn: (): Promise<KogaNullReportInfo> =>
+      getKogaNullReportInformation(toast, filter),
     retry: 0,
   });
 };
@@ -283,7 +294,7 @@ export const useGetKogaNullReportInformationSearch = (search: Search) => {
 
   return useQuery({
     queryKey: [QUERY_KEYs.KOGA_NULL_REPORT_INFORMATION_SEARCH],
-    queryFn: (): Promise<any> =>
+    queryFn: (): Promise<KogaNullReportInfo> =>
       getKogaNullReportInformationSearch(toast, search),
     retry: 0,
     enabled: typeof search === "string" && search.trim() !== "",

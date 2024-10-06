@@ -5,7 +5,6 @@ import { GetExpensesQ } from "@/types/expense";
 import {
   Filter,
   From,
-  GetCasesQ,
   Limit,
   Page,
   PaginationReturnType,
@@ -18,6 +17,13 @@ import {
   GetItemsQ,
   GetItemsReportQ,
 } from "@/types/items";
+import {
+  GetCasesQ,
+  ItemReportInfo,
+  KogaAllReportInfo,
+  KogaNullReportInfo,
+  SellReportInfo,
+} from "@/types/report";
 import { GetSellsQ } from "@/types/sell";
 
 //SELL REPORT
@@ -44,9 +50,9 @@ export const getSellReportInformation = async (
   toast: ToastType,
   from: From,
   to: To
-): Promise<any> => {
+): Promise<SellReportInfo> => {
   try {
-    const { data, status } = await authApi.get<any>(
+    const { data, status } = await authApi.get<SellReportInfo>(
       `${URLs.GET_SELL_REPORTS_INFORMATION}?from=${from != "" ? from : ""}&to=${
         to != "" ? to : ""
       }`
@@ -74,9 +80,9 @@ export const getSellReportSearch = async (
 export const getSellReportInformationSearch = async (
   toast: ToastType,
   search: Search
-): Promise<any> => {
+): Promise<SellReportInfo> => {
   try {
-    const { data, status } = await authApi.get<any>(
+    const { data, status } = await authApi.get<SellReportInfo>(
       `${URLs.GET_SELL_REPORTS_INFORMATION_SEARCH}?search=${
         search != "" ? search : ""
       }`
@@ -135,9 +141,9 @@ export const getItemReportInformation = async (
   filter: Filter,
   from: From,
   to: To
-): Promise<any> => {
+): Promise<ItemReportInfo> => {
   try {
-    const { data, status } = await authApi.get<any>(
+    const { data, status } = await authApi.get<ItemReportInfo>(
       `${URLs.GET_ITEM_REPORTS_INFORMATION}?from=${from != "" ? from : ""}&to=${
         to != "" ? to : ""
       }&filter=${filter != "" ? filter : ""}`
@@ -164,9 +170,9 @@ export const getItemReportSearch = async (
 export const getItemReportInformationSearch = async (
   toast: ToastType,
   search: Search
-): Promise<any> => {
+): Promise<ItemReportInfo> => {
   try {
-    const { data, status } = await authApi.get<any>(
+    const { data, status } = await authApi.get<ItemReportInfo>(
       `${URLs.GET_ITEM_REPORTS_INFORMATION_SEARCH}?search=${
         search != "" ? search : ""
       }`
@@ -222,9 +228,9 @@ export const getKogaAllReport = async (
 export const getKogaAllReportInformation = async (
   toast: ToastType,
   filter: Filter
-): Promise<any> => {
+): Promise<KogaAllReportInfo> => {
   try {
-    const { data, status } = await authApi.get<any>(
+    const { data, status } = await authApi.get<KogaAllReportInfo>(
       `${URLs.GET_KOGA_ALL_REPORTS_INFORMATION}?filter=${
         filter != "" ? filter : ""
       }`
@@ -251,9 +257,9 @@ export const getKogaAllReportSearch = async (
 export const getKogaAllReportInformationSearch = async (
   toast: ToastType,
   search: Search
-): Promise<any> => {
+): Promise<KogaAllReportInfo> => {
   try {
-    const { data, status } = await authApi.get<any>(
+    const { data, status } = await authApi.get<KogaAllReportInfo>(
       `${URLs.GET_KOGA_ALL_REPORTS_INFORMATION_SEARCH}?search=${
         search != "" ? search : ""
       }`
@@ -307,9 +313,9 @@ export const getKogaNullReport = async (
 export const getKogaNullReportInformation = async (
   toast: ToastType,
   filter: Filter
-): Promise<any> => {
+): Promise<KogaNullReportInfo> => {
   try {
-    const { data, status } = await authApi.get<any>(
+    const { data, status } = await authApi.get<KogaNullReportInfo>(
       `${URLs.GET_KOGA_NULL_REPORTS_INFORMATION}?filter=${
         filter != "" ? filter : ""
       }`
@@ -339,9 +345,9 @@ export const getKogaNullReportSearch = async (
 export const getKogaNullReportInformationSearch = async (
   toast: ToastType,
   search: Search
-): Promise<any> => {
+): Promise<KogaNullReportInfo> => {
   try {
-    const { data, status } = await authApi.get<any>(
+    const { data, status } = await authApi.get<KogaNullReportInfo>(
       `${URLs.GET_KOGA_NULL_REPORTS_INFORMATION_SEARCH}?search=${
         search != "" ? search : ""
       }`

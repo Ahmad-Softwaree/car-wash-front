@@ -50,6 +50,9 @@ const SellReportList = () => {
     searchRefetch();
   }, [searchRefetch, search]);
 
+  let loading = isLoading || searchLoading;
+  console.log(searchReportData);
+  console.log(reportData);
   return (
     <>
       <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap">
@@ -185,50 +188,53 @@ const SellReportList = () => {
                   </TBody>
                 </Table>
               </div>
-              <div className="w-full flex flex-col justify-center items-center z-[100]  table-dark-light   default-border p-2 gap-5">
-                {" "}
-                <div className="w-full flex flex-row justify-evenly items-center">
-                  <p>
-                    کۆی پسولە :{" "}
-                    {!isSearched
-                      ? reportData?.sellData.sell_count
-                      : searchReportData?.sellData.sell_count}
-                  </p>
+              {!loading && reportData && searchReportData && (
+                <div className="w-full flex flex-col justify-center items-center z-[100]  table-dark-light   default-border p-2 gap-5">
+                  <div className="w-full flex flex-row justify-evenly items-center">
+                    <p>
+                      کۆی پسولە :{" "}
+                      {!isSearched
+                        ? reportData?.sellData?.sell_count
+                        : searchReportData?.sellData?.sell_count}
+                    </p>
 
-                  <p>
-                    کۆی گشتی پسولە :{" "}
-                    {!isSearched
-                      ? formatMoney(reportData?.sellData.total_item_sell_price)
-                      : formatMoney(
-                          searchReportData?.sellData.total_item_sell_price
-                        )}
-                  </p>
-                </div>
-                <div className="w-full flex flex-row justify-evenly items-center">
-                  <p>
-                    کۆی داشکاندنی پسولە :{" "}
-                    {!isSearched
-                      ? formatMoney(reportData?.discountData)
-                      : formatMoney(searchReportData?.discountData)}
-                  </p>
+                    <p>
+                      کۆی گشتی پسولە :{" "}
+                      {!isSearched
+                        ? formatMoney(
+                            reportData?.sellData?.total_item_sell_price
+                          )
+                        : formatMoney(
+                            searchReportData?.sellData?.total_item_sell_price
+                          )}
+                    </p>
+                  </div>
+                  <div className="w-full flex flex-row justify-evenly items-center">
+                    <p>
+                      کۆی داشکاندنی پسولە :{" "}
+                      {!isSearched
+                        ? formatMoney(reportData?.discountData)
+                        : formatMoney(searchReportData?.discountData)}
+                    </p>
 
-                  <p>
-                    کۆی دوای داشکان :{" "}
-                    {!isSearched
-                      ? formatMoney(
-                          reportData?.sellData.total_item_sell_price -
-                            reportData?.discountData
-                        )
-                      : formatMoney(
-                          searchReportData?.sellData.total_item_sell_price -
-                            searchReportData?.discountData
-                        )}
-                  </p>
+                    <p>
+                      کۆی دوای داشکان :{" "}
+                      {!isSearched
+                        ? formatMoney(
+                            reportData?.sellData?.total_item_sell_price -
+                              reportData?.discountData
+                          )
+                        : formatMoney(
+                            searchReportData?.sellData?.total_item_sell_price -
+                              searchReportData?.discountData
+                          )}
+                    </p>
+                  </div>
+                  <div className="w-full flex flex-row justify-evenly items-center">
+                    ژمارەی داتا {allData.length}
+                  </div>
                 </div>
-                <div className="w-full flex flex-row justify-evenly items-center">
-                  ژمارەی داتا {allData.length}
-                </div>
-              </div>
+              )}
             </>
           );
         }}
