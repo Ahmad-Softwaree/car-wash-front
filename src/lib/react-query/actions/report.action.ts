@@ -18,7 +18,10 @@ import {
   GetItemsReportQ,
 } from "@/types/items";
 import {
+  BillProfitReportInfo,
+  ExpenseReportInfo,
   GetCasesQ,
+  ItemProfitReportInfo,
   ItemReportInfo,
   KogaAllReportInfo,
   KogaMovementReportInfo,
@@ -498,9 +501,9 @@ export const getBillProfitReportInformation = async (
   toast: ToastType,
   from: From,
   to: To
-): Promise<any> => {
+): Promise<BillProfitReportInfo> => {
   try {
-    const { data, status } = await authApi.get<any>(
+    const { data, status } = await authApi.get<BillProfitReportInfo>(
       `${URLs.GET_BILL_PROFIT_REPORTS_INFORMATION}?from=${
         from != "" ? from : ""
       }&to=${to != "" ? to : ""}`
@@ -530,9 +533,9 @@ export const getBillProfitReportSearch = async (
 export const getBillProfitReportInformationSearch = async (
   toast: ToastType,
   search: Search
-): Promise<any> => {
+): Promise<BillProfitReportInfo> => {
   try {
-    const { data, status } = await authApi.get<any>(
+    const { data, status } = await authApi.get<BillProfitReportInfo>(
       `${URLs.GET_BILL_PROFIT_REPORTS_INFORMATION_SEARCH}?search=${
         search != "" ? search : ""
       }`
@@ -591,9 +594,9 @@ export const getItemProfitReportInformation = async (
   filter: Filter,
   from: From,
   to: To
-): Promise<any> => {
+): Promise<ItemProfitReportInfo> => {
   try {
-    const { data, status } = await authApi.get<any>(
+    const { data, status } = await authApi.get<ItemProfitReportInfo>(
       `${URLs.GET_ITEM_PROFIT_REPORTS_INFORMATION}?from=${
         from != "" ? from : ""
       }&to=${to != "" ? to : ""}&filter=${filter != "" ? filter : ""}`
@@ -622,9 +625,9 @@ export const getItemProfitReportSearch = async (
 export const getItemProfitReportInformationSearch = async (
   toast: ToastType,
   search: Search
-): Promise<any> => {
+): Promise<ItemProfitReportInfo> => {
   try {
-    const { data, status } = await authApi.get<any>(
+    const { data, status } = await authApi.get<ItemProfitReportInfo>(
       `${URLs.GET_ITEM_PROFIT_REPORTS_INFORMATION_SEARCH}?search=${
         search != "" ? search : ""
       }`
@@ -686,9 +689,9 @@ export const getExpenseReportInformation = async (
   filter: Filter,
   from: From,
   to: To
-): Promise<any> => {
+): Promise<ExpenseReportInfo> => {
   try {
-    const { data, status } = await authApi.get<any>(
+    const { data, status } = await authApi.get<ExpenseReportInfo>(
       `${URLs.GET_EXPENSE_REPORTS_INFORMATION}?from=${
         from != "" ? from : ""
       }&to=${to != "" ? to : ""}&filter=${filter != "" ? filter : ""}`
@@ -715,9 +718,9 @@ export const getExpenseReportSearch = async (
 export const getExpenseReportInformationSearch = async (
   toast: ToastType,
   search: Search
-): Promise<any> => {
+): Promise<ExpenseReportInfo> => {
   try {
-    const { data, status } = await authApi.get<any>(
+    const { data, status } = await authApi.get<ExpenseReportInfo>(
       `${URLs.GET_EXPENSE_REPORTS_INFORMATION_SEARCH}?search=${
         search != "" ? search : ""
       }`

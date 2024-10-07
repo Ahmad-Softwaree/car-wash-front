@@ -50,6 +50,7 @@ const BillProfitReportList = () => {
   useEffect(() => {
     searchRefetch();
   }, [searchRefetch, search]);
+  let loading = isLoading || searchLoading;
 
   return (
     <>
@@ -117,6 +118,7 @@ const BillProfitReportList = () => {
           ref,
           data,
           isSearched,
+          searchLoading,
           searchData,
           isLoading,
         }) => {
@@ -131,7 +133,9 @@ const BillProfitReportList = () => {
                 : [],
             [data, searchData, isSearched]
           );
-          if (isLoading) {
+
+          console.log(allData);
+          if (isLoading || searchLoading) {
             return (
               <Loading>
                 <TailSpin />
@@ -139,133 +143,117 @@ const BillProfitReportList = () => {
             );
           }
           return (
-            <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
-              <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
-                <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
-                  <Tr>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-1">#</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">ژمارەی وەصڵ</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">بەروار</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">کۆی گشتی</p>
-                    </Th>{" "}
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">داشکاندن</p>
-                    </Th>{" "}
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">نرخ دوای داشکان</p>
-                    </Th>{" "}
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">
-                        کۆی قازانجی پسوڵە
-                      </p>
-                    </Th>{" "}
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">داغڵکار</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">چاککار</p>
-                    </Th>
-                  </Tr>
-                </THead>
-                <TBody className="w-full ">
-                  <>
-                    {allData?.map((val: Sell, index: number) => (
-                      <SellProfitCard key={val.id} index={index} {...val} />
-                    ))}
-                    {!isFetchingNextPage && hasNextPage && !isSearched && (
-                      <div className="h-[20px]" ref={ref}></div>
-                    )}
-                  </>
-                </TBody>
-                <TFoot className="sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
-                  <Tr className="!default-border">
-                    <Td className="text-center" colSpan={4}>
-                      <p>
-                        کۆی پسولە :{" "}
-                        {!isSearched
-                          ? reportData?.sellData.sell_count
-                          : searchReportData?.sellData.sell_count}
-                      </p>
-                    </Td>
-                    <Td className="text-center" colSpan={4}>
-                      <p>
-                        کۆی گشتی پسولە :{" "}
-                        {!isSearched
-                          ? formatMoney(
-                              reportData?.sellData.total_item_sell_price
-                            )
-                          : formatMoney(
-                              searchReportData?.sellData.total_item_sell_price
-                            )}
-                      </p>
-                    </Td>
-                  </Tr>
-                  <Tr className="!default-border">
-                    <Td className="text-center" colSpan={4}>
-                      <p>
-                        کۆی داشکاندنی پسولە :{" "}
-                        {!isSearched
-                          ? formatMoney(reportData?.discountData)
-                          : formatMoney(searchReportData?.discountData)}
-                      </p>
-                    </Td>
-                    <Td className="text-center" colSpan={4}>
-                      <p>
-                        کۆی دوای داشکان :{" "}
-                        {!isSearched
-                          ? formatMoney(
-                              reportData?.sellData.total_item_sell_price -
-                                reportData?.discountData
-                            )
-                          : formatMoney(
-                              searchReportData?.sellData.total_item_sell_price -
-                                searchReportData?.discountData
-                            )}
-                      </p>
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Td className="text-center" colSpan={9}>
-                      <p>
-                        کۆی قازانجی پسوڵە :{" "}
-                        {!isSearched
-                          ? formatMoney(
-                              reportData?.sellData.total_item_sell_price -
-                                reportData?.discountData -
-                                reportData?.sellData.total_item_purchase_price
-                            )
-                          : formatMoney(
-                              searchReportData?.sellData.total_item_sell_price -
-                                searchReportData?.discountData -
-                                searchReportData?.sellData
-                                  .total_item_purchase_price
-                            )}
-                      </p>
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Td className="text-center" colSpan={9}>
-                      ژمارەی داتا {allData.length}
-                    </Td>
-                  </Tr>
-                </TFoot>
-              </Table>
-            </div>
+            <>
+              <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
+                <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
+                  <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
+                    <Tr>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-1">#</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">ژمارەی وەصڵ</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">بەروار</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">کۆی گشتی</p>
+                      </Th>{" "}
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">داشکاندن</p>
+                      </Th>{" "}
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">
+                          نرخ دوای داشکان
+                        </p>
+                      </Th>{" "}
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">
+                          کۆی قازانجی پسوڵە
+                        </p>
+                      </Th>{" "}
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">داغڵکار</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">چاککار</p>
+                      </Th>
+                    </Tr>
+                  </THead>
+                  <TBody className="w-full ">
+                    <>
+                      {allData?.map((val: Sell, index: number) => (
+                        <SellProfitCard key={val.id} index={index} {...val} />
+                      ))}
+                      {!isFetchingNextPage && hasNextPage && !isSearched && (
+                        <div className="h-[20px]" ref={ref}></div>
+                      )}
+                    </>
+                  </TBody>
+                </Table>
+              </div>
+              {!loading && reportData && searchReportData && (
+                <div className="w-full flex flex-col justify-center items-center z-[100]  table-dark-light   default-border p-2 gap-5">
+                  <div className="w-full flex flex-row justify-evenly items-center">
+                    <p>
+                      کۆی پسولە :{" "}
+                      {!isSearched
+                        ? reportData?.sell_count
+                        : searchReportData?.sell_count}
+                    </p>
+
+                    <p>
+                      کۆی گشتی پسولە :{" "}
+                      {!isSearched
+                        ? formatMoney(reportData?.total_sell_price)
+                        : formatMoney(searchReportData?.total_sell_price)}
+                    </p>
+                  </div>
+                  <div className="w-full flex flex-row justify-evenly items-center">
+                    <p>
+                      کۆی داشکاندنی پسولە :{" "}
+                      {!isSearched
+                        ? formatMoney(reportData?.total_sell_discount)
+                        : formatMoney(searchReportData?.total_sell_discount)}
+                    </p>
+
+                    <p>
+                      کۆی دوای داشکان :{" "}
+                      {!isSearched
+                        ? formatMoney(
+                            reportData?.total_sell_price -
+                              reportData?.total_sell_discount
+                          )
+                        : formatMoney(
+                            searchReportData?.total_sell_price -
+                              searchReportData?.total_sell_discount
+                          )}
+                    </p>
+                  </div>
+                  <div className="w-full flex flex-row justify-evenly items-center">
+                    <p>
+                      کۆی قازانجی پسوڵە :{" "}
+                      {!isSearched
+                        ? formatMoney(reportData?.total_profit)
+                        : formatMoney(searchReportData?.total_profit)}
+                    </p>
+                  </div>
+                  <div className="w-full flex flex-row justify-evenly items-center">
+                    ژمارەی داتا {allData.length}
+                  </div>
+                </div>
+              )}
+            </>
           );
         }}
       </Pagination>
       {print && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={500}
-          maxHeight={`90%`}
+          maxWidth={1500}
+          height={`90%`}
+          maxHeight={1000}
           isOpen={print}
           onClose={() => setPrint(false)}
         >

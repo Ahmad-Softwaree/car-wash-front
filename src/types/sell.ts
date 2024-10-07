@@ -9,8 +9,8 @@ export type Sell = {
   created_by: string;
   updated_by: string;
   deleted?: boolean;
-  total_item_sell_price?: number;
-  total_item_purchase_price?: number;
+  total_sell_price?: number;
+  total_purchase_price?: number;
 };
 
 export type SellItem = {

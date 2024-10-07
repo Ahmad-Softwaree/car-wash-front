@@ -15,6 +15,8 @@ export type ItemCard = {
   actual_quantity: number;
   created_by: string;
   updated_by: string;
+  created_at: number;
+  updated_at: number;
 };
 export type ItemInformation = {
   barcode: string;
@@ -62,17 +64,25 @@ export type UpdateItemF = AddItemInputs &
 
 export type GetItemsQ = Item[];
 
-export type ItemReport = Item &
-  SellItem &
-  Sell & { index?: number; total_quantity?: number | string };
+export type ItemReport = SellItem & {
+  index?: number;
+  item_barcode: string;
+  type_id: number;
+  type_name: string;
+};
 
-export type ItemKoga = Item &
-  SellItem &
-  Sell & { index?: number; total_quantity?: number | string };
+export type ItemKoga = Item & {
+  index?: number;
+  sell_quantity: number;
+};
 
-export type ItemProfit = Item &
-  SellItem &
-  Sell & { index?: number; total_quantity?: number | string };
+export type ItemProfit = SellItem & {
+  index?: number;
+  item_name: string;
+  item_barcode: string;
+  type_id: number;
+  type_name: string;
+};
 
 export type ItemSellReportCardProps = ItemReport;
 

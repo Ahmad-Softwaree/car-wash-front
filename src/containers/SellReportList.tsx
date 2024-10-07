@@ -51,12 +51,11 @@ const SellReportList = () => {
   }, [searchRefetch, search]);
 
   let loading = isLoading || searchLoading;
-  console.log(searchReportData);
-  console.log(reportData);
+
   return (
     <>
       <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap">
-        <Search />
+        <Search placeholder="گەڕان بەپێێ ژ.وەصڵ/داغڵكار/چاککار" />
         <Badge
           invisible={
             !searchParam.get(ENUMs.FROM_PARAM as string) &&
@@ -192,41 +191,37 @@ const SellReportList = () => {
                 <div className="w-full flex flex-col justify-center items-center z-[100]  table-dark-light   default-border p-2 gap-5">
                   <div className="w-full flex flex-row justify-evenly items-center">
                     <p>
-                      کۆی پسولە :{" "}
+                      کۆی ژمارەی پسولە :{" "}
                       {!isSearched
-                        ? reportData?.sellData?.sell_count
-                        : searchReportData?.sellData?.sell_count}
+                        ? reportData?.sell_count
+                        : searchReportData?.sell_count}
                     </p>
 
                     <p>
-                      کۆی گشتی پسولە :{" "}
+                      کۆی گشتی نرخی پسولەکان :{" "}
                       {!isSearched
-                        ? formatMoney(
-                            reportData?.sellData?.total_item_sell_price
-                          )
-                        : formatMoney(
-                            searchReportData?.sellData?.total_item_sell_price
-                          )}
+                        ? formatMoney(reportData?.total_sell_price)
+                        : formatMoney(searchReportData?.total_sell_price)}
                     </p>
                   </div>
                   <div className="w-full flex flex-row justify-evenly items-center">
                     <p>
-                      کۆی داشکاندنی پسولە :{" "}
+                      کۆی داشکاندنی پسولەکان :{" "}
                       {!isSearched
-                        ? formatMoney(reportData?.discountData)
-                        : formatMoney(searchReportData?.discountData)}
+                        ? formatMoney(reportData?.total_sell_discount)
+                        : formatMoney(searchReportData?.total_sell_discount)}
                     </p>
 
                     <p>
                       کۆی دوای داشکان :{" "}
                       {!isSearched
                         ? formatMoney(
-                            reportData?.sellData?.total_item_sell_price -
-                              reportData?.discountData
+                            reportData?.total_sell_price -
+                              reportData?.total_sell_discount
                           )
                         : formatMoney(
-                            searchReportData?.sellData?.total_item_sell_price -
-                              searchReportData?.discountData
+                            searchReportData?.total_sell_price -
+                              searchReportData?.total_sell_discount
                           )}
                     </p>
                   </div>

@@ -8,7 +8,7 @@ import {
   useGetExpenseReportInformation,
   useGetExpenseReportInformationSearch,
   useGetExpenseReportSearch,
-  useItemPrint,
+  useExpensePrint,
 } from "@/lib/react-query/query/report.query";
 import { ENUMs } from "@/lib/enum";
 import Pagination from "@/components/providers/Pagination";
@@ -50,6 +50,7 @@ const ExpenseReportList = () => {
   useEffect(() => {
     searchRefetch();
   }, [searchRefetch, search]);
+  let loading = isLoading || searchLoading;
 
   return (
     <>
@@ -125,6 +126,7 @@ const ExpenseReportList = () => {
           isSearched,
           searchData,
           isLoading,
+          searchLoading,
         }) => {
           const allData = useMemo(
             () =>
@@ -137,7 +139,7 @@ const ExpenseReportList = () => {
                 : [],
             [data, searchData, isSearched]
           );
-          if (isLoading) {
+          if (isLoading || searchLoading) {
             return (
               <Loading>
                 <TailSpin />
@@ -146,73 +148,77 @@ const ExpenseReportList = () => {
           }
 
           return (
-            <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
-              <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
-                <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
-                  <Tr>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-1">#</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">جۆری خەرجی</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">بڕی خەرجکراو</p>
-                    </Th>{" "}
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">بەروار</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">داغڵکار</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">چاککار</p>
-                    </Th>
-                  </Tr>
-                </THead>
-                <TBody className="w-full ">
-                  <>
-                    {allData?.map((val: Expense, index: number) => (
-                      <ExpenseReportCard key={val.id} index={index} {...val} />
-                    ))}
-                    {!isFetchingNextPage && hasNextPage && !isSearched && (
-                      <div className="h-[20px]" ref={ref}></div>
-                    )}
-                  </>
-                </TBody>
-                <TFoot className="sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
-                  <Tr className="!default-border">
-                    <Td className="text-center" colSpan={8}>
-                      <p>
-                        کۆی خەرجی :{" "}
-                        {!isSearched
-                          ? formatMoney(reportData?.total_price)
-                          : formatMoney(searchReportData?.total_price)}
-                      </p>
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Td className="text-center" colSpan={8}>
-                      ژمارەی داتا {allData.length}
-                    </Td>
-                  </Tr>
-                </TFoot>
-              </Table>
-            </div>
+            <>
+              <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
+                <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
+                  <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
+                    <Tr>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-1">#</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">جۆری خەرجی</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">بڕی خەرجکراو</p>
+                      </Th>{" "}
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">بەروار</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">داغڵکار</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">چاککار</p>
+                      </Th>
+                    </Tr>
+                  </THead>
+                  <TBody className="w-full ">
+                    <>
+                      {allData?.map((val: Expense, index: number) => (
+                        <ExpenseReportCard
+                          key={val.id}
+                          index={index}
+                          {...val}
+                        />
+                      ))}
+                      {!isFetchingNextPage && hasNextPage && !isSearched && (
+                        <div className="h-[20px]" ref={ref}></div>
+                      )}
+                    </>
+                  </TBody>
+                </Table>
+              </div>
+              {!loading && reportData && searchReportData && (
+                <div className="w-full flex flex-col justify-center items-center z-[100]  table-dark-light   default-border p-2 gap-5">
+                  <div className="w-full flex flex-row justify-evenly items-center">
+                    {" "}
+                    <p>
+                      کۆی خەرجی :{" "}
+                      {!isSearched
+                        ? formatMoney(reportData?.total_price)
+                        : formatMoney(searchReportData?.total_price)}
+                    </p>
+                  </div>
+                  <div>ژمارەی داتا {allData.length}</div>
+                </div>
+              )}
+            </>
           );
         }}
       </Pagination>
       {print && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={500}
-          maxHeight={`90%`}
+          maxWidth={1500}
+          height={`90%`}
+          maxHeight={1000}
           isOpen={print}
           onClose={() => setPrint(false)}
         >
           <PrintModal
             printFn={() =>
-              useItemPrint(
+              useExpensePrint(
                 expense_type || "",
                 search || "",
                 from || "",

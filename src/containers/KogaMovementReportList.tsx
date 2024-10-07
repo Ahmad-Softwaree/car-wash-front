@@ -21,8 +21,7 @@ import Loading from "@/components/ui/Loading";
 import { TailSpin } from "react-loader-spinner";
 import CustomClose from "@/components/shared/CustomClose";
 import FilterModal from "@/components/shared/FilterModal";
-import { ItemKoga, ItemQuantityHistory } from "@/types/items";
-import ItemKogaReportCard from "@/components/cards/ItemKogaReportCard";
+import { ItemQuantityHistory } from "@/types/items";
 import ItemMovementCard from "@/components/cards/ItemMovementCard";
 const KogaMovementReportList = () => {
   const [searchParam, setSearchParam] = useSearchParams();
@@ -225,10 +224,8 @@ const KogaMovementReportList = () => {
                     <p>
                       کۆی نرخی کڕین :{" "}
                       {!isSearched
-                        ? formatMoney(reportData?.total_item_purchase_price)
-                        : formatMoney(
-                            searchReportData?.total_item_purchase_price
-                          )}
+                        ? formatMoney(reportData?.total_purchase_price)
+                        : formatMoney(searchReportData?.total_purchase_price)}
                     </p>
                     <p>
                       کۆی تێچوو :{" "}

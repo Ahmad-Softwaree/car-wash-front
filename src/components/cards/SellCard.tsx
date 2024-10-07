@@ -33,8 +33,7 @@ const SellCard = ({
   created_by,
   updated_by,
   index = -1,
-  total_item_sell_price,
-  ...others
+  total_sell_price,
 }: SellCardProps) => {
   const navigate = useNavigate();
   const { deleted_page } = useCheckDeletedPage();
@@ -100,7 +99,7 @@ const SellCard = ({
         {report_page && (
           <Td className="!p-3">
             <p className="text-right font-light font-bukra text-sm">
-              {formatMoney(total_item_sell_price)}
+              {formatMoney(total_sell_price)}
             </p>
           </Td>
         )}
@@ -109,10 +108,10 @@ const SellCard = ({
             {formatMoney(discount)}
           </p>
         </Td>
-        {report_page && total_item_sell_price && (
+        {report_page && total_sell_price && (
           <Td className="!p-3">
             <p className="text-right font-light font-bukra text-sm">
-              {formatMoney(total_item_sell_price - discount)}
+              {formatMoney(total_sell_price - discount)}
             </p>
           </Td>
         )}

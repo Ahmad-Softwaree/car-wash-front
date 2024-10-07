@@ -453,7 +453,7 @@ export const useRestoreSelfDeletedSellItem = () => {
     onSuccess: (data: RestoreSelfDeletedSellItemQ) => {
       toast({
         title: "سەرکەوتووبوو",
-        description: "پسولەکە سڕایەوە",
+        description: "مەوادی سەر پسوڵە گێردرایەوە",
         alertType: "success",
       });
       dispatch({

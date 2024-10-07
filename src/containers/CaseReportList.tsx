@@ -190,10 +190,8 @@ const CaseReportList = () => {
                       <p>
                         کۆی نرخی فرۆشراو :{" "}
                         {!isSearched
-                          ? formatMoney(reportData?.total_item_sell_price)
-                          : formatMoney(
-                              searchReportData?.total_item_sell_price
-                            )}
+                          ? formatMoney(reportData?.total_sell_price)
+                          : formatMoney(searchReportData?.total_sell_price)}
                       </p>
                     </Td>
                   </Tr>

@@ -216,20 +216,20 @@ const ItemReportList = () => {
                     <p>
                       کۆی دانەی فرۆشراو :{" "}
                       {!isSearched
-                        ? formatMoney(reportData?.total_quantity)
-                        : formatMoney(searchReportData?.total_quantity)}
+                        ? formatMoney(reportData?.total_sell)
+                        : formatMoney(searchReportData?.total_sell)}
                     </p>
                   </div>
                   <div className="w-full flex flex-row justify-evenly items-center">
                     <p>
-                      کۆی نرخی فرۆشراو :{" "}
+                      کۆی نرخی فرۆشتن :{" "}
                       {!isSearched
                         ? formatMoney(reportData?.total_sell_price)
                         : formatMoney(searchReportData?.total_sell_price)}
                     </p>
 
                     <p>
-                      کۆی گشتی :{" "}
+                      کۆی گشتی نرخی فرۆشراو :{" "}
                       {!isSearched
                         ? formatMoney(reportData?.total_price)
                         : formatMoney(searchReportData?.total_price)}

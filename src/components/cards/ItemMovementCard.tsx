@@ -9,14 +9,11 @@ const ItemMovementCard = ({
   quantity,
   item_barcode,
   type_name,
-  type_id,
   item_purchase_price,
-  item_sell_price,
   created_by,
   id,
   index = -1,
   created_at,
-  ...others
 }: ItemMovementProps) => {
   return (
     <>

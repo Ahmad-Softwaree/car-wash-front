@@ -23,6 +23,7 @@ import SellItemForm from "../forms/SellItemForm";
 import CustomClose from "../shared/CustomClose";
 import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import RestoreModal from "../ui/RestoreModal";
+import { formatMoney } from "../shared/FormatMoney";
 
 const SellItemCard = ({
   id,
@@ -88,7 +89,8 @@ const SellItemCard = ({
         className={`default-border table-row-hover  ${
           checked?.includes(item_id) ? "table-row-include" : "table-row-normal"
         }`}
-        key={id}>
+        key={id}
+      >
         {!deleted_page && (
           <Td className="!p-3">
             <InputGroup className="checkbox-input">
@@ -160,12 +162,14 @@ const SellItemCard = ({
               placement="top"
               title="زیادکردن"
               color="success"
-              variant="soft">
+              variant="soft"
+            >
               <Chip
                 disabled={increasePending}
                 onClick={() => increase()}
                 variant="soft"
-                color="success">
+                color="success"
+              >
                 <Plus className="w-4 h-4 cursor-pointer" />
               </Chip>
             </Tooltip>
@@ -177,7 +181,8 @@ const SellItemCard = ({
               textAlign: "center",
             }}
             variant="soft"
-            color={"neutral"}>
+            color={"neutral"}
+          >
             <Input
               onBlur={() =>
                 updateItem({
@@ -196,12 +201,14 @@ const SellItemCard = ({
               placement="top"
               title="کەمکردن"
               color="danger"
-              variant="soft">
+              variant="soft"
+            >
               <Chip
                 disabled={decreasePending}
                 onClick={() => decrease()}
                 variant="soft"
-                color="danger">
+                color="danger"
+              >
                 <Minus className="w-4 h-4 cursor-pointer" />
               </Chip>
             </Tooltip>
@@ -210,12 +217,12 @@ const SellItemCard = ({
 
         <Td className="!p-3">
           <p className="text-right font-light font-bukra text-sm">
-            {item_sell_price}
+            {formatMoney(item_sell_price)}
           </p>
         </Td>
         <Td className="!p-3">
           <p className="text-right font-light font-bukra text-sm">
-            {quantity * item_sell_price}
+            {formatMoney(quantity * item_sell_price)}
           </p>
         </Td>
         <Td className="!p-3">
@@ -235,11 +242,13 @@ const SellItemCard = ({
                 placement="top"
                 title="سڕینەوە"
                 color="danger"
-                variant="soft">
+                variant="soft"
+              >
                 <Chip
                   onClick={() => setIsDelete(true)}
                   variant="soft"
-                  color="danger">
+                  color="danger"
+                >
                   <Trash2 className="w-7 h-7 p-1 cursor-pointer" />
                 </Chip>
               </Tooltip>
@@ -247,7 +256,8 @@ const SellItemCard = ({
                 placement="top"
                 title="چاککردن"
                 color="success"
-                variant="soft">
+                variant="soft"
+              >
                 <Chip
                   onClick={() => {
                     dispatch({
@@ -261,7 +271,8 @@ const SellItemCard = ({
                     setUpdate(true);
                   }}
                   variant="soft"
-                  color="success">
+                  color="success"
+                >
                   <PenTool className="w-7 h-7 p-1 cursor-pointer" />
                 </Chip>
               </Tooltip>
@@ -272,11 +283,13 @@ const SellItemCard = ({
               placement="top"
               title="گێڕانەوە"
               color="warning"
-              variant="soft">
+              variant="soft"
+            >
               <Chip
                 onClick={() => setIsRestore(true)}
                 variant="soft"
-                color="warning">
+                color="warning"
+              >
                 <RotateCcw className="w-7 h-7 p-1 cursor-pointer" />
               </Chip>
             </Tooltip>
@@ -290,7 +303,8 @@ const SellItemCard = ({
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={isDelete}
-          onClose={() => setIsDelete(false)}>
+          onClose={() => setIsDelete(false)}
+        >
           <DeleteModal
             deleteFunction={() => mutateAsync([item_id])}
             loading={isPending}
@@ -304,9 +318,10 @@ const SellItemCard = ({
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={restore}
-          onClose={() => setIsRestore(false)}>
+          onClose={() => setIsRestore(false)}
+        >
           <RestoreModal
-            deleteFunction={() => restoreSelfDeleted(checked)}
+            deleteFunction={() => restoreSelfDeleted([item_id])}
             loading={selfRestoreLoading}
             onClose={() => setIsRestore(false)}
           />
@@ -318,7 +333,8 @@ const SellItemCard = ({
           maxWidth={500}
           maxHeight={`90%`}
           isOpen={update}
-          onClose={() => setUpdate(false)}>
+          onClose={() => setUpdate(false)}
+        >
           <CustomClose onClick={() => setUpdate(false)} />
           <SellItemForm sell_id={sell_id} onClose={() => setUpdate(false)} />
         </Dialog>

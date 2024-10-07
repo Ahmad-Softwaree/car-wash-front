@@ -19,17 +19,16 @@ const SellProfitCard = ({
   created_by,
   updated_by,
   index = -1,
-  total_item_sell_price,
-  total_item_purchase_price,
-  ...others
+  total_sell_price,
+  total_purchase_price,
 }: SellCardProps) => {
   const [searchParam, setSearchParam] = useSearchParams();
   const [isPrint, setIsPrint] = useState<boolean>(false);
   const {
-    dispatch,
     state: { checked },
   } = useGlobalContext();
   let sell_id_param = searchParam.get(ENUMs.SELL_PARAM as string);
+
   return (
     <>
       <Tr
@@ -53,7 +52,7 @@ const SellProfitCard = ({
         </Td>
         <Td className="!p-3">
           <p className="text-right font-light font-bukra text-sm">
-            {formatMoney(total_item_sell_price)}
+            {formatMoney(total_sell_price)}
           </p>
         </Td>
         <Td className="!p-3">
@@ -61,19 +60,17 @@ const SellProfitCard = ({
             {formatMoney(discount)}
           </p>
         </Td>
-        {total_item_sell_price && (
+        {total_sell_price && (
           <Td className="!p-3">
             <p className="text-right font-light font-bukra text-sm">
-              {formatMoney(total_item_sell_price - discount)}
+              {formatMoney(total_sell_price - discount)}
             </p>
           </Td>
         )}
-        {total_item_sell_price && total_item_purchase_price && (
+        {total_sell_price && total_purchase_price && (
           <Td className="!p-3">
             <p className="text-right font-light font-bukra text-sm">
-              {formatMoney(
-                total_item_sell_price - discount - total_item_purchase_price
-              )}
+              {formatMoney(total_sell_price - discount - total_purchase_price)}
             </p>
           </Td>
         )}

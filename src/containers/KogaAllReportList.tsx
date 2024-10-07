@@ -215,8 +215,8 @@ const KogaAllReportList = () => {
                     <p>
                       کۆی دانەی فرۆشراو :{" "}
                       {!isSearched
-                        ? formatMoney(reportData?.total_actual_quantity)
-                        : formatMoney(searchReportData?.total_actual_quantity)}
+                        ? formatMoney(reportData?.total_sell_quantity)
+                        : formatMoney(searchReportData?.total_sell_quantity)}
                     </p>
 
                     <p>
@@ -224,11 +224,11 @@ const KogaAllReportList = () => {
                       {!isSearched
                         ? formatMoney(
                             reportData?.total_item_quantity -
-                              reportData?.total_actual_quantity
+                              reportData?.total_sell_quantity
                           )
                         : formatMoney(
                             searchReportData?.total_item_quantity -
-                              searchReportData?.total_actual_quantity
+                              searchReportData?.total_sell_quantity
                           )}
                     </p>
                   </div>
@@ -236,19 +236,15 @@ const KogaAllReportList = () => {
                     <p>
                       کۆی نرخی کڕاو :{" "}
                       {!isSearched
-                        ? formatMoney(reportData?.total_item_purchase_price)
-                        : formatMoney(
-                            searchReportData?.total_item_purchase_price
-                          )}
+                        ? formatMoney(reportData?.total_purchase_price)
+                        : formatMoney(searchReportData?.total_purchase_price)}
                     </p>
 
                     <p>
                       کۆی نرخی فرۆشراو :{" "}
                       {!isSearched
-                        ? formatMoney(reportData?.total_actual_quantity_price)
-                        : formatMoney(
-                            searchReportData?.total_actual_quantity_price
-                          )}
+                        ? formatMoney(reportData?.total_sell_price)
+                        : formatMoney(searchReportData?.total_sell_price)}
                     </p>
                   </div>
                   <div className="w-full flex flex-row justify-evenly items-center">

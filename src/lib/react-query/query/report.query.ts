@@ -65,7 +65,10 @@ import {
 } from "@/types/items";
 import { GetExpensesQ } from "@/types/expense";
 import {
+  BillProfitReportInfo,
+  ExpenseReportInfo,
   GetCasesQ,
+  ItemProfitReportInfo,
   ItemReportInfo,
   KogaAllReportInfo,
   KogaMovementReportInfo,
@@ -411,7 +414,7 @@ export const useGetBillProfitReportInformation = (from: From, to: To) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.BILL_PROFIT_REPORT_INFORMATION],
-    queryFn: (): Promise<any> =>
+    queryFn: (): Promise<BillProfitReportInfo> =>
       getBillProfitReportInformation(toast, from, to),
     retry: 0,
   });
@@ -431,7 +434,7 @@ export const useGetBillProfitReportInformationSearch = (search: Search) => {
 
   return useQuery({
     queryKey: [QUERY_KEYs.BILL_PROFIT_REPORT_INFORMATION_SEARCH],
-    queryFn: (): Promise<any> =>
+    queryFn: (): Promise<BillProfitReportInfo> =>
       getBillProfitReportInformationSearch(toast, search),
     retry: 0,
     enabled: typeof search === "string" && search.trim() !== "",
@@ -480,7 +483,7 @@ export const useGetItemProfitReportInformation = (
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.ITEM_PROFIT_REPORT_INFORMATION],
-    queryFn: (): Promise<any> =>
+    queryFn: (): Promise<ItemProfitReportInfo> =>
       getItemProfitReportInformation(toast, filter, from, to),
     retry: 0,
   });
@@ -500,7 +503,7 @@ export const useGetItemProfitReportInformationSearch = (search: Search) => {
 
   return useQuery({
     queryKey: [QUERY_KEYs.ITEM_PROFIT_REPORT_INFORMATION_SEARCH],
-    queryFn: (): Promise<any> =>
+    queryFn: (): Promise<ItemProfitReportInfo> =>
       getItemProfitReportInformationSearch(toast, search),
     retry: 0,
     enabled: typeof search === "string" && search.trim() !== "",
@@ -516,7 +519,7 @@ export const useItemProfitPrint = (
   return useQuery({
     queryKey: [QUERY_KEYs.ITEM_PRINT_DATA],
     queryFn: (): Promise<Blob | null> =>
-      itemPrint(toast, search, filter, from, to),
+      itemProfitPrint(toast, search, filter, from, to),
     retry: 0,
   });
 };
@@ -554,7 +557,7 @@ export const useGetExpenseReportInformation = (
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.EXPENSE_REPORT_INFORMATION],
-    queryFn: (): Promise<any> =>
+    queryFn: (): Promise<ExpenseReportInfo> =>
       getExpenseReportInformation(toast, filter, from, to),
     retry: 0,
   });
@@ -574,13 +577,13 @@ export const useGetExpenseReportInformationSearch = (search: Search) => {
 
   return useQuery({
     queryKey: [QUERY_KEYs.EXPENSE_REPORT_INFORMATION_SEARCH],
-    queryFn: (): Promise<any> =>
+    queryFn: (): Promise<ExpenseReportInfo> =>
       getExpenseReportInformationSearch(toast, search),
     retry: 0,
     enabled: typeof search === "string" && search.trim() !== "",
   });
 };
-export const useIExpensePrint = (
+export const useExpensePrint = (
   filter: Filter,
   search: Search,
   from: From,
