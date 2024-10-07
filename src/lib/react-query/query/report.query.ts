@@ -68,6 +68,7 @@ import {
   GetCasesQ,
   ItemReportInfo,
   KogaAllReportInfo,
+  KogaMovementReportInfo,
   KogaNullReportInfo,
   SellReportInfo,
 } from "@/types/report";
@@ -346,7 +347,7 @@ export const useGetKogaMovementReportInformation = (
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.KOGA_MOVEMENT_REPORT_INFORMATION],
-    queryFn: (): Promise<any> =>
+    queryFn: (): Promise<KogaMovementReportInfo> =>
       getKogaMovementReportInformation(toast, filter, from, to),
     retry: 0,
   });
@@ -367,7 +368,7 @@ export const useGetKogaMovementReportInformationSearch = (search: Search) => {
 
   return useQuery({
     queryKey: [QUERY_KEYs.KOGA_MOVEMENT_REPORT_INFORMATION_SEARCH],
-    queryFn: (): Promise<any> =>
+    queryFn: (): Promise<KogaMovementReportInfo> =>
       getKogaMovementReportInformationSearch(toast, search),
     retry: 0,
     enabled: typeof search === "string" && search.trim() !== "",

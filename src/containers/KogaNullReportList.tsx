@@ -255,14 +255,8 @@ const KogaNullReportList = () => {
                     <p>
                       کۆی تێچوو :{" "}
                       {!isSearched
-                        ? formatMoney(
-                            reportData?.total_item_quantity *
-                              reportData?.total_item_purchase_price
-                          )
-                        : formatMoney(
-                            searchReportData?.total_item_quantity *
-                              searchReportData?.total_item_purchase_price
-                          )}
+                        ? formatMoney(reportData?.total_cost)
+                        : formatMoney(searchReportData?.total_cost)}
                     </p>
                   </div>
                   <div className="w-full flex flex-row justify-evenly items-center">

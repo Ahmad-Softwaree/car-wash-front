@@ -48,3 +48,12 @@ export type KogaNullReportInfo = {
 };
 export type KogaNullReportData = SellItem &
   Item & { total_quantity: number; actual_quantity: number };
+
+export type KogaMovementReportInfo = {
+  total_count: number;
+  total_item_quantity: number;
+  total_item_purchase_price: number;
+  total_cost: number;
+};
+export type KogaMovementReportData = SellItem &
+  Item & { total_quantity: number; actual_quantity: number };

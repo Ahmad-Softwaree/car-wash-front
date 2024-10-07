@@ -21,6 +21,7 @@ import {
   GetCasesQ,
   ItemReportInfo,
   KogaAllReportInfo,
+  KogaMovementReportInfo,
   KogaNullReportInfo,
   SellReportInfo,
 } from "@/types/report";
@@ -405,9 +406,9 @@ export const getKogaMovementReportInformation = async (
   filter: Filter,
   from: From,
   to: To
-): Promise<any> => {
+): Promise<KogaMovementReportInfo> => {
   try {
-    const { data, status } = await authApi.get<any>(
+    const { data, status } = await authApi.get<KogaMovementReportInfo>(
       `${URLs.GET_KOGA_MOVEMENT_REPORTS_INFORMATION}?from=${
         from != "" ? from : ""
       }&to=${to != "" ? to : ""}&filter=${filter != "" ? filter : ""}`
@@ -437,9 +438,9 @@ export const getKogaMovementReportSearch = async (
 export const getKogaMovementReportInformationSearch = async (
   toast: ToastType,
   search: Search
-): Promise<any> => {
+): Promise<KogaMovementReportInfo> => {
   try {
-    const { data, status } = await authApi.get<any>(
+    const { data, status } = await authApi.get<KogaMovementReportInfo>(
       `${URLs.GET_KOGA_MOVEMENT_REPORTS_INFORMATION_SEARCH}?search=${
         search != "" ? search : ""
       }`
