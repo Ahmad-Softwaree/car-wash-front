@@ -4,7 +4,7 @@ const Dialog = lazy(() => import("@/components/shared/Dialog"));
 
 import Pagination from "@/components/providers/Pagination";
 import TBody from "@/components/ui/TBody";
-import { Table, Td, Th, THead, Tr } from "@/components/ui";
+import { Table, Th, THead, Tr } from "@/components/ui";
 
 import Input from "@/components/ui/Input";
 import { InputGroup } from "@chakra-ui/react";
@@ -109,7 +109,6 @@ const Items = () => {
             {!deleted_page && <AddButton onClick={() => setIsAddOpen(true)} />}
           </div>
         </div>
-        {/* <DatePicker /> */}
         <Pagination<Item[]>
           queryFn={() =>
             deleted_page
@@ -229,7 +228,7 @@ const Items = () => {
                           <p className="pr-3 table-head-border">داغڵکار</p>
                         </Th>
                         <Th className="text-right text-sm !p-4">
-                          <p className="pr-3 table-head-border">چاککار</p>
+                          <p className="pr-3 table-head-border">نوێکەرەوە</p>
                         </Th>
                         <Th className="text-right text-sm !p-4">
                           <p className="pr-3 table-head-border">کردارەکان</p>

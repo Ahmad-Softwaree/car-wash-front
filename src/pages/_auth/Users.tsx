@@ -111,7 +111,6 @@ const Users = () => {
             {!deleted_page && <AddButton onClick={() => setIsAddOpen(true)} />}
           </div>
         </div>
-        {/* <DatePicker /> */}
         <Pagination<User[]>
           queryFn={() =>
             deleted_page

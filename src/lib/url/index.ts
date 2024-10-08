@@ -50,6 +50,17 @@ export type URLS =
   | "RESTORE_COLOR"
   | "SEARCH_DELETED_COLORS"
   | "SEARCH_COLORS"
+  //PRINTER
+  | "GET_PRINTERS_SELECTION"
+  | "GET_PRINTERS"
+  | "ADD_PRINTER"
+  | "UPDATE_PRINTER"
+  | "UPDATE_PRINTER_STATE"
+  | "DELETE_PRINTER"
+  | "GET_DELETED_PRINTERS"
+  | "RESTORE_PRINTER"
+  | "SEARCH_DELETED_PRINTERS"
+  | "SEARCH_PRINTERS"
   //CAR_MODEL
   | "GET_CAR_MODELS_SELECTION"
   | "GET_CAR_MODELS"
@@ -260,6 +271,20 @@ export const URLs: { [key in URLS]: string } = {
   RESTORE_COLOR: `${API}/color/restore`,
   SEARCH_DELETED_COLORS: `${API}/color/deleted_search`,
   SEARCH_COLORS: `${API}/color/search`,
+
+  //PRINTER
+  GET_PRINTERS: `${API}/printer`,
+  GET_PRINTERS_SELECTION: `${API}/printer/select`,
+
+  ADD_PRINTER: `${API}/printer`,
+  UPDATE_PRINTER: `${API}/printer`,
+  UPDATE_PRINTER_STATE: `${API}/printer/state`,
+
+  DELETE_PRINTER: `${API}/printer`,
+  GET_DELETED_PRINTERS: `${API}/printer/deleted`,
+  RESTORE_PRINTER: `${API}/printer/restore`,
+  SEARCH_DELETED_PRINTERS: `${API}/printer/deleted_search`,
+  SEARCH_PRINTERS: `${API}/printer/search`,
 
   //CAR_MODEL
   GET_CAR_MODELS: `${API}/car-model`,

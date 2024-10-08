@@ -82,13 +82,16 @@ const ItemReportFilter = ({ onClose }: { onClose: () => void }) => {
             const selectedItem = data?.find(
               (val: ItemType) => val.name === selectedValue
             );
+            params.delete(ENUMs.SEARCH_PARAM as string);
+
             if (selectedItem) {
-              // Check if selectedItem is defined
-              params.delete(ENUMs.SEARCH_PARAM as string);
               params.set(
                 ENUMs.ITEM_TYPE_PARAM as string,
-                selectedItem.id.toString()
+                selectedItem.toString()
               );
+            } else {
+              params.delete(ENUMs.SEARCH_PARAM as string);
+              params.delete(ENUMs.ITEM_TYPE_PARAM as string);
             }
             if (selectedStartDate && selectedEndDate) {
               params.set(
@@ -99,6 +102,9 @@ const ItemReportFilter = ({ onClose }: { onClose: () => void }) => {
                 ENUMs.TO_PARAM as string,
                 parseDateToTimestamp(selectedEndDate?.toString() || "") || ""
               );
+            } else {
+              params.delete(ENUMs.FROM_PARAM as string);
+              params.delete(ENUMs.TO_PARAM as string);
             }
 
             return params;

@@ -1,5 +1,4 @@
 import Search from "@/components/shared/Search";
-import TFoot from "@/components/ui/TFoot";
 import { Table, Td, Th, THead, Tr } from "@/components/ui";
 import TBody from "@/components/ui/TBody";
 import { useSearchParams } from "react-router-dom";
@@ -134,7 +133,6 @@ const BillProfitReportList = () => {
             [data, searchData, isSearched]
           );
 
-          console.log(allData);
           if (isLoading || searchLoading) {
             return (
               <Loading>
@@ -170,6 +168,11 @@ const BillProfitReportList = () => {
                       </Th>{" "}
                       <Th className="text-right text-sm !p-4">
                         <p className="pr-3 table-head-border">
+                          کۆی تێچووی پسوڵە
+                        </p>
+                      </Th>{" "}
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">
                           کۆی قازانجی پسوڵە
                         </p>
                       </Th>{" "}
@@ -177,7 +180,7 @@ const BillProfitReportList = () => {
                         <p className="pr-3 table-head-border">داغڵکار</p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">چاککار</p>
+                        <p className="pr-3 table-head-border">نوێکەرەوە</p>
                       </Th>
                     </Tr>
                   </THead>
@@ -208,6 +211,13 @@ const BillProfitReportList = () => {
                       {!isSearched
                         ? formatMoney(reportData?.total_sell_price)
                         : formatMoney(searchReportData?.total_sell_price)}
+                    </p>
+
+                    <p>
+                      کۆی تێچووی پسوڵە :{" "}
+                      {!isSearched
+                        ? formatMoney(reportData?.total_purchase_price)
+                        : formatMoney(searchReportData?.total_purchase_price)}
                     </p>
                   </div>
                   <div className="w-full flex flex-row justify-evenly items-center">

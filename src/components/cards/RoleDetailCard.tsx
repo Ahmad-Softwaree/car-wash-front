@@ -15,7 +15,7 @@ const RoleDetailCard = ({
   id,
 }: FormFinalOperation & RoleCardProps) => {
   return (
-    <div className="space-y-4  dark-light  rounded-lg default-border bg-transparent py-2 w-full max-w-2xl shadow-4xl mt-2">
+    <div className="space-y-4  dark-light  rounded-lg default-border bg-transparent py-2 w-full  shadow-4xl mt-2">
       <div className="w-full flex flex-col justify-start items-start gap-4 my-3 px-3">
         <p className="text-sm">زانیاری </p>
       </div>

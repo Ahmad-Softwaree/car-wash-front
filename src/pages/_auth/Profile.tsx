@@ -49,12 +49,14 @@ const Profile = () => {
     <>
       <Container
         as={`div`}
-        className="w-full gap-10 flex flex-col justify-start items-center ">
+        className="w-full gap-10 flex flex-col justify-start items-center "
+      >
         <Form
-          className="space-y-4 mt-5 !text-primary-800 dark:!text-white  rounded-lg border-2 border-solid border-primary-400 border-opacity-40 bg-secondary-100 dark:bg-primary-500 py-2 w-full max-w-2xl"
+          className="space-y-4 mt-5 !text-primary-800 dark:!text-white  rounded-lg border-2 border-solid border-primary-400 border-opacity-40 bg-secondary-100 dark:bg-primary-500 py-2 w-full "
           ref={form}
           onSubmit={handleSubmit(onSubmit)}
-          id="profileForm">
+          id="profileForm"
+        >
           <div className="w-full flex flex-col justify-start items-start gap-4 my-3 px-3">
             <p className="text-sm">زانیاری کەسی</p>
             <p className="text-xs font-light opacity-50">
@@ -73,7 +75,8 @@ const Profile = () => {
               className="!font-bukra my-5"
               variant="soft"
               color="neutral"
-              size="sm">
+              size="sm"
+            >
               زانیاری گشتی
             </Chip>
           </Divider>
@@ -123,7 +126,8 @@ const Profile = () => {
               className="!font-bukra my-5"
               variant="soft"
               color="neutral"
-              size="sm">
+              size="sm"
+            >
               زانیاری تایبەت
             </Chip>
           </Divider>
@@ -200,7 +204,8 @@ const Profile = () => {
             name="updateProfile"
             title="updateProfile"
             disabled={isPending}
-            className="ml-auto mr-3 text-xs p-2 rounded-lg bg-sky-800 px-4 bg-opacity-50 border-2 border-solid border-primary-800 transition-all duration-200 hover:bg-opacity-100">
+            className="ml-auto mr-3 text-xs p-2 rounded-lg bg-sky-800 px-4 bg-opacity-50 border-2 border-solid border-primary-800 transition-all duration-200 hover:bg-opacity-100"
+          >
             دڵنیابوونەوە
           </MyButton>
         </Form>

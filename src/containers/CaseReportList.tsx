@@ -1,10 +1,8 @@
 import Search from "@/components/shared/Search";
-import DatePicker from "@/components/shared/DatePicker";
 import TFoot from "@/components/ui/TFoot";
 import { Table, Td, Th, THead, Tr } from "@/components/ui";
 import TBody from "@/components/ui/TBody";
-import { Sell } from "@/types/sell";
-import SellCard from "@/components/cards/SellCard";
+
 import { useSearchParams } from "react-router-dom";
 import {
   useGetCaseReport,
@@ -17,7 +15,6 @@ import { ENUMs } from "@/lib/enum";
 import Pagination from "@/components/providers/Pagination";
 import { useEffect, useMemo, useState } from "react";
 import { formatMoney } from "@/components/shared/FormatMoney";
-import useDebounce from "@/hooks/useDebounce";
 import { Filter, Printer } from "lucide-react";
 import { Badge, Button, Chip } from "@mui/joy";
 import PrintModal from "@/components/ui/PrintModal";
@@ -26,7 +23,7 @@ import Loading from "@/components/ui/Loading";
 import { TailSpin } from "react-loader-spinner";
 import CustomClose from "@/components/shared/CustomClose";
 import FilterModal from "@/components/shared/FilterModal";
-import { CaseReport } from "@/types/global";
+import { CaseReport } from "@/types/report";
 import CaseReportCard from "@/components/cards/CaseReportCard";
 const CaseReportList = () => {
   const [searchParam, setSearchParam] = useSearchParams();

@@ -34,6 +34,7 @@ import {
   PackageSearch,
   Palette,
   Presentation,
+  Printer,
   Receipt,
   ReceiptText,
   UserCog,
@@ -98,9 +99,11 @@ export const sideLinks: SideLink[] = [
   },
   {
     id: crypto.randomUUID() as string,
-    icon: <ReceiptText />,
-    name: ENUMs.SELL_PART as string,
-    link: `/${ENUMs.GENERAL_SECTION as string}/${ENUMs.SELL_PART as string}`,
+    icon: <Users />,
+    name: ENUMs.CUSTOMER_PART as string,
+    link: `/${ENUMs.GENERAL_SECTION as string}/${
+      ENUMs.CUSTOMER_PART as string
+    }`,
     type: "general",
   },
   {
@@ -135,29 +138,24 @@ export const sideLinks: SideLink[] = [
     }`,
     type: "general",
   },
-  //MANAGE
   {
     id: crypto.randomUUID() as string,
-    icon: <UserCog />,
-    name: ENUMs.USERS_PART as string,
-    link: `/${ENUMs.MANAGE_SECTION as string}/${ENUMs.USERS_PART as string}`,
-    type: "manage",
+    icon: <ReceiptText />,
+    name: ENUMs.SELL_PART as string,
+    link: `/${ENUMs.GENERAL_SECTION as string}/${ENUMs.SELL_PART as string}`,
+    type: "general",
   },
-  {
-    id: crypto.randomUUID() as string,
-    icon: <Users />,
-    name: ENUMs.CUSTOMER_PART as string,
-    link: `/${ENUMs.MANAGE_SECTION as string}/${ENUMs.CUSTOMER_PART as string}`,
-    type: "manage",
-  },
-  //REPORT
+
   {
     id: crypto.randomUUID() as string,
     icon: <CircleDollarSign />,
     name: ENUMs.EXPENSE_PART as string,
-    link: `/${ENUMs.REPORT_SECTION as string}/${ENUMs.EXPENSE_PART as string}`,
-    type: "report",
+    link: `/${ENUMs.GENERAL_SECTION as string}/${ENUMs.EXPENSE_PART as string}`,
+    type: "general",
   },
+
+  //REPORT
+
   {
     id: crypto.randomUUID() as string,
     icon: (
@@ -264,6 +262,13 @@ export const sideLinks: SideLink[] = [
   //SETTING
   {
     id: crypto.randomUUID() as string,
+    icon: <UserCog />,
+    name: ENUMs.USERS_PART as string,
+    link: `/${ENUMs.SETTING_SECTION as string}/${ENUMs.USERS_PART as string}`,
+    type: "setting",
+  },
+  {
+    id: crypto.randomUUID() as string,
     icon: <Key />,
     name: ENUMs.ROLE_PART as string,
     link: `/${ENUMs.SETTING_SECTION as string}/${ENUMs.ROLE_PART as string}`,
@@ -320,6 +325,13 @@ export const sideLinks: SideLink[] = [
     link: `/${ENUMs.SETTING_SECTION as string}/${
       ENUMs.EXPENSE_TYPE_PART as string
     }`,
+    type: "setting",
+  },
+  {
+    id: crypto.randomUUID() as string,
+    icon: <Printer />,
+    name: ENUMs.PRINTER_PART as string,
+    link: `/${ENUMs.SETTING_SECTION as string}/${ENUMs.PRINTER_PART as string}`,
     type: "setting",
   },
   //DELETED
@@ -599,40 +611,6 @@ const Sidebar = ({
               </AccordionDetails>
             </Accordion>
 
-            <Accordion
-              expanded={index === 1}
-              onChange={(event, expanded) => {
-                setIndex(expanded ? 1 : null);
-              }}
-              defaultExpanded
-            >
-              <AccordionSummary>
-                <Chip
-                  className="!font-bukra my-3"
-                  variant="soft"
-                  color="neutral"
-                  size="sm"
-                >
-                  بەڕێوەبردن
-                </Chip>
-              </AccordionSummary>
-
-              <AccordionDetails>
-                {" "}
-                {sideLinks
-                  .filter(
-                    (val: SideLink, _index: number) => val.type == "manage"
-                  )
-                  .map((val: SideLink, _index: number) => (
-                    <Item
-                      key={val.id}
-                      Icon={val.icon}
-                      link={val.link}
-                      text={val.name}
-                    />
-                  ))}
-              </AccordionDetails>
-            </Accordion>
             <Accordion
               expanded={index === 2}
               onChange={(event, expanded) => {

@@ -229,7 +229,6 @@ const Backups = () => {
             باکئەپی خزمەتگوزاریەکان
           </button>
         </div>
-        {/* <DatePicker /> */}
         <Pagination<Backup[]>
           queryFn={() =>
             useGetBackups(

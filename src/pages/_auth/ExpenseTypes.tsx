@@ -28,7 +28,6 @@ import { useSearchParams } from "react-router-dom";
 import { ENUMs } from "@/lib/enum";
 
 import DeleteModal from "@/components/ui/DeleteModal";
-import TFoot from "@/components/ui/TFoot";
 import CustomClose from "@/components/shared/CustomClose";
 import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import DeleteChip from "@/components/shared/DeleteChip";
@@ -36,7 +35,6 @@ import RestoreChip from "@/components/shared/RestoreChip";
 import Search from "@/components/shared/Search";
 import AddButton from "@/components/shared/AddButton";
 import RestoreModal from "@/components/ui/RestoreModal";
-import DatePicker from "@/components/shared/DatePicker";
 import Loading from "@/components/ui/Loading";
 import { TailSpin } from "react-loader-spinner";
 
@@ -82,7 +80,6 @@ const ExpenseTypes = () => {
             {!deleted_page && <AddButton onClick={() => setIsAddOpen(true)} />}
           </div>
         </div>
-        {/* <DatePicker /> */}
 
         <Pagination<ExpenseType[]>
           queryFn={() =>

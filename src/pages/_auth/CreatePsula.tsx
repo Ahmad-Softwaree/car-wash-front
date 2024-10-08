@@ -17,7 +17,6 @@ import Loading from "@/components/ui/Loading";
 import MyButton from "@/components/ui/MyButton";
 import PrintModal from "@/components/ui/PrintModal";
 import TBody from "@/components/ui/TBody";
-import TFoot from "@/components/ui/TFoot";
 import { useToast } from "@/components/ui/use-toast";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
@@ -302,90 +301,92 @@ const CreatePsula = () => {
                 </div>
               )}
               <div className="w-full grid grid-rows-6 grid-cols-1 gap-0 place-items-start ">
-                <div className="row-span-3 w-full max-w-full overflow-x-auto max-h-[500px] default-border hide-scroll">
-                  <Table className="relative  w-full table-dark-light  default-border">
-                    <THead className="sticky -top-1 z-[100]  table-dark-light w-full  default-border">
-                      <Tr>
-                        <Th className="text-right text-sm !p-4">
-                          <InputGroup className="checkbox-input">
-                            <Input
-                              onClick={() => {
-                                if (checked.length == 0) {
-                                  dispatch({
-                                    type: CONTEXT_TYPEs.CHECK,
-                                    payload: sellItems?.map(
-                                      (val: SellItem, _index: number) =>
-                                        val.item_id
-                                    ),
-                                  });
-                                } else {
-                                  dispatch({
-                                    type: CONTEXT_TYPEs.CHECK,
-                                    payload: [],
-                                  });
-                                }
-                              }}
-                              checked={check_type == "all"}
-                              type="checkbox"
-                              className="cursor-pointer"
-                            />
-                          </InputGroup>
-                        </Th>
-                        <Th className="text-right text-sm !p-4">
-                          <p className="pr-1">#</p>
-                        </Th>
-                        <Th className="text-right text-sm !p-4">
-                          <p className="pr-3 table-head-border">ناوی کاڵا</p>
-                        </Th>
-                        <Th className="text-right text-sm !p-4">
-                          <p className="pr-3 table-head-border">دانە</p>
-                        </Th>{" "}
-                        <Th className="text-right text-sm !p-4">
-                          <p className="pr-3 table-head-border">نرخ</p>
-                        </Th>
-                        <Th className="text-right text-sm !p-4">
-                          <p className="pr-3 table-head-border">کۆ</p>
-                        </Th>
-                        <Th className="text-right text-sm !p-4">
-                          <p className="pr-3 table-head-border">داغڵکار</p>
-                        </Th>
-                        <Th className="text-right text-sm !p-4">
-                          <p className="pr-3 table-head-border">چاککار</p>
-                        </Th>
-                        <Th className="text-right text-sm !p-4">
-                          <p className="pr-3 table-head-border">کردارەکان</p>
-                        </Th>
-                      </Tr>
-                    </THead>
-                    <TBody className="w-full">
-                      {sellItems?.map((val: SellItem, _index: number) => (
-                        <SellItemCard
-                          state="insert"
-                          index={_index}
-                          key={val.id}
-                          {...val}
-                        />
-                      ))}
-                    </TBody>
-                  </Table>
-                </div>
-                <div className="flex flex-row justify-between items-center gap-10  table-dark-light w-full  default-border p-4">
-                  {sellItems && sellItems?.length > 0 && sell && (
-                    <>
-                      <p className="text-center text-xs">
-                        کۆی مەواد : {totalItems}
-                      </p>
-                      <p className="text-center text-xs">
-                        کۆی گشتی : {sellTotal} IQD
-                      </p>
-                      <p className="text-center text-xs">
-                        داشکاندن : {formatMoney(sell?.discount)} IQD
-                      </p>
-                      <p className="text-center text-xs">
-                        کۆی گشتی دوای داشکان : {sellTotalAfterDiscount} IQD
-                      </p>
-                    </>
-                  )}
+                <div className="row-span-3 w-full max-w-full overflow-x-auto max-h-[500px] default-border">
+                  <div className="w-full hide-scroll">
+                    <Table className="relative  w-full table-dark-light  default-border">
+                      <THead className="sticky -top-1 z-[100]  table-dark-light w-full  default-border">
+                        <Tr>
+                          <Th className="text-right text-sm !p-4">
+                            <InputGroup className="checkbox-input">
+                              <Input
+                                onClick={() => {
+                                  if (checked.length == 0) {
+                                    dispatch({
+                                      type: CONTEXT_TYPEs.CHECK,
+                                      payload: sellItems?.map(
+                                        (val: SellItem, _index: number) =>
+                                          val.item_id
+                                      ),
+                                    });
+                                  } else {
+                                    dispatch({
+                                      type: CONTEXT_TYPEs.CHECK,
+                                      payload: [],
+                                    });
+                                  }
+                                }}
+                                checked={check_type == "all"}
+                                type="checkbox"
+                                className="cursor-pointer"
+                              />
+                            </InputGroup>
+                          </Th>
+                          <Th className="text-right text-sm !p-4">
+                            <p className="pr-1">#</p>
+                          </Th>
+                          <Th className="text-right text-sm !p-4">
+                            <p className="pr-3 table-head-border">ناوی کاڵا</p>
+                          </Th>
+                          <Th className="text-right text-sm !p-4">
+                            <p className="pr-3 table-head-border">دانە</p>
+                          </Th>{" "}
+                          <Th className="text-right text-sm !p-4">
+                            <p className="pr-3 table-head-border">نرخ</p>
+                          </Th>
+                          <Th className="text-right text-sm !p-4">
+                            <p className="pr-3 table-head-border">کۆ</p>
+                          </Th>
+                          <Th className="text-right text-sm !p-4">
+                            <p className="pr-3 table-head-border">داغڵکار</p>
+                          </Th>
+                          <Th className="text-right text-sm !p-4">
+                            <p className="pr-3 table-head-border">نوێکەرەوە</p>
+                          </Th>
+                          <Th className="text-right text-sm !p-4">
+                            <p className="pr-3 table-head-border">کردارەکان</p>
+                          </Th>
+                        </Tr>
+                      </THead>
+                      <TBody className="w-full">
+                        {sellItems?.map((val: SellItem, _index: number) => (
+                          <SellItemCard
+                            state="insert"
+                            index={_index}
+                            key={val.id}
+                            {...val}
+                          />
+                        ))}
+                      </TBody>
+                    </Table>
+                  </div>
+                  <div className="flex flex-row justify-between items-center gap-10  table-dark-light w-full  default-border p-4">
+                    {sellItems && sellItems?.length > 0 && sell && (
+                      <>
+                        <p className="text-center text-xs">
+                          کۆی مەواد : {totalItems}
+                        </p>
+                        <p className="text-center text-xs">
+                          کۆی گشتی : {sellTotal} IQD
+                        </p>
+                        <p className="text-center text-xs">
+                          داشکاندن : {formatMoney(sell?.discount)} IQD
+                        </p>
+                        <p className="text-center text-xs">
+                          کۆی گشتی دوای داشکان : {sellTotalAfterDiscount} IQD
+                        </p>
+                      </>
+                    )}
+                  </div>
                 </div>
                 <div className="row-span-3 w-full grid grid-cols-1 grid-rows-3 default-border h-[250px]">
                   <div className=" w-full grid grid-cols-3 col-span-full row-span-2">

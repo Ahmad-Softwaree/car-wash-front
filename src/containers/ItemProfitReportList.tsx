@@ -182,6 +182,12 @@ const ItemProfitReportList = () => {
                         <p className="pr-3 table-head-border">نرخی کڕین</p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">تێچووی دانە</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">کۆی تیچوو</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
                         <p className="pr-3 table-head-border">قازانجی دانە</p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
@@ -191,7 +197,7 @@ const ItemProfitReportList = () => {
                         <p className="pr-3 table-head-border">داغڵکار</p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">چاککار</p>
+                        <p className="pr-3 table-head-border">نوێکەرەوە</p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
                         <p className="pr-3 table-head-border">بەروار</p>
@@ -202,7 +208,7 @@ const ItemProfitReportList = () => {
                     <>
                       {allData?.map((val: ItemProfit, index: number) => (
                         <ItemProfitReportCard
-                          key={val.item_id}
+                          key={val.id}
                           index={index}
                           {...val}
                         />
@@ -247,6 +253,12 @@ const ItemProfitReportList = () => {
                     </p>
                   </div>
                   <div className="w-full flex flex-row justify-evenly items-center">
+                    <p>
+                      کۆی گشتی تێچوو :{" "}
+                      {!isSearched
+                        ? formatMoney(reportData.total_cost)
+                        : formatMoney(searchReportData.total_cost)}
+                    </p>
                     <p>
                       کۆی قازانجی دانە :{" "}
                       {!isSearched

@@ -67,6 +67,13 @@ const SellProfitCard = ({
             </p>
           </Td>
         )}
+        {total_purchase_price && (
+          <Td className="!p-3">
+            <p className="text-right font-light font-bukra text-sm">
+              {formatMoney(total_purchase_price)}
+            </p>
+          </Td>
+        )}
         {total_sell_price && total_purchase_price && (
           <Td className="!p-3">
             <p className="text-right font-light font-bukra text-sm">

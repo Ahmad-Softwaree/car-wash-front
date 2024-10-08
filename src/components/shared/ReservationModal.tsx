@@ -233,7 +233,7 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
                           <p className="pr-3 table-head-border">داغڵکار</p>
                         </Th>
                         <Th className="text-right text-sm !p-4">
-                          <p className="pr-3 table-head-border">چاککار</p>
+                          <p className="pr-3 table-head-border">نوێکەرەوە</p>
                         </Th>
                         <Th className="text-right text-sm !p-4">
                           <p className="pr-3 table-head-border">کردارەکان</p>

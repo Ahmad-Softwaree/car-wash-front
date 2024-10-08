@@ -55,7 +55,7 @@ const SellReportList = () => {
   return (
     <>
       <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap">
-        <Search placeholder="گەڕان بەپێێ ژ.وەصڵ/داغڵكار/چاککار" />
+        <Search placeholder="گەڕان بەپێێ ژ.وەصڵ/داغڵكار/نوێکەرەوە" />
         <Badge
           invisible={
             !searchParam.get(ENUMs.FROM_PARAM as string) &&
@@ -171,7 +171,7 @@ const SellReportList = () => {
                         <p className="pr-3 table-head-border">داغڵکار</p>
                       </Th>
                       <Th className="text-right text-sm !p-4">
-                        <p className="pr-3 table-head-border">چاککار</p>
+                        <p className="pr-3 table-head-border">نوێکەرەوە</p>
                       </Th>
                     </Tr>
                   </THead>

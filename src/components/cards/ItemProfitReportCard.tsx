@@ -17,7 +17,9 @@ const ItemProfitReportCard = ({
   sell_id,
   index = -1,
   created_at,
+  id,
 }: ItemProfitReportCardProps) => {
+  console.log(id);
   return (
     <Tr className={`default-border table-row-hover `}>
       <Td className="!p-3">
@@ -65,6 +67,19 @@ const ItemProfitReportCard = ({
           <FormatMoney>{item_purchase_price}</FormatMoney>
         </p>
       </Td>
+
+      <Td className="!p-3">
+        <p className="text-right font-light font-bukra text-sm">
+          <FormatMoney>{item_purchase_price}</FormatMoney>
+        </p>
+      </Td>
+
+      <Td className="!p-3">
+        <p className="text-right font-light font-bukra text-sm">
+          <FormatMoney>{item_purchase_price * Number(quantity)}</FormatMoney>
+        </p>
+      </Td>
+
       <Td className="!p-3">
         <p className="text-right font-light font-bukra text-sm">
           <FormatMoney>{item_sell_price - item_purchase_price}</FormatMoney>

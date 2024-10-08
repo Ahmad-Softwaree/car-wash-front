@@ -78,7 +78,6 @@ export type ItemKoga = Item & {
 
 export type ItemProfit = SellItem & {
   index?: number;
-  item_name: string;
   item_barcode: string;
   type_id: number;
   type_name: string;

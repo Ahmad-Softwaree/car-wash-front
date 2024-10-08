@@ -136,6 +136,12 @@ export type DeleteModalProps = {
   deleteFunction: any;
   loading: boolean;
 };
+export type PrinterStateModalProps = {
+  onClose: () => void;
+  finalOperator?: () => void;
+  deleteFunction: any;
+  loading: boolean;
+};
 
 export type CalculatorProps = {
   money: number;

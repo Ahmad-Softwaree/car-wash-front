@@ -182,6 +182,29 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
                   />
                 </InputGroup>
               </div>
+              <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
+                <Label
+                  htmlFor="phone"
+                  className="w-full text-sm  flex flex-row gap-2"
+                >
+                  <p>ژمارە تەلەفۆن</p>
+                  <Required />
+                </Label>{" "}
+                <InputGroup
+                  error={errors.phone}
+                  className="w-full space-y-2  text-input col-span-full md:col-span-1"
+                >
+                  <Input
+                    type="text"
+                    {...register("phone", { required: true })}
+                    name="phone"
+                    id="phone"
+                    placeholder="ژمارە تەلەفۆن "
+                    className="w-full text-sm"
+                    aria-invalid={errors.phone ? "true" : "false"}
+                  />
+                </InputGroup>
+              </div>
               <div className=" col-span-full md:col-span-1 w-full flex flex-col gap-2">
                 <Label className="w-full text-sm  flex flex-row gap-2">
                   <p>ڕۆڵ</p>

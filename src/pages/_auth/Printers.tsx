@@ -1,21 +1,21 @@
 import Container from "@/components/ui/Container";
-import { lazy, useMemo, useRef, useState } from "react";
+import { lazy, useMemo, useState } from "react";
 const Dialog = lazy(() => import("@/components/shared/Dialog"));
-const CustomerCard = lazy(() => import("@/components/cards/CustomerCard"));
+const PrinterCard = lazy(() => import("@/components/cards/PrinterCard"));
 
 import {
-  useDeleteCustomer,
-  useGetDeletedCustomers,
-  useGetCustomers,
-  useRestoreCustomer,
-  useSearchDeletedCustomers,
-  useSearchCustomers,
-} from "@/lib/react-query/query/customer.query";
+  useDeletePrinter,
+  useGetDeletedPrinters,
+  useGetPrinters,
+  useRestorePrinter,
+  useSearchDeletedPrinters,
+  useSearchPrinters,
+} from "@/lib/react-query/query/printer.query";
 import Pagination from "@/components/providers/Pagination";
-import { Customer } from "@/types/customer";
-import CustomerForm from "@/components/forms/CustomerForm";
+import { Printer } from "@/types/printer";
+import PrinterForm from "@/components/forms/PrinterForm";
 import TBody from "@/components/ui/TBody";
-import { Table, Td, Th, THead, Tr } from "@/components/ui";
+import { Table, Th, THead, Tr } from "@/components/ui";
 
 import Input from "@/components/ui/Input";
 import { InputGroup } from "@chakra-ui/react";
@@ -26,7 +26,6 @@ import { useSearchParams } from "react-router-dom";
 import { ENUMs } from "@/lib/enum";
 
 import DeleteModal from "@/components/ui/DeleteModal";
-import TFoot from "@/components/ui/TFoot";
 import CustomClose from "@/components/shared/CustomClose";
 import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import DeleteChip from "@/components/shared/DeleteChip";
@@ -37,12 +36,11 @@ import RestoreModal from "@/components/ui/RestoreModal";
 import Loading from "@/components/ui/Loading";
 import { TailSpin } from "react-loader-spinner";
 
-const Customers = () => {
+const Printers = () => {
   const { deleted_page } = useCheckDeletedPage();
-  const { mutateAsync, isPending } = useDeleteCustomer();
+  const { mutateAsync, isPending } = useDeletePrinter();
   const { mutateAsync: restore, isPending: restoreLoading } =
-    useRestoreCustomer();
-  const tableRef = useRef<HTMLDivElement>(null);
+    useRestorePrinter();
 
   const [searchParam, setSearchParam] = useSearchParams();
   const [isDelete, setIsDelete] = useState<boolean>(false);
@@ -61,7 +59,7 @@ const Customers = () => {
       >
         <div className="w-full gap-5 flex flex-row justify-between">
           <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
-            <Search placeholder="گەڕان بەپێ ناو/ژ.تەل" />
+            <Search placeholder="گەڕان بەپێی ناو" />
           </div>
           <div className="w-full flex flex-row justify-end items-center gap-3">
             {checked?.length > 0 && (
@@ -79,24 +77,25 @@ const Customers = () => {
             {!deleted_page && <AddButton onClick={() => setIsAddOpen(true)} />}
           </div>
         </div>
-        <Pagination<Customer[]>
+
+        <Pagination<Printer[]>
           queryFn={() =>
             deleted_page
-              ? useGetDeletedCustomers(
+              ? useGetDeletedPrinters(
                   searchParam.get(ENUMs.FROM_PARAM as string) || "",
                   searchParam.get(ENUMs.TO_PARAM as string) || ""
                 )
-              : useGetCustomers(
+              : useGetPrinters(
                   searchParam.get(ENUMs.FROM_PARAM as string) || "",
                   searchParam.get(ENUMs.TO_PARAM as string) || ""
                 )
           }
           searchQueryFn={() =>
             deleted_page
-              ? useSearchDeletedCustomers(
+              ? useSearchDeletedPrinters(
                   searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
                 )
-              : useSearchCustomers(
+              : useSearchPrinters(
                   searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
                 )
           }
@@ -132,10 +131,7 @@ const Customers = () => {
 
             return (
               <>
-                <div
-                  ref={tableRef}
-                  className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll"
-                >
+                <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
                   <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
                     <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
                       <Tr>
@@ -143,18 +139,13 @@ const Customers = () => {
                           <InputGroup className="checkbox-input">
                             <Input
                               onChange={() => {
-                                tableRef.current?.scrollTo({
-                                  top: 0,
-                                  behavior: "smooth",
-                                });
                                 if (checked.length == 0) {
                                   dispatch({
                                     type: CONTEXT_TYPEs.CHECK,
                                     payload: allData
                                       .slice(0, ENUMs.CHECK_LIMIT as number)
                                       .map(
-                                        (val: Customer, _index: number) =>
-                                          val.id
+                                        (val: Printer, _index: number) => val.id
                                       ),
                                   });
                                 } else {
@@ -174,21 +165,10 @@ const Customers = () => {
                           <p className="pr-1">#</p>
                         </Th>
                         <Th className="text-right text-sm !p-4">
-                          <p className="pr-3 table-head-border">ناوی یەکەم</p>
+                          <p className="pr-3 table-head-border">ناو</p>
                         </Th>
                         <Th className="text-right text-sm !p-4">
-                          <p className="pr-3 table-head-border">ناوی دووەم</p>
-                        </Th>
-                        <Th className="text-right text-sm !p-4">
-                          <p className="pr-3 table-head-border">
-                            ژمارە تەلەفۆن
-                          </p>
-                        </Th>
-                        <Th className="text-right text-sm !p-4">
-                          <p className="pr-3 table-head-border">داغڵکار</p>
-                        </Th>
-                        <Th className="text-right text-sm !p-4">
-                          <p className="pr-3 table-head-border">نوێکەرەوە</p>
+                          <p className="pr-3 table-head-border">دۆخ</p>
                         </Th>
                         <Th className="text-right text-sm !p-4">
                           <p className="pr-3 table-head-border">کرادرەکان</p>
@@ -197,8 +177,8 @@ const Customers = () => {
                     </THead>
                     <TBody className="w-full ">
                       <>
-                        {allData?.map((val: Customer, index: number) => (
-                          <CustomerCard key={val.id} index={index} {...val} />
+                        {allData?.map((val: Printer, index: number) => (
+                          <PrinterCard key={val.id} index={index} {...val} />
                         ))}
 
                         {!isFetchingNextPage && hasNextPage && !isSearched && (
@@ -255,11 +235,11 @@ const Customers = () => {
           onClose={() => setIsAddOpen(false)}
         >
           <CustomClose onClick={() => setIsAddOpen(false)} />
-          <CustomerForm state="insert" onClose={() => setIsAddOpen(false)} />
+          <PrinterForm state="insert" onClose={() => setIsAddOpen(false)} />
         </Dialog>
       )}
     </>
   );
 };
 
-export default Customers;
+export default Printers;

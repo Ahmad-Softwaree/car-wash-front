@@ -1,14 +1,14 @@
-import { UserCardProps } from "@/types/auth";
-import { Info, PenTool, RotateCcw, Trash2 } from "lucide-react";
+import { PrinterCardProps } from "@/types/printer";
+import { PenTool, RotateCcw, Trash2, X } from "lucide-react";
 import { useState } from "react";
 import Dialog from "../shared/Dialog";
-import UserDetailCard from "./UserDetailCard";
 import DeleteModal from "../ui/DeleteModal";
 import {
-  useDeleteUser,
-  useRestoreUser,
-} from "@/lib/react-query/query/user.query";
-import UserForm from "../forms/UserForm";
+  useDeletePrinter,
+  useRestorePrinter,
+  useUpdatePrinterState,
+} from "@/lib/react-query/query/printer.query";
+import PrinterForm from "../forms/PrinterForm";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 import { Td, Tr } from "../ui";
@@ -19,30 +19,31 @@ import Chip from "@mui/joy/Chip";
 import CustomClose from "../shared/CustomClose";
 import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import RestoreModal from "../ui/RestoreModal";
+import PrinterStateModal from "../ui/PrinterStateModal";
 
-const UserCard = ({
+const PrinterCard = ({
   name,
-  role_id,
-  role_name,
-  username,
-  phone,
   id,
+  active,
   index = -1,
   ...others
-}: UserCardProps) => {
+}: PrinterCardProps) => {
   const { deleted_page } = useCheckDeletedPage();
 
-  const [detail, setDetail] = useState<boolean>(false);
   const [update, setUpdate] = useState<boolean>(false);
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const [isRestore, setIsRestore] = useState<boolean>(false);
+  const [isState, setIsState] = useState<boolean>(false);
 
   const {
     dispatch,
     state: { checked },
   } = useGlobalContext();
-  const { mutateAsync, isPending } = useDeleteUser();
-  const { mutateAsync: restore, isPending: restoreLoading } = useRestoreUser();
+  const { mutateAsync, isPending } = useDeletePrinter();
+  const { mutateAsync: restore, isPending: restoreLoading } =
+    useRestorePrinter();
+  const { mutateAsync: state, isPending: stateLoading } =
+    useUpdatePrinterState(id);
 
   const updateOnClose = () => {
     dispatch({
@@ -89,25 +90,32 @@ const UserCard = ({
         <Td className="!p-3">
           <p className="text-right font-light font-bukra text-sm">{name}</p>
         </Td>
+
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">{username}</p>
-        </Td>
-        <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">{phone}</p>
-        </Td>
-        <Td className="!p-3">
-          <Chip
-            variant="soft"
-            color={role_name == "سوپەر ئەدمین" ? "danger" : "neutral"}
-          >
+          <Chip variant="soft" color={!active ? "danger" : "neutral"}>
             <p className="!font-bukra text-right font-light  text-xs">
-              {role_name}
+              {active ? "چالاک" : "ناچالاک"}
             </p>
           </Chip>
         </Td>
+
         <Td className="!p-3 cup flex flex-row gap-2">
           {!deleted_page && (
             <>
+              <Tooltip
+                placement="top"
+                title="چالاککردن"
+                color="primary"
+                variant="soft"
+              >
+                <Chip
+                  onClick={() => setIsState(true)}
+                  variant="soft"
+                  color="primary"
+                >
+                  <p className="!font-bukra">چالاککردن</p>
+                </Chip>
+              </Tooltip>
               <Tooltip
                 placement="top"
                 title="سڕینەوە"
@@ -134,10 +142,6 @@ const UserCard = ({
                       type: CONTEXT_TYPEs.SET_OLD_DATA,
                       payload: {
                         name,
-                        role_id,
-                        role_name,
-                        username,
-                        phone,
                         id,
                         ...others,
                       },
@@ -168,43 +172,9 @@ const UserCard = ({
               </Chip>
             </Tooltip>
           )}
-          <Tooltip
-            placement="top"
-            title="زانیاری"
-            color="primary"
-            variant="soft"
-          >
-            <Chip
-              onClick={() => setDetail(true)}
-              variant="soft"
-              color="primary"
-            >
-              <Info className="w-7 h-7 p-1 cursor-pointer" />
-            </Chip>
-          </Tooltip>
         </Td>
       </Tr>
-      {detail && (
-        <Dialog
-          className="!p-5 rounded-md"
-          maxWidth={1500}
-          maxHeight={`90%`}
-          isOpen={detail}
-          onClose={() => setDetail(false)}
-        >
-          <CustomClose onClick={() => setDetail(false)} />
-          <UserDetailCard
-            id={id}
-            name={name}
-            role_id={role_id}
-            role_name={role_name}
-            username={username}
-            phone={phone}
-            {...others}
-            onClose={() => setDetail(false)}
-          />
-        </Dialog>
-      )}
+
       {isDelete && (
         <Dialog
           className="!p-5 rounded-md"
@@ -217,6 +187,22 @@ const UserCard = ({
             deleteFunction={() => mutateAsync([id])}
             loading={isPending}
             onClose={() => setIsDelete(false)}
+          />
+        </Dialog>
+      )}
+
+      {isState && (
+        <Dialog
+          className="!p-5 rounded-md"
+          maxWidth={500}
+          maxHeight={`90%`}
+          isOpen={isState}
+          onClose={() => setIsState(false)}
+        >
+          <PrinterStateModal
+            deleteFunction={() => state()}
+            loading={stateLoading}
+            onClose={() => setIsState(false)}
           />
         </Dialog>
       )}
@@ -244,11 +230,11 @@ const UserCard = ({
           onClose={updateOnClose}
         >
           <CustomClose onClick={() => updateOnClose()} />
-          <UserForm state="update" onClose={updateOnClose} />
+          <PrinterForm state="update" onClose={updateOnClose} />
         </Dialog>
       )}
     </>
   );
 };
 
-export default UserCard;
+export default PrinterCard;

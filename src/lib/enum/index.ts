@@ -48,6 +48,7 @@ export type ENUM_TYPES =
   | "SELL_PART"
   | "NORMAL_BACKUP_PART"
   | "SERVER_BACKUP_PART"
+  | "PRINTER_PART"
 
   //SECTIONS
   | "MANAGE_SECTION"
@@ -108,6 +109,7 @@ export const ENUMs: { [key in ENUM_TYPES]: key | string | number } = {
   SELL_PART: "پسولەکان",
   NORMAL_BACKUP_PART: "باکئەپی ئاسایی",
   SERVER_BACKUP_PART: "باکئەپی سێرڤەر",
+  PRINTER_PART: "پرینتەرەکان",
 
   //SECTIONS
 

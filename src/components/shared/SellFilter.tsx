@@ -35,28 +35,33 @@ const SellFilter = ({ onClose }: { onClose: () => void }) => {
         type="button"
         onClick={() => {
           if (!selectedStartDate || !selectedEndDate) {
-            return toast({
-              alertType: "error",
-              title: "هەڵە",
-              description: "تکایە بەروار دیاری بکە یان فلتەر بسڕەوە",
+            setSearchParam((prev: any) => {
+              const params = new URLSearchParams(prev);
+              params.delete(ENUMs.SEARCH_PARAM as string);
+              params.delete(ENUMs.FROM_PARAM as string);
+              params.delete(ENUMs.TO_PARAM as string);
+              return params;
+            });
+          } else {
+            setSearchParam((prev: any) => {
+              const params = new URLSearchParams(prev);
+              params.delete(ENUMs.SEARCH_PARAM as string);
+              params.set(
+                ENUMs.FROM_PARAM as string,
+                parseDateToTimestamp(selectedStartDate?.toString() || "") || ""
+              );
+              params.set(
+                ENUMs.TO_PARAM as string,
+                parseDateToTimestamp(selectedEndDate?.toString() || "") || ""
+              );
+              return params;
             });
           }
-          setSearchParam((prev: any) => {
-            const params = new URLSearchParams(prev);
-            params.delete(ENUMs.SEARCH_PARAM as string);
-            params.set(
-              ENUMs.FROM_PARAM as string,
-              parseDateToTimestamp(selectedStartDate?.toString() || "") || ""
-            );
-            params.set(
-              ENUMs.TO_PARAM as string,
-              parseDateToTimestamp(selectedEndDate?.toString() || "") || ""
-            );
-            return params;
-          });
+
           onClose();
         }}
-        className="p-2 px-4 rounded-md text-xs bg-sky-600 text-white mt-5">
+        className="p-2 px-4 rounded-md text-xs bg-sky-600 text-white mt-5"
+      >
         جێبەجێکردن
       </MyButton>
     </div>

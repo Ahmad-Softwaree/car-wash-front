@@ -15,7 +15,7 @@ import Pagination from "@/components/providers/Pagination";
 import { Color } from "@/types/color";
 import ColorForm from "@/components/forms/ColorForm";
 import TBody from "@/components/ui/TBody";
-import { Table, Td, Th, THead, Tr } from "@/components/ui";
+import { Table, Th, THead, Tr } from "@/components/ui";
 
 import Input from "@/components/ui/Input";
 import { InputGroup } from "@chakra-ui/react";
@@ -26,7 +26,6 @@ import { useSearchParams } from "react-router-dom";
 import { ENUMs } from "@/lib/enum";
 
 import DeleteModal from "@/components/ui/DeleteModal";
-import TFoot from "@/components/ui/TFoot";
 import CustomClose from "@/components/shared/CustomClose";
 import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import DeleteChip from "@/components/shared/DeleteChip";
@@ -77,7 +76,6 @@ const Colors = () => {
             {!deleted_page && <AddButton onClick={() => setIsAddOpen(true)} />}
           </div>
         </div>
-        {/* <DatePicker /> */}
 
         <Pagination<Color[]>
           queryFn={() =>

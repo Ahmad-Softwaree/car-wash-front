@@ -25,6 +25,7 @@ import { formatDateToDDMMYY } from "@/lib/functions";
 import PrintModal from "../ui/PrintModal";
 import useCheckReportPage from "@/hooks/useCheckReportPage";
 import { formatMoney } from "../shared/FormatMoney";
+import POSModal from "../ui/POSModal";
 
 const SellCard = ({
   discount,
@@ -221,7 +222,7 @@ const SellCard = ({
           isOpen={isPrint}
           onClose={() => setIsPrint(false)}
         >
-          <PrintModal
+          <POSModal
             printFn={() => useGetSellPrint(Number(sell_id_param) || id || 0)}
             onClose={() => setIsPrint(false)}
           />

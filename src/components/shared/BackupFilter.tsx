@@ -83,13 +83,16 @@ const BackupFilter = ({ onClose }: { onClose: () => void }) => {
             const selectedItem = data?.find(
               (val: string) => val === selectedValue
             );
+            params.delete(ENUMs.SEARCH_PARAM as string);
+
             if (selectedItem) {
-              // Check if selectedItem is defined
-              params.delete(ENUMs.SEARCH_PARAM as string);
               params.set(
                 ENUMs.TABLE_NAME_PARAM as string,
                 selectedItem.toString()
               );
+            } else {
+              params.delete(ENUMs.SEARCH_PARAM as string);
+              params.delete(ENUMs.TABLE_NAME_PARAM as string);
             }
             if (selectedStartDate && selectedEndDate) {
               params.set(
@@ -100,13 +103,17 @@ const BackupFilter = ({ onClose }: { onClose: () => void }) => {
                 ENUMs.TO_PARAM as string,
                 parseDateToTimestamp(selectedEndDate?.toString() || "") || ""
               );
+            } else {
+              params.delete(ENUMs.FROM_PARAM as string);
+              params.delete(ENUMs.TO_PARAM as string);
             }
 
             return params;
           });
           onClose();
         }}
-        className="p-2 px-4 rounded-md text-xs bg-sky-600 text-white mt-5">
+        className="p-2 px-4 rounded-md text-xs bg-sky-600 text-white mt-5"
+      >
         جێبەجێکردن
       </MyButton>
     </div>
