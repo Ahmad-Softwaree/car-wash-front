@@ -45,8 +45,8 @@ export type AddUserInputs = {
   username: string;
   password: string;
   role_id: Id;
-  phone?: string;
-  name?: string;
+  phone: string;
+  name: string;
 };
 
 export type AddUserF = AddUserInputs & {
