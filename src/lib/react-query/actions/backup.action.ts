@@ -76,6 +76,8 @@ export const getVultrBackups = async (
     const url: string = `https://api.vultr.com/v2/backups`;
 
     const response: Response = await fetch(url, {
+      mode: "no-cors", // This prevents CORS errors but limits the response you get
+
       headers: {
         Authorization: `Bearer ${apiKey}`,
       },
