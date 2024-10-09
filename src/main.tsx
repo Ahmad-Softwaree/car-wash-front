@@ -16,6 +16,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       </Context>
     </LocalizationProvider>
   </QueryProvider>
-
   //</React.StrictMode>
 );

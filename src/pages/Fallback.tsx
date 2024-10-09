@@ -13,7 +13,6 @@ export default function Fallback() {
         wrapperClass=""
         visible={true}
       />
-      )
     </section>
   );
 }

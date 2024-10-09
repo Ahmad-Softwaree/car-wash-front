@@ -19,6 +19,7 @@ import {
 } from "@/types/items";
 import {
   BillProfitReportInfo,
+  CaseReportInfo,
   ExpenseReportInfo,
   GetCasesQ,
   ItemProfitReportInfo,
@@ -776,9 +777,9 @@ export const getCaseReportInformation = async (
   toast: ToastType,
   from: From,
   to: To
-): Promise<any> => {
+): Promise<CaseReportInfo> => {
   try {
-    const { data, status } = await authApi.get<any>(
+    const { data, status } = await authApi.get<CaseReportInfo>(
       `${URLs.GET_CASE_REPORTS_INFORMATION}?from=${from != "" ? from : ""}&to=${
         to != "" ? to : ""
       }`
@@ -806,9 +807,9 @@ export const getCaseReportSearch = async (
 export const getCaseReportInformationSearch = async (
   toast: ToastType,
   search: Search
-): Promise<any> => {
+): Promise<CaseReportInfo> => {
   try {
-    const { data, status } = await authApi.get<any>(
+    const { data, status } = await authApi.get<CaseReportInfo>(
       `${URLs.GET_CASE_REPORTS_INFORMATION_SEARCH}?search=${
         search != "" ? search : ""
       }`
@@ -827,7 +828,7 @@ export const casePrint = async (
 ): Promise<Blob | null> => {
   try {
     const { data } = await pdfFileAuthApi.get<any>(
-      `${URLs.SELL_PRINT_DATA}?search=${search != "" ? search : ""}&from=${
+      `${URLs.CASE_PRINT_DATA}?search=${search != "" ? search : ""}&from=${
         from != "" ? from : ""
       }&to=${to != "" ? to : ""}`
     );

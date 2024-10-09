@@ -95,6 +95,7 @@ export type QUERY_KEYS =
   | "AUTH"
   //BACKUP
   | "BACKUPS"
+  | "VULTR_BACKUPS"
   | "TABLE_NAMES"
   | "BACKUP"
   //FIREBASE
@@ -256,6 +257,8 @@ export const QUERY_KEYs: { [key in QUERY_KEYS]: key } = {
 
   //BACKUP
   BACKUPS: "BACKUPS",
+  VULTR_BACKUPS: "VULTR_BACKUPS",
+
   TABLE_NAMES: "TABLE_NAMES",
   BACKUP: "BACKUP",
   //FIREBASE

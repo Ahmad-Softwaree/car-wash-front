@@ -1,8 +1,7 @@
 import { authApi, blobAuthApi } from "@/lib/config/api.config";
 import { generateNestErrors } from "@/lib/functions";
 import { URLs } from "@/lib/url";
-import { User } from "@/types/auth";
-import { GetBackupsQ } from "@/types/backup";
+import { GetBackupsQ, GetVultrBackupsQ, VultrBackup } from "@/types/backup";
 
 import {
   Filter,
@@ -65,6 +64,24 @@ export const backupEntity = async (
       queryKey: [QUERY_KEYs.BACKUPS],
     });
     return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+export const getVultrBackups = async (
+  toast: ToastType
+): Promise<GetVultrBackupsQ> => {
+  let apiKey = import.meta.env.VITE_VULTR_API_KEY;
+  try {
+    const url: string = `https://api.vultr.com/v2/backups`;
+
+    const response: Response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+      },
+    });
+    const data: { backups: VultrBackup[] } = await response.json();
+    return data.backups;
   } catch (error: any) {
     throw generateNestErrors(error, toast);
   }

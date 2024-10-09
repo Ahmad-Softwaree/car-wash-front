@@ -8,7 +8,6 @@ import { Table, Td, Th, THead, Tr } from "@/components/ui";
 import { useSearchParams } from "react-router-dom";
 import { ENUMs } from "@/lib/enum";
 
-import TFoot from "@/components/ui/TFoot";
 import {
   useBackupEntity,
   useGetBackups,

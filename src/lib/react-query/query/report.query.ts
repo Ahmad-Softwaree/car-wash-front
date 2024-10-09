@@ -66,6 +66,7 @@ import {
 import { GetExpensesQ } from "@/types/expense";
 import {
   BillProfitReportInfo,
+  CaseReportInfo,
   ExpenseReportInfo,
   GetCasesQ,
   ItemProfitReportInfo,
@@ -619,7 +620,8 @@ export const useGetCaseReportInformation = (from: From, to: To) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.CASE_REPORT_INFORMATION],
-    queryFn: (): Promise<any> => getCaseReportInformation(toast, from, to),
+    queryFn: (): Promise<CaseReportInfo> =>
+      getCaseReportInformation(toast, from, to),
     retry: 0,
   });
 };
@@ -638,7 +640,8 @@ export const useGetCaseReportInformationSearch = (search: Search) => {
 
   return useQuery({
     queryKey: [QUERY_KEYs.CASE_REPORT_INFORMATION_SEARCH],
-    queryFn: (): Promise<any> => getCaseReportInformationSearch(toast, search),
+    queryFn: (): Promise<CaseReportInfo> =>
+      getCaseReportInformationSearch(toast, search),
     retry: 0,
     enabled: typeof search === "string" && search.trim() !== "",
   });
@@ -646,7 +649,7 @@ export const useGetCaseReportInformationSearch = (search: Search) => {
 export const useCasePrint = (search: Search, from: From, to: To) => {
   const { toast } = useToast();
   return useQuery({
-    queryKey: [QUERY_KEYs.SELL_PRINT_DATA],
+    queryKey: [QUERY_KEYs.CASE_PRINT_DATA],
     queryFn: (): Promise<Blob | null> => casePrint(toast, search, from, to),
     retry: 0,
   });

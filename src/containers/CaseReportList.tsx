@@ -1,5 +1,4 @@
 import Search from "@/components/shared/Search";
-import TFoot from "@/components/ui/TFoot";
 import { Table, Td, Th, THead, Tr } from "@/components/ui";
 import TBody from "@/components/ui/TBody";
 
@@ -9,7 +8,7 @@ import {
   useGetCaseReportInformation,
   useGetCaseReportInformationSearch,
   useGetCaseReportSearch,
-  useSellPrint,
+  useCasePrint,
 } from "@/lib/react-query/query/report.query";
 import { ENUMs } from "@/lib/enum";
 import Pagination from "@/components/providers/Pagination";
@@ -52,7 +51,7 @@ const CaseReportList = () => {
     searchRefetch();
   }, [searchRefetch, search]);
 
-  console.log(reportData);
+  let loading = isLoading || searchLoading;
   return (
     <>
       <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap">
@@ -142,77 +141,79 @@ const CaseReportList = () => {
             );
           }
           return (
-            <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
-              <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
-                <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
-                  <Tr>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-1">#</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">کۆدی بەکارهێنەر</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">بەکارهێنەر</p>
-                    </Th>
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">دانەی فرۆشراو</p>
-                    </Th>{" "}
-                    <Th className="text-right text-sm !p-4">
-                      <p className="pr-3 table-head-border">نرخی فرۆشتن</p>
-                    </Th>{" "}
-                  </Tr>
-                </THead>
-                <TBody className="w-full ">
-                  <>
-                    {allData?.map((val: CaseReport, index: number) => (
-                      <CaseReportCard key={val.id} index={index} {...val} />
-                    ))}
-                    {!isFetchingNextPage && hasNextPage && !isSearched && (
-                      <div className="h-[20px]" ref={ref}></div>
-                    )}
-                  </>
-                </TBody>
-                <TFoot className="sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
-                  <Tr className="!default-border">
-                    <Td className="text-center" colSpan={4}>
-                      <p>
-                        کۆی دانەی فرۆشراو :{" "}
-                        {!isSearched
-                          ? formatMoney(reportData?.total_quantity)
-                          : formatMoney(searchReportData?.total_quantity)}
-                      </p>
-                    </Td>
-                    <Td className="text-center" colSpan={4}>
-                      <p>
-                        کۆی نرخی فرۆشراو :{" "}
-                        {!isSearched
-                          ? formatMoney(reportData?.total_sell_price)
-                          : formatMoney(searchReportData?.total_sell_price)}
-                      </p>
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Td className="text-center" colSpan={9}>
-                      ژمارەی داتا {allData.length}
-                    </Td>
-                  </Tr>
-                </TFoot>
-              </Table>
-            </div>
+            <>
+              <div className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll">
+                <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
+                  <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
+                    <Tr>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-1">#</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">
+                          کۆدی بەکارهێنەر
+                        </p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">بەکارهێنەر</p>
+                      </Th>
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">دانەی فرۆشراو</p>
+                      </Th>{" "}
+                      <Th className="text-right text-sm !p-4">
+                        <p className="pr-3 table-head-border">نرخی فرۆشتن</p>
+                      </Th>{" "}
+                    </Tr>
+                  </THead>
+                  <TBody className="w-full ">
+                    <>
+                      {allData?.map((val: CaseReport, index: number) => (
+                        <CaseReportCard key={val.id} index={index} {...val} />
+                      ))}
+                      {!isFetchingNextPage && hasNextPage && !isSearched && (
+                        <div className="h-[20px]" ref={ref}></div>
+                      )}
+                    </>
+                  </TBody>
+                </Table>
+              </div>
+              {!loading && reportData && searchReportData && (
+                <div className="w-full flex flex-col justify-center items-center z-[100]  table-dark-light   default-border p-2 gap-5">
+                  <div className="w-full flex flex-row justify-evenly items-center">
+                    <p>
+                      کۆی دانەی فرۆشراو :{" "}
+                      {!isSearched
+                        ? formatMoney(reportData?.total_quantity)
+                        : formatMoney(searchReportData?.total_quantity)}
+                    </p>
+
+                    <p>
+                      کۆی نرخی فرۆشراو :{" "}
+                      {!isSearched
+                        ? formatMoney(reportData?.total_sell_price)
+                        : formatMoney(searchReportData?.total_sell_price)}
+                    </p>
+                  </div>
+                  <div className="w-full flex flex-row justify-evenly items-center">
+                    ژمارەی داتا {allData.length}
+                  </div>
+                </div>
+              )}
+            </>
           );
         }}
       </Pagination>
       {print && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={500}
-          maxHeight={`90%`}
+          maxWidth={1500}
+          height={`90%`}
+          maxHeight={1000}
           isOpen={print}
           onClose={() => setPrint(false)}
         >
           <PrintModal
-            printFn={() => useSellPrint(search || "", from || "", to || "")}
+            printFn={() => useCasePrint(search || "", from || "", to || "")}
             onClose={() => setPrint(false)}
           />
         </Dialog>

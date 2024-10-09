@@ -10,6 +10,16 @@ export type CaseReport = {
   sold_price: number | string;
 };
 
+export type CaseReportInfo = {
+  total_quantity: number;
+  total_sell_price: number;
+};
+
+export type CaseReportData = CaseReport & {
+  total_quantity: number;
+  total_sell_price: number;
+};
+
 export type CaseReportCardProps = CaseReport & { index?: number };
 
 export type GetCasesQ = CaseReport[];

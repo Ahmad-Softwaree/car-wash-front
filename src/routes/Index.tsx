@@ -28,6 +28,7 @@ import ProfitReport from "@/pages/_auth/ProfitReport";
 import ExpenseReport from "@/pages/_auth/ExpenseReport";
 import CaseReport from "@/pages/_auth/CaseReport";
 import Printers from "@/pages/_auth/Printers";
+import VultrBackups from "@/pages/_auth/VultrBackups";
 const RootLayout = lazy(() => import("@/pages/_root/RootLayout"));
 const AuthRouterProvider = lazy(() => import("@/providers/AuthRouterProvider"));
 const UserNullRouterProvider = lazy(
@@ -81,6 +82,16 @@ const router = createBrowserRouter(
               <CheckPart
                 part={[ENUMs.NORMAL_BACKUP_PART as string]}
                 Component={Backups}
+              />
+            }
+          />
+          <Route
+            path={ENUMs.SERVER_BACKUP_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[ENUMs.SERVER_BACKUP_PART as string]}
+                Component={VultrBackups}
               />
             }
           />
