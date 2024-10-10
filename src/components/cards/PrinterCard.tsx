@@ -88,12 +88,12 @@ const PrinterCard = ({
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">{name}</p>
+          <p className="text-center font-light font-bukra text-sm">{name}</p>
         </Td>
 
         <Td className="!p-3">
           <Chip variant="soft" color={!active ? "danger" : "neutral"}>
-            <p className="!font-bukra text-right font-light  text-xs">
+            <p className="!font-bukra text-center font-light  text-xs">
               {active ? "چالاک" : "ناچالاک"}
             </p>
           </Chip>

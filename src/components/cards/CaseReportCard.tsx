@@ -22,18 +22,18 @@ const CaseReportCard = ({
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">{user_id}</p>
+          <p className="text-center font-light font-bukra text-sm">{user_id}</p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {created_by}
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">{sold}</p>
+          <p className="text-center font-light font-bukra text-sm">{sold}</p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {formatMoney(sold_price)}
           </p>
         </Td>{" "}

@@ -33,55 +33,55 @@ const ReservationReportCard = ({
           </p>
         </Td>{" "}
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm flex flex-row gap-1">
+          <p className="text-center font-light font-bukra text-sm flex flex-row gap-1">
             <FormatMoney>{price}</FormatMoney> IQD
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {customer_first_name} {customer_last_name}
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {formateDateToYMDHM(date_time as string)}
           </p>
         </Td>
         <Td className="!p-3">
           <Chip variant="soft" color={"neutral"}>
-            <p className="!font-bukra text-right font-light  text-xs">
+            <p className="!font-bukra text-center font-light  text-xs">
               {service_name}
             </p>
           </Chip>
         </Td>
         <Td className="!p-3">
           <Chip variant="soft" color={"neutral"}>
-            <p className="!font-bukra text-right font-light  text-xs">
+            <p className="!font-bukra text-center font-light  text-xs">
               {car_type_name}
             </p>
           </Chip>
         </Td>
         <Td className="!p-3">
           <Chip variant="soft" color={"neutral"}>
-            <p className="!font-bukra text-right font-light  text-xs">
+            <p className="!font-bukra text-center font-light  text-xs">
               {car_model_name}
             </p>
           </Chip>
         </Td>
         <Td className="!p-3">
           <Chip variant="soft" color={"neutral"}>
-            <p className="!font-bukra text-right font-light  text-xs">
+            <p className="!font-bukra text-center font-light  text-xs">
               {color_name}
             </p>
           </Chip>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {created_by}
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {updated_by}
           </p>
         </Td>

@@ -76,7 +76,7 @@ const ColorCard = ({ name, id, index = -1, ...others }: ColorCardProps) => {
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">{name}</p>
+          <p className="text-center font-light font-bukra text-sm">{name}</p>
         </Td>
 
         <Td className="!p-3 cup flex flex-row gap-2 justify-center">

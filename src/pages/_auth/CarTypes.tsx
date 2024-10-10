@@ -136,7 +136,7 @@ const CarTypes = () => {
                   <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
                     <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
                       <Tr>
-                        <Th className="text-right text-sm !p-4 !min-w-[100px]">
+                        <Th className="text-center text-sm !p-4 !min-w-[100px]">
                           <InputGroup className="checkbox-input">
                             <Input
                               onChange={() => {

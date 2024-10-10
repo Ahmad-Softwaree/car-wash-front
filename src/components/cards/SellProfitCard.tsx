@@ -43,51 +43,51 @@ const SellProfitCard = ({
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">{id}</p>
+          <p className="text-center font-light font-bukra text-sm">{id}</p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {formatDateToDDMMYY(date.toLocaleString())}
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {formatMoney(total_sell_price)}
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {formatMoney(discount)}
           </p>
         </Td>
         {total_sell_price && (
           <Td className="!p-3">
-            <p className="text-right font-light font-bukra text-sm">
+            <p className="text-center font-light font-bukra text-sm">
               {formatMoney(total_sell_price - discount)}
             </p>
           </Td>
         )}
         {total_purchase_price && (
           <Td className="!p-3">
-            <p className="text-right font-light font-bukra text-sm">
+            <p className="text-center font-light font-bukra text-sm">
               {formatMoney(total_purchase_price)}
             </p>
           </Td>
         )}
         {total_sell_price && total_purchase_price && (
           <Td className="!p-3">
-            <p className="text-right font-light font-bukra text-sm">
+            <p className="text-center font-light font-bukra text-sm">
               {formatMoney(total_sell_price - discount - total_purchase_price)}
             </p>
           </Td>
         )}
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {created_by}
           </p>
         </Td>{" "}
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {updated_by}
           </p>
         </Td>

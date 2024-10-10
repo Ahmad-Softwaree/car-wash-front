@@ -58,7 +58,7 @@ const SellRestoreConfirm = ({
           <Table className="relative  w-full table-dark-light  default-border">
             <THead className="sticky -top-1 z-[100]  table-dark-light w-full  default-border">
               <Tr>
-                <Th className="text-right text-sm !p-4 !min-w-[100px]">
+                <Th className="text-center text-sm !p-4 !min-w-[100px]">
                   <InputGroup className="checkbox-input">
                     <Input
                       onClick={() => {

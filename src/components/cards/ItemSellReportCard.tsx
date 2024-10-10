@@ -33,19 +33,19 @@ const ItemSellReportCard = ({
         </Td>
 
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {item_name}
           </p>
         </Td>
 
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {item_barcode}
           </p>
         </Td>
 
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {type_name}
           </p>
         </Td>
@@ -55,38 +55,38 @@ const ItemSellReportCard = ({
             variant="soft"
             color={Number(quantity) < 30 ? "danger" : "neutral"}
           >
-            <p className="!font-bukra text-right font-light  text-xs">
+            <p className="!font-bukra text-center font-light  text-xs">
               {Number(quantity)}
             </p>
           </Chip>
         </Td>
 
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             <FormatMoney>{item_sell_price}</FormatMoney>
           </p>
         </Td>
 
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             <FormatMoney>{item_sell_price * Number(quantity)}</FormatMoney>
           </p>
         </Td>
 
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {created_by}
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {updated_by}
           </p>
         </Td>
 
         {created_at && (
           <Td className="!p-3">
-            <p className="text-right font-light font-bukra text-sm">
+            <p className="text-center font-light font-bukra text-sm">
               {formatDateToDDMMYY(created_at.toString())}
             </p>
           </Td>

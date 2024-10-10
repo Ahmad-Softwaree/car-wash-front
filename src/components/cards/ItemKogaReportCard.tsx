@@ -28,56 +28,56 @@ const ItemKogaReportCard = ({
         </Td>
 
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">{name}</p>
+          <p className="text-center font-light font-bukra text-sm">{name}</p>
         </Td>
 
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">{barcode}</p>
+          <p className="text-center font-light font-bukra text-sm">{barcode}</p>
         </Td>
 
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {type_name}
           </p>
         </Td>
 
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             <FormatMoney>{item_purchase_price}</FormatMoney>
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             <FormatMoney>{quantity}</FormatMoney>
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             <FormatMoney>{item_sell_price}</FormatMoney>
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             <FormatMoney>{sell_quantity}</FormatMoney>
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             <FormatMoney>{quantity - sell_quantity}</FormatMoney>
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             <FormatMoney>{item_purchase_price * quantity}</FormatMoney>
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {created_by}
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {updated_by}
           </p>
         </Td>

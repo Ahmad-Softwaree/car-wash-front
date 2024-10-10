@@ -24,25 +24,25 @@ const VultrBackupCard = ({
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {description}
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">{size}</p>
+          <p className="text-center font-light font-bukra text-sm">{size}</p>
         </Td>
         <Td className="!p-3">
           <Chip
             variant="soft"
             color={status != "completed" ? "danger" : "neutral"}
           >
-            <p className="!font-bukra text-right font-light  text-xs">
+            <p className="!font-bukra text-center font-light  text-xs">
               {status}
             </p>
           </Chip>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {formatDateToDDMMYY(date_created?.toString() || "")}
           </p>
         </Td>
