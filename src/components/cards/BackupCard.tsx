@@ -22,15 +22,15 @@ const BackupCard = ({
         key={id}
       >
         <Td className="!p-3">
-          <p className="text-right font-light font-poppins text-sm">
+          <p className="text-center font-light font-poppins text-sm">
             {index != -1 ? index + 1 : 0}
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">{table}</p>
+          <p className="text-center font-light font-bukra text-sm">{table}</p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {user_name}
           </p>
         </Td>
@@ -39,13 +39,13 @@ const BackupCard = ({
             variant="soft"
             color={user_role == "سوپەر ئەدمین" ? "danger" : "neutral"}
           >
-            <p className="!font-bukra text-right font-light  text-xs">
+            <p className="!font-bukra text-center font-light  text-xs">
               {user_role}
             </p>
           </Chip>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {formatDateToDDMMYY(created_at?.toString() || "")}
           </p>
         </Td>

@@ -445,7 +445,7 @@ const ReservationForm = ({
       {isAddColor && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={1500}
+          maxWidth={500}
           maxHeight={`90%`}
           isOpen={isAddColor}
           onClose={() => setIsAddColor(false)}
@@ -458,7 +458,7 @@ const ReservationForm = ({
       {isAddService && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={1500}
+          maxWidth={500}
           maxHeight={`90%`}
           isOpen={isAddService}
           onClose={() => setIsAddService(false)}
@@ -471,7 +471,7 @@ const ReservationForm = ({
       {isAddCustomer && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={1500}
+          maxWidth={500}
           maxHeight={`90%`}
           isOpen={isAddCustomer}
           onClose={() => setIsAddCustomer(false)}
@@ -487,7 +487,7 @@ const ReservationForm = ({
       {isAddCarModel && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={1500}
+          maxWidth={500}
           maxHeight={`90%`}
           isOpen={isAddCarModel}
           onClose={() => setIsAddCarModel(false)}
@@ -503,7 +503,7 @@ const ReservationForm = ({
       {isAddCarType && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={1500}
+          maxWidth={500}
           maxHeight={`90%`}
           isOpen={isAddCarType}
           onClose={() => setIsAddCarType(false)}

@@ -27,8 +27,10 @@ import {
   KogaAllReportInfo,
   KogaMovementReportInfo,
   KogaNullReportInfo,
+  ReservationReportInfo,
   SellReportInfo,
 } from "@/types/report";
+import { GetReservationsQ } from "@/types/reservation";
 import { GetSellsQ } from "@/types/sell";
 
 //SELL REPORT
@@ -831,6 +833,97 @@ export const casePrint = async (
       `${URLs.CASE_PRINT_DATA}?search=${search != "" ? search : ""}&from=${
         from != "" ? from : ""
       }&to=${to != "" ? to : ""}`
+    );
+    const pdfData = new Uint8Array(data);
+    const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
+    return pdfBlob;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+//RESERVATION_REPORT
+
+export const getReservationReport = async (
+  toast: ToastType,
+  page: Page,
+  limit: Limit,
+  from: From,
+  to: To
+): Promise<PaginationReturnType<GetReservationsQ>> => {
+  try {
+    const { data, status } = await authApi.get<
+      PaginationReturnType<GetReservationsQ>
+    >(
+      `${URLs.GET_RESERVATION_REPORTS}?page=${page}&limit=${limit}&from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+export const getReservationReportInformation = async (
+  toast: ToastType,
+  from: From,
+  to: To
+): Promise<ReservationReportInfo> => {
+  try {
+    const { data, status } = await authApi.get<ReservationReportInfo>(
+      `${URLs.GET_RESERVATION_REPORTS_INFORMATION}?from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+export const getReservationReportSearch = async (
+  toast: ToastType,
+
+  search: Search
+): Promise<GetReservationsQ> => {
+  try {
+    const { data, status } = await authApi.get<GetReservationsQ>(
+      `${URLs.GET_RESERVATION_REPORTS_SEARCH}?search=${
+        search != "" ? search : ""
+      }`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+export const getReservationReportInformationSearch = async (
+  toast: ToastType,
+  search: Search
+): Promise<ReservationReportInfo> => {
+  try {
+    const { data, status } = await authApi.get<ReservationReportInfo>(
+      `${URLs.GET_RESERVATION_REPORTS_INFORMATION_SEARCH}?search=${
+        search != "" ? search : ""
+      }`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+export const reservationPrint = async (
+  toast: ToastType,
+  search: Search,
+  from: From,
+  to: To
+): Promise<Blob | null> => {
+  try {
+    const { data } = await pdfFileAuthApi.get<any>(
+      `${URLs.RESERVATION_PRINT_DATA}?search=${
+        search != "" ? search : ""
+      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}`
     );
     const pdfData = new Uint8Array(data);
     const pdfBlob = new Blob([pdfData], { type: "application/pdf" });

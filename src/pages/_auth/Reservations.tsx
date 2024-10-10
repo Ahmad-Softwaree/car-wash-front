@@ -49,7 +49,7 @@ const Reservations = () => {
         as={`div`}
         className="w-full gap-0 flex flex-col justify-start items-start"
       >
-        <div className="w-full gap-5 flex flex-row justify-between ">
+        <div className="w-full gap-5 flex flex-row justify-between mb-5 md:mb-0">
           {deleted_page && (
             <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
               <Search />
@@ -145,38 +145,38 @@ const Reservations = () => {
                               />
                             </InputGroup>
                           </Th>
-                          <Th className="text-right text-sm !p-4">
+                          <Th className="text-center text-sm !p-4">
                             <p className="pr-1">#</p>
                           </Th>
-                          <Th className="text-right text-sm !p-4">
+                          <Th className="text-center text-sm !p-4">
                             <p className="pr-3 table-head-border">
                               ناوی موشتەری
                             </p>
                           </Th>
-                          <Th className="text-right text-sm !p-4">
+                          <Th className="text-center text-sm !p-4">
                             <p className="pr-3 table-head-border">
                               بەروار و کات
                             </p>
                           </Th>{" "}
-                          <Th className="text-right text-sm !p-4">
+                          <Th className="text-center text-sm !p-4">
                             <p className="pr-3 table-head-border">
                               خزمەتگوزاری
                             </p>
                           </Th>
-                          <Th className="text-right text-sm !p-4">
+                          <Th className="text-center text-sm !p-4">
                             <p className="pr-3 table-head-border">
                               جۆری ئۆتۆمبێل
                             </p>
                           </Th>
-                          <Th className="text-right text-sm !p-4">
+                          <Th className="text-center text-sm !p-4">
                             <p className="pr-3 table-head-border">
                               مۆدێلی ئۆتۆمبێل
                             </p>
                           </Th>
-                          <Th className="text-right text-sm !p-4">
+                          <Th className="text-center text-sm !p-4">
                             <p className="pr-3 table-head-border">ڕەنگ</p>
                           </Th>
-                          <Th className="text-right text-sm !p-4">
+                          <Th className="text-center text-sm !p-4">
                             <p className="pr-3 table-head-border">کردارەکان</p>
                           </Th>
                         </Tr>

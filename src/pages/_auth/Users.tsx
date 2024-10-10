@@ -173,7 +173,7 @@ const Users = () => {
                   <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
                     <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
                       <Tr>
-                        <Th className="text-right text-sm !p-4 !min-w-[100px]">
+                        <Th className="text-center text-sm !p-4 !min-w-[100px]">
                           <InputGroup className="checkbox-input">
                             <Input
                               onChange={() => {
@@ -203,26 +203,26 @@ const Users = () => {
                             />
                           </InputGroup>
                         </Th>
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-1">#</p>
                         </Th>
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">ناو</p>
                         </Th>
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">
                             ناوی بەکارهێنەر
                           </p>
                         </Th>{" "}
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">
                             ژمارە تەلەفۆن
                           </p>
                         </Th>
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">ڕۆڵ</p>
                         </Th>
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">کرادرەکان</p>
                         </Th>
                       </Tr>

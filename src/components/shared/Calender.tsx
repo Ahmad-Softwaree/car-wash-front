@@ -89,23 +89,25 @@ const Calendar: React.FC = () => {
               className={`cursor-pointer col-span-2 dark-light rounded-2xl h-[200px]  flex items-center justify-center  bg-gray-100 text-sm transition-all duration-300 default-border border-4 ${
                 include
                   ? "!border-yellow-500 hover:scale-125"
-                  : "cursor-not-allowed"
-              }`}>
+                  : "!cursor-not-allowed  !border-2"
+              }`}
+            >
               {!include ? (
                 <div className="w-full h-full flex flex-col justify-center items-center gap-3">
-                  <p className="text-center text-xl">
+                  <p className="text-center text-lgs">
                     {day} / {currentMonth} / {currentYear}
                   </p>
-                  <p className="text-xl">سەرە نیە</p>
+                  <p className="text-lgs">سەرە نیە</p>
                 </div>
               ) : (
                 <div className="w-full h-full flex flex-col justify-center items-center gap-3">
-                  <p className="text-center text-xl">
+                  <p className="text-center text-lgs">
                     {day} / {currentMonth} / {currentYear}
                   </p>{" "}
                   <div
                     className="w-full flex flex-col justify-center items-center gap-2"
-                    key={customers[0].id}>
+                    key={customers[0].id}
+                  >
                     <Chip variant="soft" color="primary">
                       <div className="flex flex-row justify-center items-center gap-1">
                         <p className="text-sm">
@@ -222,7 +224,8 @@ const Calendar: React.FC = () => {
           height={1000}
           maxHeight={`90%`}
           isOpen={monthOpen}
-          onClose={() => setMonthOpen(false)}>
+          onClose={() => setMonthOpen(false)}
+        >
           <CustomClose
             onClick={() => {
               setSearchParam((prev) => {

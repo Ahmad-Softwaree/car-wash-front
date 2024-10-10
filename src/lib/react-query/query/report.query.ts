@@ -38,6 +38,10 @@ import {
   getKogaNullReportInformation,
   getKogaNullReportInformationSearch,
   getKogaNullReportSearch,
+  getReservationReport,
+  getReservationReportInformation,
+  getReservationReportInformationSearch,
+  getReservationReportSearch,
   getSellReport,
   getSellReportInformation,
   getSellReportInformationSearch,
@@ -47,6 +51,7 @@ import {
   kogaAllPrint,
   kogaMovementPrint,
   kogaNullPrint,
+  reservationPrint,
   sellPrint,
 } from "../actions/report.action";
 import {
@@ -74,8 +79,10 @@ import {
   KogaAllReportInfo,
   KogaMovementReportInfo,
   KogaNullReportInfo,
+  ReservationReportInfo,
   SellReportInfo,
 } from "@/types/report";
+import { GetReservationsQ } from "@/types/reservation";
 
 //SELL REPORT
 export const useGetSellReport = (from: From, to: To) => {
@@ -651,6 +658,64 @@ export const useCasePrint = (search: Search, from: From, to: To) => {
   return useQuery({
     queryKey: [QUERY_KEYs.CASE_PRINT_DATA],
     queryFn: (): Promise<Blob | null> => casePrint(toast, search, from, to),
+    retry: 0,
+  });
+};
+
+//RESERVATION_REPORT
+export const useGetReservationReport = (from: From, to: To) => {
+  const { toast } = useToast();
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEYs.RESERVATION_REPORT],
+    queryFn: ({
+      pageParam,
+    }: {
+      pageParam: Page;
+    }): Promise<PaginationReturnType<GetReservationsQ>> =>
+      getReservationReport(toast, pageParam, ENUMs.LIMIT as number, from, to),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage: any, pages: any) => {
+      return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
+    },
+  });
+};
+export const useGetReservationReportInformation = (from: From, to: To) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.RESERVATION_REPORT_INFORMATION],
+    queryFn: (): Promise<ReservationReportInfo> =>
+      getReservationReportInformation(toast, from, to),
+    retry: 0,
+  });
+};
+
+export const useGetReservationReportSearch = (search: Search) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.RESERVATION_REPORT_SEARCH],
+    queryFn: (): Promise<GetReservationsQ> =>
+      getReservationReportSearch(toast, search),
+    retry: 0,
+    enabled: typeof search === "string" && search.trim() !== "",
+  });
+};
+export const useGetReservationReportInformationSearch = (search: Search) => {
+  const { toast } = useToast();
+
+  return useQuery({
+    queryKey: [QUERY_KEYs.RESERVATION_REPORT_INFORMATION_SEARCH],
+    queryFn: (): Promise<ReservationReportInfo> =>
+      getReservationReportInformationSearch(toast, search),
+    retry: 0,
+    enabled: typeof search === "string" && search.trim() !== "",
+  });
+};
+export const useReservationPrint = (search: Search, from: From, to: To) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.RESERVATION_PRINT_DATA],
+    queryFn: (): Promise<Blob | null> =>
+      reservationPrint(toast, search, from, to),
     retry: 0,
   });
 };

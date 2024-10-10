@@ -37,6 +37,7 @@ export type ENUM_TYPES =
   | "EXPENSE_TYPE_PART"
   | "ROLE_PART"
   | "COLOR_PART"
+  | "RESERVATION_REPORT_PART"
   | "CAR_MODEL_PART"
   | "CAR_TYPE_PART"
   | "ITEM_TYPE_PART"
@@ -94,6 +95,7 @@ export const ENUMs: { [key in ENUM_TYPES]: key | string | number } = {
   PROFIT_REPORT_PART: "ڕاپۆرتی قازانج",
   EXPENSE_REPORT_PART: "ڕاپۆرتی خەرجی",
   KOGA_REPORT_PART: "ڕاپۆرتی کۆگا",
+  RESERVATION_REPORT_PART: "ڕاپۆرتی نۆرەکان",
 
   EXPENSE_TYPE_PART: "جۆرەکانی خەرجی",
   ROLE_PART: "ڕۆڵەکان",

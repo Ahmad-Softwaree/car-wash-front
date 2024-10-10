@@ -94,60 +94,60 @@ const ItemCard = ({
         </Td>
 
         <Td className="!p-3">
-          <p className="text-right font-light font-poppins text-sm">
+          <p className="text-center font-light font-poppins text-sm">
             {index != -1 ? index + 1 : 0}
           </p>
         </Td>
 
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">{name}</p>
+          <p className="text-center font-light font-bukra text-sm">{name}</p>
         </Td>
 
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">{barcode}</p>
+          <p className="text-center font-light font-bukra text-sm">{barcode}</p>
         </Td>
 
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {type_name}
           </p>
         </Td>
 
-        <Td className="!p-3 flex flex-row justify-start items-center gap-1">
+        <Td className="!p-3">
           <Chip
             variant="soft"
             color={actual_quantity < 30 ? "danger" : "neutral"}
           >
-            <p className="!font-bukra text-right font-light  text-xs">
+            <p className="!font-bukra text-center font-light  text-xs">
               {actual_quantity}
             </p>
           </Chip>
         </Td>
 
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm flex flex-row gap-1">
+          <p className="text-center font-light font-bukra text-sm flex flex-row gap-1">
             <FormatMoney>{item_sell_price}</FormatMoney> IQD
           </p>
         </Td>
 
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm flex flex-rwo gap-1">
+          <p className="text-center font-light font-bukra text-sm flex flex-rwo gap-1">
             <FormatMoney>{item_purchase_price}</FormatMoney> IQD
           </p>
         </Td>
 
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {created_by}
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {updated_by}
           </p>
         </Td>
 
-        <Td className="!p-3 cup flex flex-row gap-2">
+        <Td className="!p-3 cup flex flex-row gap-2 justify-center">
           {!deleted_page && (
             <>
               <Tooltip

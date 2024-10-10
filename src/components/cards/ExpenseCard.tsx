@@ -85,39 +85,39 @@ const ExpenseCard = ({
           </InputGroup>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-poppins text-sm">
+          <p className="text-center font-light font-poppins text-sm">
             {index != -1 ? index + 1 : 0}
           </p>
         </Td>
         <Td className="!p-3">
           <Chip variant="soft" color={"primary"}>
-            <p className="!font-bukra text-right font-light  text-xs">
+            <p className="!font-bukra text-center font-light  text-xs">
               {type_name}
             </p>
           </Chip>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {formatMoney(price)}
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {formatDateToDDMMYY(date as string)}
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {created_by}
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {updated_by}
           </p>
         </Td>
 
-        <Td className="!p-3 cup flex flex-row gap-2">
+        <Td className="!p-3 cup flex flex-row gap-2 justify-center">
           {!deleted_page && (
             <>
               <Tooltip

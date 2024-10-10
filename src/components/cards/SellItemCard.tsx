@@ -140,23 +140,23 @@ const SellItemCard = ({
           </Td>
         )}
         <Td className="!p-3">
-          <p className="text-right font-light font-poppins text-sm">
+          <p className="text-center font-light font-poppins text-sm">
             {index != -1 ? index + 1 : 0}
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {item_name}
           </p>
         </Td>
         {self_delete && (
           <Td className="!p-3">
-            <p className="text-right font-light font-bukra text-sm">
+            <p className="text-center font-light font-bukra text-sm">
               {sell_id}
             </p>
           </Td>
         )}
-        <Td className="!p-3 flex flex-row justify-start items-center gap-1">
+        <Td className="!p-3 flex flex-row justify-center items-center gap-1">
           {!deleted_page && (
             <Tooltip
               placement="top"
@@ -216,26 +216,26 @@ const SellItemCard = ({
         </Td>
 
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {formatMoney(item_sell_price)}
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {formatMoney(quantity * item_sell_price)}
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {created_by}
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {updated_by}
           </p>
         </Td>
-        <Td className="!p-3 cup flex flex-row gap-2">
+        <Td className="!p-3 cup flex flex-row gap-2 justify-center">
           {!deleted_page && (
             <>
               <Tooltip

@@ -82,19 +82,19 @@ const SellRestoreConfirm = ({
                     />
                   </InputGroup>
                 </Th>
-                <Th className="text-right text-sm !p-4">
+                <Th className="text-center text-sm !p-4">
                   <p className="pr-1">#</p>
                 </Th>
-                <Th className="text-right text-sm !p-4">
+                <Th className="text-center text-sm !p-4">
                   <p className="pr-3 table-head-border">ناوی کاڵا</p>
                 </Th>
-                <Th className="text-right text-sm !p-4">
+                <Th className="text-center text-sm !p-4">
                   <p className="pr-3 table-head-border">دانە</p>
                 </Th>{" "}
-                <Th className="text-right text-sm !p-4">
+                <Th className="text-center text-sm !p-4">
                   <p className="pr-3 table-head-border">نرخ</p>
                 </Th>
-                <Th className="text-right text-sm !p-4">
+                <Th className="text-center text-sm !p-4">
                   <p className="pr-3 table-head-border">کۆ</p>
                 </Th>
               </Tr>
@@ -127,7 +127,8 @@ const SellRestoreConfirm = ({
         onClick={() => restore(id)}
         name="restoreSellButton"
         type="button"
-        className=" bg-sky-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2 mx-2">
+        className=" bg-sky-600 rounded-sm p-2 px-4 text-white flex flex-row justify-center items-center gap-2 mx-2"
+      >
         <p className="font-light text-sm font-bukra">جێبەجێکردن</p>
       </MyButton>
     </div>

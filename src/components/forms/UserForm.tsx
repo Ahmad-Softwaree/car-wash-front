@@ -324,7 +324,7 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
       {isAddRole && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={1500}
+          maxWidth={500}
           maxHeight={`90%`}
           isOpen={isAddRole}
           onClose={() => setIsAddRole(false)}

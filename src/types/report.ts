@@ -1,5 +1,6 @@
 import { Expense } from "./expense";
 import { Item, ItemQuantityHistory } from "./items";
+import { Reservation } from "./reservation";
 import { Sell, SellItem } from "./sell";
 
 export type CaseReport = {
@@ -112,3 +113,11 @@ export type ExpenseReportInfo = {
 export type ExpenseReportData = Expense & {
   type_name: string;
 };
+
+export type ReservationReportInfo = {
+  sell_count: number;
+  total_sell_price: number;
+  total_sell_discount: number;
+};
+
+export type ReservationReportData = Reservation & { total_sell_price: number };

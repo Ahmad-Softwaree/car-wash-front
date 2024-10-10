@@ -83,7 +83,7 @@ const PrinterCard = ({
           </InputGroup>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-poppins text-sm">
+          <p className="text-center font-light font-poppins text-sm">
             {index != -1 ? index + 1 : 0}
           </p>
         </Td>
@@ -99,7 +99,7 @@ const PrinterCard = ({
           </Chip>
         </Td>
 
-        <Td className="!p-3 cup flex flex-row gap-2">
+        <Td className="!p-3 cup flex flex-row gap-2 justify-center">
           {!deleted_page && (
             <>
               <Tooltip
@@ -224,7 +224,7 @@ const PrinterCard = ({
       {update && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={1500}
+          maxWidth={500}
           maxHeight={`90%`}
           isOpen={update}
           onClose={updateOnClose}

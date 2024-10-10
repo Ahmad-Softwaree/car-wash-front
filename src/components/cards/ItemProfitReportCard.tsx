@@ -23,13 +23,13 @@ const ItemProfitReportCard = ({
   return (
     <Tr className={`default-border table-row-hover `}>
       <Td className="!p-3">
-        <p className="text-right font-light font-poppins text-sm">
+        <p className="text-center font-light font-poppins text-sm">
           {index != -1 ? index + 1 : 0}
         </p>
       </Td>
 
       <Td className="!p-3">
-        <p className="text-right font-light font-poppins text-sm">{sell_id}</p>
+        <p className="text-center font-light font-poppins text-sm">{sell_id}</p>
       </Td>
 
       <Td className="!p-3">

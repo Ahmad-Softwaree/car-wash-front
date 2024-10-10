@@ -148,27 +148,6 @@ const ItemForm = ({
               </div>
               <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
                 <Label
-                  htmlFor="barcode"
-                  className="w-full text-sm  flex flex-row gap-2"
-                >
-                  <p>بارکۆد</p>
-                  <Required />
-                </Label>{" "}
-                <InputGroup
-                  error={errors.barcode}
-                  className="w-full text-input"
-                >
-                  <Input
-                    type="text"
-                    id="barcode"
-                    placeholder="بارکۆد"
-                    className="w-full text-sm"
-                    {...register("barcode", { required: true })}
-                  />
-                </InputGroup>
-              </div>
-              <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
-                <Label
                   htmlFor="type_id"
                   className="w-full text-sm  flex flex-row gap-2"
                 >
@@ -201,14 +180,34 @@ const ItemForm = ({
                   </Select>
                 </InputGroup>
               </div>
+              <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
+                <Label
+                  htmlFor="barcode"
+                  className="w-full text-sm  flex flex-row gap-2"
+                >
+                  <p>بارکۆد</p>
+                </Label>{" "}
+                <InputGroup
+                  error={errors.barcode}
+                  className="w-full text-input"
+                >
+                  <Input
+                    type="text"
+                    id="barcode"
+                    placeholder="بارکۆد"
+                    className="w-full text-sm"
+                    {...register("barcode")}
+                  />
+                </InputGroup>
+              </div>
+
               {state == "insert" && (
                 <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
                   <Label
                     htmlFor="quantity"
                     className="w-full text-sm  flex flex-row gap-2"
                   >
-                    <p>عەدەد</p>
-                    <Required />
+                    <p>عدد</p>
                   </Label>{" "}
                   <InputGroup
                     error={errors.quantity}
@@ -217,9 +216,9 @@ const ItemForm = ({
                     <Input
                       type="text"
                       id="quantity"
-                      placeholder="عەدەد"
+                      placeholder="عدد"
                       className="w-full text-sm"
-                      {...register("quantity", { required: true })}
+                      {...register("quantity")}
                     />
                   </InputGroup>
                 </div>
@@ -340,7 +339,7 @@ const ItemForm = ({
                   htmlFor="quantity"
                   className="w-full text-sm  flex flex-row gap-2"
                 >
-                  <p>عەدەد</p>
+                  <p>عدد</p>
                 </Label>{" "}
                 <div className="w-full flex flex-row justify-start items-center gap-3">
                   <InputGroup className="w-full text-input">
@@ -349,7 +348,7 @@ const ItemForm = ({
                       onChange={(e) => setQuantityInput(e.target.value)}
                       type="text"
                       id="quantity"
-                      placeholder="عەدەد"
+                      placeholder="عدد"
                       className="w-full text-sm"
                     />
                   </InputGroup>

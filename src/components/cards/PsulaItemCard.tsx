@@ -30,7 +30,8 @@ const PsulaItemCard = ({
       <article className="dark-light  w-full h-full flex flex-col justify-center items-center  text-center shadow-lg rounded-xl pb-3">
         <div
           onClick={() => onClick(id)}
-          className="w-full flex flex-col justify-center items-center text-center h-[90%]">
+          className="w-full flex flex-col justify-center items-center text-center h-[90%]"
+        >
           <Image
             className="relative   rounded-t-xl"
             width={`100%`}
@@ -42,7 +43,7 @@ const PsulaItemCard = ({
             <Typography className="text-center !text-sm " text={name}>
               <p>{name}</p>
             </Typography>
-            <p className="text-center w-full">عەدەد : {actual_quantity}</p>
+            <p className="text-center w-full">عدد : {actual_quantity}</p>
           </div>
         </div>
         <Tooltip placement="top" title="زانیاری" color="primary" variant="soft">
@@ -52,7 +53,8 @@ const PsulaItemCard = ({
             }}
             onClick={() => setDetail(true)}
             variant="soft"
-            color="primary">
+            color="primary"
+          >
             <Info className="w-7 h-7 p-1 mx-auto cursor-pointer" />
           </Chip>
         </Tooltip>
@@ -63,7 +65,8 @@ const PsulaItemCard = ({
           maxWidth={1000}
           maxHeight={`90%`}
           isOpen={detail}
-          onClose={() => setDetail(false)}>
+          onClose={() => setDetail(false)}
+        >
           <CustomClose onClick={() => setDetail(false)} />
           <ItemDetailCard
             id={id}

@@ -29,6 +29,7 @@ import ExpenseReport from "@/pages/_auth/ExpenseReport";
 import CaseReport from "@/pages/_auth/CaseReport";
 import Printers from "@/pages/_auth/Printers";
 import VultrBackups from "@/pages/_auth/VultrBackups";
+import ReservationReport from "@/pages/_auth/ReservationReport";
 const RootLayout = lazy(() => import("@/pages/_root/RootLayout"));
 const AuthRouterProvider = lazy(() => import("@/providers/AuthRouterProvider"));
 const UserNullRouterProvider = lazy(
@@ -214,6 +215,16 @@ const router = createBrowserRouter(
               <CheckPart
                 part={[ENUMs.CASE_REPORT_PART as string]}
                 Component={CaseReport}
+              />
+            }
+          />
+          <Route
+            path={ENUMs.RESERVATION_REPORT_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[ENUMs.RESERVATION_REPORT_PART as string]}
+                Component={ReservationReport}
               />
             }
           />

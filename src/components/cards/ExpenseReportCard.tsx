@@ -21,7 +21,7 @@ const ExpenseReportCard = ({
     <>
       <Tr className={`default-border table-row-hover`} key={id}>
         <Td className="!p-3">
-          <p className="text-right font-light font-poppins text-sm">
+          <p className="text-center font-light font-poppins text-sm">
             {index != -1 ? index + 1 : 0}
           </p>
         </Td>

@@ -72,7 +72,7 @@ const ServiceCard = ({ name, id, index = -1, ...others }: ServiceCardProps) => {
           </InputGroup>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-poppins text-sm">
+          <p className="text-center font-light font-poppins text-sm">
             {index != -1 ? index + 1 : 0}
           </p>
         </Td>
@@ -80,7 +80,7 @@ const ServiceCard = ({ name, id, index = -1, ...others }: ServiceCardProps) => {
           <p className="text-right font-light font-bukra text-sm">{name}</p>
         </Td>
 
-        <Td className="!p-3 cup flex flex-row gap-2">
+        <Td className="!p-3 cup flex flex-row gap-2 justify-center">
           {!deleted_page && (
             <>
               <Tooltip
@@ -175,7 +175,7 @@ const ServiceCard = ({ name, id, index = -1, ...others }: ServiceCardProps) => {
       {update && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={1500}
+          maxWidth={500}
           maxHeight={`90%`}
           isOpen={update}
           onClose={updateOnClose}

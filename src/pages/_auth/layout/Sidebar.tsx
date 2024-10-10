@@ -155,7 +155,16 @@ export const sideLinks: SideLink[] = [
   },
 
   //REPORT
+  {
+    id: crypto.randomUUID() as string,
+    icon: <Presentation />,
 
+    name: ENUMs.RESERVATION_REPORT_PART as string,
+    link: `/${ENUMs.REPORT_SECTION as string}/${
+      ENUMs.RESERVATION_REPORT_PART as string
+    }`,
+    type: "report",
+  },
   {
     id: crypto.randomUUID() as string,
     icon: (

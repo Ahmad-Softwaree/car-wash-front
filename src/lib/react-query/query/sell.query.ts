@@ -230,11 +230,6 @@ export const useAddItemToSell = (sell_id: Id) => {
     mutationFn: async (form: AddItemToSellF): Promise<AddSellItemQ> =>
       addItemToSell(form, sell_id),
     onSuccess: (data: AddSellItemQ) => {
-      toast({
-        title: "سەرکەوتووبوو",
-        description: "مەواد زیادکرا بۆ سەر پسولە",
-        alertType: "success",
-      });
       setSearchParam((prev) => {
         const params = new URLSearchParams(prev);
         params.set(ENUMs.SELL_PARAM as string, data.sell_id.toString());
@@ -292,11 +287,6 @@ export const useIncreaseItemInSell = (sell_id: Id, item_id: Id) => {
     mutationFn: async (): Promise<UpdateSellItemQ> =>
       increaseItemInSell(sell_id, item_id),
     onSuccess: (data: UpdateSellItemQ) => {
-      toast({
-        title: "سەرکەوتووبوو",
-        description: "مەواد زیادکرا  لەسەر پسولە",
-        alertType: "success",
-      });
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.ITEMS],
       });
@@ -320,11 +310,6 @@ export const useDecreaseItemInSell = (sell_id: Id, item_id: Id) => {
     mutationFn: async (): Promise<UpdateSellItemQ> =>
       decreaseItemInSell(sell_id, item_id),
     onSuccess: (data: UpdateSellItemQ) => {
-      toast({
-        title: "سەرکەوتووبوو",
-        description: "مەواد کەمکرا  لەسەر پسولە",
-        alertType: "success",
-      });
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.ITEMS],
       });

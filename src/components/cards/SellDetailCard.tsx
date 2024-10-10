@@ -206,23 +206,23 @@ const SellDetailCard = ({
                         </InputGroup>
                       </Th>
                     )}
-                    <Th className="text-right text-sm !p-4">
+                    <Th className="text-center text-sm !p-4">
                       <p className="pr-1">#</p>
                     </Th>
-                    <Th className="text-right text-sm !p-4">
+                    <Th className="text-center text-sm !p-4">
                       <p className="pr-3 table-head-border">ناوی کاڵا</p>
                     </Th>
-                    <Th className="text-right text-sm !p-4">
+                    <Th className="text-center text-sm !p-4">
                       <p className="pr-3 table-head-border">دانە</p>
                     </Th>{" "}
-                    <Th className="text-right text-sm !p-4">
+                    <Th className="text-center text-sm !p-4">
                       <p className="pr-3 table-head-border">نرخ</p>
                     </Th>
-                    <Th className="text-right text-sm !p-4">
+                    <Th className="text-center text-sm !p-4">
                       <p className="pr-3 table-head-border">کۆ</p>
                     </Th>
                     {!deleted_page && (
-                      <Th className="text-right text-sm !p-4">
+                      <Th className="text-center text-sm !p-4">
                         <p className="pr-3 table-head-border">کردارەکان</p>
                       </Th>
                     )}

@@ -69,12 +69,16 @@ const UserFilter = ({ onClose }: { onClose: () => void }) => {
                     ENUMs.ROLE_FILTER_PARAM as string,
                     selectedItem.id.toString()
                   );
+                } else {
+                  params.delete(ENUMs.SEARCH_PARAM as string);
+                  params.delete(ENUMs.ROLE_FILTER_PARAM as string);
                 }
                 return params;
               });
               onClose();
             }}
-            className="p-2 px-4 rounded-md text-xs bg-sky-600 text-white mt-5">
+            className="p-2 px-4 rounded-md text-xs bg-sky-600 text-white mt-5"
+          >
             جێبەجێکردن
           </MyButton>
         </div>

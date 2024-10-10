@@ -217,7 +217,12 @@ export type URLS =
   | "GET_CASE_REPORTS_INFORMATION"
   | "GET_CASE_REPORTS_SEARCH"
   | "GET_CASE_REPORTS_INFORMATION_SEARCH"
-  | "CASE_PRINT_DATA";
+  | "CASE_PRINT_DATA"
+  | "GET_RESERVATION_REPORTS"
+  | "GET_RESERVATION_REPORTS_INFORMATION"
+  | "GET_RESERVATION_REPORTS_SEARCH"
+  | "GET_RESERVATION_REPORTS_INFORMATION_SEARCH"
+  | "RESERVATION_PRINT_DATA";
 
 export const URLs: { [key in URLS]: string } = {
   //USER
@@ -481,4 +486,11 @@ export const URLs: { [key in URLS]: string } = {
   GET_CASE_REPORTS_SEARCH: `${API}/report/case_search`,
   GET_CASE_REPORTS_INFORMATION_SEARCH: `${API}/report/case_search/information`,
   CASE_PRINT_DATA: `${API}/report/case/print`,
+
+  GET_RESERVATION_REPORTS: `${API}/report/reservation`,
+  GET_RESERVATION_REPORTS_INFORMATION: `${API}/report/reservation/information`,
+
+  GET_RESERVATION_REPORTS_SEARCH: `${API}/report/reservation_search`,
+  GET_RESERVATION_REPORTS_INFORMATION_SEARCH: `${API}/report/reservation_search/information`,
+  RESERVATION_PRINT_DATA: `${API}/report/reservation/print`,
 };

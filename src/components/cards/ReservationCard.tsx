@@ -105,71 +105,71 @@ const ReservationCard = ({
           </InputGroup>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-poppins text-sm">
+          <p className="text-center font-light font-poppins text-sm">
             {index != -1 ? index + 1 : 0}
           </p>
         </Td>{" "}
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm flex flex-row gap-1">
+          <p className="text-center font-light font-bukra text-sm flex flex-row gap-1">
             <FormatMoney>{price}</FormatMoney> IQD
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
-            {customer_first_name} - {customer_last_name}
+          <p className="text-center font-light font-bukra text-sm">
+            {customer_first_name} {customer_last_name}
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {formateDateToYMDHM(date_time as string)}
           </p>
         </Td>
         <Td className="!p-3">
           <Chip variant="soft" color={"neutral"}>
-            <p className="!font-bukra text-right font-light  text-xs">
+            <p className="!font-bukra text-center font-light  text-xs">
               {service_name}
             </p>
           </Chip>
         </Td>
         <Td className="!p-3">
           <Chip variant="soft" color={"neutral"}>
-            <p className="!font-bukra text-right font-light  text-xs">
+            <p className="!font-bukra text-center font-light  text-xs">
               {car_type_name}
             </p>
           </Chip>
         </Td>
         <Td className="!p-3">
           <Chip variant="soft" color={"neutral"}>
-            <p className="!font-bukra text-right font-light  text-xs">
+            <p className="!font-bukra text-center font-light  text-xs">
               {car_model_name}
             </p>
           </Chip>
         </Td>
         <Td className="!p-3">
           <Chip variant="soft" color={"neutral"}>
-            <p className="!font-bukra text-right font-light  text-xs">
+            <p className="!font-bukra text-center font-light  text-xs">
               {color_name}
             </p>
           </Chip>
         </Td>
         <Td className="!p-3">
           <Chip variant="soft" color={completed ? "neutral" : "danger"}>
-            <p className="!font-bukra text-right font-light  text-xs">
+            <p className="!font-bukra text-center font-light  text-xs">
               {completed ? "تەواوبوو" : "تەواونەبوو"}
             </p>
           </Chip>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {created_by}
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {updated_by}
           </p>
         </Td>
-        <Td className="!p-3 cup flex flex-row gap-2">
+        <Td className="!p-3 cup flex flex-row gap-2 justify-center">
           {!completed && (
             <Tooltip
               placement="top"

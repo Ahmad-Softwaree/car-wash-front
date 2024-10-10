@@ -59,7 +59,7 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
                 id="all"
                 name="all"
                 onClick={() => changeFilter("all")}
-                className={`p-2 px-4 rounded-md default-border  !text-sm transition-all duration-200 hover:!text-white hover:!bg-blue-500 ${
+                className={`p-2 px-4 rounded-md default-border !border-blue-500  !text-sm transition-all duration-200 hover:!text-white hover:!bg-blue-500 ${
                   filter == "all" ? "!bg-blue-500 text-white" : "dark-light"
                 }`}
               >
@@ -70,7 +70,7 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
                 id="all"
                 name="all"
                 onClick={() => changeFilter("completed")}
-                className={`p-2 px-4 rounded-md default-border  !text-sm transition-all duration-200 hover:!text-white hover:!bg-blue-500 ${
+                className={`p-2 px-4 rounded-md default-border !border-blue-500  !text-sm transition-all duration-200 hover:!text-white hover:!bg-blue-500 ${
                   filter == "completed"
                     ? "!bg-blue-500 text-white"
                     : "dark-light"
@@ -83,7 +83,7 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
                 id="all"
                 name="all"
                 onClick={() => changeFilter("not_completed")}
-                className={`p-2 px-4 rounded-md default-border  !text-sm transition-all duration-200 hover:!text-white hover:!bg-blue-500 ${
+                className={`p-2 px-4 rounded-md default-border !border-blue-500  !text-sm transition-all duration-200 hover:!text-white hover:!bg-blue-500 ${
                   filter == "not_completed"
                     ? "!bg-blue-500 text-white"
                     : "dark-light"
@@ -167,7 +167,7 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
                   <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
                     <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
                       <Tr>
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <InputGroup className="checkbox-input">
                             <Input
                               onChange={() => {
@@ -198,44 +198,44 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
                             />
                           </InputGroup>
                         </Th>
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-1">#</p>
                         </Th>
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">نرخ</p>
                         </Th>
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">ناوی موشتەری</p>
                         </Th>
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">بەروار و کات</p>
                         </Th>{" "}
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">خزمەتگوزاری</p>
                         </Th>
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">
                             جۆری ئۆتۆمبێل
                           </p>
                         </Th>
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">
                             مۆدێلی ئۆتۆمبێل
                           </p>
                         </Th>
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">ڕەنگ</p>
                         </Th>
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">دۆخ</p>
                         </Th>
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">داغڵکار</p>
                         </Th>
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">نوێکەرەوە</p>
                         </Th>
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">کردارەکان</p>
                         </Th>
                       </Tr>

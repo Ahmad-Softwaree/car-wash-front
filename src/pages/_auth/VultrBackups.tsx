@@ -26,19 +26,19 @@ const VultrBackups = () => {
               <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
                 <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
                   <Tr>
-                    <Th className="text-right text-sm !p-4">
+                    <Th className="text-center text-sm !p-4">
                       <p className="pr-1">#</p>
                     </Th>
-                    <Th className="text-right text-sm !p-4">
+                    <Th className="text-center text-sm !p-4">
                       <p className="pr-3 table-head-border">زانیاری</p>
                     </Th>
-                    <Th className="text-right text-sm !p-4">
+                    <Th className="text-center text-sm !p-4">
                       <p className="pr-3 table-head-border">قەبارەی باکئەپ</p>
                     </Th>{" "}
-                    <Th className="text-right text-sm !p-4">
+                    <Th className="text-center text-sm !p-4">
                       <p className="pr-3 table-head-border">دۆخ</p>
                     </Th>{" "}
-                    <Th className="text-right text-sm !p-4">
+                    <Th className="text-center text-sm !p-4">
                       <p className="pr-3 table-head-border">بەرواری باکئەپ</p>
                     </Th>
                   </Tr>

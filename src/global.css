@@ -4,11 +4,11 @@
 
 @font-face {
   font-family: "bukra";
-  src: url("/fonts/UNIQAIDAR_BUKRA 002.ttf");
+  src: url("../public/fonts/UNIQAIDAR_BUKRA 002.ttf");
 }
 @font-face {
   font-family: "bukra_bold";
-  src: url("/fonts/UNIQAIDAR_BUKRA 003.ttf");
+  src: url("../public/fonts/UNIQAIDAR_BUKRA 003.ttf");
 }
 
 /* Smooth scrolling for a better experience */
@@ -122,11 +122,11 @@ aside::-webkit-scrollbar {
   }
 
   .default-border {
-    @apply border-4 border-solid border-secondary-500 dark:border-primary-500 border-opacity-100;
+    @apply border-2 border-solid border-primary-500 border-opacity-100;
   }
 
   .table-head-border {
-    @apply border-r-4 border-solid border-secondary-500 dark:border-primary-500 border-opacity-100;
+    @apply border-r-2 border-solid border-primary-500 border-opacity-100;
   }
   a.active {
     @apply !bg-secondary-100 !bg-opacity-20;

@@ -85,50 +85,50 @@ const SellCard = ({
           </Td>
         )}
         <Td className="!p-3">
-          <p className="text-right font-light font-poppins text-sm">
+          <p className="text-center font-light font-poppins text-sm">
             {index != -1 ? index + 1 : 0}
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">{id}</p>
+          <p className="text-center font-light font-bukra text-sm">{id}</p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {formatDateToDDMMYY(date.toLocaleString())}
           </p>
         </Td>
         {report_page && (
           <Td className="!p-3">
-            <p className="text-right font-light font-bukra text-sm">
+            <p className="text-center font-light font-bukra text-sm">
               {formatMoney(total_sell_price)}
             </p>
           </Td>
         )}
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {formatMoney(discount)}
           </p>
         </Td>
         {report_page && total_sell_price && (
           <Td className="!p-3">
-            <p className="text-right font-light font-bukra text-sm">
+            <p className="text-center font-light font-bukra text-sm">
               {formatMoney(total_sell_price - discount)}
             </p>
           </Td>
         )}
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {created_by}
           </p>
         </Td>{" "}
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">
+          <p className="text-center font-light font-bukra text-sm">
             {updated_by}
           </p>
         </Td>
         {!report_page && (
           <>
-            <Td className="!p-3 cup flex flex-row gap-2">
+            <Td className="!p-3 cup flex flex-row gap-2 justify-center">
               {!deleted_page && (
                 <>
                   <Tooltip

@@ -26,7 +26,6 @@ import { useSearchParams } from "react-router-dom";
 import { ENUMs } from "@/lib/enum";
 
 import DeleteModal from "@/components/ui/DeleteModal";
-import TFoot from "@/components/ui/TFoot";
 import CustomClose from "@/components/shared/CustomClose";
 import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import DeleteChip from "@/components/shared/DeleteChip";
@@ -136,7 +135,7 @@ const Roles = () => {
                   <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
                     <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
                       <Tr>
-                        <Th className="text-right text-sm !p-4 !min-w-[100px]">
+                        <Th className="text-center text-sm !p-4 !min-w-[100px]">
                           <InputGroup className="checkbox-input">
                             <Input
                               onChange={() => {
@@ -162,14 +161,14 @@ const Roles = () => {
                             />
                           </InputGroup>
                         </Th>
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-1">#</p>
                         </Th>
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">ناو</p>
                         </Th>
 
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">کرادرەکان</p>
                         </Th>
                       </Tr>
@@ -228,7 +227,7 @@ const Roles = () => {
       {isAddOpen && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={1500}
+          maxWidth={500}
           maxHeight={`90%`}
           isOpen={isAddOpen}
           onClose={() => setIsAddOpen(false)}

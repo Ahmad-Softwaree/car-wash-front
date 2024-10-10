@@ -37,7 +37,7 @@ export const useLogin = () => {
     onSuccess: (data: LoginQ) => {
       toast({
         title: "سەرکەوتووبوو",
-        description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
+        description: "بەسەرکەوتووی ",
         alertType: "success",
       });
       dispatch({

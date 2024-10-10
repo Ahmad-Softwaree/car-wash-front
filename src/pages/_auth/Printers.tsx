@@ -161,16 +161,16 @@ const Printers = () => {
                             />
                           </InputGroup>
                         </Th>
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-1">#</p>
                         </Th>
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">ناو</p>
                         </Th>
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">دۆخ</p>
                         </Th>
-                        <Th className="text-right text-sm !p-4">
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">کرادرەکان</p>
                         </Th>
                       </Tr>
@@ -229,7 +229,7 @@ const Printers = () => {
       {isAddOpen && (
         <Dialog
           className="!p-5 rounded-md"
-          maxWidth={1500}
+          maxWidth={500}
           maxHeight={`90%`}
           isOpen={isAddOpen}
           onClose={() => setIsAddOpen(false)}
