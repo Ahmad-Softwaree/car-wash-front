@@ -180,10 +180,8 @@ export const useUpdateItem = (id: Id) => {
       let oldImageRef: StorageReference | null = null;
 
       //if new image uploaded -> delete old -> upload new
-      console.log(form.image);
-      console.log(form.image[0]);
+
       if (form.image && form.image[0]) {
-        console.log("hi");
         if (form.old_image_url != "") {
           oldImageRef = ref(firebaseStorage, form.old_image_url);
           await deleteImage(oldImageRef, toast);

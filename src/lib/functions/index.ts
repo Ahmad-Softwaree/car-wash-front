@@ -57,7 +57,6 @@ export const generateToken = async (user: User) => {
 export function parseDateToTimestamp(dateString: string): string {
   const decodedDate = decodeURIComponent(dateString);
   const date = new Date(decodedDate);
-  console.log(date);
   return date.getTime().toString();
 }
 

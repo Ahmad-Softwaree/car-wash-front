@@ -19,7 +19,6 @@ const ItemProfitReportCard = ({
   created_at,
   id,
 }: ItemProfitReportCardProps) => {
-  console.log(id);
   return (
     <Tr className={`default-border table-row-hover `}>
       <Td className="!p-3">
