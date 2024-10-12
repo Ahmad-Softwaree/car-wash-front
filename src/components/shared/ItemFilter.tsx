@@ -54,13 +54,6 @@ const ItemFilter = ({ onClose }: { onClose: () => void }) => {
           <MyButton
             type="button"
             onClick={() => {
-              if (!selectedValue || selectedValue == "") {
-                return toast({
-                  alertType: "error",
-                  title: "هەڵە",
-                  description: "تکایە فلتەر هەڵبژێرە یان بەتاڵی کەرەوە",
-                });
-              }
               setSearchParam((prev: any) => {
                 const params = new URLSearchParams(prev);
                 const selectedItem = data.find(
@@ -73,12 +66,16 @@ const ItemFilter = ({ onClose }: { onClose: () => void }) => {
                     ENUMs.ITEM_TYPE_PARAM as string,
                     selectedItem.id.toString()
                   );
+                } else {
+                  params.delete(ENUMs.SEARCH_PARAM as string);
+                  params.delete(ENUMs.ITEM_TYPE_PARAM as string);
                 }
                 return params;
               });
               onClose();
             }}
-            className="p-2 px-4 rounded-md text-xs bg-sky-600 text-white mt-5">
+            className="p-2 px-4 rounded-md text-xs bg-sky-600 text-white mt-5"
+          >
             جێبەجێکردن
           </MyButton>
         </div>
