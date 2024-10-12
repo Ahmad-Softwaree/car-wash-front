@@ -53,6 +53,7 @@ export const useGetItemTypes = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 export const useGetItemTypesSelection = () => {
@@ -77,6 +78,7 @@ export const useGetDeletedItemTypes = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 
@@ -107,20 +109,22 @@ export const useAddItemType = () => {
     mutationFn: (form: AddItemTypeF): Promise<AddItemTypeQ> =>
       addItemType(form),
     onSuccess: (data: AddItemTypeQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.ITEM_TYPES_SELECTION],
       });
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.ITEM_TYPES],
       });
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
     },
   });
 };
@@ -132,17 +136,19 @@ export const useUpdateItemType = (id: Id) => {
     mutationFn: async (form: UpdateItemTypeF): Promise<UpdateItemTypeQ> =>
       updateItemType(form, id),
     onSuccess: (data: UpdateItemTypeQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
-      return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.ITEM_TYPES],
-      });
     },
     onError: (error: NestError) => {
       return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.ITEM_TYPES],
+      });
     },
   });
 };
@@ -154,11 +160,16 @@ export const useDeleteItemType = () => {
   return useMutation({
     mutationFn: (ids: Id[]): Promise<DeleteItemTypeQ> => deleteItemType(ids),
     onSuccess: (data: DeleteItemTypeQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
@@ -170,9 +181,6 @@ export const useDeleteItemType = () => {
         queryKey: [QUERY_KEYs.ITEM_TYPES],
       });
     },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
-    },
   });
 };
 export const useRestoreItemType = () => {
@@ -183,11 +191,16 @@ export const useRestoreItemType = () => {
   return useMutation({
     mutationFn: (ids: Id[]): Promise<DeleteItemTypeQ> => restoreItemType(ids),
     onSuccess: (data: DeleteItemTypeQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
@@ -198,9 +211,6 @@ export const useRestoreItemType = () => {
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.DELETED_ITEM_TYPES],
       });
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
     },
   });
 };

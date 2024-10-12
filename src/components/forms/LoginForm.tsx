@@ -19,8 +19,10 @@ const LoginForm = () => {
     formState: { errors },
   } = useForm<LoginInputs>({});
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
-    await mutateAsync(data);
-    form.current?.clear();
+    try {
+      await mutateAsync(data);
+      form.current?.clear();
+    } catch (error) {}
   };
 
   return (
@@ -28,7 +30,8 @@ const LoginForm = () => {
       className="space-y-4 mt-5 !text-primary-800 dark:!text-white w-full"
       ref={form}
       onSubmit={handleSubmit(onSubmit)}
-      id="login-form">
+      id="login-form"
+    >
       <InputGroup className="w-full text-input" error={errors.username}>
         <InputAddon className="w-[20%] md:w-[10%]">
           <User />
@@ -63,7 +66,8 @@ const LoginForm = () => {
         name="loginButton"
         id="loginButton"
         className="w-full text-sm bg-sky-800 text-white p-3 rounded-md flex justify-center"
-        type="submit">
+        type="submit"
+      >
         چوونەژوورەوە
       </MyButton>
     </Form>

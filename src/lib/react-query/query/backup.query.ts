@@ -40,6 +40,7 @@ export const useGetBackups = (filter: Filter, from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 

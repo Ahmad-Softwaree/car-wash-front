@@ -37,10 +37,12 @@ const ServiceForm = ({
     formState: { errors },
   } = useForm<AddServiceInputs>({});
   const onSubmit: SubmitHandler<AddServiceInputs> = async (data) => {
-    if (state == "insert") await add(data);
-    else await update(data);
-    form.current?.clear();
-    if (onClose) onClose();
+    try {
+      if (state == "insert") await add(data);
+      else await update(data);
+      form.current?.clear();
+      if (onClose) onClose();
+    } catch (error) {}
   };
   useEffect(() => {
     if (globalState.oldData) reset(globalState.oldData);

@@ -53,6 +53,7 @@ export const useGetServices = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 export const useGetServicesSelection = () => {
@@ -77,6 +78,7 @@ export const useGetDeletedServices = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 
@@ -105,20 +107,22 @@ export const useAddService = () => {
   return useMutation({
     mutationFn: (form: AddServiceF): Promise<AddServiceQ> => addService(form),
     onSuccess: (data: AddServiceQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.SERVICES_SELECTION],
       });
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.SERVICES],
       });
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
     },
   });
 };
@@ -130,17 +134,19 @@ export const useUpdateService = (id: Id) => {
     mutationFn: async (form: UpdateServiceF): Promise<UpdateServiceQ> =>
       updateService(form, id),
     onSuccess: (data: UpdateServiceQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
-      return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.SERVICES],
-      });
     },
     onError: (error: NestError) => {
       return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.SERVICES],
+      });
     },
   });
 };
@@ -152,11 +158,16 @@ export const useDeleteService = () => {
   return useMutation({
     mutationFn: (ids: Id[]): Promise<DeleteServiceQ> => deleteService(ids),
     onSuccess: (data: DeleteServiceQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
@@ -168,9 +179,6 @@ export const useDeleteService = () => {
         queryKey: [QUERY_KEYs.SERVICES],
       });
     },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
-    },
   });
 };
 export const useRestoreService = () => {
@@ -181,11 +189,16 @@ export const useRestoreService = () => {
   return useMutation({
     mutationFn: (ids: Id[]): Promise<DeleteServiceQ> => restoreService(ids),
     onSuccess: (data: DeleteServiceQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
@@ -196,9 +209,6 @@ export const useRestoreService = () => {
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.DELETED_SERVICES],
       });
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
     },
   });
 };

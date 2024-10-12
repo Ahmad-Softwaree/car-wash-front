@@ -49,6 +49,7 @@ export const useGetExpenses = (filter: Filter, from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 export const useGetDeletedExpenses = (filter: Filter, from: From, to: To) => {
@@ -72,6 +73,7 @@ export const useGetDeletedExpenses = (filter: Filter, from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 
@@ -82,17 +84,19 @@ export const useAddExpense = () => {
   return useMutation({
     mutationFn: (form: AddExpenseF): Promise<AddExpenseQ> => addExpense(form),
     onSuccess: (data: AddExpenseQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
-      return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.EXPENSES],
-      });
     },
     onError: (error: NestError) => {
       return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.EXPENSES],
+      });
     },
   });
 };
@@ -104,17 +108,19 @@ export const useUpdateExpense = (id: Id) => {
     mutationFn: async (form: UpdateExpenseF): Promise<UpdateExpenseQ> =>
       updateExpense(form, id),
     onSuccess: (data: UpdateExpenseQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
-      return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.EXPENSES],
-      });
     },
     onError: (error: NestError) => {
       return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.EXPENSES],
+      });
     },
   });
 };
@@ -126,24 +132,23 @@ export const useDeleteExpense = () => {
   return useMutation({
     mutationFn: (ids: Id[]): Promise<DeleteExpenseQ> => deleteExpense(ids),
     onSuccess: (data: DeleteExpenseQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
       });
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.SEARCH_EXPENSES],
-      });
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.EXPENSES],
       });
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
     },
   });
 };
@@ -155,24 +160,23 @@ export const useRestoreExpense = () => {
   return useMutation({
     mutationFn: (ids: Id[]): Promise<DeleteExpenseQ> => restoreExpense(ids),
     onSuccess: (data: DeleteExpenseQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
       });
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.SEARCH_DELETED_EXPENSES],
-      });
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.DELETED_EXPENSES],
       });
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
     },
   });
 };

@@ -33,16 +33,18 @@ export const useAddPart = () => {
   return useMutation({
     mutationFn: (form: AddPartF): Promise<AddPartQ> => addPart(form),
     onSuccess: (data: AddPartQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بە سەرکەوتوویی ئەنجامدرا",
-      });
-      return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.PARTS],
       });
     },
     onError: (error: NestError) => {
       return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.PARTS],
+      });
     },
   });
 };
@@ -54,16 +56,18 @@ export const useUpdatePart = (id: Id) => {
     mutationFn: (form: UpdatePartF): Promise<UpdatePartQ> =>
       updatePart(form, id),
     onSuccess: (data: UpdatePartQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بە سەرکەوتوویی ئەنجامدرا",
-      });
-      return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.PARTS],
       });
     },
     onError: (error: NestError) => {
       return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.PARTS],
+      });
     },
   });
 };
@@ -74,16 +78,18 @@ export const useDeletePart = (id: Id) => {
   return useMutation({
     mutationFn: (): Promise<DeletePartQ> => deletePart(id),
     onSuccess: (data: DeletePartQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بە سەرکەوتوویی ئەنجامدرا",
-      });
-      return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.PARTS],
       });
     },
     onError: (error: NestError) => {
       return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.PARTS],
+      });
     },
   });
 };

@@ -83,13 +83,13 @@ const ItemForm = ({
           old_image_url: globalState.oldData?.image_url,
           ...transformedData,
         });
+      form.current?.clear();
+      if (onClose) onClose();
     } catch (error) {
       //nothing
     } finally {
       resetField("image");
     }
-    form.current?.clear();
-    if (onClose) onClose();
   };
 
   useEffect(() => {

@@ -53,6 +53,7 @@ export const useGetRoles = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 export const useGetRolesSelection = () => {
@@ -77,6 +78,7 @@ export const useGetDeletedRoles = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 
@@ -105,20 +107,22 @@ export const useAddRole = () => {
   return useMutation({
     mutationFn: (form: AddRoleF): Promise<AddRoleQ> => addRole(form),
     onSuccess: (data: AddRoleQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.ROLES_SELECTION],
       });
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.ROLES],
       });
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
     },
   });
 };
@@ -130,17 +134,19 @@ export const useUpdateRole = (id: Id) => {
     mutationFn: async (form: UpdateRoleF): Promise<UpdateRoleQ> =>
       updateRole(form, id),
     onSuccess: (data: UpdateRoleQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
-      return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.ROLES],
-      });
     },
     onError: (error: NestError) => {
       return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.ROLES],
+      });
     },
   });
 };
@@ -152,11 +158,16 @@ export const useDeleteRole = () => {
   return useMutation({
     mutationFn: (ids: Id[]): Promise<DeleteRoleQ> => deleteRole(ids),
     onSuccess: (data: DeleteRoleQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
@@ -168,9 +179,6 @@ export const useDeleteRole = () => {
         queryKey: [QUERY_KEYs.ROLES],
       });
     },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
-    },
   });
 };
 export const useRestoreRole = () => {
@@ -181,11 +189,16 @@ export const useRestoreRole = () => {
   return useMutation({
     mutationFn: (ids: Id[]): Promise<DeleteRoleQ> => restoreRole(ids),
     onSuccess: (data: DeleteRoleQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
@@ -196,9 +209,6 @@ export const useRestoreRole = () => {
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.DELETED_ROLES],
       });
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
     },
   });
 };

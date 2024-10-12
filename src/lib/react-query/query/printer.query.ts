@@ -54,6 +54,7 @@ export const useGetPrinters = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 export const useGetPrintersSelection = () => {
@@ -78,6 +79,7 @@ export const useGetDeletedPrinters = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 
@@ -106,20 +108,22 @@ export const useAddPrinter = () => {
   return useMutation({
     mutationFn: (form: AddPrinterF): Promise<AddPrinterQ> => addPrinter(form),
     onSuccess: (data: AddPrinterQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.PRINTERS_SELECTION],
       });
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.PRINTERS],
       });
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
     },
   });
 };
@@ -131,17 +135,19 @@ export const useUpdatePrinter = (id: Id) => {
     mutationFn: async (form: UpdatePrinterF): Promise<UpdatePrinterQ> =>
       updatePrinter(form, id),
     onSuccess: (data: UpdatePrinterQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
-      return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.PRINTERS],
-      });
     },
     onError: (error: NestError) => {
       return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.PRINTERS],
+      });
     },
   });
 };

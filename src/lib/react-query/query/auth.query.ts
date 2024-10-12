@@ -23,7 +23,6 @@ export const useGetAuth = () => {
   return useQuery({
     queryKey: [QUERY_KEYs.AUTH],
     queryFn: (): Promise<GetAuthQ> => getAuth(toast, dispatch, navigate),
-    retry: 0,
   });
 };
 export const useLogin = () => {
@@ -37,7 +36,7 @@ export const useLogin = () => {
     onSuccess: (data: LoginQ) => {
       toast({
         title: "سەرکەوتووبوو",
-        description: "بەسەرکەوتووی ",
+        description: "بەسەرکوتوویی داغڵ بووی",
         alertType: "success",
       });
       dispatch({

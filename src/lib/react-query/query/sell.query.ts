@@ -72,6 +72,7 @@ export const useGetSells = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 export const useGetSelfDeletedSellItems = () => {
@@ -88,6 +89,7 @@ export const useGetSelfDeletedSellItems = () => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 export const useSearchSelfDeletedSellItems = (search: Search) => {
@@ -114,6 +116,7 @@ export const useGetDeletedSells = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 
@@ -185,17 +188,19 @@ export const useAddSell = () => {
         description: "پسولەی نوێ دروستبوو",
         alertType: "success",
       });
-      setSearchParam((prev) => {
+      return setSearchParam((prev) => {
         const params = new URLSearchParams(prev);
         params.set(ENUMs.SELL_PARAM as string, data.id.toString());
         return params;
       });
-      return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.SELL],
-      });
     },
     onError: (error: NestError) => {
       return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.SELL],
+      });
     },
   });
 };
@@ -207,17 +212,19 @@ export const useUpdateSell = (id: Id) => {
     mutationFn: async (form: UpdateSellF): Promise<UpdateSellQ> =>
       updateSell(form, id),
     onSuccess: (data: UpdateSellQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "پسولەکە چاککرا",
         alertType: "success",
       });
-      return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.SELL],
-      });
     },
     onError: (error: NestError) => {
       return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.SELL],
+      });
     },
   });
 };
@@ -235,18 +242,20 @@ export const useAddItemToSell = (sell_id: Id) => {
         params.set(ENUMs.SELL_PARAM as string, data.sell_id.toString());
         return params;
       });
-      queryClient.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.SELL_ITEMS, data.sell_id],
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.ITEMS],
       });
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.SELL],
       });
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
     },
   });
 };
@@ -264,18 +273,21 @@ export const useUpdateItemInSell = (sell_id: Id, item_id: Id) => {
         description: "مەواد چاککرا  لەسەر پسولە",
         alertType: "success",
       });
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.ITEMS],
-      });
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.SELL_ITEMS, sell_id],
-      });
+
       return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.SELL],
+        queryKey: [QUERY_KEYs.SELL_ITEMS, sell_id],
       });
     },
     onError: (error: NestError) => {
       return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.ITEMS],
+      });
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.SELL],
+      });
     },
   });
 };
@@ -287,18 +299,20 @@ export const useIncreaseItemInSell = (sell_id: Id, item_id: Id) => {
     mutationFn: async (): Promise<UpdateSellItemQ> =>
       increaseItemInSell(sell_id, item_id),
     onSuccess: (data: UpdateSellItemQ) => {
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.ITEMS],
-      });
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.SELL_ITEMS, sell_id],
-      });
       return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.SELL],
+        queryKey: [QUERY_KEYs.SELL_ITEMS, sell_id],
       });
     },
     onError: (error: NestError) => {
       return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.ITEMS],
+      });
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.SELL],
+      });
     },
   });
 };
@@ -310,18 +324,20 @@ export const useDecreaseItemInSell = (sell_id: Id, item_id: Id) => {
     mutationFn: async (): Promise<UpdateSellItemQ> =>
       decreaseItemInSell(sell_id, item_id),
     onSuccess: (data: UpdateSellItemQ) => {
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.ITEMS],
-      });
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.SELL_ITEMS, sell_id],
-      });
       return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.SELL],
+        queryKey: [QUERY_KEYs.SELL_ITEMS, sell_id],
       });
     },
     onError: (error: NestError) => {
       return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.ITEMS],
+      });
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.SELL],
+      });
     },
   });
 };
@@ -338,22 +354,25 @@ export const useDeleteItemInSell = (sell_id: Id) => {
         description: "مەواد سڕایەوە  لەسەر پسولە",
         alertType: "success",
       });
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.SELL_ITEMS, sell_id],
+      });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
       });
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.SELL_ITEMS, sell_id],
-      });
+
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.ITEMS],
       });
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.SELL],
       });
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
     },
   });
 };
@@ -367,11 +386,16 @@ export const useDeleteSell = () => {
   return useMutation({
     mutationFn: (ids: Id[]): Promise<DeleteSellQ> => deleteSell(ids),
     onSuccess: (data: DeleteSellQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "پسولەکە سڕایەوە",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
@@ -391,9 +415,6 @@ export const useDeleteSell = () => {
         queryKey: [QUERY_KEYs.SELL],
       });
     },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
-    },
   });
 };
 export const useRestoreSell = (item_ids: Id[]) => {
@@ -405,11 +426,16 @@ export const useRestoreSell = (item_ids: Id[]) => {
     mutationFn: (sell_id: Id): Promise<RestoreSellQ> =>
       restoreSell(sell_id, item_ids),
     onSuccess: (data: RestoreSellQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "پسولەکە گێردرایەوە",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.DELETED_SELLS],
       });
@@ -420,9 +446,6 @@ export const useRestoreSell = (item_ids: Id[]) => {
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
       });
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
     },
   });
 };
@@ -436,11 +459,16 @@ export const useRestoreSelfDeletedSellItem = () => {
     mutationFn: (ids: Id[]): Promise<RestoreSelfDeletedSellItemQ> =>
       restoreSelfDeletedSellItem(ids),
     onSuccess: (data: RestoreSelfDeletedSellItemQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "مەوادی سەر پسوڵە گێردرایەوە",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
@@ -452,9 +480,6 @@ export const useRestoreSelfDeletedSellItem = () => {
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.SEARCH_SELF_DELETED_SELL_ITEMS],
       });
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
     },
   });
 };

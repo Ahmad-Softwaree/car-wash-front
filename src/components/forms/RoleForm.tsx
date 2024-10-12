@@ -51,11 +51,13 @@ const RoleForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
     formState: { errors },
   } = useForm<AddRoleInputs>({});
   const onSubmit: SubmitHandler<AddRoleInputs> = async (data) => {
-    let formData = { part_ids: selectedParts, ...data };
-    if (state == "insert") await add(formData);
-    else await update(formData);
-    form.current?.clear();
-    if (onClose) onClose();
+    try {
+      let formData = { part_ids: selectedParts, ...data };
+      if (state == "insert") await add(formData);
+      else await update(formData);
+      form.current?.clear();
+      if (onClose) onClose();
+    } catch (error) {}
   };
   useEffect(() => {
     if (globalState.oldData) {

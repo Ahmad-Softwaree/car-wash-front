@@ -59,6 +59,7 @@ export const useGetItems = (filter: Filter, from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 export const useGetDeletedItems = (filter: Filter, from: From, to: To) => {
@@ -82,6 +83,7 @@ export const useGetDeletedItems = (filter: Filter, from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 
@@ -157,16 +159,18 @@ export const useAddItem = () => {
       }
     },
     onSuccess: (data: AddItemQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
-      });
-      return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.ITEMS],
       });
     },
     onError: (error: NestError) => {
       throw generateNestErrors(error, toast);
+    },
+    onSettled: () => {
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.ITEMS],
+      });
     },
   });
 };
@@ -221,19 +225,21 @@ export const useUpdateItem = (id: Id) => {
       }
     },
     onSuccess: (data: UpdateItemQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
       });
+    },
+    onError: (error: NestError) => {
+      throw generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.ITEM_BY_ID, id],
       });
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.ITEMS],
       });
-    },
-    onError: (error: NestError) => {
-      throw generateNestErrors(error, toast);
     },
   });
 };
@@ -247,23 +253,25 @@ export const useChangeItemQuantity = (id: Id) => {
       type: "increase" | "decrease";
     }): Promise<UpdateItemQ> => changeItemQuantity(form, id),
     onSuccess: (data: UpdateItemQ) => {
-      toast({
-        title: "سەرکەوتووبوو",
-        description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
-      });
       dispatch({
         type: CONTEXT_TYPEs.SET_OLD_DATA,
         payload: data,
       });
+      return toast({
+        title: "سەرکەوتووبوو",
+        description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
+      });
+    },
+    onError: (error: NestError) => {
+      throw generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.ITEM_BY_ID, id],
       });
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.ITEMS],
       });
-    },
-    onError: (error: NestError) => {
-      throw generateNestErrors(error, toast);
     },
   });
 };
@@ -276,10 +284,15 @@ export const useDeleteItem = () => {
   return useMutation({
     mutationFn: (ids: Id[]): Promise<DeleteItemQ> => deleteItem(ids),
     onSuccess: (data: DeleteItemQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
       });
+    },
+    onError: (error: NestError) => {
+      throw generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
@@ -290,9 +303,6 @@ export const useDeleteItem = () => {
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.ITEMS],
       });
-    },
-    onError: (error: NestError) => {
-      throw generateNestErrors(error, toast);
     },
   });
 };
@@ -305,11 +315,16 @@ export const useRestoreItem = () => {
   return useMutation({
     mutationFn: (ids: Id[]): Promise<DeleteItemQ> => restoreItem(ids),
     onSuccess: (data: DeleteItemQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
@@ -320,9 +335,6 @@ export const useRestoreItem = () => {
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.DELETED_ITEMS],
       });
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
     },
   });
 };

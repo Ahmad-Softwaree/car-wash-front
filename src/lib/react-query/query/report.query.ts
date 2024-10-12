@@ -99,6 +99,7 @@ export const useGetSellReport = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 export const useGetSellReportInformation = (from: From, to: To) => {
@@ -156,6 +157,7 @@ export const useGetItemReport = (filter: Filter, from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 export const useGetItemReportInformation = (
@@ -223,6 +225,7 @@ export const useGetKogaAllReport = (filter: Filter) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 export const useGetKogaAllReportInformation = (filter: Filter) => {
@@ -280,6 +283,7 @@ export const useGetKogaNullReport = (filter: Filter) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 export const useGetKogaNullReportInformation = (filter: Filter) => {
@@ -348,6 +352,7 @@ export const useGetKogaMovementReport = (
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 export const useGetKogaMovementReportInformation = (
@@ -416,6 +421,7 @@ export const useGetBillProfitReport = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 export const useGetBillProfitReportInformation = (from: From, to: To) => {
@@ -481,6 +487,7 @@ export const useGetItemProfitReport = (filter: Filter, from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 export const useGetItemProfitReportInformation = (
@@ -555,6 +562,7 @@ export const useGetExpenseReport = (filter: Filter, from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 export const useGetExpenseReportInformation = (
@@ -621,6 +629,7 @@ export const useGetCaseReport = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 export const useGetCaseReportInformation = (from: From, to: To) => {
@@ -677,6 +686,7 @@ export const useGetReservationReport = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 export const useGetReservationReportInformation = (from: From, to: To) => {

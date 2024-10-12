@@ -53,6 +53,7 @@ export const useGetCarModels = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 export const useGetCarModelsSelection = () => {
@@ -77,6 +78,7 @@ export const useGetDeletedCarModels = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 
@@ -107,20 +109,22 @@ export const useAddCarModel = () => {
     mutationFn: (form: AddCarModelF): Promise<AddCarModelQ> =>
       addCarModel(form),
     onSuccess: (data: AddCarModelQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.CAR_MODELS_SELECTION],
       });
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.CAR_MODELS],
       });
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
     },
   });
 };
@@ -132,17 +136,19 @@ export const useUpdateCarModel = (id: Id) => {
     mutationFn: async (form: UpdateCarModelF): Promise<UpdateCarModelQ> =>
       updateCarModel(form, id),
     onSuccess: (data: UpdateCarModelQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
-      return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.CAR_MODELS],
-      });
     },
     onError: (error: NestError) => {
       return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.CAR_MODELS],
+      });
     },
   });
 };
@@ -154,11 +160,16 @@ export const useDeleteCarModel = () => {
   return useMutation({
     mutationFn: (ids: Id[]): Promise<DeleteCarModelQ> => deleteCarModel(ids),
     onSuccess: (data: DeleteCarModelQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
@@ -170,9 +181,6 @@ export const useDeleteCarModel = () => {
         queryKey: [QUERY_KEYs.CAR_MODELS],
       });
     },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
-    },
   });
 };
 export const useRestoreCarModel = () => {
@@ -183,11 +191,16 @@ export const useRestoreCarModel = () => {
   return useMutation({
     mutationFn: (ids: Id[]): Promise<DeleteCarModelQ> => restoreCarModel(ids),
     onSuccess: (data: DeleteCarModelQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
@@ -198,9 +211,6 @@ export const useRestoreCarModel = () => {
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.DELETED_CAR_MODELS],
       });
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
     },
   });
 };

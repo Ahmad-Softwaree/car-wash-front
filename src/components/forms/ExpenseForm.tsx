@@ -53,15 +53,17 @@ const ExpenseForm = ({
     formState: { errors },
   } = useForm<AddExpenseInputs>({});
   const onSubmit: SubmitHandler<AddExpenseInputs> = async (data) => {
-    let formData = {
-      ...data,
-      price: Number(data.price),
-      type_id: Number(data.type_id),
-    };
-    if (state == "insert") await mutateAsync(formData);
-    else updateMutate(formData);
-    form.current?.clear();
-    if (onClose) onClose();
+    try {
+      let formData = {
+        ...data,
+        price: Number(data.price),
+        type_id: Number(data.type_id),
+      };
+      if (state == "insert") await mutateAsync(formData);
+      else updateMutate(formData);
+      form.current?.clear();
+      if (onClose) onClose();
+    } catch (error) {}
   };
   useEffect(() => {
     if (globalState.oldData) {

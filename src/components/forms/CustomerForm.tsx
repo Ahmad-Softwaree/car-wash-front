@@ -39,10 +39,12 @@ const CustomerForm = ({
   } = useForm<AddCustomerInputs>({});
 
   const onSubmit: SubmitHandler<AddCustomerInputs> = async (data) => {
-    if (state == "insert") await mutateAsync(data);
-    else await updateMutate(data);
-    form.current?.clear();
-    if (onClose) onClose();
+    try {
+      if (state == "insert") await mutateAsync(data);
+      else await updateMutate(data);
+      form.current?.clear();
+      if (onClose) onClose();
+    } catch (error) {}
   };
 
   useEffect(() => {

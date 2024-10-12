@@ -53,6 +53,7 @@ export const useGetUsers = (filter: Filter, from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 export const useGetDeletedUsers = (filter: Filter, from: From, to: To) => {
@@ -69,6 +70,7 @@ export const useGetDeletedUsers = (filter: Filter, from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 
@@ -97,17 +99,19 @@ export const useAddUser = () => {
   return useMutation({
     mutationFn: (form: AddUserF): Promise<AddUserQ> => addUser(form),
     onSuccess: (data: AddUserQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
-      return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.USERS],
-      });
     },
     onError: (error: NestError) => {
       return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.USERS],
+      });
     },
   });
 };
@@ -119,17 +123,19 @@ export const useUpdateUser = (id: Id) => {
     mutationFn: async (form: UpdateUserF): Promise<UpdateUserQ> =>
       updateUser(form, id),
     onSuccess: (data: UpdateUserQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
-      return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.USERS],
-      });
     },
     onError: (error: NestError) => {
       return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.USERS],
+      });
     },
   });
 };
@@ -141,11 +147,16 @@ export const useDeleteUser = () => {
   return useMutation({
     mutationFn: (ids: Id[]): Promise<DeleteUserQ> => deleteUser(ids),
     onSuccess: (data: DeleteUserQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
@@ -157,9 +168,6 @@ export const useDeleteUser = () => {
         queryKey: [QUERY_KEYs.USERS],
       });
     },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
-    },
   });
 };
 export const useRestoreUser = () => {
@@ -170,11 +178,16 @@ export const useRestoreUser = () => {
   return useMutation({
     mutationFn: (ids: Id[]): Promise<DeleteUserQ> => restoreUser(ids),
     onSuccess: (data: DeleteUserQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
@@ -185,9 +198,6 @@ export const useRestoreUser = () => {
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.DELETED_USERS],
       });
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
     },
   });
 };

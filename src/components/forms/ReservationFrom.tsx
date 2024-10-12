@@ -85,26 +85,28 @@ const ReservationForm = ({
   } = useForm<AddReservationInputs>({});
 
   const onSubmit: SubmitHandler<AddReservationInputs> = async (data) => {
-    const transformedData = {
-      ...data,
-      color_id: Number(data.color_id),
-      service_id: Number(data.service_id),
-      customer_id: Number(data.customer_id),
-      car_model_id: Number(data.car_model_id),
-      car_type_id: Number(data.car_type_id),
-      price: Number(data.price),
-    };
-    if (state == "insert")
-      await mutateAsync({
-        ...transformedData,
-      });
-    else
-      await updateMutate({
-        ...transformedData,
-      });
+    try {
+      const transformedData = {
+        ...data,
+        color_id: Number(data.color_id),
+        service_id: Number(data.service_id),
+        customer_id: Number(data.customer_id),
+        car_model_id: Number(data.car_model_id),
+        car_type_id: Number(data.car_type_id),
+        price: Number(data.price),
+      };
+      if (state == "insert")
+        await mutateAsync({
+          ...transformedData,
+        });
+      else
+        await updateMutate({
+          ...transformedData,
+        });
 
-    form.current?.clear();
-    if (onClose) onClose();
+      form.current?.clear();
+      if (onClose) onClose();
+    } catch (error) {}
   };
 
   useEffect(() => {

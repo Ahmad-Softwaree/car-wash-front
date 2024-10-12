@@ -40,6 +40,12 @@ const KogaReportFilter = ({ onClose }: { onClose: () => void }) => {
               <CustomClose
                 onClick={() => {
                   setSelectedValue("");
+                  setSearchParam((prev: any) => {
+                    const params = new URLSearchParams(prev);
+                    params.delete(ENUMs.SEARCH_PARAM as string);
+                    params.delete(ENUMs.ITEM_TYPE_PARAM as string);
+                    return params;
+                  });
                 }}
               />
             )}

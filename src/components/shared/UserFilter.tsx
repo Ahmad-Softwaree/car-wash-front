@@ -40,6 +40,7 @@ const UserFilter = ({ onClose }: { onClose: () => void }) => {
                   setSelectedValue("");
                   setSearchParam((prev: any) => {
                     const params = new URLSearchParams(prev);
+                    params.delete(ENUMs.SEARCH_PARAM as string);
                     params.delete(ENUMs.ROLE_FILTER_PARAM as string);
                     return params;
                   });

@@ -67,6 +67,7 @@ export const useGetReservations = (date: Date, filter: Filter) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 export const useGetDeletedReservations = (from: From, to: To) => {
@@ -83,6 +84,7 @@ export const useGetDeletedReservations = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 
@@ -114,20 +116,22 @@ export const useAddReservation = () => {
     mutationFn: (form: AddReservationF): Promise<AddReservationQ> =>
       addReservation(form),
     onSuccess: (data: AddReservationQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.PANEL_RESERVATIONS],
       });
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.RESERVATIONS],
       });
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
     },
   });
 };
@@ -139,20 +143,22 @@ export const useUpdateReservation = (id: Id) => {
     mutationFn: async (form: UpdateReservationF): Promise<UpdateReservationQ> =>
       updateReservation(form, id),
     onSuccess: (data: UpdateReservationQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.PANEL_RESERVATIONS],
       });
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.RESERVATIONS],
       });
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
     },
   });
 };
@@ -165,11 +171,16 @@ export const useDeleteReservation = () => {
     mutationFn: (ids: Id[]): Promise<DeleteReservationQ> =>
       deleteReservation(ids),
     onSuccess: (data: DeleteReservationQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
@@ -187,9 +198,6 @@ export const useDeleteReservation = () => {
         queryKey: [QUERY_KEYs.RESERVATIONS],
       });
     },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
-    },
   });
 };
 export const useRestoreReservation = () => {
@@ -201,11 +209,16 @@ export const useRestoreReservation = () => {
     mutationFn: (ids: Id[]): Promise<DeleteReservationQ> =>
       restoreReservation(ids),
     onSuccess: (data: DeleteReservationQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
@@ -222,9 +235,6 @@ export const useRestoreReservation = () => {
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.DELETED_RESERVATIONS],
       });
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
     },
   });
 };
@@ -243,11 +253,16 @@ export const useCompleteReservation = () => {
       complete: boolean;
     }): Promise<DeleteReservationQ> => completeReservation(ids, complete),
     onSuccess: (data: DeleteReservationQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
@@ -264,9 +279,6 @@ export const useCompleteReservation = () => {
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.DELETED_RESERVATIONS],
       });
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
     },
   });
 };

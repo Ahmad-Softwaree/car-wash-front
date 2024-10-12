@@ -73,23 +73,25 @@ const UserForm = ({ onClose, state }: FormFinalOperation & GlobalFormProps) => {
     refetch: rolePartsRefetch,
   } = useGetRoleParts(watch("role_id") || -1);
   const onSubmit: SubmitHandler<AddUserInputs> = async (data) => {
-    const transformedData = {
-      ...data,
-      role_id: Number(data.role_id),
-    };
-    if (state == "insert")
-      await mutateAsync({
-        part_ids: selectedParts,
-        ...transformedData,
-      });
-    else
-      await updateMutate({
-        part_ids: selectedParts,
-        ...transformedData,
-      });
+    try {
+      const transformedData = {
+        ...data,
+        role_id: Number(data.role_id),
+      };
+      if (state == "insert")
+        await mutateAsync({
+          part_ids: selectedParts,
+          ...transformedData,
+        });
+      else
+        await updateMutate({
+          part_ids: selectedParts,
+          ...transformedData,
+        });
 
-    form.current?.clear();
-    if (onClose) onClose();
+      form.current?.clear();
+      if (onClose) onClose();
+    } catch (error) {}
   };
 
   useEffect(() => {

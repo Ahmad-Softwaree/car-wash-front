@@ -53,6 +53,7 @@ export const useGetColors = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 export const useGetColorsSelection = () => {
@@ -77,6 +78,7 @@ export const useGetDeletedColors = (from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
   });
 };
 
@@ -105,20 +107,22 @@ export const useAddColor = () => {
   return useMutation({
     mutationFn: (form: AddColorF): Promise<AddColorQ> => addColor(form),
     onSuccess: (data: AddColorQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.COLORS_SELECTION],
       });
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.COLORS],
       });
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
     },
   });
 };
@@ -130,17 +134,19 @@ export const useUpdateColor = (id: Id) => {
     mutationFn: async (form: UpdateColorF): Promise<UpdateColorQ> =>
       updateColor(form, id),
     onSuccess: (data: UpdateColorQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
-      return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.COLORS],
-      });
     },
     onError: (error: NestError) => {
       return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.COLORS],
+      });
     },
   });
 };
@@ -152,11 +158,16 @@ export const useDeleteColor = () => {
   return useMutation({
     mutationFn: (ids: Id[]): Promise<DeleteColorQ> => deleteColor(ids),
     onSuccess: (data: DeleteColorQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
@@ -168,9 +179,6 @@ export const useDeleteColor = () => {
         queryKey: [QUERY_KEYs.COLORS],
       });
     },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
-    },
   });
 };
 export const useRestoreColor = () => {
@@ -181,11 +189,16 @@ export const useRestoreColor = () => {
   return useMutation({
     mutationFn: (ids: Id[]): Promise<DeleteColorQ> => restoreColor(ids),
     onSuccess: (data: DeleteColorQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
@@ -196,9 +209,6 @@ export const useRestoreColor = () => {
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.DELETED_COLORS],
       });
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
     },
   });
 };

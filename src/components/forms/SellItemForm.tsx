@@ -42,9 +42,11 @@ const SellItemForm = ({
   } = useForm<UpdateSellItemInputs>({});
 
   const onSubmit: SubmitHandler<UpdateSellItemInputs> = async (data) => {
-    mutateAsync(data);
-    form.current?.clear();
-    if (onClose) onClose();
+    try {
+      mutateAsync(data);
+      form.current?.clear();
+      if (onClose) onClose();
+    } catch (error) {}
   };
 
   return (

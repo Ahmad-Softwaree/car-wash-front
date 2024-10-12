@@ -30,9 +30,13 @@ const PrinterStateModal = ({
         <MyButton
           name="closePrinterStateModal"
           onClick={async () => {
-            if (deleteFunction) await deleteFunction();
-            onClose();
-            if (finalOperator) finalOperator();
+            try {
+              if (deleteFunction) await deleteFunction();
+            } catch (error) {
+            } finally {
+              onClose();
+              if (finalOperator) finalOperator();
+            }
           }}
           disabled={loading}
           type="button"
