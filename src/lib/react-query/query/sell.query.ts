@@ -147,12 +147,12 @@ export const useGetSell = (sell_id: Id) => {
     retry: 0,
   });
 };
-export function useGetSellPrint(sell_id: Id) {
+export function useGetSellPrint(sell_id: Id, where: "pos" | "items") {
   const { toast } = useToast();
 
   return useQuery({
     queryKey: [QUERY_KEYs.SELL_PRINT],
-    queryFn: (): Promise<Blob | null> => getSellPrint(toast, sell_id),
+    queryFn: (): Promise<Blob | null> => getSellPrint(toast, sell_id, where),
     enabled: !!sell_id,
     retry: 0,
   });

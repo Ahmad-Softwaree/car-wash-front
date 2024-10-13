@@ -49,17 +49,17 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
   return (
     <>
       <div className="py-4">
-        <div className="w-full gap-5 flex flex-row justify-between  my-4">
+        <div className="w-full gap-5 flex flex-row justify-between flex-wrap  my-4">
           <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
             <Search />
 
-            <div className="flex flex-row justify-start items-center gap-5">
+            <div className="flex flex-row justify-start items-center gap-5 flex-wrap">
               <MyButton
                 title="all"
                 id="all"
                 name="all"
                 onClick={() => changeFilter("all")}
-                className={`p-2 px-4 rounded-md default-border !border-blue-500  !text-sm transition-all duration-200 hover:!text-white hover:!bg-blue-500 ${
+                className={`p-2 rounded-md default-border !border-blue-500  text-xs md:text-sm transition-all duration-200 hover:!text-white hover:!bg-blue-500 ${
                   filter == "all" ? "!bg-blue-500 text-white" : "dark-light"
                 }`}
               >
@@ -70,7 +70,7 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
                 id="all"
                 name="all"
                 onClick={() => changeFilter("completed")}
-                className={`p-2 px-4 rounded-md default-border !border-blue-500  !text-sm transition-all duration-200 hover:!text-white hover:!bg-blue-500 ${
+                className={`p-2 rounded-md default-border !border-blue-500  text-xs md:text-sm transition-all duration-200 hover:!text-white hover:!bg-blue-500 ${
                   filter == "completed"
                     ? "!bg-blue-500 text-white"
                     : "dark-light"
@@ -83,7 +83,7 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
                 id="all"
                 name="all"
                 onClick={() => changeFilter("not_completed")}
-                className={`p-2 px-4 rounded-md default-border !border-blue-500  !text-sm transition-all duration-200 hover:!text-white hover:!bg-blue-500 ${
+                className={`p-2 rounded-md default-border !border-blue-500  text-xs md:text-sm transition-all duration-200 hover:!text-white hover:!bg-blue-500 ${
                   filter == "not_completed"
                     ? "!bg-blue-500 text-white"
                     : "dark-light"

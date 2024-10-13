@@ -30,6 +30,8 @@ import CaseReport from "@/pages/_auth/CaseReport";
 import Printers from "@/pages/_auth/Printers";
 import VultrBackups from "@/pages/_auth/VultrBackups";
 import ReservationReport from "@/pages/_auth/ReservationReport";
+import Config from "@/pages/_auth/Config";
+import ItemLess from "@/pages/_auth/LessItem";
 const RootLayout = lazy(() => import("@/pages/_root/RootLayout"));
 const AuthRouterProvider = lazy(() => import("@/providers/AuthRouterProvider"));
 const UserNullRouterProvider = lazy(
@@ -101,6 +103,17 @@ const router = createBrowserRouter(
         {/* GENERAL */}
         <Route path={ENUMs.GENERAL_SECTION as string} errorElement={<Error />}>
           <Route
+            path={ENUMs.LESS_ITEM_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[ENUMs.LESS_ITEM_PART as string]}
+                Component={ItemLess}
+              />
+            }
+          />
+
+          <Route
             path={ENUMs.DASHBOARD_PART as string}
             errorElement={<Error />}
             element={
@@ -110,6 +123,7 @@ const router = createBrowserRouter(
               />
             }
           />
+
           <Route
             path={ENUMs.KOGA_PART as string}
             errorElement={<Error />}
@@ -232,6 +246,16 @@ const router = createBrowserRouter(
 
         {/* SETTING */}
         <Route path={ENUMs.SETTING_SECTION as string} errorElement={<Error />}>
+          <Route
+            path={ENUMs.CONFIG_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[ENUMs.CONFIG_PART as string]}
+                Component={Config}
+              />
+            }
+          />
           <Route
             path={ENUMs.USERS_PART as string}
             errorElement={<Error />}

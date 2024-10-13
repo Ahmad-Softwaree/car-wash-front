@@ -57,7 +57,7 @@ const Services = () => {
         as={`div`}
         className="w-full gap-10 flex flex-col justify-start items-start"
       >
-        <div className="w-full gap-5 flex flex-row justify-between">
+        <div className="w-full gap-5 flex flex-row justify-between flex-wrap">
           <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
             {" "}
             <Search placeholder="گەڕان بەپێی ناو" />

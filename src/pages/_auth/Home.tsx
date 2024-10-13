@@ -123,7 +123,10 @@ const Home = () => {
             </article>
             <div className="w-full flex flex-col justify-start items-start gap-5 my-5 max-h-[300px] overflow-y-auto">
               {data.reservations.map((val: Reservation, _index: number) => (
-                <div className="w-full p-2 flex flex-row justify-between items-center gap-10 text-white border-b-2 border-solid border-gray-500 border-opacity-50">
+                <div
+                  key={val.id}
+                  className="w-full p-2 flex flex-row justify-between items-center gap-10 text-white border-b-2 border-solid border-gray-500 border-opacity-50"
+                >
                   <p
                     className={`font-bold text-md  ${
                       val.price < 0
@@ -178,7 +181,10 @@ const Home = () => {
             </article>
             <div className="w-full flex flex-col justify-start items-start gap-5 my-5 max-h-[300px] overflow-y-auto">
               {data.sells.map((val: Sell, _index: number) => (
-                <div className="w-full p-2 flex flex-row justify-between items-center gap-10 text-white border-b-2 border-solid border-gray-500 border-opacity-50">
+                <div
+                  key={val.id}
+                  className="w-full p-2 flex flex-row justify-between items-center gap-10 text-white border-b-2 border-solid border-gray-500 border-opacity-50"
+                >
                   <p
                     className={`font-bold text-md  ${
                       val.total_sell_price < 0
@@ -238,7 +244,10 @@ const Home = () => {
             <div className="w-full flex flex-col justify-start items-start gap-5 my-5 max-h-[300px] overflow-y-auto">
               {data.item_history.map(
                 (val: ItemQuantityHistory, _index: number) => (
-                  <div className="w-full p-2 flex flex-row justify-between items-center gap-10 text-white border-b-2 border-solid border-gray-500 border-opacity-50">
+                  <div
+                    key={val.id}
+                    className="w-full p-2 flex flex-row justify-between items-center gap-10 text-white border-b-2 border-solid border-gray-500 border-opacity-50"
+                  >
                     <p
                       className={`font-bold text-md  ${
                         val.quantity < 0

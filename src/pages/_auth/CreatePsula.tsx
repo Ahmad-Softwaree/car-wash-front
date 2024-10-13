@@ -16,11 +16,13 @@ import InputGroup from "@/components/ui/InputGroup";
 import Loading from "@/components/ui/Loading";
 import MyButton from "@/components/ui/MyButton";
 import POSModal from "@/components/ui/POSModal";
+import PrintModal from "@/components/ui/PrintModal";
 import TBody from "@/components/ui/TBody";
 import { useToast } from "@/components/ui/use-toast";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 import { ENUMs } from "@/lib/enum";
+import { useGetConfigs } from "@/lib/react-query/query/config.query";
 import {
   useGetItems,
   useSearchItems,
@@ -45,6 +47,8 @@ import { TailSpin } from "react-loader-spinner";
 import { useSearchParams } from "react-router-dom";
 
 const CreatePsula = () => {
+  const { data: config } = useGetConfigs();
+
   const { toast } = useToast();
   const [calculate, setCalculate] = useState<boolean>(false);
   const [searchParam, setSearchParam] = useSearchParams();
@@ -505,10 +509,17 @@ const CreatePsula = () => {
           isOpen={isPrint}
           onClose={() => setIsPrint(false)}
         >
-          <POSModal
-            printFn={() => useGetSellPrint(Number(sell_id_param) || 0)}
-            onClose={() => setIsPrint(false)}
-          />
+          {config?.pos_print_modal ? (
+            <PrintModal
+              printFn={() => useGetSellPrint(Number(sell_id_param) || 0, "pos")}
+              onClose={() => setIsPrint(false)}
+            />
+          ) : (
+            <POSModal
+              printFn={() => useGetSellPrint(Number(sell_id_param) || 0, "pos")}
+              onClose={() => setIsPrint(false)}
+            />
+          )}
         </Dialog>
       )}
       {isItemDelete && (

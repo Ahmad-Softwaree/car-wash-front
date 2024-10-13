@@ -6,10 +6,10 @@ export type URLS =
   | "GET_DELETED_USERS"
   | "RESTORE_USER"
   | "SEARCH_DELETED_USERS"
+  | "SEARCH_USERS"
   | "ADD_USER"
   | "UPDATE_USER"
   | "DELETE_USER"
-  | "SEARCH_USERS"
 
   //CUSTOMER
   | "GET_CUSTOMERS"
@@ -29,6 +29,8 @@ export type URLS =
   | "DELETE_EXPENSE"
   | "GET_DELETED_EXPENSES"
   | "RESTORE_EXPENSE"
+  | "SEARCH_DELETED_EXPENSES"
+  | "SEARCH_EXPENSES"
 
   //ROLE
   | "GET_ROLES"
@@ -124,6 +126,8 @@ export type URLS =
   | "RESTORE_ITEM"
   | "SEARCH_DELETED_ITEMS"
   | "GET_DELETED_ITEMS"
+  | "GET_LESS_ITEMS"
+  | "SEARCH_LESS_ITEMS"
   //SELL
   | "GET_SELL"
   | "RESTORE_SELL"
@@ -214,6 +218,7 @@ export type URLS =
   | "GET_EXPENSE_REPORTS_INFORMATION_SEARCH"
   | "EXPENSE_PRINT_DATA"
   | "GET_CASE_REPORTS"
+  | "GET_CASE_GLOBAL_DATA"
   | "GET_CASE_REPORTS_INFORMATION"
   | "GET_CASE_REPORTS_SEARCH"
   | "GET_CASE_REPORTS_INFORMATION_SEARCH"
@@ -222,15 +227,20 @@ export type URLS =
   | "GET_RESERVATION_REPORTS_INFORMATION"
   | "GET_RESERVATION_REPORTS_SEARCH"
   | "GET_RESERVATION_REPORTS_INFORMATION_SEARCH"
-  | "RESERVATION_PRINT_DATA";
+  | "RESERVATION_PRINT_DATA"
+
+  //CONFIG
+  | "GET_CONFIGS"
+  | "UPDATE_CONFIG";
 
 export const URLs: { [key in URLS]: string } = {
   //USER
   GET_USERS: `${API}/user`,
   GET_DELETED_USERS: `${API}/user/deleted`,
   RESTORE_USER: `${API}/user/restore`,
-  SEARCH_DELETED_USERS: `${API}/user/deleted_search`,
   SEARCH_USERS: `${API}/user/search`,
+  SEARCH_DELETED_USERS: `${API}/user/deleted_search`,
+
   ADD_USER: `${API}/user`,
   UPDATE_USER: `${API}/user`,
   DELETE_USER: `${API}/user`,
@@ -252,7 +262,8 @@ export const URLs: { [key in URLS]: string } = {
   DELETE_EXPENSE: `${API}/expense`,
   GET_DELETED_EXPENSES: `${API}/expense/deleted`,
   RESTORE_EXPENSE: `${API}/expense/restore`,
-
+  SEARCH_EXPENSES: `${API}/expense/search`,
+  SEARCH_DELETED_EXPENSES: `${API}/expense/deleted_search`,
   //ROLE
   GET_ROLES: `${API}/role`,
   GET_ROLES_SELECTION: `${API}/role/select`,
@@ -336,6 +347,8 @@ export const URLs: { [key in URLS]: string } = {
   RESTORE_ITEM_TYPE: `${API}/item-type/restore`,
   SEARCH_DELETED_ITEM_TYPES: `${API}/item-type/deleted_search`,
   SEARCH_ITEM_TYPES: `${API}/item-type/search`,
+  GET_LESS_ITEMS: `${API}/item/less`,
+  SEARCH_LESS_ITEMS: `${API}/item/search_less`,
 
   //SERVICE
   GET_SERVICES: `${API}/service`,
@@ -481,6 +494,8 @@ export const URLs: { [key in URLS]: string } = {
   EXPENSE_PRINT_DATA: `${API}/report/expense/print`,
 
   GET_CASE_REPORTS: `${API}/report/case`,
+  GET_CASE_GLOBAL_DATA: `${API}/report/case/global`,
+
   GET_CASE_REPORTS_INFORMATION: `${API}/report/case/information`,
 
   GET_CASE_REPORTS_SEARCH: `${API}/report/case_search`,
@@ -493,4 +508,9 @@ export const URLs: { [key in URLS]: string } = {
   GET_RESERVATION_REPORTS_SEARCH: `${API}/report/reservation_search`,
   GET_RESERVATION_REPORTS_INFORMATION_SEARCH: `${API}/report/reservation_search/information`,
   RESERVATION_PRINT_DATA: `${API}/report/reservation/print`,
+
+  //CONFIG
+
+  GET_CONFIGS: `${API}/config`,
+  UPDATE_CONFIG: `${API}/config`,
 };

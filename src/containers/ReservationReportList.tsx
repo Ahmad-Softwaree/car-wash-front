@@ -199,13 +199,18 @@ const ReservationReportList = () => {
               {!loading && reportData && searchReportData && (
                 <div className="w-full flex flex-col justify-center items-center z-[100]  table-dark-light   default-border p-2 gap-5">
                   <div className="w-full flex flex-row justify-evenly items-center">
-                    <p>کۆی دانەی فرۆشراو : </p>
+                    <p>
+                      کۆی نۆرەکان :
+                      {!isSearched
+                        ? formatMoney(reportData?.reservation_count)
+                        : formatMoney(searchReportData?.reservation_count)}
+                    </p>
 
                     <p>
-                      کۆی نرخی فرۆشراو :{" "}
+                      کۆی قازانجی نۆرەکان :{" "}
                       {!isSearched
-                        ? formatMoney(reportData?.total_sell_price)
-                        : formatMoney(searchReportData?.total_sell_price)}
+                        ? formatMoney(reportData?.total_price)
+                        : formatMoney(searchReportData?.total_price)}
                     </p>
                   </div>
                   <div className="w-full flex flex-row justify-evenly items-center">

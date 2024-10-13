@@ -19,6 +19,7 @@ import {
   To,
   ToastType,
 } from "@/types/global";
+import { Search } from "react-router-dom";
 
 export const getExpenses = async (
   toast: ToastType,
@@ -57,6 +58,33 @@ export const getDeletedExpense = async (
       `${URLs.GET_DELETED_EXPENSES}?page=${page}&limit=${limit}&filter=${
         filter != "" ? filter : ""
       }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+export const searchExpenses = async (
+  toast: ToastType,
+  search: Search
+): Promise<GetExpensesQ> => {
+  try {
+    const { data, status } = await authApi.get<GetExpensesQ>(
+      `${URLs.SEARCH_EXPENSES}?search=${search}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+export const searchDeletedExpenses = async (
+  toast: ToastType,
+  search: Search
+): Promise<GetExpensesQ> => {
+  try {
+    const { data, status } = await authApi.get<GetExpensesQ>(
+      `${URLs.SEARCH_DELETED_EXPENSES}?search=${search}`
     );
     return data;
   } catch (error: any) {

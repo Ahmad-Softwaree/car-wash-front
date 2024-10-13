@@ -22,6 +22,7 @@ import {
   CaseReportInfo,
   ExpenseReportInfo,
   GetCasesQ,
+  GlobalCaseInfo,
   ItemProfitReportInfo,
   ItemReportInfo,
   KogaAllReportInfo,
@@ -837,6 +838,25 @@ export const casePrint = async (
     const pdfData = new Uint8Array(data);
     const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
     return pdfBlob;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+//CASE GLOBAL DATA
+
+export const getCaseGlobalData = async (
+  toast: ToastType,
+  from: From,
+  to: To
+): Promise<GlobalCaseInfo> => {
+  try {
+    const { data, status } = await authApi.get<GlobalCaseInfo>(
+      `${URLs.GET_CASE_GLOBAL_DATA}?from=${from != "" ? from : ""}&to=${
+        to != "" ? to : ""
+      }`
+    );
+    return data;
   } catch (error: any) {
     throw generateNestErrors(error, toast);
   }

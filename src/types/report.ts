@@ -15,7 +15,12 @@ export type CaseReportInfo = {
   total_quantity: number;
   total_sell_price: number;
 };
-
+export type GlobalCaseInfo = {
+  total_money: number;
+  total_sell: number;
+  total_expense: number;
+  remain_money: number;
+};
 export type CaseReportData = CaseReport & {
   total_quantity: number;
   total_sell_price: number;
@@ -115,9 +120,8 @@ export type ExpenseReportData = Expense & {
 };
 
 export type ReservationReportInfo = {
-  sell_count: number;
-  total_sell_price: number;
-  total_sell_discount: number;
+  reservation_count: number;
+  total_price: number;
 };
 
 export type ReservationReportData = Reservation & { total_sell_price: number };

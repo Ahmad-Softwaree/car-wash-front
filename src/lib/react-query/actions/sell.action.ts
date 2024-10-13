@@ -135,11 +135,12 @@ export const getSell = async (
 
 export const getSellPrint = async (
   toast: ToastType,
-  sell_id: Id
+  sell_id: Id,
+  where: "pos" | "items"
 ): Promise<Blob | null> => {
   try {
     const { data } = await pdfFileAuthApi.get(
-      `${URLs.GET_SELL_PRINT}/${sell_id}`
+      `${URLs.GET_SELL_PRINT}/${sell_id}/${where}`
     );
     const pdfData = new Uint8Array(data);
     const pdfBlob = new Blob([pdfData], { type: "application/pdf" });

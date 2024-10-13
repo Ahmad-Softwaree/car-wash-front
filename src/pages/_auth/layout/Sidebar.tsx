@@ -16,11 +16,13 @@ import AccordionGroup from "@mui/joy/AccordionGroup";
 import AccordionSummary from "@mui/joy/AccordionSummary";
 import {
   AlignJustify,
+  Bolt,
   Car,
   CarFront,
   ChevronLeft,
   ChevronRight,
   CircleDollarSign,
+  CircleMinus,
   ClipboardPlus,
   Database,
   DatabaseBackup,
@@ -153,7 +155,15 @@ export const sideLinks: SideLink[] = [
     link: `/${ENUMs.GENERAL_SECTION as string}/${ENUMs.EXPENSE_PART as string}`,
     type: "general",
   },
-
+  {
+    id: crypto.randomUUID() as string,
+    icon: <CircleMinus />,
+    name: ENUMs.LESS_ITEM_PART as string,
+    link: `/${ENUMs.GENERAL_SECTION as string}/${
+      ENUMs.LESS_ITEM_PART as string
+    }`,
+    type: "general",
+  },
   //REPORT
   {
     id: crypto.randomUUID() as string,
@@ -343,6 +353,13 @@ export const sideLinks: SideLink[] = [
     link: `/${ENUMs.SETTING_SECTION as string}/${ENUMs.PRINTER_PART as string}`,
     type: "setting",
   },
+  {
+    id: crypto.randomUUID() as string,
+    icon: <Bolt />,
+    name: ENUMs.CONFIG_PART as string,
+    link: `/${ENUMs.SETTING_SECTION as string}/${ENUMs.CONFIG_PART as string}`,
+    type: "setting",
+  },
   //DELETED
   {
     id: crypto.randomUUID() as string,
@@ -460,6 +477,8 @@ const Sidebar = ({
   shrink: boolean;
   setShrink: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const location = useLocation();
+
   const { data, isLoading } = useGetFirebaseSize();
   const totalStorageLimit = 5 * 1024 * 1024 * 1024; // 5 GB in bytes
   const [emptyStorage, setEmptyStorage] = useState<number>();
@@ -468,6 +487,10 @@ const Sidebar = ({
       setEmptyStorage((totalStorageLimit - data) / (1024 * 1024 * 1024));
     }
   }, [data]);
+
+  useEffect(() => {
+    setExpand(false);
+  }, [location.pathname]);
 
   let path = useLocation()
     .pathname.split("/")

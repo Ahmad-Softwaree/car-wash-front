@@ -7,14 +7,15 @@ const AddItemCard = ({
   id,
   image_url,
   image_name,
-  title,
+  name,
   onClick,
 }: AddItemCardProps) => {
   const { size } = useScreenSize();
   return (
     <article
       onClick={() => onClick(id)}
-      className="w-full h-full grid grid-cols-1 grid-rows-4 bg-secondary-100 shadow-lg rounded-xl items-center">
+      className="w-full h-full grid grid-cols-1 grid-rows-4 bg-secondary-100 shadow-lg rounded-xl items-center"
+    >
       <Image
         className="relative row-span-2 md:row-span-3 col-span-full rounded-t-xl w-full h-full"
         height={
@@ -30,8 +31,9 @@ const AddItemCard = ({
       />
       <Typography
         className="!text-xs md:!text-sm text-center w-full text-md font-bold  row-span-2 md:row-span-1 col-span-full p-2"
-        text={title}>
-        <p>{title}</p>
+        text={name}
+      >
+        <p>{name}</p>
       </Typography>
     </article>
   );

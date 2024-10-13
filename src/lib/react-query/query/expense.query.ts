@@ -10,6 +10,7 @@ import {
 import {
   useInfiniteQuery,
   useMutation,
+  useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
 import {
@@ -18,6 +19,8 @@ import {
   getDeletedExpense,
   getExpenses,
   restoreExpense,
+  searchDeletedExpenses,
+  searchExpenses,
   updateExpense,
 } from "../actions/expense.action";
 import { QUERY_KEYs } from "../key";
@@ -34,6 +37,7 @@ import { ENUMs } from "@/lib/enum";
 import { generateNestErrors } from "@/lib/functions";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
+import { Search } from "react-router-dom";
 
 export const useGetExpenses = (filter: Filter, from: From, to: To) => {
   const { toast } = useToast();
@@ -73,6 +77,25 @@ export const useGetDeletedExpenses = (filter: Filter, from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
+  });
+};
+
+export const useSearchExpenses = (search: Search) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.SEARCH_EXPENSES],
+    queryFn: (): Promise<GetExpensesQ> => searchExpenses(toast, search),
+    enabled: typeof search === "string" && search.trim() !== "",
+    retry: 0,
+  });
+};
+export const useSearchDeletedExpenses = (search: Search) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.SEARCH_DELETED_EXPENSES],
+    queryFn: (): Promise<GetExpensesQ> => searchDeletedExpenses(toast, search),
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };

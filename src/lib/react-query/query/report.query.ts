@@ -10,6 +10,7 @@ import {
   getBillProfitReportInformation,
   getBillProfitReportInformationSearch,
   getBillProfitReportSearch,
+  getCaseGlobalData,
   getCaseReport,
   getCaseReportInformation,
   getCaseReportInformationSearch,
@@ -74,6 +75,7 @@ import {
   CaseReportInfo,
   ExpenseReportInfo,
   GetCasesQ,
+  GlobalCaseInfo,
   ItemProfitReportInfo,
   ItemReportInfo,
   KogaAllReportInfo,
@@ -667,6 +669,17 @@ export const useCasePrint = (search: Search, from: From, to: To) => {
   return useQuery({
     queryKey: [QUERY_KEYs.CASE_PRINT_DATA],
     queryFn: (): Promise<Blob | null> => casePrint(toast, search, from, to),
+    retry: 0,
+  });
+};
+
+//CASE GLOBAL DATA
+
+export const useGetCaseGlobalData = (from: From, to: To) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.CASE_GLOBAL_DATA],
+    queryFn: (): Promise<GlobalCaseInfo> => getCaseGlobalData(toast, from, to),
     retry: 0,
   });
 };

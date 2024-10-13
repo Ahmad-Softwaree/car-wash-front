@@ -35,6 +35,8 @@ import {
   searchDeletedItems,
   restoreItem,
   changeItemQuantity,
+  getLessItems,
+  searchLessItems,
 } from "../actions/item.action";
 import { ENUMs } from "@/lib/enum";
 import { generateNestErrors } from "@/lib/functions";
@@ -44,6 +46,33 @@ import { firebaseStorage } from "@/lib/config/firebase.config";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 import { Search } from "react-router-dom";
+
+export const useGetLessItems = (filter: Filter, from: From, to: To) => {
+  const { toast } = useToast();
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEYs.LESS_ITEMS],
+    queryFn: ({
+      pageParam,
+    }: {
+      pageParam: Page;
+    }): Promise<PaginationReturnType<GetItemsQ>> =>
+      getLessItems(toast, pageParam, ENUMs.LIMIT as number, filter, from, to),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage: any, pages: any) => {
+      return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
+    },
+    retry: 0,
+  });
+};
+export const useSearchLessItems = (search: Search) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.SEARCH_LESS_ITEMS],
+    queryFn: (): Promise<GetItemsQ> => searchLessItems(toast, search),
+    enabled: typeof search === "string" && search.trim() !== "",
+    retry: 0,
+  });
+};
 
 export const useGetItems = (filter: Filter, from: From, to: To) => {
   const { toast } = useToast();
@@ -268,6 +297,12 @@ export const useChangeItemQuantity = (id: Id) => {
     onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.ITEM_BY_ID, id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.LESS_ITEMS],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.SEARCH_LESS_ITEMS],
       });
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.ITEMS],

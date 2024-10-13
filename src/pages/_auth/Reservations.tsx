@@ -49,7 +49,7 @@ const Reservations = () => {
         as={`div`}
         className="w-full gap-0 flex flex-col justify-start items-start"
       >
-        <div className="w-full gap-5 flex flex-row justify-between mb-5 md:mb-0">
+        <div className="w-full gap-5 flex flex-row justify-between flex-wrap mb-5 md:mb-0">
           {deleted_page && (
             <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
               <Search />

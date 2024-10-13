@@ -37,10 +37,12 @@ const AuthLayout = () => {
       <div
         className={`flex-1 transition-all duration-300  lg:pr-[270px] ${
           shrink && "!pr-[80px] lg:!pr-[60px] xl:!pr-[20px]"
-        }`}>
+        }`}
+      >
         <Header />
         <section
-          className={`w-full flex flex-row justify-start items-start ${homeClass}`}>
+          className={`w-full flex flex-row justify-start items-start ${homeClass}`}
+        >
           <Outlet />
         </section>
         <Footer />

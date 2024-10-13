@@ -8,6 +8,8 @@ import {
   useGetDeletedExpenses,
   useGetExpenses,
   useRestoreExpense,
+  useSearchDeletedExpenses,
+  useSearchExpenses,
 } from "@/lib/react-query/query/expense.query";
 import Pagination from "@/components/providers/Pagination";
 import { Expense } from "@/types/expense";
@@ -35,6 +37,9 @@ import RestoreModal from "@/components/ui/RestoreModal";
 import { Badge, Button } from "@mui/joy";
 import { Filter } from "lucide-react";
 import FilterModal from "@/components/shared/FilterModal";
+import Search from "@/components/shared/Search";
+import Loading from "@/components/ui/Loading";
+import { TailSpin } from "react-loader-spinner";
 
 const Expenses = () => {
   const { deleted_page } = useCheckDeletedPage();
@@ -59,8 +64,10 @@ const Expenses = () => {
         as={`div`}
         className="w-full gap-10 flex flex-col justify-start items-start"
       >
-        <div className="w-full gap-5 flex flex-row justify-between ">
+        <div className="w-full gap-5 flex flex-row justify-between flex-wrap ">
           <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
+            <Search placeholder="گەڕان بەپێی داغڵکار/نوێکەرەوە" />
+
             <Badge
               invisible={
                 !searchParam.get(ENUMs.FROM_PARAM as string) &&
@@ -130,97 +137,124 @@ const Expenses = () => {
                   searchParam.get(ENUMs.TO_PARAM as string) || ""
                 )
           }
+          searchQueryFn={() =>
+            deleted_page
+              ? useSearchDeletedExpenses(
+                  searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
+                )
+              : useSearchExpenses(
+                  searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
+                )
+          }
         >
-          {({ isFetchingNextPage, hasNextPage, ref, data }) => {
+          {({
+            isFetchingNextPage,
+            hasNextPage,
+            ref,
+            searchLoading,
+            data,
+            isSearched,
+            searchData,
+            isLoading,
+          }) => {
             const allData = useMemo(
               () =>
-                data?.pages && data?.pages?.length > 0
-                  ? data.pages.map((page) => page.paginatedData).flat()
+                !isSearched
+                  ? data?.pages && data?.pages?.length > 0
+                    ? data.pages.map((page) => page.paginatedData).flat()
+                    : []
+                  : searchData && searchData.length > 0
+                  ? searchData
                   : [],
-              [data]
+              [data, searchData, isSearched]
             );
+            if (isLoading || searchLoading) {
+              return (
+                <Loading>
+                  <TailSpin />
+                </Loading>
+              );
+            }
 
             return (
-              <div
-                ref={tableRef}
-                className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll"
-              >
-                <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
-                  <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
-                    <Tr>
-                      <Th className="text-center text-sm !p-4 !min-w-[100px]">
-                        <InputGroup className="checkbox-input">
-                          <Input
-                            onChange={() => {
-                              tableRef.current?.scrollTo({
-                                top: 0,
-                                behavior: "smooth",
-                              });
-                              if (checked.length == 0) {
-                                dispatch({
-                                  type: CONTEXT_TYPEs.CHECK,
-                                  payload: allData
-                                    .slice(0, ENUMs.CHECK_LIMIT as number)
-                                    .map(
-                                      (val: Expense, _index: number) => val.id
-                                    ),
+              <>
+                <div
+                  ref={tableRef}
+                  className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll"
+                >
+                  <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
+                    <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
+                      <Tr>
+                        <Th className="text-center text-sm !p-4 !min-w-[100px]">
+                          <InputGroup className="checkbox-input">
+                            <Input
+                              onChange={() => {
+                                tableRef.current?.scrollTo({
+                                  top: 0,
+                                  behavior: "smooth",
                                 });
-                              } else {
-                                dispatch({
-                                  type: CONTEXT_TYPEs.CHECK,
-                                  payload: [],
-                                });
-                              }
-                            }}
-                            checked={check_type == "all"}
-                            type="checkbox"
-                            className="cursor-pointer"
-                          />
-                        </InputGroup>
-                      </Th>
-                      <Th className="text-center text-sm !p-4">
-                        <p className="pr-1">#</p>
-                      </Th>
-                      <Th className="text-center text-sm !p-4">
-                        <p className="pr-3 table-head-border">جۆری خەرجی</p>
-                      </Th>
-                      <Th className="text-center text-sm !p-4">
-                        <p className="pr-3 table-head-border">بڕی خەرجکراو</p>
-                      </Th>{" "}
-                      <Th className="text-center text-sm !p-4">
-                        <p className="pr-3 table-head-border">بەروار</p>
-                      </Th>
-                      <Th className="text-center text-sm !p-4">
-                        <p className="pr-3 table-head-border">داغڵکار</p>
-                      </Th>
-                      <Th className="text-center text-sm !p-4">
-                        <p className="pr-3 table-head-border">نوێکەرەوە</p>
-                      </Th>
-                      <Th className="text-center text-sm !p-4">
-                        <p className="pr-3 table-head-border">کرادرەکان</p>
-                      </Th>
-                    </Tr>
-                  </THead>
-                  <TBody className="w-full ">
-                    <>
-                      {allData?.map((val: Expense, index: number) => (
-                        <ExpenseCard key={val.id} index={index} {...val} />
-                      ))}
+                                if (checked.length == 0) {
+                                  dispatch({
+                                    type: CONTEXT_TYPEs.CHECK,
+                                    payload: allData
+                                      .slice(0, ENUMs.CHECK_LIMIT as number)
+                                      .map(
+                                        (val: Expense, _index: number) => val.id
+                                      ),
+                                  });
+                                } else {
+                                  dispatch({
+                                    type: CONTEXT_TYPEs.CHECK,
+                                    payload: [],
+                                  });
+                                }
+                              }}
+                              checked={check_type == "all"}
+                              type="checkbox"
+                              className="cursor-pointer"
+                            />
+                          </InputGroup>
+                        </Th>
+                        <Th className="text-center text-sm !p-4">
+                          <p className="pr-1">#</p>
+                        </Th>
+                        <Th className="text-center text-sm !p-4">
+                          <p className="pr-3 table-head-border">جۆری خەرجی</p>
+                        </Th>
+                        <Th className="text-center text-sm !p-4">
+                          <p className="pr-3 table-head-border">بڕی خەرجکراو</p>
+                        </Th>{" "}
+                        <Th className="text-center text-sm !p-4">
+                          <p className="pr-3 table-head-border">بەروار</p>
+                        </Th>
+                        <Th className="text-center text-sm !p-4">
+                          <p className="pr-3 table-head-border">داغڵکار</p>
+                        </Th>
+                        <Th className="text-center text-sm !p-4">
+                          <p className="pr-3 table-head-border">نوێکەرەوە</p>
+                        </Th>
+                        <Th className="text-center text-sm !p-4">
+                          <p className="pr-3 table-head-border">کرادرەکان</p>
+                        </Th>
+                      </Tr>
+                    </THead>
+                    <TBody className="w-full ">
+                      <>
+                        {allData?.map((val: Expense, index: number) => (
+                          <ExpenseCard key={val.id} index={index} {...val} />
+                        ))}
 
-                      {!isFetchingNextPage && hasNextPage && (
-                        <div className="h-[20px]" ref={ref}></div>
-                      )}
-                    </>
-                  </TBody>
-                  <TFoot className="sticky -bottom-1 z-[100]  table-dark-light w-full  default-border">
-                    <Tr>
-                      <Td className="text-center" colSpan={9}>
-                        ژمارەی داتا {allData.length}
-                      </Td>
-                    </Tr>
-                  </TFoot>
-                </Table>
-              </div>
+                        {!isFetchingNextPage && hasNextPage && !isSearched && (
+                          <div className="h-[20px]" ref={ref}></div>
+                        )}
+                      </>
+                    </TBody>
+                  </Table>
+                </div>
+                <div className="w-full flex flex-row justify-center items-center z-[100]  table-dark-light   default-border p-2 ">
+                  <p className="text-center">ژمارەی داتا {allData.length}</p>
+                </div>
+              </>
             );
           }}
         </Pagination>

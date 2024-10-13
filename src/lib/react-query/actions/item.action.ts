@@ -24,6 +24,40 @@ import {
 import { generateNestErrors } from "@/lib/functions";
 import { Search } from "react-router-dom";
 
+export const getLessItems = async (
+  toast: ToastType,
+  page: Page,
+  limit: Limit,
+  filter: Filter,
+  from: From,
+  to: To
+): Promise<PaginationReturnType<GetItemsQ>> => {
+  try {
+    const { data, status } = await authApi.get<PaginationReturnType<GetItemsQ>>(
+      `${URLs.GET_LESS_ITEMS}?page=${page}&limit=${limit}&filter=${
+        filter != "" ? filter : ""
+      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+export const searchLessItems = async (
+  toast: ToastType,
+  search: Search
+): Promise<GetItemsQ> => {
+  try {
+    const { data, status } = await authApi.get<GetItemsQ>(
+      `${URLs.SEARCH_LESS_ITEMS}?search=${search}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
 export const getItems = async (
   toast: ToastType,
   page: Page,

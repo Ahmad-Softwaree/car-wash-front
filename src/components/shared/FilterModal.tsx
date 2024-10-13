@@ -1,5 +1,6 @@
 import BackupFilter from "./BackupFilter";
 import ExpenseFilter from "./ExpenseFilter";
+import GlobalCaseFilter from "./GlobalCaseFilter";
 import ItemFilter from "./ItemFilter";
 import ItemReportFilter from "./ItemReportFilter";
 import KogaMovementReportFilter from "./KogaMovementReportFilter";
@@ -21,7 +22,8 @@ const FilterModal = ({
     | "sell_report"
     | "item_report"
     | "koga_report"
-    | "koga_report_movement";
+    | "koga_report_movement"
+    | "global_case";
   onClose: () => void;
 }) => {
   return type == "item" ? (
@@ -42,6 +44,8 @@ const FilterModal = ({
     <KogaReportFilter onClose={onClose} />
   ) : type == "koga_report_movement" ? (
     <KogaMovementReportFilter onClose={onClose} />
+  ) : type == "global_case" ? (
+    <GlobalCaseFilter onClose={onClose} />
   ) : null;
 };
 

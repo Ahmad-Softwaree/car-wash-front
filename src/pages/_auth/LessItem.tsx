@@ -4,7 +4,7 @@ const Dialog = lazy(() => import("@/components/shared/Dialog"));
 
 import Pagination from "@/components/providers/Pagination";
 import TBody from "@/components/ui/TBody";
-import { Table, Th, THead, Tr } from "@/components/ui";
+import { Table, Td, Th, THead, Tr } from "@/components/ui";
 
 import Input from "@/components/ui/Input";
 import { InputGroup } from "@chakra-ui/react";
@@ -16,39 +16,23 @@ import { ENUMs } from "@/lib/enum";
 import DeleteModal from "@/components/ui/DeleteModal";
 import {
   useDeleteItem,
-  useGetDeletedItems,
-  useGetItems,
-  useRestoreItem,
-  useSearchDeletedItems,
-  useSearchItems,
+  useGetLessItems,
+  useSearchLessItems,
 } from "@/lib/react-query/query/item.query";
 import { Item } from "@/types/items";
 import ItemCard from "@/components/cards/ItemCard";
-import ItemForm from "@/components/forms/ItemForm";
-import CustomClose from "@/components/shared/CustomClose";
-import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
+import TFoot from "@/components/ui/TFoot";
 import DeleteChip from "@/components/shared/DeleteChip";
-import RestoreChip from "@/components/shared/RestoreChip";
-import AddButton from "@/components/shared/AddButton";
-import RestoreModal from "@/components/ui/RestoreModal";
+
 import Search from "@/components/shared/Search";
-import FilterModal from "@/components/shared/FilterModal";
-import { Filter } from "lucide-react";
-import { Badge, Button } from "@mui/joy";
 import Loading from "@/components/ui/Loading";
 import { TailSpin } from "react-loader-spinner";
 
-const Items = () => {
+const ItemLess = () => {
   const { mutateAsync, isPending } = useDeleteItem();
-  const { mutateAsync: restore, isPending: restoreLoading } = useRestoreItem();
-
   const [searchParam, setSearchParam] = useSearchParams();
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const tableRef = useRef<HTMLDivElement>(null);
-  const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
-  const { deleted_page } = useCheckDeletedPage();
-  const [isRestore, setIsRestore] = useState<boolean>(false);
-  const [filter, setFilter] = useState<boolean>(false);
   const {
     dispatch,
     state: { checked, check_type },
@@ -59,78 +43,36 @@ const Items = () => {
         as={`div`}
         className="w-full gap-10 flex flex-col justify-start items-start"
       >
-        <div className="w-full gap-5 flex flex-row justify-between flex-wrap">
+        <div className="w-full gap-5 flex flex-row justify-between flex-wrap ">
           <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
             <Search placeholder="گەڕان بەپێێ ناو/بارکۆد" />
-
-            <Badge
-              invisible={!searchParam.get(ENUMs.ITEM_TYPE_PARAM as string)}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
-            >
-              <Filter
-                onClick={() => setFilter(true)}
-                className="w-11 h-11 p-2 rounded-md dark-light hover:light-dark cursor-pointer default-border transition-all duration-200"
-              />
-            </Badge>
-            {searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) && (
-              <Button
-                onClick={() => {
-                  setSearchParam((prev) => {
-                    const params = new URLSearchParams(prev);
-                    params.delete(ENUMs.ITEM_TYPE_PARAM as string);
-                    return params;
-                  });
-                }}
-                className="!font-bukra !text-xs"
-                size="md"
-                variant="soft"
-                color="danger"
-              >
-                سڕینەوەی فلتەر
-              </Button>
-            )}
           </div>
           <div className=" flex flex-row justify-end items-center gap-3">
             {checked?.length > 0 && (
               <div className="flex flex-row justify-center items-center gap-2 dark-light">
-                {deleted_page ? (
-                  <RestoreChip onClick={() => setIsRestore(true)} />
-                ) : (
-                  <DeleteChip onClick={() => setIsDelete(true)} />
-                )}
+                <DeleteChip onClick={() => setIsDelete(true)} />
+
                 <p dir="ltr">
                   {checked.length} / {ENUMs.CHECK_LIMIT}
                 </p>
               </div>
             )}
-            {!deleted_page && <AddButton onClick={() => setIsAddOpen(true)} />}
           </div>
         </div>
+        {/* <DatePicker /> */}
         <Pagination<Item[]>
           queryFn={() =>
-            deleted_page
-              ? useGetDeletedItems(
-                  searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) || "",
-                  searchParam.get(ENUMs.FROM_PARAM as string) || "",
-                  searchParam.get(ENUMs.TO_PARAM as string) || ""
-                )
-              : useGetItems(
-                  searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) || "",
-                  searchParam.get(ENUMs.FROM_PARAM as string) || "",
-                  searchParam.get(ENUMs.TO_PARAM as string) || ""
-                )
+            useGetLessItems(
+              searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) || "",
+
+              searchParam.get(ENUMs.FROM_PARAM as string) || "",
+              searchParam.get(ENUMs.TO_PARAM as string) || ""
+            )
           }
           searchQueryFn={() =>
-            deleted_page
-              ? useSearchDeletedItems(
-                  searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
-                )
-              : useSearchItems(
-                  searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
-                )
+            useSearchLessItems(
+              searchParam.get(ENUMs.SEARCH_PARAM as string) || ""
+            )
           }
         >
           {({
@@ -165,7 +107,6 @@ const Items = () => {
 
             return (
               <>
-                {" "}
                 <div
                   ref={tableRef}
                   className="w-full max-w-full overflow-x-auto max-h-[700px] hide-scroll"
@@ -173,7 +114,7 @@ const Items = () => {
                   <Table className="relative  w-full table-dark-light  default-border">
                     <THead className="sticky -top-1 z-[100]  table-dark-light w-full  default-border">
                       <Tr>
-                        <Th className="text-center text-sm !p-4 !min-w-[100px]">
+                        <Th className="text-right text-sm !p-4 !min-w-[100px]">
                           <InputGroup className="checkbox-input">
                             <Input
                               onClick={() => {
@@ -203,34 +144,34 @@ const Items = () => {
                             />
                           </InputGroup>
                         </Th>
-                        <Th className="text-center text-sm !p-4">
+                        <Th className="text-right text-sm !p-4">
                           <p className="pr-1">#</p>
                         </Th>
-                        <Th className="text-center text-sm !p-4">
+                        <Th className="text-right text-sm !p-4">
                           <p className="pr-3 table-head-border">ناو</p>
                         </Th>
-                        <Th className="text-center text-sm !p-4">
+                        <Th className="text-right text-sm !p-4">
                           <p className="pr-3 table-head-border">بارکۆد</p>
                         </Th>{" "}
-                        <Th className="text-center text-sm !p-4">
-                          <p className="pr-3 table-head-border">جۆر</p>
-                        </Th>
-                        <Th className="text-center text-sm !p-4">
+                        <Th className="text-right text-sm !p-4">
                           <p className="pr-3 table-head-border">عدد</p>
                         </Th>
-                        <Th className="text-center text-sm !p-4">
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">عەدەی کارتۆن</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">تێچوو</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
                           <p className="pr-3 table-head-border">نرخی فرۆشتن</p>
                         </Th>
-                        <Th className="text-center text-sm !p-4">
-                          <p className="pr-3 table-head-border">نرخی کڕین</p>
-                        </Th>
-                        <Th className="text-center text-sm !p-4">
+                        <Th className="text-right text-sm !p-4">
                           <p className="pr-3 table-head-border">داغڵکار</p>
                         </Th>
-                        <Th className="text-center text-sm !p-4">
-                          <p className="pr-3 table-head-border">نوێکەرەوە</p>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">چاککار</p>
                         </Th>
-                        <Th className="text-center text-sm !p-4">
+                        <Th className="text-right text-sm !p-4">
                           <p className="pr-3 table-head-border">کردارەکان</p>
                         </Th>
                       </Tr>
@@ -271,48 +212,8 @@ const Items = () => {
           />
         </Dialog>
       )}
-      {isRestore && (
-        <Dialog
-          className="!p-5 rounded-md"
-          maxWidth={500}
-          maxHeight={`90%`}
-          isOpen={isRestore}
-          onClose={() => setIsRestore(false)}
-        >
-          <RestoreModal
-            deleteFunction={() => restore(checked)}
-            loading={restoreLoading}
-            onClose={() => setIsRestore(false)}
-          />
-        </Dialog>
-      )}
-      {isAddOpen && (
-        <Dialog
-          className="!p-5 rounded-md"
-          maxWidth={1500}
-          maxHeight={`90%`}
-          isOpen={isAddOpen}
-          onClose={() => setIsAddOpen(false)}
-        >
-          <CustomClose onClick={() => setIsAddOpen(false)} />
-
-          <ItemForm state="insert" onClose={() => setIsAddOpen(false)} />
-        </Dialog>
-      )}
-      {filter && (
-        <Dialog
-          className="!p-5 rounded-md"
-          maxWidth={400}
-          maxHeight={`90%`}
-          isOpen={filter}
-          onClose={() => setFilter(false)}
-        >
-          <CustomClose onClick={() => setFilter(false)} />
-          <FilterModal onClose={() => setFilter(false)} type="item" />
-        </Dialog>
-      )}
     </>
   );
 };
 
-export default Items;
+export default ItemLess;

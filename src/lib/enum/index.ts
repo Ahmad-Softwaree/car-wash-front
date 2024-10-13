@@ -32,6 +32,7 @@ export type ENUM_TYPES =
   | "SELL_REPORT_PART"
   | "KOGA_REPORT_PART"
   | "PROFIT_REPORT_PART"
+  | "CONFIG_PART"
   | "EXPENSE_REPORT_PART"
   | "CASE_REPORT_PART"
   | "EXPENSE_TYPE_PART"
@@ -45,6 +46,7 @@ export type ENUM_TYPES =
   | "DASHBOARD_PART"
   | "RESERVATION_PART"
   | "KOGA_PART"
+  | "LESS_ITEM_PART"
   | "CREATE_PSULA_PART"
   | "SELL_PART"
   | "NORMAL_BACKUP_PART"
@@ -96,6 +98,8 @@ export const ENUMs: { [key in ENUM_TYPES]: key | string | number } = {
   EXPENSE_REPORT_PART: "ڕاپۆرتی خەرجی",
   KOGA_REPORT_PART: "ڕاپۆرتی کۆگا",
   RESERVATION_REPORT_PART: "ڕاپۆرتی نۆرەکان",
+  CONFIG_PART: "ڕێکخستن",
+  LESS_ITEM_PART: "مەوادی کەمبوو",
 
   EXPENSE_TYPE_PART: "جۆرەکانی خەرجی",
   ROLE_PART: "ڕۆڵەکان",
