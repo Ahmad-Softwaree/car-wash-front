@@ -37,9 +37,7 @@ const Config = () => {
         className="w-full gap-5 flex flex-col justify-start items-start"
       >
         <div className="flex flex-col justify-start items-start gap-3">
-          <Label className="text-sm">
-            دیاریکردنی مەوادی کەمبوو لە (کارتۆن){" "}
-          </Label>
+          <Label className="text-sm">دیاریکردنی مەوادی کەمبوو لە</Label>
           <div className="w-full flex flex-row justify-start items-center gap-3">
             <InputGroup className="text-input">
               <InputAddon>

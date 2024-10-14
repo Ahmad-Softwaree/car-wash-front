@@ -5,6 +5,8 @@ import ItemFilter from "./ItemFilter";
 import ItemReportFilter from "./ItemReportFilter";
 import KogaMovementReportFilter from "./KogaMovementReportFilter";
 import KogaReportFilter from "./KogaReportFilter";
+import ReservationFilter from "./ReservationFilter";
+import ReservationReportFilter from "./ReservationReportFilter";
 import SellFilter from "./SellFilter";
 import SellReportFilter from "./SellReportFilter";
 import UserFilter from "./UserFilter";
@@ -23,7 +25,9 @@ const FilterModal = ({
     | "item_report"
     | "koga_report"
     | "koga_report_movement"
-    | "global_case";
+    | "global_case"
+    | "reservation"
+    | "reservation_report";
   onClose: () => void;
 }) => {
   return type == "item" ? (
@@ -46,6 +50,10 @@ const FilterModal = ({
     <KogaMovementReportFilter onClose={onClose} />
   ) : type == "global_case" ? (
     <GlobalCaseFilter onClose={onClose} />
+  ) : type == "reservation" ? (
+    <ReservationFilter onClose={onClose} />
+  ) : type == "reservation_report" ? (
+    <ReservationReportFilter onClose={onClose} />
   ) : null;
 };
 

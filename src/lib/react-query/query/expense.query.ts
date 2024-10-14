@@ -39,7 +39,12 @@ import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 import { Search } from "react-router-dom";
 
-export const useGetExpenses = (filter: Filter, from: From, to: To) => {
+export const useGetExpenses = (
+  filter: Filter,
+  from: From,
+  to: To,
+  userFilter: Filter
+) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.EXPENSES],
@@ -48,7 +53,15 @@ export const useGetExpenses = (filter: Filter, from: From, to: To) => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetExpensesQ>> =>
-      getExpenses(toast, pageParam, ENUMs.LIMIT as number, filter, from, to),
+      getExpenses(
+        toast,
+        pageParam,
+        ENUMs.LIMIT as number,
+        filter,
+        from,
+        to,
+        userFilter
+      ),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
@@ -56,7 +69,12 @@ export const useGetExpenses = (filter: Filter, from: From, to: To) => {
     retry: 0,
   });
 };
-export const useGetDeletedExpenses = (filter: Filter, from: From, to: To) => {
+export const useGetDeletedExpenses = (
+  filter: Filter,
+  from: From,
+  to: To,
+  userFilter: Filter
+) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.DELETED_EXPENSES],
@@ -71,7 +89,8 @@ export const useGetDeletedExpenses = (filter: Filter, from: From, to: To) => {
         ENUMs.LIMIT as number,
         filter,
         from,
-        to
+        to,
+        userFilter
       ),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {

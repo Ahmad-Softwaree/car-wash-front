@@ -26,7 +26,6 @@ import {
 } from "../actions/customer.action";
 import { QUERY_KEYs } from "../key";
 import {
-  Filter,
   From,
   Id,
   NestError,

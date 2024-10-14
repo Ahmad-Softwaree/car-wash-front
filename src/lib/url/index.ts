@@ -4,6 +4,7 @@ export type URLS =
   //USER
   | "GET_USERS"
   | "GET_DELETED_USERS"
+  | "GET_USERS_SELECTION"
   | "RESTORE_USER"
   | "SEARCH_DELETED_USERS"
   | "SEARCH_USERS"
@@ -197,6 +198,11 @@ export type URLS =
   | "GET_KOGA_NULL_REPORTS_SEARCH"
   | "GET_KOGA_NULL_REPORTS_INFORMATION_SEARCH"
   | "KOGA_NULL_PRINT_DATA"
+  | "GET_KOGA_LESS_REPORTS"
+  | "GET_KOGA_LESS_REPORTS_INFORMATION"
+  | "GET_KOGA_LESS_REPORTS_SEARCH"
+  | "GET_KOGA_LESS_REPORTS_INFORMATION_SEARCH"
+  | "KOGA_LESS_PRINT_DATA"
   | "GET_KOGA_MOVEMENT_REPORTS"
   | "GET_KOGA_MOVEMENT_REPORTS_INFORMATION"
   | "GET_KOGA_MOVEMENT_REPORTS_SEARCH"
@@ -240,6 +246,7 @@ export const URLs: { [key in URLS]: string } = {
   RESTORE_USER: `${API}/user/restore`,
   SEARCH_USERS: `${API}/user/search`,
   SEARCH_DELETED_USERS: `${API}/user/deleted_search`,
+  GET_USERS_SELECTION: `${API}/user/select`,
 
   ADD_USER: `${API}/user`,
   UPDATE_USER: `${API}/user`,
@@ -464,6 +471,13 @@ export const URLs: { [key in URLS]: string } = {
   GET_KOGA_NULL_REPORTS_SEARCH: `${API}/report/koga_null_search`,
   GET_KOGA_NULL_REPORTS_INFORMATION_SEARCH: `${API}/report/koga_null_search/information`,
   KOGA_NULL_PRINT_DATA: `${API}/report/koga_null/print`,
+
+  GET_KOGA_LESS_REPORTS: `${API}/report/koga_less`,
+  GET_KOGA_LESS_REPORTS_INFORMATION: `${API}/report/koga_less/information`,
+
+  GET_KOGA_LESS_REPORTS_SEARCH: `${API}/report/koga_less_search`,
+  GET_KOGA_LESS_REPORTS_INFORMATION_SEARCH: `${API}/report/koga_less_search/information`,
+  KOGA_LESS_PRINT_DATA: `${API}/report/koga_less/print`,
 
   GET_KOGA_MOVEMENT_REPORTS: `${API}/report/koga_movement`,
   GET_KOGA_MOVEMENT_REPORTS_INFORMATION: `${API}/report/koga_movement/information`,

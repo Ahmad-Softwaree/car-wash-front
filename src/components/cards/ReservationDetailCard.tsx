@@ -3,6 +3,7 @@ import { FormFinalOperation } from "@/types/global";
 import Chip from "@mui/joy/Chip";
 import Divider from "@mui/joy/Divider";
 import {
+  Banknote,
   Calendar,
   Car,
   Fingerprint,
@@ -44,7 +45,7 @@ const ReservationDetailCard = ({
           </Label>
           <InputGroup className="w-full text-input 0">
             <InputAddon className="w-[20%] md:w-[10%]">
-              <User />
+              <Banknote />
             </InputAddon>
 
             <Input

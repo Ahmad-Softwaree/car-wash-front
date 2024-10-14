@@ -17,7 +17,7 @@ type NullableDate = Date | null;
 const BackupFilter = ({ onClose }: { onClose: () => void }) => {
   const { toast } = useToast();
   const [searchParam, setSearchParam] = useSearchParams();
-  const { data, isLoading } = useGetTableNames();
+  const { data } = useGetTableNames();
   const [selectedValue, setSelectedValue] = useState(
     data?.find(
       (val: string, _index: number) =>
@@ -38,7 +38,7 @@ const BackupFilter = ({ onClose }: { onClose: () => void }) => {
     <div className="mt-4 space-y-5">
       {data && data.length > 0 && (
         <div className="space-y-2">
-          <Label className="text-xs">فلتەر بەپیێ جۆری خەرجی</Label>
+          <Label className="text-xs">فلتەر بەپیێ تەیبڵ</Label>
           <InputGroup className="text-input">
             <Input
               value={selectedValue}

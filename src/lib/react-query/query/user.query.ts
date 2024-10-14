@@ -18,6 +18,7 @@ import {
   deleteUser,
   getDeletedUser,
   getUsers,
+  getUsersSelection,
   restoreUser,
   searchDeletedUsers,
   searchUsers,
@@ -53,6 +54,14 @@ export const useGetUsers = (filter: Filter, from: From, to: To) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
+  });
+};
+export const useGetUsersSelection = () => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.USERS_SELECTION],
+    queryFn: () => getUsersSelection(toast),
     retry: 0,
   });
 };

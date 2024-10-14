@@ -22,25 +22,30 @@ import ReservationCard from "../cards/ReservationCard";
 import MyButton from "../ui/MyButton";
 import Loading from "../ui/Loading";
 import { TailSpin } from "react-loader-spinner";
+import { Badge, Button } from "@mui/joy";
+import { Filter } from "lucide-react";
+import CustomClose from "./CustomClose";
+import FilterModal from "./FilterModal";
 
 const ReservationModal = ({ onClose }: { onClose: () => void }) => {
   const [searchParam, setSearchParam] = useSearchParams();
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const { mutateAsync, isPending } = useDeleteReservation();
-  let filter = searchParam.get(ENUMs.FILTER_PARAM as string);
+  let filter_param = searchParam.get(ENUMs.FILTER_PARAM as string);
   const tableRef = useRef<HTMLDivElement>(null);
+  const [filter, setFilter] = useState<boolean>(false);
 
   const changeFilter = (
-    filter: "all" | "completed" | "not_completed"
+    filter_param: "all" | "completed" | "not_completed"
   ): void => {
     setSearchParam((prev) => {
       const params = new URLSearchParams(prev);
-      params.set(ENUMs.FILTER_PARAM as string, filter);
+      params.set(ENUMs.FILTER_PARAM as string, filter_param);
       return params;
     });
   };
   useEffect(() => {
-    if (!filter) changeFilter("all");
+    if (!filter_param) changeFilter("all");
   }, []);
   const {
     dispatch,
@@ -60,7 +65,9 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
                 name="all"
                 onClick={() => changeFilter("all")}
                 className={`p-2 rounded-md default-border !border-blue-500  text-xs md:text-sm transition-all duration-200 hover:!text-white hover:!bg-blue-500 ${
-                  filter == "all" ? "!bg-blue-500 text-white" : "dark-light"
+                  filter_param == "all"
+                    ? "!bg-blue-500 text-white"
+                    : "dark-light"
                 }`}
               >
                 گشت
@@ -71,7 +78,7 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
                 name="all"
                 onClick={() => changeFilter("completed")}
                 className={`p-2 rounded-md default-border !border-blue-500  text-xs md:text-sm transition-all duration-200 hover:!text-white hover:!bg-blue-500 ${
-                  filter == "completed"
+                  filter_param == "completed"
                     ? "!bg-blue-500 text-white"
                     : "dark-light"
                 }`}
@@ -84,13 +91,58 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
                 name="all"
                 onClick={() => changeFilter("not_completed")}
                 className={`p-2 rounded-md default-border !border-blue-500  text-xs md:text-sm transition-all duration-200 hover:!text-white hover:!bg-blue-500 ${
-                  filter == "not_completed"
+                  filter_param == "not_completed"
                     ? "!bg-blue-500 text-white"
                     : "dark-light"
                 }`}
               >
                 تەواونەبووەکان
               </MyButton>
+              <Badge
+                invisible={
+                  !(
+                    searchParam.get(ENUMs.COLOR_FILTER_PARAM as string) ||
+                    searchParam.get(ENUMs.CAR_TYPE_FILTER_PARAM as string) ||
+                    searchParam.get(ENUMs.CAR_MODEL_FILTER_PARAM as string) ||
+                    searchParam.get(ENUMs.SERVICE_FILTER_PARAM as string) ||
+                    searchParam.get(ENUMs.USER_FILTER_PARAM as string)
+                  )
+                }
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+              >
+                <Filter
+                  onClick={() => setFilter(true)}
+                  className="w-11 h-11 p-2 rounded-md dark-light hover:light-dark cursor-pointer default-border transition-all duration-200"
+                />
+              </Badge>
+              {(searchParam.get(ENUMs.COLOR_FILTER_PARAM as string) ||
+                searchParam.get(ENUMs.CAR_TYPE_FILTER_PARAM as string) ||
+                searchParam.get(ENUMs.CAR_MODEL_FILTER_PARAM as string) ||
+                searchParam.get(ENUMs.SERVICE_FILTER_PARAM as string) ||
+                searchParam.get(ENUMs.USER_FILTER_PARAM as string)) && (
+                <Button
+                  onClick={() => {
+                    setSearchParam((prev) => {
+                      const params = new URLSearchParams(prev);
+                      params.delete(ENUMs.COLOR_FILTER_PARAM as string);
+                      params.delete(ENUMs.CAR_TYPE_FILTER_PARAM as string);
+                      params.delete(ENUMs.CAR_MODEL_FILTER_PARAM as string);
+                      params.delete(ENUMs.SERVICE_FILTER_PARAM as string);
+                      params.delete(ENUMs.USER_FILTER_PARAM as string);
+                      return params;
+                    });
+                  }}
+                  className="!font-bukra !text-xs"
+                  size="md"
+                  variant="soft"
+                  color="danger"
+                >
+                  سڕینەوەی فلتەر
+                </Button>
+              )}
             </div>
           </div>
           <div className=" flex flex-row justify-end items-center gap-3">
@@ -114,7 +166,12 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
                   searchParam.get(ENUMs.RESERVATION_PARAM as string) || ""
                 )
               ) || "",
-              searchParam.get(ENUMs.FILTER_PARAM as string) || ""
+              searchParam.get(ENUMs.FILTER_PARAM as string) || "",
+              searchParam.get(ENUMs.COLOR_FILTER_PARAM as string) || "",
+              searchParam.get(ENUMs.CAR_MODEL_FILTER_PARAM as string) || "",
+              searchParam.get(ENUMs.CAR_TYPE_FILTER_PARAM as string) || "",
+              searchParam.get(ENUMs.SERVICE_FILTER_PARAM as string) || "",
+              searchParam.get(ENUMs.USER_FILTER_PARAM as string) || ""
             )
           }
           searchQueryFn={() =>
@@ -274,6 +331,18 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
             loading={isPending}
             onClose={() => setIsDelete(false)}
           />
+        </Dialog>
+      )}
+      {filter && (
+        <Dialog
+          className="!p-5 rounded-md"
+          maxWidth={400}
+          maxHeight={`90%`}
+          isOpen={filter}
+          onClose={() => setFilter(false)}
+        >
+          <CustomClose onClick={() => setFilter(false)} />
+          <FilterModal onClose={() => setFilter(false)} type="reservation" />
         </Dialog>
       )}
     </>

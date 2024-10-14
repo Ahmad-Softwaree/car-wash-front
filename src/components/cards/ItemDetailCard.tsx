@@ -16,6 +16,7 @@ const ItemDetailCard = ({
   actual_quantity,
   image_name,
   image_url,
+  item_less_from,
   barcode,
   type_name,
   type_id,
@@ -37,7 +38,8 @@ const ItemDetailCard = ({
           className="!font-bukra my-5"
           variant="soft"
           color="neutral"
-          size="sm">
+          size="sm"
+        >
           زانیاری گشتی
         </Chip>
       </Divider>
@@ -132,6 +134,25 @@ const ItemDetailCard = ({
             <Input
               value={item_sell_price}
               name="item_sell_price"
+              disabled
+              type="text"
+              dir="ltr"
+              className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:!font-bukra text-xs md:!text-sm placeholder:!text-sm"
+            />
+          </InputGroup>
+        </div>
+        <div className="w-full md:w-1/2 flex flex-col gap-2">
+          <Label className="w-full text-sm  flex flex-row gap-2">
+            <p>کەمترین عددی مەواد</p>
+          </Label>
+          <InputGroup className="w-full text-input 0">
+            <InputAddon className="w-[20%] md:w-[10%]">
+              <BadgePercent />
+            </InputAddon>
+
+            <Input
+              value={item_less_from}
+              name="item_less_from"
               disabled
               type="text"
               dir="ltr"

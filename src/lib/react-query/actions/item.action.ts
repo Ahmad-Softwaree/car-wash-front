@@ -63,6 +63,7 @@ export const getItems = async (
   page: Page,
   limit: Limit,
   filter: Filter,
+  userFilter: Filter,
   from: From,
   to: To
 ): Promise<PaginationReturnType<GetItemsQ>> => {
@@ -70,7 +71,9 @@ export const getItems = async (
     const { data, status } = await authApi.get<PaginationReturnType<GetItemsQ>>(
       `${URLs.GET_ITEMS}?page=${page}&limit=${limit}&filter=${
         filter != "" ? filter : ""
-      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}`
+      }&userFilter=${userFilter != "" ? userFilter : ""}&from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}`
     );
     return data;
   } catch (error: any) {
@@ -82,6 +85,7 @@ export const getDeletedItems = async (
   page: Page,
   limit: Limit,
   filter: Filter,
+  userFilter: Filter,
 
   from: From,
   to: To
@@ -90,7 +94,9 @@ export const getDeletedItems = async (
     const { data, status } = await authApi.get<PaginationReturnType<GetItemsQ>>(
       `${URLs.GET_DELETED_ITEMS}?page=${page}&limit=${limit}&filter=${
         filter != "" ? filter : ""
-      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}`
+      }&userFilter=${userFilter != "" ? userFilter : ""}&from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}`
     );
     return data;
   } catch (error: any) {

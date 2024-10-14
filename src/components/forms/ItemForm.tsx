@@ -73,6 +73,7 @@ const ItemForm = ({
       type_id: Number(data.type_id),
       item_purchase_price: Number(data.item_purchase_price),
       item_sell_price: Number(data.item_sell_price),
+      item_less_from: Number(data.item_less_from),
       quantity: Number(data.quantity),
     };
     try {
@@ -229,6 +230,27 @@ const ItemForm = ({
         <div className="col-span-full lg:col-span-1 h-[2px] lg:h-full w-full lg:w-[2px] bg-gray-500 bg-opacity-50 rounded-lg "></div>
 
         <div className="col-span-full lg:col-span-5 flex flex-col justify-start items-start gap-5 py-5 w-full h-full">
+          <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
+            <Label
+              htmlFor="item_less_from"
+              className="w-full text-sm  flex flex-row gap-2"
+            >
+              <p>کەمترین عددی مەواد</p>
+              <Required />
+            </Label>{" "}
+            <InputGroup
+              error={errors.item_less_from}
+              className="w-full text-input"
+            >
+              <Input
+                type="text"
+                id="item_less_from"
+                placeholder="کەمترین عددی مەوا"
+                className="w-full text-sm"
+                {...register("item_less_from", { required: true })}
+              />{" "}
+            </InputGroup>
+          </div>
           <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
             <Label
               htmlFor="item_purchase_price"

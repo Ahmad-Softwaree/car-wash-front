@@ -27,7 +27,8 @@ export const getExpenses = async (
   limit: Limit,
   filter: Filter,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ): Promise<PaginationReturnType<GetExpensesQ>> => {
   try {
     const { data, status } = await authApi.get<
@@ -35,7 +36,9 @@ export const getExpenses = async (
     >(
       `${URLs.GET_EXPENSES}?page=${page}&limit=${limit}&filter=${
         filter != "" ? filter : ""
-      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}`
+      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }`
     );
     return data;
   } catch (error: any) {
@@ -49,7 +52,8 @@ export const getDeletedExpense = async (
   limit: Limit,
   filter: Filter,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ): Promise<PaginationReturnType<GetExpensesQ>> => {
   try {
     const { data, status } = await authApi.get<
@@ -57,7 +61,9 @@ export const getDeletedExpense = async (
     >(
       `${URLs.GET_DELETED_EXPENSES}?page=${page}&limit=${limit}&filter=${
         filter != "" ? filter : ""
-      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}`
+      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }`
     );
     return data;
   } catch (error: any) {

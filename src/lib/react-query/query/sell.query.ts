@@ -44,6 +44,7 @@ import {
 } from "../actions/sell.action";
 import { QUERY_KEYs } from "../key";
 import {
+  Filter,
   From,
   Id,
   NestError,
@@ -58,7 +59,7 @@ import { CONTEXT_TYPEs } from "@/context/types";
 import { useSearchParams } from "react-router-dom";
 import { ENUMs } from "@/lib/enum";
 
-export const useGetSells = (from: From, to: To) => {
+export const useGetSells = (from: From, to: To, userFilter: Filter) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.SELLS],
@@ -67,7 +68,7 @@ export const useGetSells = (from: From, to: To) => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetSellsQ>> =>
-      getSells(toast, pageParam, ENUMs.LIMIT as number, from, to),
+      getSells(toast, pageParam, ENUMs.LIMIT as number, userFilter, from, to),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
@@ -75,7 +76,7 @@ export const useGetSells = (from: From, to: To) => {
     retry: 0,
   });
 };
-export const useGetSelfDeletedSellItems = () => {
+export const useGetSelfDeletedSellItems = (userFilter: Filter) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.SELF_DELETED_SELL_ITEMS],
@@ -84,7 +85,12 @@ export const useGetSelfDeletedSellItems = () => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetSellItemsQ>> =>
-      getSelfDeletedSellItems(toast, pageParam, ENUMs.LIMIT as number),
+      getSelfDeletedSellItems(
+        toast,
+        pageParam,
+        ENUMs.LIMIT as number,
+        userFilter
+      ),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
@@ -102,7 +108,7 @@ export const useSearchSelfDeletedSellItems = (search: Search) => {
     retry: 0,
   });
 };
-export const useGetDeletedSells = (from: From, to: To) => {
+export const useGetDeletedSells = (from: From, to: To, userFilter: Filter) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.DELETED_SELLS],
@@ -111,7 +117,14 @@ export const useGetDeletedSells = (from: From, to: To) => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetSellsQ>> =>
-      getDeletedSell(toast, pageParam, ENUMs.LIMIT as number, from, to),
+      getDeletedSell(
+        toast,
+        pageParam,
+        ENUMs.LIMIT as number,
+        userFilter,
+        from,
+        to
+      ),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;

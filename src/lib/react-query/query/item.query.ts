@@ -74,7 +74,12 @@ export const useSearchLessItems = (search: Search) => {
   });
 };
 
-export const useGetItems = (filter: Filter, from: From, to: To) => {
+export const useGetItems = (
+  filter: Filter,
+  userFilter: Filter,
+  from: From,
+  to: To
+) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.ITEMS],
@@ -83,7 +88,15 @@ export const useGetItems = (filter: Filter, from: From, to: To) => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetItemsQ>> =>
-      getItems(toast, pageParam, ENUMs.LIMIT as number, filter, from, to),
+      getItems(
+        toast,
+        pageParam,
+        ENUMs.LIMIT as number,
+        filter,
+        userFilter,
+        from,
+        to
+      ),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
@@ -91,7 +104,12 @@ export const useGetItems = (filter: Filter, from: From, to: To) => {
     retry: 0,
   });
 };
-export const useGetDeletedItems = (filter: Filter, from: From, to: To) => {
+export const useGetDeletedItems = (
+  filter: Filter,
+  userFilter: Filter,
+  from: From,
+  to: To
+) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.DELETED_ITEMS],
@@ -105,6 +123,7 @@ export const useGetDeletedItems = (filter: Filter, from: From, to: To) => {
         pageParam,
         ENUMs.LIMIT as number,
         filter,
+        userFilter,
         from,
         to
       ),

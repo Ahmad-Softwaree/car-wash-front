@@ -20,11 +20,13 @@ import {
 import CustomClose from "../shared/CustomClose";
 import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import RestoreModal from "../ui/RestoreModal";
+import { useGetConfigs } from "@/lib/react-query/query/config.query";
 
 const ItemCard = ({
   name,
   quantity,
   image_name,
+  item_less_from,
   image_url,
   barcode,
   type_name,
@@ -40,6 +42,7 @@ const ItemCard = ({
 
   ...others
 }: ItemCardProps) => {
+  const { data: config } = useGetConfigs();
   const { deleted_page } = useCheckDeletedPage();
 
   const [detail, setDetail] = useState<boolean>(false);
@@ -112,17 +115,28 @@ const ItemCard = ({
             {type_name}
           </p>
         </Td>
-
         <Td className="!p-3">
-          <Chip
-            variant="soft"
-            color={actual_quantity < 30 ? "danger" : "neutral"}
-          >
-            <p className="!font-bukra text-center font-light  text-xs">
-              {actual_quantity}
-            </p>
-          </Chip>
+          <p className="!font-bukra text-center font-light  text-xs">
+            {item_less_from}
+          </p>
         </Td>
+        {config && (
+          <Td className="!p-3">
+            <Chip
+              variant="soft"
+              color={
+                actual_quantity < item_less_from ||
+                actual_quantity < config.item_less_from
+                  ? "danger"
+                  : "neutral"
+              }
+            >
+              <p className="!font-bukra text-center font-light  text-xs">
+                {actual_quantity}
+              </p>
+            </Chip>
+          </Td>
+        )}
 
         <Td className="!p-3">
           <p className="text-center font-light font-bukra text-sm flex flex-row gap-1">
@@ -183,7 +197,7 @@ const ItemCard = ({
                         barcode,
                         type_name,
                         type_id,
-
+                        item_less_from,
                         item_purchase_price,
                         item_sell_price,
                         note,
@@ -250,6 +264,7 @@ const ItemCard = ({
             quantity={quantity}
             actual_quantity={actual_quantity}
             barcode={barcode}
+            item_less_from={item_less_from}
             type_name={type_name}
             type_id={type_id}
             item_purchase_price={item_purchase_price}

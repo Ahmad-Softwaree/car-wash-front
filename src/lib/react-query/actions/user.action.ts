@@ -40,7 +40,18 @@ export const getUsers = async (
     throw generateNestErrors(error, toast);
   }
 };
-
+export const getUsersSelection = async (
+  toast: ToastType
+): Promise<GetUsersQ> => {
+  try {
+    const { data, status } = await authApi.get<GetUsersQ>(
+      `${URLs.GET_USERS_SELECTION}`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
 export const getDeletedUser = async (
   toast: ToastType,
   page: Page,

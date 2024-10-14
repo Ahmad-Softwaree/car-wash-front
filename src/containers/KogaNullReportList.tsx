@@ -27,7 +27,7 @@ import ItemKogaReportCard from "@/components/cards/ItemKogaReportCard";
 const KogaNullReportList = () => {
   const [searchParam, setSearchParam] = useSearchParams();
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string);
-  let item_type = searchParam.get(ENUMs.FROM_PARAM as string);
+  let item_type = searchParam.get(ENUMs.ITEM_TYPE_PARAM as string);
 
   const [print, setPrint] = useState<boolean>(false);
   const [filter, setFilter] = useState<boolean>(false);

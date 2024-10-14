@@ -26,6 +26,12 @@ const Pagination = <T extends DataTypes>({
   let filter = searchParam.get(ENUMs.FILTER_PARAM as string);
   let role = searchParam.get(ENUMs.ROLE_FILTER_PARAM as string);
 
+  let carModel = searchParam.get(ENUMs.CAR_MODEL_FILTER_PARAM as string);
+  let carType = searchParam.get(ENUMs.CAR_TYPE_FILTER_PARAM as string);
+  let color = searchParam.get(ENUMs.COLOR_FILTER_PARAM as string);
+  let service = searchParam.get(ENUMs.SERVICE_FILTER_PARAM as string);
+  let user = searchParam.get(ENUMs.USER_FILTER_PARAM as string);
+
   let from = searchParam.get(ENUMs.FROM_PARAM as string);
   let to = searchParam.get(ENUMs.TO_PARAM as string);
 
@@ -52,6 +58,11 @@ const Pagination = <T extends DataTypes>({
     from,
     role,
     to,
+    color,
+    user,
+    carModel,
+    carType,
+    service,
     refetch,
   ]);
   const {

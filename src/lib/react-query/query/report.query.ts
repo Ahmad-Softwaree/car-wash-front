@@ -31,6 +31,10 @@ import {
   getKogaAllReportInformation,
   getKogaAllReportInformationSearch,
   getKogaAllReportSearch,
+  getKogaLessReport,
+  getKogaLessReportInformation,
+  getKogaLessReportInformationSearch,
+  getKogaLessReportSearch,
   getKogaMovementReport,
   getKogaMovementReportInformation,
   getKogaMovementReportInformationSearch,
@@ -50,6 +54,7 @@ import {
   itemPrint,
   itemProfitPrint,
   kogaAllPrint,
+  kogaLessPrint,
   kogaMovementPrint,
   kogaNullPrint,
   reservationPrint,
@@ -79,6 +84,7 @@ import {
   ItemProfitReportInfo,
   ItemReportInfo,
   KogaAllReportInfo,
+  KogaLessReportInfo,
   KogaMovementReportInfo,
   KogaNullReportInfo,
   ReservationReportInfo,
@@ -323,6 +329,64 @@ export const useKogaNullPrint = (search: Search, filter: Filter) => {
   return useQuery({
     queryKey: [QUERY_KEYs.KOGA_NULL_PRINT_DATA],
     queryFn: (): Promise<Blob | null> => kogaNullPrint(toast, search, filter),
+    retry: 0,
+  });
+};
+
+//KOGA LESS REPORT
+
+export const useGetKogaLessReport = (filter: Filter) => {
+  const { toast } = useToast();
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEYs.KOGA_LESS_REPORT],
+    queryFn: ({
+      pageParam,
+    }: {
+      pageParam: Page;
+    }): Promise<PaginationReturnType<GetItemsReportQ>> =>
+      getKogaLessReport(toast, pageParam, ENUMs.LIMIT as number, filter),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage: any, pages: any) => {
+      return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
+    },
+    retry: 0,
+  });
+};
+export const useGetKogaLessReportInformation = (filter: Filter) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.KOGA_LESS_REPORT_INFORMATION],
+    queryFn: (): Promise<KogaLessReportInfo> =>
+      getKogaLessReportInformation(toast, filter),
+    retry: 0,
+  });
+};
+
+export const useGetKogaLessReportSearch = (search: Search) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.KOGA_LESS_REPORT_SEARCH],
+    queryFn: (): Promise<GetItemsQ> => getKogaLessReportSearch(toast, search),
+    retry: 0,
+    enabled: typeof search === "string" && search.trim() !== "",
+  });
+};
+export const useGetKogaLessReportInformationSearch = (search: Search) => {
+  const { toast } = useToast();
+
+  return useQuery({
+    queryKey: [QUERY_KEYs.KOGA_LESS_REPORT_INFORMATION_SEARCH],
+    queryFn: (): Promise<KogaLessReportInfo> =>
+      getKogaLessReportInformationSearch(toast, search),
+    retry: 0,
+    enabled: typeof search === "string" && search.trim() !== "",
+  });
+};
+export const useKogaLessPrint = (search: Search, filter: Filter) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.KOGA_LESS_PRINT_DATA],
+    queryFn: (): Promise<Blob | null> => kogaLessPrint(toast, search, filter),
     retry: 0,
   });
 };
@@ -685,7 +749,15 @@ export const useGetCaseGlobalData = (from: From, to: To) => {
 };
 
 //RESERVATION_REPORT
-export const useGetReservationReport = (from: From, to: To) => {
+export const useGetReservationReport = (
+  from: From,
+  to: To,
+  colorFilter: Filter,
+  carModelFilter: Filter,
+  carTypeFilter: Filter,
+  serviceFilter: Filter,
+  userFilter: Filter
+) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.RESERVATION_REPORT],
@@ -694,7 +766,18 @@ export const useGetReservationReport = (from: From, to: To) => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetReservationsQ>> =>
-      getReservationReport(toast, pageParam, ENUMs.LIMIT as number, from, to),
+      getReservationReport(
+        toast,
+        pageParam,
+        ENUMs.LIMIT as number,
+        from,
+        to,
+        colorFilter,
+        carModelFilter,
+        carTypeFilter,
+        serviceFilter,
+        userFilter
+      ),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
@@ -702,12 +785,29 @@ export const useGetReservationReport = (from: From, to: To) => {
     retry: 0,
   });
 };
-export const useGetReservationReportInformation = (from: From, to: To) => {
+export const useGetReservationReportInformation = (
+  from: From,
+  to: To,
+  colorFilter: Filter,
+  carModelFilter: Filter,
+  carTypeFilter: Filter,
+  serviceFilter: Filter,
+  userFilter: Filter
+) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.RESERVATION_REPORT_INFORMATION],
     queryFn: (): Promise<ReservationReportInfo> =>
-      getReservationReportInformation(toast, from, to),
+      getReservationReportInformation(
+        toast,
+        from,
+        to,
+        colorFilter,
+        carModelFilter,
+        carTypeFilter,
+        serviceFilter,
+        userFilter
+      ),
     retry: 0,
   });
 };
@@ -733,12 +833,31 @@ export const useGetReservationReportInformationSearch = (search: Search) => {
     enabled: typeof search === "string" && search.trim() !== "",
   });
 };
-export const useReservationPrint = (search: Search, from: From, to: To) => {
+export const useReservationPrint = (
+  search: Search,
+  from: From,
+  to: To,
+  colorFilter: Filter,
+  carModelFilter: Filter,
+  carTypeFilter: Filter,
+  serviceFilter: Filter,
+  userFilter: Filter
+) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.RESERVATION_PRINT_DATA],
     queryFn: (): Promise<Blob | null> =>
-      reservationPrint(toast, search, from, to),
+      reservationPrint(
+        toast,
+        search,
+        from,
+        to,
+        colorFilter,
+        carModelFilter,
+        carTypeFilter,
+        serviceFilter,
+        userFilter
+      ),
     retry: 0,
   });
 };

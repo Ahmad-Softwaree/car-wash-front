@@ -52,6 +52,11 @@ export type ENUM_TYPES =
   | "NORMAL_BACKUP_PART"
   | "SERVER_BACKUP_PART"
   | "PRINTER_PART"
+  | "COLOR_FILTER_PARAM"
+  | "CAR_TYPE_FILTER_PARAM"
+  | "CAR_MODEL_FILTER_PARAM"
+  | "SERVICE_FILTER_PARAM"
+  | "USER_FILTER_PARAM"
 
   //SECTIONS
   | "MANAGE_SECTION"
@@ -82,6 +87,11 @@ export const ENUMs: { [key in ENUM_TYPES]: key | string | number } = {
   RESERVATION_PARAM: "date_time",
   TABLE_NAME_PARAM: "table_name",
   ROLE_FILTER_PARAM: "role",
+  COLOR_FILTER_PARAM: "color",
+  CAR_TYPE_FILTER_PARAM: "car_type",
+  CAR_MODEL_FILTER_PARAM: "car_model",
+  USER_FILTER_PARAM: "user",
+  SERVICE_FILTER_PARAM: "service",
 
   //FIREBASE
   ITEM_BUCKET: "item",
@@ -115,7 +125,7 @@ export const ENUMs: { [key in ENUM_TYPES]: key | string | number } = {
   SELL_PART: "پسولەکان",
   NORMAL_BACKUP_PART: "باکئەپی ئاسایی",
   SERVER_BACKUP_PART: "باکئەپی سێرڤەر",
-  PRINTER_PART: "پرینتەرەکان",
+  PRINTER_PART: "پرنتەرەکان",
 
   //SECTIONS
 

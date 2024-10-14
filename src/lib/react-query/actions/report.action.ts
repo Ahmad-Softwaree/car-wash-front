@@ -26,6 +26,7 @@ import {
   ItemProfitReportInfo,
   ItemReportInfo,
   KogaAllReportInfo,
+  KogaLessReportInfo,
   KogaMovementReportInfo,
   KogaNullReportInfo,
   ReservationReportInfo,
@@ -374,6 +375,94 @@ export const kogaNullPrint = async (
   try {
     const { data } = await pdfFileAuthApi.get<any>(
       `${URLs.KOGA_NULL_PRINT_DATA}?search=${
+        search != "" ? search : ""
+      }&filter=${filter != "" ? filter : ""}`
+    );
+    const pdfData = new Uint8Array(data);
+    const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
+    return pdfBlob;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+//KOGA LESS REPORT
+
+export const getKogaLessReport = async (
+  toast: ToastType,
+  page: Page,
+  limit: Limit,
+  filter: Filter
+): Promise<PaginationReturnType<GetItemsReportQ>> => {
+  try {
+    const { data, status } = await authApi.get<
+      PaginationReturnType<GetItemsReportQ>
+    >(
+      `${URLs.GET_KOGA_LESS_REPORTS}?page=${page}&limit=${limit}&filter=${
+        filter != "" ? filter : ""
+      }`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+export const getKogaLessReportInformation = async (
+  toast: ToastType,
+  filter: Filter
+): Promise<KogaLessReportInfo> => {
+  try {
+    const { data, status } = await authApi.get<KogaLessReportInfo>(
+      `${URLs.GET_KOGA_LESS_REPORTS_INFORMATION}?filter=${
+        filter != "" ? filter : ""
+      }`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+export const getKogaLessReportSearch = async (
+  toast: ToastType,
+
+  search: Search
+): Promise<GetItemsQ> => {
+  try {
+    const { data, status } = await authApi.get<GetItemsQ>(
+      `${URLs.GET_KOGA_LESS_REPORTS_SEARCH}?search=${
+        search != "" ? search : ""
+      }`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+export const getKogaLessReportInformationSearch = async (
+  toast: ToastType,
+  search: Search
+): Promise<KogaLessReportInfo> => {
+  try {
+    const { data, status } = await authApi.get<KogaLessReportInfo>(
+      `${URLs.GET_KOGA_LESS_REPORTS_INFORMATION_SEARCH}?search=${
+        search != "" ? search : ""
+      }`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
+
+export const kogaLessPrint = async (
+  toast: ToastType,
+  search: Search,
+  filter: Filter
+): Promise<Blob | null> => {
+  try {
+    const { data } = await pdfFileAuthApi.get<any>(
+      `${URLs.KOGA_LESS_PRINT_DATA}?search=${
         search != "" ? search : ""
       }&filter=${filter != "" ? filter : ""}`
     );
@@ -869,7 +958,12 @@ export const getReservationReport = async (
   page: Page,
   limit: Limit,
   from: From,
-  to: To
+  to: To,
+  colorFilter: Filter,
+  carModelFilter: Filter,
+  carTypeFilter: Filter,
+  serviceFilter: Filter,
+  userFilter: Filter
 ): Promise<PaginationReturnType<GetReservationsQ>> => {
   try {
     const { data, status } = await authApi.get<
@@ -877,7 +971,15 @@ export const getReservationReport = async (
     >(
       `${URLs.GET_RESERVATION_REPORTS}?page=${page}&limit=${limit}&from=${
         from != "" ? from : ""
-      }&to=${to != "" ? to : ""}`
+      }&to=${to != "" ? to : ""}&colorFilter=${
+        colorFilter != "" ? colorFilter : ""
+      }&carModelFilter=${
+        carModelFilter != "" ? carModelFilter : ""
+      }&carTypeFilter=${
+        carTypeFilter != "" ? carTypeFilter : ""
+      }&serviceFilter=${serviceFilter != "" ? serviceFilter : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }`
     );
     return data;
   } catch (error: any) {
@@ -887,13 +989,26 @@ export const getReservationReport = async (
 export const getReservationReportInformation = async (
   toast: ToastType,
   from: From,
-  to: To
+  to: To,
+  colorFilter: Filter,
+  carModelFilter: Filter,
+  carTypeFilter: Filter,
+  serviceFilter: Filter,
+  userFilter: Filter
 ): Promise<ReservationReportInfo> => {
   try {
     const { data, status } = await authApi.get<ReservationReportInfo>(
       `${URLs.GET_RESERVATION_REPORTS_INFORMATION}?from=${
         from != "" ? from : ""
-      }&to=${to != "" ? to : ""}`
+      }&to=${to != "" ? to : ""}&colorFilter=${
+        colorFilter != "" ? colorFilter : ""
+      }&carModelFilter=${
+        carModelFilter != "" ? carModelFilter : ""
+      }&carTypeFilter=${
+        carTypeFilter != "" ? carTypeFilter : ""
+      }&serviceFilter=${serviceFilter != "" ? serviceFilter : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }`
     );
     return data;
   } catch (error: any) {
@@ -937,13 +1052,26 @@ export const reservationPrint = async (
   toast: ToastType,
   search: Search,
   from: From,
-  to: To
+  to: To,
+  colorFilter: Filter,
+  carModelFilter: Filter,
+  carTypeFilter: Filter,
+  serviceFilter: Filter,
+  userFilter: Filter
 ): Promise<Blob | null> => {
   try {
     const { data } = await pdfFileAuthApi.get<any>(
       `${URLs.RESERVATION_PRINT_DATA}?search=${
         search != "" ? search : ""
-      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}`
+      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}&colorFilter=${
+        colorFilter != "" ? colorFilter : ""
+      }&carModelFilter=${
+        carModelFilter != "" ? carModelFilter : ""
+      }&carTypeFilter=${
+        carTypeFilter != "" ? carTypeFilter : ""
+      }&serviceFilter=${serviceFilter != "" ? serviceFilter : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }`
     );
     const pdfData = new Uint8Array(data);
     const pdfBlob = new Blob([pdfData], { type: "application/pdf" });

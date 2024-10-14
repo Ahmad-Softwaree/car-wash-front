@@ -64,7 +64,10 @@ const Items = () => {
             <Search placeholder="گەڕان بەپێێ ناو/بارکۆد" />
 
             <Badge
-              invisible={!searchParam.get(ENUMs.ITEM_TYPE_PARAM as string)}
+              invisible={
+                !searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) &&
+                !searchParam.get(ENUMs.USER_FILTER_PARAM as string)
+              }
               anchorOrigin={{
                 vertical: "bottom",
                 horizontal: "right",
@@ -75,12 +78,15 @@ const Items = () => {
                 className="w-11 h-11 p-2 rounded-md dark-light hover:light-dark cursor-pointer default-border transition-all duration-200"
               />
             </Badge>
-            {searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) && (
+            {(searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) ||
+              searchParam.get(ENUMs.USER_FILTER_PARAM as string)) && (
               <Button
                 onClick={() => {
                   setSearchParam((prev) => {
                     const params = new URLSearchParams(prev);
                     params.delete(ENUMs.ITEM_TYPE_PARAM as string);
+                    params.delete(ENUMs.USER_FILTER_PARAM as string);
+
                     return params;
                   });
                 }}
@@ -114,11 +120,14 @@ const Items = () => {
             deleted_page
               ? useGetDeletedItems(
                   searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) || "",
+                  searchParam.get(ENUMs.USER_FILTER_PARAM as string) || "",
+
                   searchParam.get(ENUMs.FROM_PARAM as string) || "",
                   searchParam.get(ENUMs.TO_PARAM as string) || ""
                 )
               : useGetItems(
                   searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) || "",
+                  searchParam.get(ENUMs.USER_FILTER_PARAM as string) || "",
                   searchParam.get(ENUMs.FROM_PARAM as string) || "",
                   searchParam.get(ENUMs.TO_PARAM as string) || ""
                 )
@@ -214,6 +223,11 @@ const Items = () => {
                         </Th>{" "}
                         <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">جۆر</p>
+                        </Th>
+                        <Th className="text-center text-sm !p-4">
+                          <p className="pr-3 table-head-border">
+                            کەمترین عددی مەواد
+                          </p>
                         </Th>
                         <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">عدد</p>

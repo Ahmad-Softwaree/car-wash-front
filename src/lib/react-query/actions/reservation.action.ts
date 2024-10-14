@@ -41,7 +41,12 @@ export const getReservations = async (
   page: Page,
   limit: Limit,
   date: Date,
-  filter: Filter
+  filter: Filter,
+  colorFilter: Filter,
+  carModelFilter: Filter,
+  carTypeFilter: Filter,
+  serviceFilter: Filter,
+  userFilter: Filter
 ): Promise<PaginationReturnType<GetReservationsQ>> => {
   try {
     const { data, status } = await authApi.get<
@@ -51,6 +56,12 @@ export const getReservations = async (
         URLs.GET_RESERVATIONS
       }?page=${page}&limit=${limit}&date=${date}&filter=${
         filter != "" ? filter : ""
+      }&colorFilter=${colorFilter != "" ? colorFilter : ""}&carModelFilter=${
+        carModelFilter != "" ? carModelFilter : ""
+      }&carTypeFilter=${
+        carTypeFilter != "" ? carTypeFilter : ""
+      }&serviceFilter=${serviceFilter != "" ? serviceFilter : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
       }`
     );
     return data;
@@ -64,7 +75,13 @@ export const getDeletedReservation = async (
   page: Page,
   limit: Limit,
   from: From,
-  to: To
+  to: To,
+  filter: Filter,
+  colorFilter: Filter,
+  carModelFilter: Filter,
+  carTypeFilter: Filter,
+  serviceFilter: Filter,
+  userFilter: Filter
 ): Promise<PaginationReturnType<GetReservationsQ>> => {
   try {
     const { data, status } = await authApi.get<
@@ -72,7 +89,15 @@ export const getDeletedReservation = async (
     >(
       `${URLs.GET_DELETED_RESERVATIONS}?page=${page}&limit=${limit}&from=${
         from != "" ? from : ""
-      }&to=${to != "" ? to : ""}`
+      }&to=${to != "" ? to : ""}&filter=${
+        filter != "" ? filter : ""
+      }&colorFilter=${colorFilter != "" ? colorFilter : ""}&carModelFilter=${
+        carModelFilter != "" ? carModelFilter : ""
+      }&carTypeFilter=${
+        carTypeFilter != "" ? carTypeFilter : ""
+      }&serviceFilter=${serviceFilter != "" ? serviceFilter : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }`
     );
     return data;
   } catch (error: any) {

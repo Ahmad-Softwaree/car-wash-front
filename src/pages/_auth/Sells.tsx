@@ -74,7 +74,8 @@ const Sells = () => {
                 <Badge
                   invisible={
                     !searchParam.get(ENUMs.FROM_PARAM as string) &&
-                    !searchParam.get(ENUMs.TO_PARAM as string)
+                    !searchParam.get(ENUMs.TO_PARAM as string) &&
+                    !searchParam.get(ENUMs.USER_FILTER_PARAM as string)
                   }
                   anchorOrigin={{
                     vertical: "bottom",
@@ -86,26 +87,28 @@ const Sells = () => {
                     className="w-11 h-11 p-2 rounded-md dark-light hover:light-dark cursor-pointer default-border transition-all duration-200"
                   />
                 </Badge>
-                {searchParam.get(ENUMs.FROM_PARAM as string) &&
-                  searchParam.get(ENUMs.TO_PARAM as string) && (
-                    <Button
-                      onClick={() => {
-                        setSearchParam((prev) => {
-                          const params = new URLSearchParams(prev);
-                          params.delete(ENUMs.FROM_PARAM as string);
-                          params.delete(ENUMs.TO_PARAM as string);
+                {((searchParam.get(ENUMs.FROM_PARAM as string) &&
+                  searchParam.get(ENUMs.TO_PARAM as string)) ||
+                  searchParam.get(ENUMs.USER_FILTER_PARAM as string)) && (
+                  <Button
+                    onClick={() => {
+                      setSearchParam((prev) => {
+                        const params = new URLSearchParams(prev);
+                        params.delete(ENUMs.FROM_PARAM as string);
+                        params.delete(ENUMs.TO_PARAM as string);
+                        params.delete(ENUMs.USER_FILTER_PARAM as string);
 
-                          return params;
-                        });
-                      }}
-                      className="!font-bukra !text-xs"
-                      size="md"
-                      variant="soft"
-                      color="danger"
-                    >
-                      سڕینەوەی فلتەر
-                    </Button>
-                  )}
+                        return params;
+                      });
+                    }}
+                    className="!font-bukra !text-xs"
+                    size="md"
+                    variant="soft"
+                    color="danger"
+                  >
+                    سڕینەوەی فلتەر
+                  </Button>
+                )}
               </>
             )}
           </div>
@@ -180,11 +183,13 @@ const Sells = () => {
               deleted_page
                 ? useGetDeletedSells(
                     searchParam.get(ENUMs.FROM_PARAM as string) || "",
-                    searchParam.get(ENUMs.TO_PARAM as string) || ""
+                    searchParam.get(ENUMs.TO_PARAM as string) || "",
+                    searchParam.get(ENUMs.USER_FILTER_PARAM as string) || ""
                   )
                 : useGetSells(
                     searchParam.get(ENUMs.FROM_PARAM as string) || "",
-                    searchParam.get(ENUMs.TO_PARAM as string) || ""
+                    searchParam.get(ENUMs.TO_PARAM as string) || "",
+                    searchParam.get(ENUMs.USER_FILTER_PARAM as string) || ""
                   )
             }
             searchQueryFn={() =>
@@ -318,7 +323,11 @@ const Sells = () => {
         )}
         {index == 1 && (
           <Pagination<SellItem[]>
-            queryFn={() => useGetSelfDeletedSellItems()}
+            queryFn={() =>
+              useGetSelfDeletedSellItems(
+                searchParam.get(ENUMs.USER_FILTER_PARAM as string) || ""
+              )
+            }
             searchQueryFn={() =>
               useSearchSelfDeletedSellItems(
                 searchParam.get(ENUMs.SEARCH_PARAM as string) || ""

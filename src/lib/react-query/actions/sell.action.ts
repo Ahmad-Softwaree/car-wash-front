@@ -18,6 +18,7 @@ import {
   UpdateSellQ,
 } from "@/types/sell";
 import {
+  Filter,
   From,
   Id,
   Limit,
@@ -32,6 +33,7 @@ export const getSells = async (
   toast: ToastType,
   page: Page,
   limit: Limit,
+  userFilter: Filter,
   from: From,
   to: To
 ): Promise<PaginationReturnType<GetSellsQ>> => {
@@ -39,7 +41,9 @@ export const getSells = async (
     const { data, status } = await authApi.get<PaginationReturnType<GetSellsQ>>(
       `${URLs.GET_SELLS}?page=${page}&limit=${limit}&from=${
         from != "" ? from : ""
-      }&to=${to != "" ? to : ""}`
+      }&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }`
     );
     return data;
   } catch (error: any) {
@@ -49,12 +53,19 @@ export const getSells = async (
 export const getSelfDeletedSellItems = async (
   toast: ToastType,
   page: Page,
-  limit: Limit
+  limit: Limit,
+  userFilter: Filter
 ): Promise<PaginationReturnType<GetSellItemsQ>> => {
   try {
     const { data, status } = await authApi.get<
       PaginationReturnType<GetSellItemsQ>
-    >(`${URLs.GET_SELF_DELETED_SELL_ITEMS}?page=${page}&limit=${limit}`);
+    >(
+      `${
+        URLs.GET_SELF_DELETED_SELL_ITEMS
+      }?page=${page}&limit=${limit}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }`
+    );
     return data;
   } catch (error: any) {
     throw generateNestErrors(error, toast);
@@ -77,6 +88,8 @@ export const getDeletedSell = async (
   toast: ToastType,
   page: Page,
   limit: Limit,
+  userFilter: Filter,
+
   from: From,
   to: To
 ): Promise<PaginationReturnType<GetSellsQ>> => {
@@ -84,7 +97,9 @@ export const getDeletedSell = async (
     const { data, status } = await authApi.get<PaginationReturnType<GetSellsQ>>(
       `${URLs.GET_DELETED_SELLS}?page=${page}&limit=${limit}&from=${
         from != "" ? from : ""
-      }&to=${to != "" ? to : ""}`
+      }&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }`
     );
     return data;
   } catch (error: any) {

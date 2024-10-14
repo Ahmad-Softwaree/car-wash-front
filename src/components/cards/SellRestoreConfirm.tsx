@@ -18,12 +18,7 @@ import SellItemCard from "./SellItemCard";
 import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import MyButton from "../ui/MyButton";
 
-const SellRestoreConfirm = ({
-  id,
-  discount,
-  date,
-  onClose,
-}: FormFinalOperation & SellCardProps) => {
+const SellRestoreConfirm = ({ id }: FormFinalOperation & SellCardProps) => {
   const { deleted_page } = useCheckDeletedPage();
 
   const { data, isLoading } = !deleted_page

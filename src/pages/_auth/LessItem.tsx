@@ -21,18 +21,23 @@ import {
 } from "@/lib/react-query/query/item.query";
 import { Item } from "@/types/items";
 import ItemCard from "@/components/cards/ItemCard";
-import TFoot from "@/components/ui/TFoot";
 import DeleteChip from "@/components/shared/DeleteChip";
 
 import Search from "@/components/shared/Search";
 import Loading from "@/components/ui/Loading";
 import { TailSpin } from "react-loader-spinner";
+import { Badge, Button } from "@mui/joy";
+import { Filter } from "lucide-react";
+import CustomClose from "@/components/shared/CustomClose";
+import FilterModal from "@/components/shared/FilterModal";
 
 const ItemLess = () => {
   const { mutateAsync, isPending } = useDeleteItem();
   const [searchParam, setSearchParam] = useSearchParams();
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const tableRef = useRef<HTMLDivElement>(null);
+  const [filter, setFilter] = useState<boolean>(false);
+
   const {
     dispatch,
     state: { checked, check_type },
@@ -46,6 +51,36 @@ const ItemLess = () => {
         <div className="w-full gap-5 flex flex-row justify-between flex-wrap ">
           <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
             <Search placeholder="گەڕان بەپێێ ناو/بارکۆد" />
+
+            <Badge
+              invisible={!searchParam.get(ENUMs.ITEM_TYPE_PARAM as string)}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+            >
+              <Filter
+                onClick={() => setFilter(true)}
+                className="w-11 h-11 p-2 rounded-md dark-light hover:light-dark cursor-pointer default-border transition-all duration-200"
+              />
+            </Badge>
+            {searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) && (
+              <Button
+                onClick={() => {
+                  setSearchParam((prev) => {
+                    const params = new URLSearchParams(prev);
+                    params.delete(ENUMs.ITEM_TYPE_PARAM as string);
+                    return params;
+                  });
+                }}
+                className="!font-bukra !text-xs"
+                size="md"
+                variant="soft"
+                color="danger"
+              >
+                سڕینەوەی فلتەر
+              </Button>
+            )}
           </div>
           <div className=" flex flex-row justify-end items-center gap-3">
             {checked?.length > 0 && (
@@ -64,7 +99,6 @@ const ItemLess = () => {
           queryFn={() =>
             useGetLessItems(
               searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) || "",
-
               searchParam.get(ENUMs.FROM_PARAM as string) || "",
               searchParam.get(ENUMs.TO_PARAM as string) || ""
             )
@@ -154,10 +188,15 @@ const ItemLess = () => {
                           <p className="pr-3 table-head-border">بارکۆد</p>
                         </Th>{" "}
                         <Th className="text-right text-sm !p-4">
-                          <p className="pr-3 table-head-border">عدد</p>
+                          <p className="pr-3 table-head-border">جۆر</p>
+                        </Th>{" "}
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">
+                            کەمترین عددی مەواد
+                          </p>
                         </Th>
                         <Th className="text-right text-sm !p-4">
-                          <p className="pr-3 table-head-border">عەدەی کارتۆن</p>
+                          <p className="pr-3 table-head-border">عدد</p>
                         </Th>
                         <Th className="text-right text-sm !p-4">
                           <p className="pr-3 table-head-border">تێچوو</p>
@@ -210,6 +249,18 @@ const ItemLess = () => {
             loading={isPending}
             onClose={() => setIsDelete(false)}
           />
+        </Dialog>
+      )}
+      {filter && (
+        <Dialog
+          className="!p-5 rounded-md"
+          maxWidth={400}
+          maxHeight={`90%`}
+          isOpen={filter}
+          onClose={() => setFilter(false)}
+        >
+          <CustomClose onClick={() => setFilter(false)} />
+          <FilterModal onClose={() => setFilter(false)} type="item" />
         </Dialog>
       )}
     </>

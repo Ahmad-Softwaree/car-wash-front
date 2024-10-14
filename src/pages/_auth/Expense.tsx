@@ -26,7 +26,6 @@ import { useSearchParams } from "react-router-dom";
 import { ENUMs } from "@/lib/enum";
 
 import DeleteModal from "@/components/ui/DeleteModal";
-import TFoot from "@/components/ui/TFoot";
 import CustomClose from "@/components/shared/CustomClose";
 import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import DeleteChip from "@/components/shared/DeleteChip";
@@ -72,7 +71,8 @@ const Expenses = () => {
               invisible={
                 !searchParam.get(ENUMs.FROM_PARAM as string) &&
                 !searchParam.get(ENUMs.TO_PARAM as string) &&
-                !searchParam.get(ENUMs.EXPENSE_TYPE_PARAM as string)
+                !searchParam.get(ENUMs.EXPENSE_TYPE_PARAM as string) &&
+                !searchParam.get(ENUMs.USER_FILTER_PARAM as string)
               }
               anchorOrigin={{
                 vertical: "bottom",
@@ -86,13 +86,16 @@ const Expenses = () => {
             </Badge>
             {(searchParam.get(ENUMs.FROM_PARAM as string) &&
               searchParam.get(ENUMs.TO_PARAM as string)) ||
-            searchParam.get(ENUMs.EXPENSE_TYPE_PARAM as string) ? (
+            searchParam.get(ENUMs.EXPENSE_TYPE_PARAM as string) ||
+            searchParam.get(ENUMs.USER_FILTER_PARAM as string) ? (
               <Button
                 onClick={() => {
                   setSearchParam((prev) => {
                     const params = new URLSearchParams(prev);
                     params.delete(ENUMs.FROM_PARAM as string);
                     params.delete(ENUMs.TO_PARAM as string);
+                    params.delete(ENUMs.USER_FILTER_PARAM as string);
+
                     params.delete(ENUMs.EXPENSE_TYPE_PARAM as string);
                     return params;
                   });
@@ -106,7 +109,7 @@ const Expenses = () => {
               </Button>
             ) : null}
           </div>
-          <div className="w-full flex flex-row justify-end items-center gap-3">
+          <div className="flex flex-row justify-end items-center gap-3">
             {checked?.length > 0 && (
               <div className="flex flex-row justify-center items-center gap-2 dark-light">
                 {deleted_page ? (
@@ -129,12 +132,14 @@ const Expenses = () => {
               ? useGetDeletedExpenses(
                   searchParam.get(ENUMs.EXPENSE_TYPE_PARAM as string) || "",
                   searchParam.get(ENUMs.FROM_PARAM as string) || "",
-                  searchParam.get(ENUMs.TO_PARAM as string) || ""
+                  searchParam.get(ENUMs.TO_PARAM as string) || "",
+                  searchParam.get(ENUMs.USER_FILTER_PARAM as string) || ""
                 )
               : useGetExpenses(
                   searchParam.get(ENUMs.EXPENSE_TYPE_PARAM as string) || "",
                   searchParam.get(ENUMs.FROM_PARAM as string) || "",
-                  searchParam.get(ENUMs.TO_PARAM as string) || ""
+                  searchParam.get(ENUMs.TO_PARAM as string) || "",
+                  searchParam.get(ENUMs.USER_FILTER_PARAM as string) || ""
                 )
           }
           searchQueryFn={() =>

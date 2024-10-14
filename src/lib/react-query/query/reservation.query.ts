@@ -53,7 +53,15 @@ export const useGetPanelReservation = (date: Date) => {
   });
 };
 
-export const useGetReservations = (date: Date, filter: Filter) => {
+export const useGetReservations = (
+  date: Date,
+  filter: Filter,
+  colorFilter: Filter,
+  carModelFilter: Filter,
+  carTypeFilter: Filter,
+  serviceFilter: Filter,
+  userFilter: Filter
+) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.RESERVATIONS],
@@ -62,7 +70,18 @@ export const useGetReservations = (date: Date, filter: Filter) => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetReservationsQ>> =>
-      getReservations(toast, pageParam, ENUMs.LIMIT as number, date, filter),
+      getReservations(
+        toast,
+        pageParam,
+        ENUMs.LIMIT as number,
+        date,
+        filter,
+        colorFilter,
+        carModelFilter,
+        carTypeFilter,
+        serviceFilter,
+        userFilter
+      ),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
@@ -70,7 +89,16 @@ export const useGetReservations = (date: Date, filter: Filter) => {
     retry: 0,
   });
 };
-export const useGetDeletedReservations = (from: From, to: To) => {
+export const useGetDeletedReservations = (
+  from: From,
+  to: To,
+  filter: Filter,
+  colorFilter: Filter,
+  carModelFilter: Filter,
+  carTypeFilter: Filter,
+  serviceFilter: Filter,
+  userFilter: Filter
+) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.DELETED_RESERVATIONS],
@@ -79,7 +107,19 @@ export const useGetDeletedReservations = (from: From, to: To) => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetReservationsQ>> =>
-      getDeletedReservation(toast, pageParam, ENUMs.LIMIT as number, from, to),
+      getDeletedReservation(
+        toast,
+        pageParam,
+        ENUMs.LIMIT as number,
+        from,
+        to,
+        filter,
+        colorFilter,
+        carModelFilter,
+        carTypeFilter,
+        serviceFilter,
+        userFilter
+      ),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
