@@ -29,6 +29,7 @@ export const getLessItems = async (
   page: Page,
   limit: Limit,
   filter: Filter,
+  userFilter: Filter,
   from: From,
   to: To
 ): Promise<PaginationReturnType<GetItemsQ>> => {
@@ -36,7 +37,9 @@ export const getLessItems = async (
     const { data, status } = await authApi.get<PaginationReturnType<GetItemsQ>>(
       `${URLs.GET_LESS_ITEMS}?page=${page}&limit=${limit}&filter=${
         filter != "" ? filter : ""
-      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}`
+      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }`
     );
     return data;
   } catch (error: any) {

@@ -98,16 +98,6 @@ export const useGetSelfDeletedSellItems = (userFilter: Filter) => {
     retry: 0,
   });
 };
-export const useSearchSelfDeletedSellItems = (search: Search) => {
-  const { toast } = useToast();
-  return useQuery({
-    queryKey: [QUERY_KEYs.SEARCH_SELF_DELETED_SELL_ITEMS],
-    queryFn: (): Promise<GetSellItemsQ> =>
-      searchSelfDeletedSellItems(toast, search),
-    enabled: typeof search === "string" && search.trim() !== "",
-    retry: 0,
-  });
-};
 export const useGetDeletedSells = (from: From, to: To, userFilter: Filter) => {
   const { toast } = useToast();
   return useInfiniteQuery({
@@ -129,6 +119,16 @@ export const useGetDeletedSells = (from: From, to: To, userFilter: Filter) => {
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
     },
+    retry: 0,
+  });
+};
+export const useSearchSelfDeletedSellItems = (search: Search) => {
+  const { toast } = useToast();
+  return useQuery({
+    queryKey: [QUERY_KEYs.SEARCH_SELF_DELETED_SELL_ITEMS],
+    queryFn: (): Promise<GetSellItemsQ> =>
+      searchSelfDeletedSellItems(toast, search),
+    enabled: typeof search === "string" && search.trim() !== "",
     retry: 0,
   });
 };

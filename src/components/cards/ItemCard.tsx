@@ -21,6 +21,7 @@ import CustomClose from "../shared/CustomClose";
 import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import RestoreModal from "../ui/RestoreModal";
 import { useGetConfigs } from "@/lib/react-query/query/config.query";
+import Image from "../ui/Image";
 
 const ItemCard = ({
   name,
@@ -105,7 +106,13 @@ const ItemCard = ({
         <Td className="!p-3">
           <p className="text-center font-light font-bukra text-sm">{name}</p>
         </Td>
-
+        <Td className="!p-3">
+          <Image
+            image={image_url}
+            preview={name.charAt(0)}
+            className="w-20 h-20 rounded-full object-cover"
+          />
+        </Td>
         <Td className="!p-3">
           <p className="text-center font-light font-bukra text-sm">{barcode}</p>
         </Td>

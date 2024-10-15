@@ -219,6 +219,9 @@ const Items = () => {
                           <p className="pr-3 table-head-border">ناو</p>
                         </Th>
                         <Th className="text-center text-sm !p-4">
+                          <p className="pr-3 table-head-border">وێنە</p>
+                        </Th>
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">بارکۆد</p>
                         </Th>{" "}
                         <Th className="text-center text-sm !p-4">

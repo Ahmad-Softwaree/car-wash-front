@@ -47,7 +47,12 @@ import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 import { Search } from "react-router-dom";
 
-export const useGetLessItems = (filter: Filter, from: From, to: To) => {
+export const useGetLessItems = (
+  filter: Filter,
+  userFilter: Filter,
+  from: From,
+  to: To
+) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.LESS_ITEMS],
@@ -56,7 +61,15 @@ export const useGetLessItems = (filter: Filter, from: From, to: To) => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetItemsQ>> =>
-      getLessItems(toast, pageParam, ENUMs.LIMIT as number, filter, from, to),
+      getLessItems(
+        toast,
+        pageParam,
+        ENUMs.LIMIT as number,
+        filter,
+        userFilter,
+        from,
+        to
+      ),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;

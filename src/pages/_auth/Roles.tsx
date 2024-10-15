@@ -61,7 +61,7 @@ const Roles = () => {
             {" "}
             <Search placeholder="گەڕان بەپێی ناو" />
           </div>
-          <div className="w-full flex flex-row justify-end items-center gap-3">
+          <div className="flex flex-row justify-end items-center gap-3">
             {checked?.length > 0 && (
               <div className="flex flex-row justify-center items-center gap-2 dark-light">
                 {deleted_page ? (
@@ -135,7 +135,7 @@ const Roles = () => {
                   <Table className="relative  w-full table-dark-light !text-primary-800 dark:!text-white  default-border">
                     <THead className="sticky -top-1   table-dark-light z-10 w-full  default-border">
                       <Tr>
-                        <Th className="text-center text-sm !p-4 !min-w-[100px]">
+                        <Th className="text-right text-sm !p-4 !min-w-[100px]">
                           <InputGroup className="checkbox-input">
                             <Input
                               onChange={() => {
@@ -161,14 +161,14 @@ const Roles = () => {
                             />
                           </InputGroup>
                         </Th>
-                        <Th className="text-center text-sm !p-4">
+                        <Th className="text-right text-sm !p-4">
                           <p className="pr-1">#</p>
                         </Th>
-                        <Th className="text-center text-sm !p-4">
+                        <Th className="text-right text-sm !p-4">
                           <p className="pr-3 table-head-border">ناو</p>
                         </Th>
 
-                        <Th className="text-center text-sm !p-4">
+                        <Th className="text-right text-sm !p-4">
                           <p className="pr-3 table-head-border">کرادرەکان</p>
                         </Th>
                       </Tr>
@@ -187,7 +187,7 @@ const Roles = () => {
                   </Table>
                 </div>
                 <div className="w-full flex flex-row justify-center items-center z-[100]  table-dark-light   default-border p-2 ">
-                  <p className="text-center">ژمارەی داتا {allData.length}</p>
+                  <p className="text-right">ژمارەی داتا {allData.length}</p>
                 </div>
               </>
             );

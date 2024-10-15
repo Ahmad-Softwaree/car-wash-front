@@ -23,7 +23,11 @@ import { TailSpin } from "react-loader-spinner";
 import CustomClose from "@/components/shared/CustomClose";
 import FilterModal from "@/components/shared/FilterModal";
 import ItemProfitReportCard from "@/components/cards/ItemProfitReportCard";
+import { useGetConfigs } from "@/lib/react-query/query/config.query";
+import POSModal from "@/components/ui/POSModal";
 const ItemProfitReportList = () => {
+  const { data: config } = useGetConfigs();
+
   const [searchParam, setSearchParam] = useSearchParams();
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string);
   let from = searchParam.get(ENUMs.FROM_PARAM as string);
@@ -290,17 +294,31 @@ const ItemProfitReportList = () => {
           isOpen={print}
           onClose={() => setPrint(false)}
         >
-          <PrintModal
-            printFn={() =>
-              useItemProfitPrint(
-                item_filter || "",
-                search || "",
-                from || "",
-                to || ""
-              )
-            }
-            onClose={() => setPrint(false)}
-          />
+          {config?.report_print_modal ? (
+            <PrintModal
+              printFn={() =>
+                useItemProfitPrint(
+                  item_filter || "",
+                  search || "",
+                  from || "",
+                  to || ""
+                )
+              }
+              onClose={() => setPrint(false)}
+            />
+          ) : (
+            <POSModal
+              printFn={() =>
+                useItemProfitPrint(
+                  item_filter || "",
+                  search || "",
+                  from || "",
+                  to || ""
+                )
+              }
+              onClose={() => setPrint(false)}
+            />
+          )}
         </Dialog>
       )}
       {filter && (

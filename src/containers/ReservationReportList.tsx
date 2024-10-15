@@ -24,7 +24,10 @@ import CustomClose from "@/components/shared/CustomClose";
 import FilterModal from "@/components/shared/FilterModal";
 import ReservationReportCard from "@/components/cards/ReservationReportCard";
 import { Reservation } from "@/types/reservation";
+import POSModal from "@/components/ui/POSModal";
+import { useGetConfigs } from "@/lib/react-query/query/config.query";
 const ReservationReportList = () => {
+  const { data: config } = useGetConfigs();
   const [searchParam, setSearchParam] = useSearchParams();
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string);
   let from = searchParam.get(ENUMs.FROM_PARAM as string);
@@ -259,21 +262,39 @@ const ReservationReportList = () => {
           isOpen={print}
           onClose={() => setPrint(false)}
         >
-          <PrintModal
-            printFn={() =>
-              useReservationPrint(
-                search || "",
-                from || "",
-                to || "",
-                color || "",
-                carModel || "",
-                carType || "",
-                service || "",
-                user || ""
-              )
-            }
-            onClose={() => setPrint(false)}
-          />
+          {config?.report_print_modal ? (
+            <PrintModal
+              printFn={() =>
+                useReservationPrint(
+                  search || "",
+                  from || "",
+                  to || "",
+                  color || "",
+                  carModel || "",
+                  carType || "",
+                  service || "",
+                  user || ""
+                )
+              }
+              onClose={() => setPrint(false)}
+            />
+          ) : (
+            <POSModal
+              printFn={() =>
+                useReservationPrint(
+                  search || "",
+                  from || "",
+                  to || "",
+                  color || "",
+                  carModel || "",
+                  carType || "",
+                  service || "",
+                  user || ""
+                )
+              }
+              onClose={() => setPrint(false)}
+            />
+          )}
         </Dialog>
       )}
       {filter && (

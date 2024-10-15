@@ -14,14 +14,15 @@ const RoleDetailCard = ({
   parts,
   id,
 }: FormFinalOperation & RoleCardProps) => {
+  console.log(parts);
   return (
-    <div className="space-y-4  dark-light  rounded-lg default-border bg-transparent py-2 w-full  shadow-4xl mt-2">
+    <div className="space-y-4  dark-light  rounded-lg default-border bg-transparent py-2 w-full max-w-2xl shadow-4xl mt-2">
       <div className="w-full flex flex-col justify-start items-start gap-4 my-3 px-3">
         <p className="text-sm">زانیاری </p>
       </div>
 
       <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap md:flex-nowrap px-3">
-        <div className="w-full md:w-1/2 flex flex-col gap-2">
+        <div className="w-full flex flex-col gap-2">
           <Label className="w-full text-sm  flex flex-row gap-2">
             <p>ناو</p>
           </Label>
@@ -42,20 +43,24 @@ const RoleDetailCard = ({
         </div>
       </div>
 
-      <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap md:flex-nowrap px-3">
-        <div className="w-full  flex flex-col gap-2">
-          <Label className="w-full text-sm  flex flex-row gap-2">
-            <p>بەشەکان</p>
-          </Label>
-          <InputGroup className="w-full text-input 0 flex-wrap">
-            {parts.map((val: Part, _index: number) => (
-              <div className="w-fit p-2 rounded-md default-border dark-light font-bukra text-xs">
-                <p>{val.name}</p>
-              </div>
-            ))}
-          </InputGroup>
+      {parts.length > 0 ? (
+        <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap md:flex-nowrap px-3">
+          <div className="w-full  flex flex-col gap-2">
+            <Label className="w-full text-sm  flex flex-row gap-2">
+              <p>بەشەکان</p>
+            </Label>
+            <InputGroup className="w-full text-input 0 flex-wrap">
+              {parts.map((val: Part, _index: number) => (
+                <div className="w-fit p-2 rounded-md default-border dark-light font-bukra text-xs">
+                  <p>{val.name}</p>
+                </div>
+              ))}
+            </InputGroup>
+          </div>
         </div>
-      </div>
+      ) : (
+        <p className="text-center text-sm">هیج بەشێکی بۆ دیاری نەکراوە</p>
+      )}
     </div>
   );
 };

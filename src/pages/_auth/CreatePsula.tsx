@@ -290,7 +290,7 @@ const CreatePsula = () => {
             <div className="col-span-full 2xl:col-span-3   px-0  flex flex-col justify-start items-start gap-5">
               {" "}
               {checked?.length > 0 && (
-                <div className="w-full flex flex-row justify-end items-center gap-3">
+                <div className="flex flex-row justify-end items-center gap-3">
                   <div className="flex flex-row justify-center items-center gap-2 dark-light">
                     <DeleteChip onClick={() => setIsItemDelete(true)} />
 

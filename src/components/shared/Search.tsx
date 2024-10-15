@@ -21,6 +21,15 @@ const Search = ({ placeholder }: { placeholder?: string }) => {
             const params = new URLSearchParams(prev);
             params.set(ENUMs.SEARCH_PARAM as string, e.target.value);
             params.delete(ENUMs.ITEM_TYPE_PARAM as string);
+            params.delete(ENUMs.EXPENSE_TYPE_PARAM as string);
+            params.delete(ENUMs.COLOR_FILTER_PARAM as string);
+            params.delete(ENUMs.CAR_MODEL_FILTER_PARAM as string);
+            params.delete(ENUMs.CAR_TYPE_FILTER_PARAM as string);
+            params.delete(ENUMs.USER_FILTER_PARAM as string);
+            params.delete(ENUMs.SERVICE_FILTER_PARAM as string);
+            params.delete(ENUMs.ROLE_FILTER_PARAM as string);
+            params.delete(ENUMs.TABLE_NAME_PARAM as string);
+
             params.delete(ENUMs.FILTER_PARAM as string);
 
             params.delete(ENUMs.TO_PARAM as string);

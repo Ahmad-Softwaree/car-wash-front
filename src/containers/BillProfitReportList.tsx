@@ -23,7 +23,11 @@ import CustomClose from "@/components/shared/CustomClose";
 import FilterModal from "@/components/shared/FilterModal";
 import SellProfitCard from "@/components/cards/SellProfitCard";
 import { Sell } from "@/types/sell";
+import { useGetConfigs } from "@/lib/react-query/query/config.query";
+import POSModal from "@/components/ui/POSModal";
 const BillProfitReportList = () => {
+  const { data: config } = useGetConfigs();
+
   const [searchParam, setSearchParam] = useSearchParams();
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string);
   let from = searchParam.get(ENUMs.FROM_PARAM as string);
@@ -267,12 +271,21 @@ const BillProfitReportList = () => {
           isOpen={print}
           onClose={() => setPrint(false)}
         >
-          <PrintModal
-            printFn={() =>
-              useBillProfitPrint(search || "", from || "", to || "")
-            }
-            onClose={() => setPrint(false)}
-          />
+          {config?.report_print_modal ? (
+            <PrintModal
+              printFn={() =>
+                useBillProfitPrint(search || "", from || "", to || "")
+              }
+              onClose={() => setPrint(false)}
+            />
+          ) : (
+            <POSModal
+              printFn={() =>
+                useBillProfitPrint(search || "", from || "", to || "")
+              }
+              onClose={() => setPrint(false)}
+            />
+          )}
         </Dialog>
       )}
       {filter && (

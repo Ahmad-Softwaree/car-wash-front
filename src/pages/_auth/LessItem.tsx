@@ -53,7 +53,10 @@ const ItemLess = () => {
             <Search placeholder="گەڕان بەپێێ ناو/بارکۆد" />
 
             <Badge
-              invisible={!searchParam.get(ENUMs.ITEM_TYPE_PARAM as string)}
+              invisible={
+                !searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) &&
+                !searchParam.get(ENUMs.USER_FILTER_PARAM as string)
+              }
               anchorOrigin={{
                 vertical: "bottom",
                 horizontal: "right",
@@ -64,12 +67,15 @@ const ItemLess = () => {
                 className="w-11 h-11 p-2 rounded-md dark-light hover:light-dark cursor-pointer default-border transition-all duration-200"
               />
             </Badge>
-            {searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) && (
+            {(searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) ||
+              searchParam.get(ENUMs.USER_FILTER_PARAM as string)) && (
               <Button
                 onClick={() => {
                   setSearchParam((prev) => {
                     const params = new URLSearchParams(prev);
                     params.delete(ENUMs.ITEM_TYPE_PARAM as string);
+                    params.delete(ENUMs.USER_FILTER_PARAM as string);
+
                     return params;
                   });
                 }}
@@ -99,6 +105,8 @@ const ItemLess = () => {
           queryFn={() =>
             useGetLessItems(
               searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) || "",
+              searchParam.get(ENUMs.USER_FILTER_PARAM as string) || "",
+
               searchParam.get(ENUMs.FROM_PARAM as string) || "",
               searchParam.get(ENUMs.TO_PARAM as string) || ""
             )
@@ -183,6 +191,9 @@ const ItemLess = () => {
                         </Th>
                         <Th className="text-right text-sm !p-4">
                           <p className="pr-3 table-head-border">ناو</p>
+                        </Th>
+                        <Th className="text-right text-sm !p-4">
+                          <p className="pr-3 table-head-border">وێنە</p>
                         </Th>
                         <Th className="text-right text-sm !p-4">
                           <p className="pr-3 table-head-border">بارکۆد</p>

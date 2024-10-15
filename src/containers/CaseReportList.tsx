@@ -24,7 +24,11 @@ import CustomClose from "@/components/shared/CustomClose";
 import FilterModal from "@/components/shared/FilterModal";
 import { CaseReport } from "@/types/report";
 import CaseReportCard from "@/components/cards/CaseReportCard";
+import { useGetConfigs } from "@/lib/react-query/query/config.query";
+import POSModal from "@/components/ui/POSModal";
 const CaseReportList = () => {
+  const { data: config } = useGetConfigs();
+
   const [searchParam, setSearchParam] = useSearchParams();
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string);
   let from = searchParam.get(ENUMs.FROM_PARAM as string);
@@ -212,10 +216,17 @@ const CaseReportList = () => {
           isOpen={print}
           onClose={() => setPrint(false)}
         >
-          <PrintModal
-            printFn={() => useCasePrint(search || "", from || "", to || "")}
-            onClose={() => setPrint(false)}
-          />
+          {config?.report_print_modal ? (
+            <PrintModal
+              printFn={() => useCasePrint(search || "", from || "", to || "")}
+              onClose={() => setPrint(false)}
+            />
+          ) : (
+            <POSModal
+              printFn={() => useCasePrint(search || "", from || "", to || "")}
+              onClose={() => setPrint(false)}
+            />
+          )}
         </Dialog>
       )}
       {filter && (

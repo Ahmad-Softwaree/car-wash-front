@@ -259,7 +259,7 @@ const ReservationForm = ({
 
               <div className=" col-span-full md:col-span-1 w-full flex flex-col gap-2">
                 <Label className="w-full text-sm  flex flex-row gap-2">
-                  <p>جۆری ئۆتمبێڵ</p>
+                  <p>جۆری ئۆتۆمبێل</p>
                   <Required />
                 </Label>{" "}
                 <div className="w-full flex flex-row justify-start items-center gap-3">
@@ -275,7 +275,7 @@ const ReservationForm = ({
                       className="w-full bg-transparent !text-sm"
                     >
                       <Option className="!text-sm dark-light" value={""}>
-                        جۆری ئۆتمبێڵ هەڵبژێرە
+                        جۆری ئۆتۆمبێل هەڵبژێرە
                       </Option>
                       {carTypes.map((val: CarType, _index: number) => (
                         <Option
@@ -304,7 +304,7 @@ const ReservationForm = ({
 
               <div className=" col-span-full md:col-span-1 w-full flex flex-col gap-2">
                 <Label className="w-full text-sm  flex flex-row gap-2">
-                  <p>مۆدێلی ئۆتمبێڵ</p>
+                  <p>مۆدێلی ئۆتۆمبێل</p>
                   <Required />
                 </Label>{" "}
                 <div className="w-full flex flex-row justify-start items-center gap-3">
@@ -320,7 +320,7 @@ const ReservationForm = ({
                       className="w-full bg-transparent !text-sm"
                     >
                       <Option className="!text-sm dark-light" value={""}>
-                        مۆدێلی ئۆتمبێڵ هەڵبژێرە
+                        مۆدێلی ئۆتۆمبێل هەڵبژێرە
                       </Option>
                       {carModels.map((val: CarModel, _index: number) => (
                         <Option

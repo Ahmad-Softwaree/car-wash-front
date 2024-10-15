@@ -1,5 +1,4 @@
 import Search from "@/components/shared/Search";
-import TFoot from "@/components/ui/TFoot";
 import { Table, Td, Th, THead, Tr } from "@/components/ui";
 import TBody from "@/components/ui/TBody";
 import { useSearchParams } from "react-router-dom";
@@ -24,7 +23,11 @@ import { TailSpin } from "react-loader-spinner";
 import CustomClose from "@/components/shared/CustomClose";
 import FilterModal from "@/components/shared/FilterModal";
 import ExpenseReportCard from "@/components/cards/ExpenseReportCard";
+import { useGetConfigs } from "@/lib/react-query/query/config.query";
+import POSModal from "@/components/ui/POSModal";
 const ExpenseReportList = () => {
+  const { data: config } = useGetConfigs();
+
   const [searchParam, setSearchParam] = useSearchParams();
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string);
   let from = searchParam.get(ENUMs.FROM_PARAM as string);
@@ -216,17 +219,31 @@ const ExpenseReportList = () => {
           isOpen={print}
           onClose={() => setPrint(false)}
         >
-          <PrintModal
-            printFn={() =>
-              useExpensePrint(
-                expense_type || "",
-                search || "",
-                from || "",
-                to || ""
-              )
-            }
-            onClose={() => setPrint(false)}
-          />
+          {config?.report_print_modal ? (
+            <PrintModal
+              printFn={() =>
+                useExpensePrint(
+                  expense_type || "",
+                  search || "",
+                  from || "",
+                  to || ""
+                )
+              }
+              onClose={() => setPrint(false)}
+            />
+          ) : (
+            <POSModal
+              printFn={() =>
+                useExpensePrint(
+                  expense_type || "",
+                  search || "",
+                  from || "",
+                  to || ""
+                )
+              }
+              onClose={() => setPrint(false)}
+            />
+          )}
         </Dialog>
       )}
       {filter && (

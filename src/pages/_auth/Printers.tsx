@@ -61,7 +61,7 @@ const Printers = () => {
           <div className=" flex flex-row justify-start items-center gap-3 flex-wrap md:flex-nowrap">
             <Search placeholder="گەڕان بەپێی ناو" />
           </div>
-          <div className="w-full flex flex-row justify-end items-center gap-3">
+          <div className="flex flex-row justify-end items-center gap-3">
             {checked?.length > 0 && (
               <div className="flex flex-row justify-center items-center gap-2 dark-light">
                 {deleted_page ? (

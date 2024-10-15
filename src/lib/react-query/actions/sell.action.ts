@@ -50,6 +50,28 @@ export const getSells = async (
     throw generateNestErrors(error, toast);
   }
 };
+export const getDeletedSell = async (
+  toast: ToastType,
+  page: Page,
+  limit: Limit,
+  userFilter: Filter,
+
+  from: From,
+  to: To
+): Promise<PaginationReturnType<GetSellsQ>> => {
+  try {
+    const { data, status } = await authApi.get<PaginationReturnType<GetSellsQ>>(
+      `${URLs.GET_DELETED_SELLS}?page=${page}&limit=${limit}&from=${
+        from != "" ? from : ""
+      }&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }`
+    );
+    return data;
+  } catch (error: any) {
+    throw generateNestErrors(error, toast);
+  }
+};
 export const getSelfDeletedSellItems = async (
   toast: ToastType,
   page: Page,
@@ -78,28 +100,6 @@ export const searchSelfDeletedSellItems = async (
   try {
     const { data, status } = await authApi.get<GetSellItemsQ>(
       `${URLs.SEARCH_SELF_DELETED_SELL_ITEMS}?search=${search}`
-    );
-    return data;
-  } catch (error: any) {
-    throw generateNestErrors(error, toast);
-  }
-};
-export const getDeletedSell = async (
-  toast: ToastType,
-  page: Page,
-  limit: Limit,
-  userFilter: Filter,
-
-  from: From,
-  to: To
-): Promise<PaginationReturnType<GetSellsQ>> => {
-  try {
-    const { data, status } = await authApi.get<PaginationReturnType<GetSellsQ>>(
-      `${URLs.GET_DELETED_SELLS}?page=${page}&limit=${limit}&from=${
-        from != "" ? from : ""
-      }&to=${to != "" ? to : ""}&userFilter=${
-        userFilter != "" ? userFilter : ""
-      }`
     );
     return data;
   } catch (error: any) {

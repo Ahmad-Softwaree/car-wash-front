@@ -22,7 +22,11 @@ import CustomClose from "@/components/shared/CustomClose";
 import FilterModal from "@/components/shared/FilterModal";
 import { ItemKoga } from "@/types/items";
 import ItemLessReportCard from "@/components/cards/KogaLessReportCard";
+import { useGetConfigs } from "@/lib/react-query/query/config.query";
+import POSModal from "@/components/ui/POSModal";
 const KogaLessReportList = () => {
+  const { data: config } = useGetConfigs();
+
   const [searchParam, setSearchParam] = useSearchParams();
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string);
   let item_type = searchParam.get(ENUMs.ITEM_TYPE_PARAM as string);
@@ -217,10 +221,17 @@ const KogaLessReportList = () => {
           isOpen={print}
           onClose={() => setPrint(false)}
         >
-          <PrintModal
-            printFn={() => useKogaLessPrint(search || "", item_type || "")}
-            onClose={() => setPrint(false)}
-          />
+          {config?.report_print_modal ? (
+            <PrintModal
+              printFn={() => useKogaLessPrint(search || "", item_type || "")}
+              onClose={() => setPrint(false)}
+            />
+          ) : (
+            <POSModal
+              printFn={() => useKogaLessPrint(search || "", item_type || "")}
+              onClose={() => setPrint(false)}
+            />
+          )}
         </Dialog>
       )}
       {filter && (
