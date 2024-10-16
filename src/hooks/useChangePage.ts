@@ -24,6 +24,11 @@ const useChangePage = (): void => {
       params.delete(ENUMs.EXPENSE_TYPE_PARAM as string);
       params.delete(ENUMs.TABLE_NAME_PARAM as string);
       params.delete(ENUMs.ROLE_FILTER_PARAM as string);
+      params.delete(ENUMs.USER_FILTER_PARAM as string);
+      params.delete(ENUMs.COLOR_FILTER_PARAM as string);
+      params.delete(ENUMs.CAR_MODEL_FILTER_PARAM as string);
+      params.delete(ENUMs.CAR_TYPE_FILTER_PARAM as string);
+      params.delete(ENUMs.SERVICE_FILTER_PARAM as string);
 
       params.delete(ENUMs.FROM_PARAM as string);
 

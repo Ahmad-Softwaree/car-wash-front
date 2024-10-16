@@ -93,7 +93,7 @@ import {
 import { GetReservationsQ } from "@/types/reservation";
 
 //SELL REPORT
-export const useGetSellReport = (from: From, to: To) => {
+export const useGetSellReport = (from: From, to: To, userFilter: Filter) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.SELL_REPORT],
@@ -102,7 +102,14 @@ export const useGetSellReport = (from: From, to: To) => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetSellsQ>> =>
-      getSellReport(toast, pageParam, ENUMs.LIMIT as number, from, to),
+      getSellReport(
+        toast,
+        pageParam,
+        ENUMs.LIMIT as number,
+        from,
+        to,
+        userFilter
+      ),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
@@ -110,12 +117,16 @@ export const useGetSellReport = (from: From, to: To) => {
     retry: 0,
   });
 };
-export const useGetSellReportInformation = (from: From, to: To) => {
+export const useGetSellReportInformation = (
+  from: From,
+  to: To,
+  userFilter: Filter
+) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.SELL_REPORT_INFORMATION],
     queryFn: (): Promise<SellReportInfo> =>
-      getSellReportInformation(toast, from, to),
+      getSellReportInformation(toast, from, to, userFilter),
     retry: 0,
   });
 };
@@ -140,18 +151,29 @@ export const useGetSellReportInformationSearch = (search: Search) => {
     enabled: typeof search === "string" && search.trim() !== "",
   });
 };
-export const useSellPrint = (search: Search, from: From, to: To) => {
+export const useSellPrint = (
+  search: Search,
+  from: From,
+  to: To,
+  userFilter: Filter
+) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.SELL_PRINT_DATA],
-    queryFn: (): Promise<Blob | null> => sellPrint(toast, search, from, to),
+    queryFn: (): Promise<Blob | null> =>
+      sellPrint(toast, search, from, to, userFilter),
     retry: 0,
   });
 };
 
 //ITEM REPORT
 
-export const useGetItemReport = (filter: Filter, from: From, to: To) => {
+export const useGetItemReport = (
+  filter: Filter,
+  from: From,
+  to: To,
+  userFilter: Filter
+) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.ITEM_REPORT],
@@ -160,7 +182,15 @@ export const useGetItemReport = (filter: Filter, from: From, to: To) => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetItemsReportQ>> =>
-      getItemReport(toast, pageParam, ENUMs.LIMIT as number, filter, from, to),
+      getItemReport(
+        toast,
+        pageParam,
+        ENUMs.LIMIT as number,
+        filter,
+        from,
+        to,
+        userFilter
+      ),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
@@ -171,13 +201,14 @@ export const useGetItemReport = (filter: Filter, from: From, to: To) => {
 export const useGetItemReportInformation = (
   filter: Filter,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.ITEM_REPORT_INFORMATION],
     queryFn: (): Promise<ItemReportInfo> =>
-      getItemReportInformation(toast, filter, from, to),
+      getItemReportInformation(toast, filter, from, to, userFilter),
     retry: 0,
   });
 };
@@ -206,20 +237,21 @@ export const useItemPrint = (
   filter: Filter,
   search: Search,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.ITEM_PRINT_DATA],
     queryFn: (): Promise<Blob | null> =>
-      itemPrint(toast, search, filter, from, to),
+      itemPrint(toast, search, filter, from, to, userFilter),
     retry: 0,
   });
 };
 
 //KOGA_ALL REPORT
 
-export const useGetKogaAllReport = (filter: Filter) => {
+export const useGetKogaAllReport = (filter: Filter, userFilter: Filter) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.KOGA_ALL_REPORT],
@@ -228,7 +260,13 @@ export const useGetKogaAllReport = (filter: Filter) => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetItemsReportQ>> =>
-      getKogaAllReport(toast, pageParam, ENUMs.LIMIT as number, filter),
+      getKogaAllReport(
+        toast,
+        pageParam,
+        ENUMs.LIMIT as number,
+        filter,
+        userFilter
+      ),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
@@ -236,12 +274,15 @@ export const useGetKogaAllReport = (filter: Filter) => {
     retry: 0,
   });
 };
-export const useGetKogaAllReportInformation = (filter: Filter) => {
+export const useGetKogaAllReportInformation = (
+  filter: Filter,
+  userFilter: Filter
+) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.KOGA_ALL_REPORT_INFORMATION],
     queryFn: (): Promise<KogaAllReportInfo> =>
-      getKogaAllReportInformation(toast, filter),
+      getKogaAllReportInformation(toast, filter, userFilter),
     retry: 0,
   });
 };
@@ -266,18 +307,23 @@ export const useGetKogaAllReportInformationSearch = (search: Search) => {
     enabled: typeof search === "string" && search.trim() !== "",
   });
 };
-export const useKogaAllPrint = (search: Search, filter: Filter) => {
+export const useKogaAllPrint = (
+  search: Search,
+  filter: Filter,
+  userFilter: Filter
+) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.KOGA_ALL_PRINT_DATA],
-    queryFn: (): Promise<Blob | null> => kogaAllPrint(toast, search, filter),
+    queryFn: (): Promise<Blob | null> =>
+      kogaAllPrint(toast, search, filter, userFilter),
     retry: 0,
   });
 };
 
 //KOGA NULL REPORT
 
-export const useGetKogaNullReport = (filter: Filter) => {
+export const useGetKogaNullReport = (filter: Filter, userFilter: Filter) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.KOGA_NULL_REPORT],
@@ -286,7 +332,13 @@ export const useGetKogaNullReport = (filter: Filter) => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetItemsReportQ>> =>
-      getKogaNullReport(toast, pageParam, ENUMs.LIMIT as number, filter),
+      getKogaNullReport(
+        toast,
+        pageParam,
+        ENUMs.LIMIT as number,
+        filter,
+        userFilter
+      ),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
@@ -294,12 +346,15 @@ export const useGetKogaNullReport = (filter: Filter) => {
     retry: 0,
   });
 };
-export const useGetKogaNullReportInformation = (filter: Filter) => {
+export const useGetKogaNullReportInformation = (
+  filter: Filter,
+  userFilter: Filter
+) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.KOGA_NULL_REPORT_INFORMATION],
     queryFn: (): Promise<KogaNullReportInfo> =>
-      getKogaNullReportInformation(toast, filter),
+      getKogaNullReportInformation(toast, filter, userFilter),
     retry: 0,
   });
 };
@@ -324,18 +379,23 @@ export const useGetKogaNullReportInformationSearch = (search: Search) => {
     enabled: typeof search === "string" && search.trim() !== "",
   });
 };
-export const useKogaNullPrint = (search: Search, filter: Filter) => {
+export const useKogaNullPrint = (
+  search: Search,
+  filter: Filter,
+  userFilter: Filter
+) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.KOGA_NULL_PRINT_DATA],
-    queryFn: (): Promise<Blob | null> => kogaNullPrint(toast, search, filter),
+    queryFn: (): Promise<Blob | null> =>
+      kogaNullPrint(toast, search, filter, userFilter),
     retry: 0,
   });
 };
 
 //KOGA LESS REPORT
 
-export const useGetKogaLessReport = (filter: Filter) => {
+export const useGetKogaLessReport = (filter: Filter, userFilter: Filter) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.KOGA_LESS_REPORT],
@@ -344,7 +404,13 @@ export const useGetKogaLessReport = (filter: Filter) => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetItemsReportQ>> =>
-      getKogaLessReport(toast, pageParam, ENUMs.LIMIT as number, filter),
+      getKogaLessReport(
+        toast,
+        pageParam,
+        ENUMs.LIMIT as number,
+        filter,
+        userFilter
+      ),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
@@ -352,12 +418,15 @@ export const useGetKogaLessReport = (filter: Filter) => {
     retry: 0,
   });
 };
-export const useGetKogaLessReportInformation = (filter: Filter) => {
+export const useGetKogaLessReportInformation = (
+  filter: Filter,
+  userFilter: Filter
+) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.KOGA_LESS_REPORT_INFORMATION],
     queryFn: (): Promise<KogaLessReportInfo> =>
-      getKogaLessReportInformation(toast, filter),
+      getKogaLessReportInformation(toast, filter, userFilter),
     retry: 0,
   });
 };
@@ -382,11 +451,16 @@ export const useGetKogaLessReportInformationSearch = (search: Search) => {
     enabled: typeof search === "string" && search.trim() !== "",
   });
 };
-export const useKogaLessPrint = (search: Search, filter: Filter) => {
+export const useKogaLessPrint = (
+  search: Search,
+  filter: Filter,
+  userFilter: Filter
+) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.KOGA_LESS_PRINT_DATA],
-    queryFn: (): Promise<Blob | null> => kogaLessPrint(toast, search, filter),
+    queryFn: (): Promise<Blob | null> =>
+      kogaLessPrint(toast, search, filter, userFilter),
     retry: 0,
   });
 };
@@ -396,7 +470,8 @@ export const useKogaLessPrint = (search: Search, filter: Filter) => {
 export const useGetKogaMovementReport = (
   filter: Filter,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ) => {
   const { toast } = useToast();
   return useInfiniteQuery({
@@ -412,7 +487,8 @@ export const useGetKogaMovementReport = (
         ENUMs.LIMIT as number,
         filter,
         from,
-        to
+        to,
+        userFilter
       ),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
@@ -424,13 +500,14 @@ export const useGetKogaMovementReport = (
 export const useGetKogaMovementReportInformation = (
   filter: Filter,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.KOGA_MOVEMENT_REPORT_INFORMATION],
     queryFn: (): Promise<KogaMovementReportInfo> =>
-      getKogaMovementReportInformation(toast, filter, from, to),
+      getKogaMovementReportInformation(toast, filter, from, to, userFilter),
     retry: 0,
   });
 };
@@ -460,20 +537,25 @@ export const useKogaMovementPrint = (
   filter: Filter,
   search: Search,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.KOGA_MOVEMENT_PRINT_DATA],
     queryFn: (): Promise<Blob | null> =>
-      kogaMovementPrint(toast, filter, search, from, to),
+      kogaMovementPrint(toast, filter, search, from, to, userFilter),
     retry: 0,
   });
 };
 
 //BILL PROFIT REPORT
 
-export const useGetBillProfitReport = (from: From, to: To) => {
+export const useGetBillProfitReport = (
+  from: From,
+  to: To,
+  userFilter: Filter
+) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.BILL_PROFIT_REPORT],
@@ -482,7 +564,14 @@ export const useGetBillProfitReport = (from: From, to: To) => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetSellsQ>> =>
-      getBillProfitReport(toast, pageParam, ENUMs.LIMIT as number, from, to),
+      getBillProfitReport(
+        toast,
+        pageParam,
+        ENUMs.LIMIT as number,
+        from,
+        to,
+        userFilter
+      ),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
@@ -490,12 +579,16 @@ export const useGetBillProfitReport = (from: From, to: To) => {
     retry: 0,
   });
 };
-export const useGetBillProfitReportInformation = (from: From, to: To) => {
+export const useGetBillProfitReportInformation = (
+  from: From,
+  to: To,
+  userFilter: Filter
+) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.BILL_PROFIT_REPORT_INFORMATION],
     queryFn: (): Promise<BillProfitReportInfo> =>
-      getBillProfitReportInformation(toast, from, to),
+      getBillProfitReportInformation(toast, from, to, userFilter),
     retry: 0,
   });
 };
@@ -520,19 +613,29 @@ export const useGetBillProfitReportInformationSearch = (search: Search) => {
     enabled: typeof search === "string" && search.trim() !== "",
   });
 };
-export const useBillProfitPrint = (search: Search, from: From, to: To) => {
+export const useBillProfitPrint = (
+  search: Search,
+  from: From,
+  to: To,
+  userFilter: Filter
+) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.BILL_PROFIT_PRINT_DATA],
     queryFn: (): Promise<Blob | null> =>
-      billProfitPrint(toast, search, from, to),
+      billProfitPrint(toast, search, from, to, userFilter),
     retry: 0,
   });
 };
 
 //ITEM_PROFIT_REPORT
 
-export const useGetItemProfitReport = (filter: Filter, from: From, to: To) => {
+export const useGetItemProfitReport = (
+  filter: Filter,
+  from: From,
+  to: To,
+  userFilter: Filter
+) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.ITEM_PROFIT_REPORT],
@@ -547,7 +650,8 @@ export const useGetItemProfitReport = (filter: Filter, from: From, to: To) => {
         ENUMs.LIMIT as number,
         filter,
         from,
-        to
+        to,
+        userFilter
       ),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
@@ -559,13 +663,14 @@ export const useGetItemProfitReport = (filter: Filter, from: From, to: To) => {
 export const useGetItemProfitReportInformation = (
   filter: Filter,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.ITEM_PROFIT_REPORT_INFORMATION],
     queryFn: (): Promise<ItemProfitReportInfo> =>
-      getItemProfitReportInformation(toast, filter, from, to),
+      getItemProfitReportInformation(toast, filter, from, to, userFilter),
     retry: 0,
   });
 };
@@ -594,20 +699,26 @@ export const useItemProfitPrint = (
   filter: Filter,
   search: Search,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.ITEM_PRINT_DATA],
     queryFn: (): Promise<Blob | null> =>
-      itemProfitPrint(toast, search, filter, from, to),
+      itemProfitPrint(toast, search, filter, from, to, userFilter),
     retry: 0,
   });
 };
 
 //EXPENSE_REPORT
 
-export const useGetExpenseReport = (filter: Filter, from: From, to: To) => {
+export const useGetExpenseReport = (
+  filter: Filter,
+  from: From,
+  to: To,
+  userFilter: Filter
+) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.EXPENSE_REPORT],
@@ -622,7 +733,8 @@ export const useGetExpenseReport = (filter: Filter, from: From, to: To) => {
         ENUMs.LIMIT as number,
         filter,
         from,
-        to
+        to,
+        userFilter
       ),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
@@ -634,13 +746,14 @@ export const useGetExpenseReport = (filter: Filter, from: From, to: To) => {
 export const useGetExpenseReportInformation = (
   filter: Filter,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.EXPENSE_REPORT_INFORMATION],
     queryFn: (): Promise<ExpenseReportInfo> =>
-      getExpenseReportInformation(toast, filter, from, to),
+      getExpenseReportInformation(toast, filter, from, to, userFilter),
     retry: 0,
   });
 };
@@ -669,19 +782,20 @@ export const useExpensePrint = (
   filter: Filter,
   search: Search,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.EXPENSE_PRINT_DATA],
     queryFn: (): Promise<Blob | null> =>
-      expenseReportPrint(toast, search, filter, from, to),
+      expenseReportPrint(toast, search, filter, from, to, userFilter),
     retry: 0,
   });
 };
 
 //CASE_REPORT
-export const useGetCaseReport = (from: From, to: To) => {
+export const useGetCaseReport = (from: From, to: To, userFilter: Filter) => {
   const { toast } = useToast();
   return useInfiniteQuery({
     queryKey: [QUERY_KEYs.CASE_REPORT],
@@ -690,7 +804,14 @@ export const useGetCaseReport = (from: From, to: To) => {
     }: {
       pageParam: Page;
     }): Promise<PaginationReturnType<GetCasesQ>> =>
-      getCaseReport(toast, pageParam, ENUMs.LIMIT as number, from, to),
+      getCaseReport(
+        toast,
+        pageParam,
+        ENUMs.LIMIT as number,
+        from,
+        to,
+        userFilter
+      ),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, pages: any) => {
       return lastPage.meta?.nextPageUrl ? pages.length + 1 : undefined;
@@ -698,12 +819,16 @@ export const useGetCaseReport = (from: From, to: To) => {
     retry: 0,
   });
 };
-export const useGetCaseReportInformation = (from: From, to: To) => {
+export const useGetCaseReportInformation = (
+  from: From,
+  to: To,
+  userFilter: Filter
+) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.CASE_REPORT_INFORMATION],
     queryFn: (): Promise<CaseReportInfo> =>
-      getCaseReportInformation(toast, from, to),
+      getCaseReportInformation(toast, from, to, userFilter),
     retry: 0,
   });
 };
@@ -728,11 +853,17 @@ export const useGetCaseReportInformationSearch = (search: Search) => {
     enabled: typeof search === "string" && search.trim() !== "",
   });
 };
-export const useCasePrint = (search: Search, from: From, to: To) => {
+export const useCasePrint = (
+  search: Search,
+  from: From,
+  to: To,
+  userFilter: Filter
+) => {
   const { toast } = useToast();
   return useQuery({
     queryKey: [QUERY_KEYs.CASE_PRINT_DATA],
-    queryFn: (): Promise<Blob | null> => casePrint(toast, search, from, to),
+    queryFn: (): Promise<Blob | null> =>
+      casePrint(toast, search, from, to, userFilter),
     retry: 0,
   });
 };

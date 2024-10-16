@@ -42,13 +42,16 @@ export const getSellReport = async (
   page: Page,
   limit: Limit,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ): Promise<PaginationReturnType<GetSellsQ>> => {
   try {
     const { data, status } = await authApi.get<PaginationReturnType<GetSellsQ>>(
       `${URLs.GET_SELL_REPORTS}?page=${page}&limit=${limit}&from=${
         from != "" ? from : ""
-      }&to=${to != "" ? to : ""}`
+      }&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }`
     );
     return data;
   } catch (error: any) {
@@ -58,13 +61,14 @@ export const getSellReport = async (
 export const getSellReportInformation = async (
   toast: ToastType,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ): Promise<SellReportInfo> => {
   try {
     const { data, status } = await authApi.get<SellReportInfo>(
       `${URLs.GET_SELL_REPORTS_INFORMATION}?from=${from != "" ? from : ""}&to=${
         to != "" ? to : ""
-      }`
+      }&userFilter=${userFilter != "" ? userFilter : ""}`
     );
     return data;
   } catch (error: any) {
@@ -106,13 +110,16 @@ export const sellPrint = async (
   toast: ToastType,
   search: Search,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ): Promise<Blob | null> => {
   try {
     const { data } = await pdfFileAuthApi.get<any>(
       `${URLs.SELL_PRINT_DATA}?search=${search != "" ? search : ""}&from=${
         from != "" ? from : ""
-      }&to=${to != "" ? to : ""}`
+      }&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }`
     );
     const pdfData = new Uint8Array(data);
     const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
@@ -130,7 +137,8 @@ export const getItemReport = async (
   limit: Limit,
   filter: Filter,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ): Promise<PaginationReturnType<GetItemsReportQ>> => {
   try {
     const { data, status } = await authApi.get<
@@ -138,7 +146,9 @@ export const getItemReport = async (
     >(
       `${URLs.GET_ITEM_REPORTS}?page=${page}&limit=${limit}&from=${
         from != "" ? from : ""
-      }&to=${to != "" ? to : ""}&filter=${filter != "" ? filter : ""}`
+      }&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }&filter=${filter != "" ? filter : ""}`
     );
     return data;
   } catch (error: any) {
@@ -149,13 +159,16 @@ export const getItemReportInformation = async (
   toast: ToastType,
   filter: Filter,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ): Promise<ItemReportInfo> => {
   try {
     const { data, status } = await authApi.get<ItemReportInfo>(
       `${URLs.GET_ITEM_REPORTS_INFORMATION}?from=${from != "" ? from : ""}&to=${
         to != "" ? to : ""
-      }&filter=${filter != "" ? filter : ""}`
+      }&filter=${filter != "" ? filter : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }`
     );
     return data;
   } catch (error: any) {
@@ -197,13 +210,16 @@ export const itemPrint = async (
   search: Search,
   filter: Filter,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ): Promise<Blob | null> => {
   try {
     const { data } = await pdfFileAuthApi.get<any>(
       `${URLs.ITEM_PRINT_DATA}?search=${search != "" ? search : ""}&from=${
         from != "" ? from : ""
-      }&to=${to != "" ? to : ""}&filter=${filter != "" ? filter : ""}`
+      }&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }&filter=${filter != "" ? filter : ""}`
     );
     const pdfData = new Uint8Array(data);
     const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
@@ -219,7 +235,8 @@ export const getKogaAllReport = async (
   toast: ToastType,
   page: Page,
   limit: Limit,
-  filter: Filter
+  filter: Filter,
+  userFilter: Filter
 ): Promise<PaginationReturnType<GetItemsReportQ>> => {
   try {
     const { data, status } = await authApi.get<
@@ -227,7 +244,7 @@ export const getKogaAllReport = async (
     >(
       `${URLs.GET_KOGA_ALL_REPORTS}?page=${page}&limit=${limit}&filter=${
         filter != "" ? filter : ""
-      }`
+      }&userFilter=${userFilter != "" ? userFilter : ""}`
     );
     return data;
   } catch (error: any) {
@@ -236,13 +253,14 @@ export const getKogaAllReport = async (
 };
 export const getKogaAllReportInformation = async (
   toast: ToastType,
-  filter: Filter
+  filter: Filter,
+  userFilter: Filter
 ): Promise<KogaAllReportInfo> => {
   try {
     const { data, status } = await authApi.get<KogaAllReportInfo>(
       `${URLs.GET_KOGA_ALL_REPORTS_INFORMATION}?filter=${
         filter != "" ? filter : ""
-      }`
+      }&userFilter=${userFilter != "" ? userFilter : ""}`
     );
     return data;
   } catch (error: any) {
@@ -282,13 +300,16 @@ export const getKogaAllReportInformationSearch = async (
 export const kogaAllPrint = async (
   toast: ToastType,
   search: Search,
-  filter: Filter
+  filter: Filter,
+  userFilter: Filter
 ): Promise<Blob | null> => {
   try {
     const { data } = await pdfFileAuthApi.get<any>(
       `${URLs.KOGA_ALL_PRINT_DATA}?search=${
         search != "" ? search : ""
-      }&filter=${filter != "" ? filter : ""}`
+      }&filter=${filter != "" ? filter : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }`
     );
     const pdfData = new Uint8Array(data);
     const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
@@ -304,7 +325,8 @@ export const getKogaNullReport = async (
   toast: ToastType,
   page: Page,
   limit: Limit,
-  filter: Filter
+  filter: Filter,
+  userFilter: Filter
 ): Promise<PaginationReturnType<GetItemsReportQ>> => {
   try {
     const { data, status } = await authApi.get<
@@ -312,7 +334,7 @@ export const getKogaNullReport = async (
     >(
       `${URLs.GET_KOGA_NULL_REPORTS}?page=${page}&limit=${limit}&filter=${
         filter != "" ? filter : ""
-      }`
+      }&userFilter=${userFilter != "" ? userFilter : ""}`
     );
     return data;
   } catch (error: any) {
@@ -321,13 +343,14 @@ export const getKogaNullReport = async (
 };
 export const getKogaNullReportInformation = async (
   toast: ToastType,
-  filter: Filter
+  filter: Filter,
+  userFilter: Filter
 ): Promise<KogaNullReportInfo> => {
   try {
     const { data, status } = await authApi.get<KogaNullReportInfo>(
       `${URLs.GET_KOGA_NULL_REPORTS_INFORMATION}?filter=${
         filter != "" ? filter : ""
-      }`
+      }&userFilter=${userFilter != "" ? userFilter : ""}`
     );
     return data;
   } catch (error: any) {
@@ -370,13 +393,16 @@ export const getKogaNullReportInformationSearch = async (
 export const kogaNullPrint = async (
   toast: ToastType,
   search: Search,
-  filter: Filter
+  filter: Filter,
+  userFilter: Filter
 ): Promise<Blob | null> => {
   try {
     const { data } = await pdfFileAuthApi.get<any>(
       `${URLs.KOGA_NULL_PRINT_DATA}?search=${
         search != "" ? search : ""
-      }&filter=${filter != "" ? filter : ""}`
+      }&filter=${filter != "" ? filter : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }`
     );
     const pdfData = new Uint8Array(data);
     const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
@@ -392,7 +418,8 @@ export const getKogaLessReport = async (
   toast: ToastType,
   page: Page,
   limit: Limit,
-  filter: Filter
+  filter: Filter,
+  userFilter: Filter
 ): Promise<PaginationReturnType<GetItemsReportQ>> => {
   try {
     const { data, status } = await authApi.get<
@@ -400,7 +427,7 @@ export const getKogaLessReport = async (
     >(
       `${URLs.GET_KOGA_LESS_REPORTS}?page=${page}&limit=${limit}&filter=${
         filter != "" ? filter : ""
-      }`
+      }&userFilter=${userFilter != "" ? userFilter : ""}`
     );
     return data;
   } catch (error: any) {
@@ -409,13 +436,14 @@ export const getKogaLessReport = async (
 };
 export const getKogaLessReportInformation = async (
   toast: ToastType,
-  filter: Filter
+  filter: Filter,
+  userFilter: Filter
 ): Promise<KogaLessReportInfo> => {
   try {
     const { data, status } = await authApi.get<KogaLessReportInfo>(
       `${URLs.GET_KOGA_LESS_REPORTS_INFORMATION}?filter=${
         filter != "" ? filter : ""
-      }`
+      }&userFilter=${userFilter != "" ? userFilter : ""}`
     );
     return data;
   } catch (error: any) {
@@ -458,13 +486,16 @@ export const getKogaLessReportInformationSearch = async (
 export const kogaLessPrint = async (
   toast: ToastType,
   search: Search,
-  filter: Filter
+  filter: Filter,
+  userFilter: Filter
 ): Promise<Blob | null> => {
   try {
     const { data } = await pdfFileAuthApi.get<any>(
       `${URLs.KOGA_LESS_PRINT_DATA}?search=${
         search != "" ? search : ""
-      }&filter=${filter != "" ? filter : ""}`
+      }&filter=${filter != "" ? filter : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }`
     );
     const pdfData = new Uint8Array(data);
     const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
@@ -482,7 +513,8 @@ export const getKogaMovementReport = async (
   limit: Limit,
   filter: Filter,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ): Promise<PaginationReturnType<GetItemQuantityHistoriesReportQ>> => {
   try {
     const { data, status } = await authApi.get<
@@ -490,7 +522,9 @@ export const getKogaMovementReport = async (
     >(
       `${URLs.GET_KOGA_MOVEMENT_REPORTS}?page=${page}&limit=${limit}&from=${
         from != "" ? from : ""
-      }&to=${to != "" ? to : ""}&filter=${filter != "" ? filter : ""}`
+      }&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }&filter=${filter != "" ? filter : ""}`
     );
     return data;
   } catch (error: any) {
@@ -501,13 +535,16 @@ export const getKogaMovementReportInformation = async (
   toast: ToastType,
   filter: Filter,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ): Promise<KogaMovementReportInfo> => {
   try {
     const { data, status } = await authApi.get<KogaMovementReportInfo>(
       `${URLs.GET_KOGA_MOVEMENT_REPORTS_INFORMATION}?from=${
         from != "" ? from : ""
-      }&to=${to != "" ? to : ""}&filter=${filter != "" ? filter : ""}`
+      }&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }&filter=${filter != "" ? filter : ""}`
     );
     return data;
   } catch (error: any) {
@@ -552,15 +589,16 @@ export const kogaMovementPrint = async (
   filter: Filter,
   search: Search,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ): Promise<Blob | null> => {
   try {
     const { data } = await pdfFileAuthApi.get<any>(
       `${URLs.KOGA_MOVEMENT_PRINT_DATA}?search=${
         search != "" ? search : ""
-      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}&filter=${
-        filter != "" ? filter : ""
-      }`
+      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }&filter=${filter != "" ? filter : ""}`
     );
     const pdfData = new Uint8Array(data);
     const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
@@ -577,13 +615,16 @@ export const getBillProfitReport = async (
   page: Page,
   limit: Limit,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ): Promise<PaginationReturnType<GetSellsQ>> => {
   try {
     const { data, status } = await authApi.get<PaginationReturnType<GetSellsQ>>(
       `${URLs.GET_BILL_PROFIT_REPORTS}?page=${page}&limit=${limit}&from=${
         from != "" ? from : ""
-      }&to=${to != "" ? to : ""}`
+      }&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }`
     );
     return data;
   } catch (error: any) {
@@ -593,13 +634,16 @@ export const getBillProfitReport = async (
 export const getBillProfitReportInformation = async (
   toast: ToastType,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ): Promise<BillProfitReportInfo> => {
   try {
     const { data, status } = await authApi.get<BillProfitReportInfo>(
       `${URLs.GET_BILL_PROFIT_REPORTS_INFORMATION}?from=${
         from != "" ? from : ""
-      }&to=${to != "" ? to : ""}`
+      }&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }`
     );
     return data;
   } catch (error: any) {
@@ -643,13 +687,16 @@ export const billProfitPrint = async (
   toast: ToastType,
   search: Search,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ): Promise<Blob | null> => {
   try {
     const { data } = await pdfFileAuthApi.get<any>(
       `${URLs.BILL_PROFIT_PRINT_DATA}?search=${
         search != "" ? search : ""
-      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}`
+      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }`
     );
     const pdfData = new Uint8Array(data);
     const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
@@ -667,7 +714,8 @@ export const getItemProfitReport = async (
   limit: Limit,
   filter: Filter,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ): Promise<PaginationReturnType<GetItemsReportQ>> => {
   try {
     const { data, status } = await authApi.get<
@@ -675,7 +723,9 @@ export const getItemProfitReport = async (
     >(
       `${URLs.GET_ITEM_PROFIT_REPORTS}?page=${page}&limit=${limit}&from=${
         from != "" ? from : ""
-      }&to=${to != "" ? to : ""}&filter=${filter != "" ? filter : ""}`
+      }&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }&filter=${filter != "" ? filter : ""}`
     );
     return data;
   } catch (error: any) {
@@ -686,13 +736,16 @@ export const getItemProfitReportInformation = async (
   toast: ToastType,
   filter: Filter,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ): Promise<ItemProfitReportInfo> => {
   try {
     const { data, status } = await authApi.get<ItemProfitReportInfo>(
       `${URLs.GET_ITEM_PROFIT_REPORTS_INFORMATION}?from=${
         from != "" ? from : ""
-      }&to=${to != "" ? to : ""}&filter=${filter != "" ? filter : ""}`
+      }&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }&filter=${filter != "" ? filter : ""}`
     );
     return data;
   } catch (error: any) {
@@ -736,15 +789,16 @@ export const itemProfitPrint = async (
   search: Search,
   filter: Filter,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ): Promise<Blob | null> => {
   try {
     const { data } = await pdfFileAuthApi.get<any>(
       `${URLs.ITEM_PROFIT_PRINT_DATA}?search=${
         search != "" ? search : ""
-      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}&filter=${
-        filter != "" ? filter : ""
-      }`
+      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }&filter=${filter != "" ? filter : ""}`
     );
     const pdfData = new Uint8Array(data);
     const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
@@ -762,7 +816,8 @@ export const getExpenseReport = async (
   limit: Limit,
   filter: Filter,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ): Promise<PaginationReturnType<GetExpensesQ>> => {
   try {
     const { data, status } = await authApi.get<
@@ -770,7 +825,9 @@ export const getExpenseReport = async (
     >(
       `${URLs.GET_EXPENSE_REPORTS}?page=${page}&limit=${limit}&from=${
         from != "" ? from : ""
-      }&to=${to != "" ? to : ""}&filter=${filter != "" ? filter : ""}`
+      }&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }&filter=${filter != "" ? filter : ""}`
     );
     return data;
   } catch (error: any) {
@@ -781,13 +838,16 @@ export const getExpenseReportInformation = async (
   toast: ToastType,
   filter: Filter,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ): Promise<ExpenseReportInfo> => {
   try {
     const { data, status } = await authApi.get<ExpenseReportInfo>(
       `${URLs.GET_EXPENSE_REPORTS_INFORMATION}?from=${
         from != "" ? from : ""
-      }&to=${to != "" ? to : ""}&filter=${filter != "" ? filter : ""}`
+      }&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }&filter=${filter != "" ? filter : ""}`
     );
     return data;
   } catch (error: any) {
@@ -829,13 +889,16 @@ export const expenseReportPrint = async (
   search: Search,
   filter: Filter,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ): Promise<Blob | null> => {
   try {
     const { data } = await pdfFileAuthApi.get<any>(
       `${URLs.EXPENSE_PRINT_DATA}?search=${search != "" ? search : ""}&from=${
         from != "" ? from : ""
-      }&to=${to != "" ? to : ""}&filter=${filter != "" ? filter : ""}`
+      }&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }&filter=${filter != "" ? filter : ""}`
     );
     const pdfData = new Uint8Array(data);
     const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
@@ -852,13 +915,16 @@ export const getCaseReport = async (
   page: Page,
   limit: Limit,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ): Promise<PaginationReturnType<GetCasesQ>> => {
   try {
     const { data, status } = await authApi.get<PaginationReturnType<GetCasesQ>>(
       `${URLs.GET_CASE_REPORTS}?page=${page}&limit=${limit}&from=${
         from != "" ? from : ""
-      }&to=${to != "" ? to : ""}`
+      }&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }`
     );
     return data;
   } catch (error: any) {
@@ -868,13 +934,14 @@ export const getCaseReport = async (
 export const getCaseReportInformation = async (
   toast: ToastType,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ): Promise<CaseReportInfo> => {
   try {
     const { data, status } = await authApi.get<CaseReportInfo>(
       `${URLs.GET_CASE_REPORTS_INFORMATION}?from=${from != "" ? from : ""}&to=${
         to != "" ? to : ""
-      }`
+      }&userFilter=${userFilter != "" ? userFilter : ""}`
     );
     return data;
   } catch (error: any) {
@@ -916,13 +983,16 @@ export const casePrint = async (
   toast: ToastType,
   search: Search,
   from: From,
-  to: To
+  to: To,
+  userFilter: Filter
 ): Promise<Blob | null> => {
   try {
     const { data } = await pdfFileAuthApi.get<any>(
       `${URLs.CASE_PRINT_DATA}?search=${search != "" ? search : ""}&from=${
         from != "" ? from : ""
-      }&to=${to != "" ? to : ""}`
+      }&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }`
     );
     const pdfData = new Uint8Array(data);
     const pdfBlob = new Blob([pdfData], { type: "application/pdf" });

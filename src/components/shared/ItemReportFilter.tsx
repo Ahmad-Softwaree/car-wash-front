@@ -11,16 +11,26 @@ import CustomClose from "./CustomClose";
 import Input from "../ui/Input";
 import InputGroup from "../ui/InputGroup";
 import Option from "../ui/Option";
+import { useGetUsersSelection } from "@/lib/react-query/query/user.query";
+import { User } from "@/types/auth";
 type NullableDate = Date | null;
 
 const ItemReportFilter = ({ onClose }: { onClose: () => void }) => {
   const [searchParam, setSearchParam] = useSearchParams();
-  const { data, isLoading } = useGetItemTypesSelection();
-  const [selectedValue, setSelectedValue] = useState(
-    data?.find(
+  const { data: types } = useGetItemTypesSelection();
+  const { data: users } = useGetUsersSelection();
+
+  const [selectedType, setSelectedType] = useState(
+    types?.find(
       (val: ItemType, _index: number) =>
         val.id.toString() == searchParam.get(ENUMs.ITEM_TYPE_PARAM as string)
     )?.name || ""
+  );
+  const [selectedUser, setSelectedUser] = useState(
+    users?.find(
+      (val: User, _index: number) =>
+        val.id.toString() == searchParam.get(ENUMs.USER_FILTER_PARAM as string)
+    )?.username || ""
   );
   const [selectedStartDate, setSelectedStartDate] = useState<NullableDate>(
     searchParam.get(ENUMs.FROM_PARAM as string)
@@ -34,22 +44,22 @@ const ItemReportFilter = ({ onClose }: { onClose: () => void }) => {
   );
   return (
     <div className="mt-4 space-y-6">
-      {data && data.length > 0 && (
+      {types && types.length > 0 && (
         <div className="space-y-2">
           <Label className="text-xs">فلتەر بەپیێ جۆری کاڵا</Label>
           <InputGroup className="text-input">
             <Input
-              value={selectedValue}
-              onChange={(e: any) => setSelectedValue(e.target.value)}
+              value={selectedType}
+              onChange={(e: any) => setSelectedType(e.target.value)}
               placeholder="فلتەر"
               className="text-sm w-full"
               type="text"
               list="types"
             />
-            {selectedValue != "" && (
+            {selectedType != "" && (
               <CustomClose
                 onClick={() => {
-                  setSelectedValue("");
+                  setSelectedType("");
                   setSearchParam((prev: any) => {
                     const params = new URLSearchParams(prev);
                     params.delete(ENUMs.SEARCH_PARAM as string);
@@ -61,9 +71,44 @@ const ItemReportFilter = ({ onClose }: { onClose: () => void }) => {
             )}
           </InputGroup>
           <datalist className="w-full" id="types">
-            {data.map((val: ItemType, _index: number) => (
+            {types.map((val: ItemType, _index: number) => (
               <Option className="w-full" key={val.id} value={val.name}>
                 {val.name}
+              </Option>
+            ))}
+          </datalist>
+        </div>
+      )}
+      {users && users.length > 0 && (
+        <div className="space-y-2">
+          <Label className="text-xs">فلتەر بەپیێ یوزەر</Label>
+          <InputGroup className="text-input">
+            <Input
+              value={selectedUser}
+              onChange={(e: any) => setSelectedUser(e.target.value)}
+              placeholder="فلتەر"
+              className="text-sm w-full"
+              type="text"
+              list="users"
+            />
+            {selectedUser != "" && (
+              <CustomClose
+                onClick={() => {
+                  setSelectedUser("");
+                  setSearchParam((prev: any) => {
+                    const params = new URLSearchParams(prev);
+                    params.delete(ENUMs.SEARCH_PARAM as string);
+                    params.delete(ENUMs.USER_FILTER_PARAM as string);
+                    return params;
+                  });
+                }}
+              />
+            )}
+          </InputGroup>
+          <datalist className="w-full" id="users">
+            {users.map((val: User, _index: number) => (
+              <Option className="w-full" key={val.id} value={val.username}>
+                {val.username}
               </Option>
             ))}
           </datalist>
@@ -85,20 +130,27 @@ const ItemReportFilter = ({ onClose }: { onClose: () => void }) => {
           setSearchParam((prev: any) => {
             const params = new URLSearchParams(prev);
             params.delete(ENUMs.SEARCH_PARAM as string);
-            const selectedItem = data?.find(
-              (val: ItemType) => val.name === selectedValue
+            const type = types?.find(
+              (val: ItemType) => val.name === selectedType
             );
             params.delete(ENUMs.SEARCH_PARAM as string);
 
-            if (selectedItem) {
-              params.set(
-                ENUMs.ITEM_TYPE_PARAM as string,
-                selectedItem.toString()
-              );
+            if (type) {
+              params.set(ENUMs.ITEM_TYPE_PARAM as string, type.id.toString());
             } else {
-              params.delete(ENUMs.SEARCH_PARAM as string);
               params.delete(ENUMs.ITEM_TYPE_PARAM as string);
             }
+
+            const user = users?.find(
+              (val: User) => val.username === selectedUser
+            );
+
+            if (user) {
+              params.set(ENUMs.USER_FILTER_PARAM as string, user.id.toString());
+            } else {
+              params.delete(ENUMs.USER_FILTER_PARAM as string);
+            }
+
             if (selectedStartDate && selectedEndDate) {
               params.set(
                 ENUMs.FROM_PARAM as string,

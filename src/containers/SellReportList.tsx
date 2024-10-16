@@ -32,6 +32,7 @@ const SellReportList = () => {
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string);
   let from = searchParam.get(ENUMs.FROM_PARAM as string);
   let to = searchParam.get(ENUMs.TO_PARAM as string);
+  let user = searchParam.get(ENUMs.USER_FILTER_PARAM as string);
 
   const [print, setPrint] = useState<boolean>(false);
   const [filter, setFilter] = useState<boolean>(false);
@@ -40,10 +41,10 @@ const SellReportList = () => {
     data: reportData,
     isLoading,
     refetch,
-  } = useGetSellReportInformation(from || "", to || "");
+  } = useGetSellReportInformation(from || "", to || "", user || "");
   useEffect(() => {
     refetch();
-  }, [from, to, refetch]);
+  }, [from, to, user, refetch]);
 
   const {
     data: searchReportData,
@@ -63,7 +64,8 @@ const SellReportList = () => {
         <Badge
           invisible={
             !searchParam.get(ENUMs.FROM_PARAM as string) &&
-            !searchParam.get(ENUMs.TO_PARAM as string)
+            !searchParam.get(ENUMs.TO_PARAM as string) &&
+            !searchParam.get(ENUMs.USER_FILTER_PARAM as string)
           }
           anchorOrigin={{
             vertical: "bottom",
@@ -75,14 +77,16 @@ const SellReportList = () => {
             className="w-11 h-11 p-2 rounded-md dark-light hover:light-dark cursor-pointer default-border transition-all duration-200"
           />
         </Badge>
-        {searchParam.get(ENUMs.FROM_PARAM as string) &&
-          searchParam.get(ENUMs.TO_PARAM as string) && (
+        {(searchParam.get(ENUMs.FROM_PARAM as string) &&
+          searchParam.get(ENUMs.TO_PARAM as string)) ||
+          (searchParam.get(ENUMs.USER_FILTER_PARAM as string) && (
             <Button
               onClick={() => {
                 setSearchParam((prev) => {
                   const params = new URLSearchParams(prev);
                   params.delete(ENUMs.FROM_PARAM as string);
                   params.delete(ENUMs.TO_PARAM as string);
+                  params.delete(ENUMs.USER_FILTER_PARAM as string);
 
                   return params;
                 });
@@ -94,7 +98,7 @@ const SellReportList = () => {
             >
               سڕینەوەی فلتەر
             </Button>
-          )}
+          ))}
         <Chip variant="soft" color="warning">
           <Printer
             onClick={() => {
@@ -108,7 +112,8 @@ const SellReportList = () => {
         queryFn={() =>
           useGetSellReport(
             searchParam.get(ENUMs.FROM_PARAM as string) || "",
-            searchParam.get(ENUMs.TO_PARAM as string) || ""
+            searchParam.get(ENUMs.TO_PARAM as string) || "",
+            searchParam.get(ENUMs.USER_FILTER_PARAM as string) || ""
           )
         }
         searchQueryFn={() =>
@@ -249,12 +254,16 @@ const SellReportList = () => {
         >
           {config?.report_print_modal ? (
             <PrintModal
-              printFn={() => useSellPrint(search || "", from || "", to || "")}
+              printFn={() =>
+                useSellPrint(search || "", from || "", to || "", user || "")
+              }
               onClose={() => setPrint(false)}
             />
           ) : (
             <POSModal
-              printFn={() => useSellPrint(search || "", from || "", to || "")}
+              printFn={() =>
+                useSellPrint(search || "", from || "", to || "", user || "")
+              }
               onClose={() => setPrint(false)}
             />
           )}

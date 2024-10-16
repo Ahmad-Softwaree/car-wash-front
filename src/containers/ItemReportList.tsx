@@ -33,6 +33,8 @@ const ItemReportList = () => {
   let from = searchParam.get(ENUMs.FROM_PARAM as string);
   let item_filter = searchParam.get(ENUMs.ITEM_TYPE_PARAM as string);
   let to = searchParam.get(ENUMs.TO_PARAM as string);
+  let user = searchParam.get(ENUMs.USER_FILTER_PARAM as string);
+
   const [print, setPrint] = useState<boolean>(false);
   const [filter, setFilter] = useState<boolean>(false);
 
@@ -40,10 +42,15 @@ const ItemReportList = () => {
     data: reportData,
     isLoading,
     refetch,
-  } = useGetItemReportInformation(item_filter || "", from || "", to || "");
+  } = useGetItemReportInformation(
+    item_filter || "",
+    from || "",
+    to || "",
+    user || ""
+  );
   useEffect(() => {
     refetch();
-  }, [from, to, item_filter, refetch]);
+  }, [from, to, user, item_filter, refetch]);
 
   const {
     data: searchReportData,
@@ -65,7 +72,8 @@ const ItemReportList = () => {
           invisible={
             !searchParam.get(ENUMs.FROM_PARAM as string) &&
             !searchParam.get(ENUMs.TO_PARAM as string) &&
-            !searchParam.get(ENUMs.ITEM_TYPE_PARAM as string)
+            !searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) &&
+            !searchParam.get(ENUMs.USER_FILTER_PARAM as string)
           }
           anchorOrigin={{
             vertical: "bottom",
@@ -79,7 +87,8 @@ const ItemReportList = () => {
         </Badge>
         {((searchParam.get(ENUMs.FROM_PARAM as string) &&
           searchParam.get(ENUMs.TO_PARAM as string)) ||
-          searchParam.get(ENUMs.ITEM_TYPE_PARAM as string)) && (
+          searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) ||
+          searchParam.get(ENUMs.USER_FILTER_PARAM as string)) && (
           <Button
             onClick={() => {
               setSearchParam((prev) => {
@@ -87,6 +96,7 @@ const ItemReportList = () => {
                 params.delete(ENUMs.FROM_PARAM as string);
                 params.delete(ENUMs.TO_PARAM as string);
                 params.delete(ENUMs.ITEM_TYPE_PARAM as string);
+                params.delete(ENUMs.USER_FILTER_PARAM as string);
 
                 return params;
               });
@@ -113,7 +123,8 @@ const ItemReportList = () => {
           useGetItemReport(
             searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) || "",
             searchParam.get(ENUMs.FROM_PARAM as string) || "",
-            searchParam.get(ENUMs.TO_PARAM as string) || ""
+            searchParam.get(ENUMs.TO_PARAM as string) || "",
+            searchParam.get(ENUMs.USER_FILTER_PARAM as string) || ""
           )
         }
         searchQueryFn={() =>
@@ -264,7 +275,8 @@ const ItemReportList = () => {
                   item_filter || "",
                   search || "",
                   from || "",
-                  to || ""
+                  to || "",
+                  user || ""
                 )
               }
               onClose={() => setPrint(false)}
@@ -276,7 +288,8 @@ const ItemReportList = () => {
                   item_filter || "",
                   search || "",
                   from || "",
-                  to || ""
+                  to || "",
+                  user || ""
                 )
               }
               onClose={() => setPrint(false)}
