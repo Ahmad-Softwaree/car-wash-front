@@ -1,7 +1,7 @@
 import { BackupCardProps } from "@/types/backup";
 import { Td, Tr } from "../ui";
 import Chip from "@mui/joy/Chip";
-import { formateDateToYMDHM, formatDateToDDMMYY } from "@/lib/functions";
+import { formatDateToDDMMYY } from "@/lib/functions";
 
 const BackupCard = ({
   table,
@@ -12,11 +12,9 @@ const BackupCard = ({
   created_at,
   updated_at,
   index = -1,
-  ...others
 }: BackupCardProps) => {
   return (
     <>
-      <p>test</p>
       <Tr
         className={`default-border table-row-hover table-row-normal
         }`}
