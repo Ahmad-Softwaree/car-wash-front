@@ -33,6 +33,8 @@ const ExpenseReportList = () => {
   let from = searchParam.get(ENUMs.FROM_PARAM as string);
   let expense_type = searchParam.get(ENUMs.EXPENSE_TYPE_PARAM as string);
   let to = searchParam.get(ENUMs.TO_PARAM as string);
+  let user = searchParam.get(ENUMs.USER_FILTER_PARAM as string);
+
   const [print, setPrint] = useState<boolean>(false);
   const [filter, setFilter] = useState<boolean>(false);
 
@@ -40,10 +42,15 @@ const ExpenseReportList = () => {
     data: reportData,
     isLoading,
     refetch,
-  } = useGetExpenseReportInformation(expense_type || "", from || "", to || "");
+  } = useGetExpenseReportInformation(
+    expense_type || "",
+    from || "",
+    to || "",
+    user || ""
+  );
   useEffect(() => {
     refetch();
-  }, [from, to, expense_type, refetch]);
+  }, [from, to, user, expense_type, refetch]);
 
   const {
     data: searchReportData,
@@ -64,7 +71,8 @@ const ExpenseReportList = () => {
           invisible={
             !searchParam.get(ENUMs.FROM_PARAM as string) &&
             !searchParam.get(ENUMs.TO_PARAM as string) &&
-            !searchParam.get(ENUMs.EXPENSE_TYPE_PARAM as string)
+            !searchParam.get(ENUMs.EXPENSE_TYPE_PARAM as string) &&
+            !searchParam.get(ENUMs.USER_FILTER_PARAM as string)
           }
           anchorOrigin={{
             vertical: "bottom",
@@ -78,7 +86,8 @@ const ExpenseReportList = () => {
         </Badge>
         {((searchParam.get(ENUMs.FROM_PARAM as string) &&
           searchParam.get(ENUMs.TO_PARAM as string)) ||
-          searchParam.get(ENUMs.EXPENSE_TYPE_PARAM as string)) && (
+          searchParam.get(ENUMs.EXPENSE_TYPE_PARAM as string) ||
+          searchParam.get(ENUMs.USER_FILTER_PARAM as string)) && (
           <Button
             onClick={() => {
               setSearchParam((prev) => {
@@ -86,6 +95,7 @@ const ExpenseReportList = () => {
                 params.delete(ENUMs.FROM_PARAM as string);
                 params.delete(ENUMs.TO_PARAM as string);
                 params.delete(ENUMs.EXPENSE_TYPE_PARAM as string);
+                params.delete(ENUMs.USER_FILTER_PARAM as string);
 
                 return params;
               });
@@ -112,7 +122,8 @@ const ExpenseReportList = () => {
           useGetExpenseReport(
             searchParam.get(ENUMs.EXPENSE_TYPE_PARAM as string) || "",
             searchParam.get(ENUMs.FROM_PARAM as string) || "",
-            searchParam.get(ENUMs.TO_PARAM as string) || ""
+            searchParam.get(ENUMs.TO_PARAM as string) || "",
+            searchParam.get(ENUMs.USER_FILTER_PARAM as string) || ""
           )
         }
         searchQueryFn={() =>
@@ -226,7 +237,8 @@ const ExpenseReportList = () => {
                   expense_type || "",
                   search || "",
                   from || "",
-                  to || ""
+                  to || "",
+                  user || ""
                 )
               }
               onClose={() => setPrint(false)}
@@ -238,7 +250,8 @@ const ExpenseReportList = () => {
                   expense_type || "",
                   search || "",
                   from || "",
-                  to || ""
+                  to || "",
+                  user || ""
                 )
               }
               onClose={() => setPrint(false)}

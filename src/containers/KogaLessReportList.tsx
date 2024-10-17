@@ -30,6 +30,7 @@ const KogaLessReportList = () => {
   const [searchParam, setSearchParam] = useSearchParams();
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string);
   let item_type = searchParam.get(ENUMs.ITEM_TYPE_PARAM as string);
+  let user = searchParam.get(ENUMs.USER_FILTER_PARAM as string);
 
   const [print, setPrint] = useState<boolean>(false);
   const [filter, setFilter] = useState<boolean>(false);
@@ -38,10 +39,10 @@ const KogaLessReportList = () => {
     data: reportData,
     isLoading,
     refetch,
-  } = useGetKogaLessReportInformation(item_type || "");
+  } = useGetKogaLessReportInformation(item_type || "", user || "");
   useEffect(() => {
     refetch();
-  }, [item_type, refetch]);
+  }, [item_type, user, refetch]);
 
   const {
     data: searchReportData,
@@ -59,7 +60,10 @@ const KogaLessReportList = () => {
       <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap">
         <Search />
         <Badge
-          invisible={!searchParam.get(ENUMs.ITEM_TYPE_PARAM as string)}
+          invisible={
+            !searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) &&
+            !searchParam.get(ENUMs.USER_FILTER_PARAM as string)
+          }
           anchorOrigin={{
             vertical: "bottom",
             horizontal: "right",
@@ -70,12 +74,14 @@ const KogaLessReportList = () => {
             className="w-11 h-11 p-2 rounded-md dark-light hover:light-dark cursor-pointer default-border transition-all duration-200"
           />
         </Badge>
-        {searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) && (
+        {(searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) ||
+          searchParam.get(ENUMs.USER_FILTER_PARAM as string)) && (
           <Button
             onClick={() => {
               setSearchParam((prev) => {
                 const params = new URLSearchParams(prev);
                 params.delete(ENUMs.ITEM_TYPE_PARAM as string);
+                params.delete(ENUMs.USER_FILTER_PARAM as string);
 
                 return params;
               });
@@ -100,7 +106,8 @@ const KogaLessReportList = () => {
       <Pagination<ItemKoga[]>
         queryFn={() =>
           useGetKogaLessReport(
-            searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) || ""
+            searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) || "",
+            searchParam.get(ENUMs.USER_FILTER_PARAM as string) || ""
           )
         }
         searchQueryFn={() =>
@@ -223,12 +230,16 @@ const KogaLessReportList = () => {
         >
           {config?.report_print_modal ? (
             <PrintModal
-              printFn={() => useKogaLessPrint(search || "", item_type || "")}
+              printFn={() =>
+                useKogaLessPrint(search || "", item_type || "", user || "")
+              }
               onClose={() => setPrint(false)}
             />
           ) : (
             <POSModal
-              printFn={() => useKogaLessPrint(search || "", item_type || "")}
+              printFn={() =>
+                useKogaLessPrint(search || "", item_type || "", user || "")
+              }
               onClose={() => setPrint(false)}
             />
           )}

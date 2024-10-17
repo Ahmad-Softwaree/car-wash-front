@@ -33,6 +33,7 @@ const CaseReportList = () => {
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string);
   let from = searchParam.get(ENUMs.FROM_PARAM as string);
   let to = searchParam.get(ENUMs.TO_PARAM as string);
+  let user = searchParam.get(ENUMs.USER_FILTER_PARAM as string);
 
   const [print, setPrint] = useState<boolean>(false);
   const [filter, setFilter] = useState<boolean>(false);
@@ -41,10 +42,10 @@ const CaseReportList = () => {
     data: reportData,
     isLoading,
     refetch,
-  } = useGetCaseReportInformation(from || "", to || "");
+  } = useGetCaseReportInformation(from || "", to || "", user || "");
   useEffect(() => {
     refetch();
-  }, [from, to, refetch]);
+  }, [from, to, user, refetch]);
 
   const {
     data: searchReportData,
@@ -63,7 +64,8 @@ const CaseReportList = () => {
         <Badge
           invisible={
             !searchParam.get(ENUMs.FROM_PARAM as string) &&
-            !searchParam.get(ENUMs.TO_PARAM as string)
+            !searchParam.get(ENUMs.TO_PARAM as string) &&
+            !searchParam.get(ENUMs.USER_FILTER_PARAM as string)
           }
           anchorOrigin={{
             vertical: "bottom",
@@ -75,26 +77,28 @@ const CaseReportList = () => {
             className="w-11 h-11 p-2 rounded-md dark-light hover:light-dark cursor-pointer default-border transition-all duration-200"
           />
         </Badge>
-        {searchParam.get(ENUMs.FROM_PARAM as string) &&
-          searchParam.get(ENUMs.TO_PARAM as string) && (
-            <Button
-              onClick={() => {
-                setSearchParam((prev) => {
-                  const params = new URLSearchParams(prev);
-                  params.delete(ENUMs.FROM_PARAM as string);
-                  params.delete(ENUMs.TO_PARAM as string);
+        {((searchParam.get(ENUMs.FROM_PARAM as string) &&
+          searchParam.get(ENUMs.TO_PARAM as string)) ||
+          searchParam.get(ENUMs.USER_FILTER_PARAM as string)) && (
+          <Button
+            onClick={() => {
+              setSearchParam((prev) => {
+                const params = new URLSearchParams(prev);
+                params.delete(ENUMs.FROM_PARAM as string);
+                params.delete(ENUMs.TO_PARAM as string);
+                params.delete(ENUMs.USER_FILTER_PARAM as string);
 
-                  return params;
-                });
-              }}
-              className="!font-bukra !text-xs"
-              size="md"
-              variant="soft"
-              color="danger"
-            >
-              سڕینەوەی فلتەر
-            </Button>
-          )}
+                return params;
+              });
+            }}
+            className="!font-bukra !text-xs"
+            size="md"
+            variant="soft"
+            color="danger"
+          >
+            سڕینەوەی فلتەر
+          </Button>
+        )}
         <Chip variant="soft" color="warning">
           <Printer
             onClick={() => {
@@ -108,7 +112,8 @@ const CaseReportList = () => {
         queryFn={() =>
           useGetCaseReport(
             searchParam.get(ENUMs.FROM_PARAM as string) || "",
-            searchParam.get(ENUMs.TO_PARAM as string) || ""
+            searchParam.get(ENUMs.TO_PARAM as string) || "",
+            searchParam.get(ENUMs.USER_FILTER_PARAM as string) || ""
           )
         }
         searchQueryFn={() =>
@@ -218,12 +223,16 @@ const CaseReportList = () => {
         >
           {config?.report_print_modal ? (
             <PrintModal
-              printFn={() => useCasePrint(search || "", from || "", to || "")}
+              printFn={() =>
+                useCasePrint(search || "", from || "", to || "", user || "")
+              }
               onClose={() => setPrint(false)}
             />
           ) : (
             <POSModal
-              printFn={() => useCasePrint(search || "", from || "", to || "")}
+              printFn={() =>
+                useCasePrint(search || "", from || "", to || "", user || "")
+              }
               onClose={() => setPrint(false)}
             />
           )}

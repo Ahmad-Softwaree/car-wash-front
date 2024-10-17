@@ -33,6 +33,8 @@ const ItemProfitReportList = () => {
   let from = searchParam.get(ENUMs.FROM_PARAM as string);
   let item_filter = searchParam.get(ENUMs.ITEM_TYPE_PARAM as string);
   let to = searchParam.get(ENUMs.TO_PARAM as string);
+  let user = searchParam.get(ENUMs.USER_FILTER_PARAM as string);
+
   const [print, setPrint] = useState<boolean>(false);
   const [filter, setFilter] = useState<boolean>(false);
 
@@ -43,11 +45,12 @@ const ItemProfitReportList = () => {
   } = useGetItemProfitReportInformation(
     item_filter || "",
     from || "",
-    to || ""
+    to || "",
+    user || ""
   );
   useEffect(() => {
     refetch();
-  }, [from, to, item_filter, refetch]);
+  }, [from, to, item_filter, user, refetch]);
 
   const {
     data: searchReportData,
@@ -68,7 +71,8 @@ const ItemProfitReportList = () => {
           invisible={
             !searchParam.get(ENUMs.FROM_PARAM as string) &&
             !searchParam.get(ENUMs.TO_PARAM as string) &&
-            !searchParam.get(ENUMs.ITEM_TYPE_PARAM as string)
+            !searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) &&
+            !searchParam.get(ENUMs.USER_FILTER_PARAM as string)
           }
           anchorOrigin={{
             vertical: "bottom",
@@ -82,7 +86,8 @@ const ItemProfitReportList = () => {
         </Badge>
         {((searchParam.get(ENUMs.FROM_PARAM as string) &&
           searchParam.get(ENUMs.TO_PARAM as string)) ||
-          searchParam.get(ENUMs.ITEM_TYPE_PARAM as string)) && (
+          searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) ||
+          searchParam.get(ENUMs.USER_FILTER_PARAM as string)) && (
           <Button
             onClick={() => {
               setSearchParam((prev) => {
@@ -90,6 +95,7 @@ const ItemProfitReportList = () => {
                 params.delete(ENUMs.FROM_PARAM as string);
                 params.delete(ENUMs.TO_PARAM as string);
                 params.delete(ENUMs.ITEM_TYPE_PARAM as string);
+                params.delete(ENUMs.USER_FILTER_PARAM as string);
 
                 return params;
               });
@@ -116,7 +122,8 @@ const ItemProfitReportList = () => {
           useGetItemProfitReport(
             searchParam.get(ENUMs.ITEM_TYPE_PARAM as string) || "",
             searchParam.get(ENUMs.FROM_PARAM as string) || "",
-            searchParam.get(ENUMs.TO_PARAM as string) || ""
+            searchParam.get(ENUMs.TO_PARAM as string) || "",
+            searchParam.get(ENUMs.USER_FILTER_PARAM as string) || ""
           )
         }
         searchQueryFn={() =>
@@ -301,7 +308,8 @@ const ItemProfitReportList = () => {
                   item_filter || "",
                   search || "",
                   from || "",
-                  to || ""
+                  to || "",
+                  user || ""
                 )
               }
               onClose={() => setPrint(false)}
@@ -313,7 +321,8 @@ const ItemProfitReportList = () => {
                   item_filter || "",
                   search || "",
                   from || "",
-                  to || ""
+                  to || "",
+                  user || ""
                 )
               }
               onClose={() => setPrint(false)}
