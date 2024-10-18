@@ -1,8 +1,7 @@
-import { CaseReportCardProps } from "@/types/global";
-
 import { Td, Tr } from "../ui";
 
 import { formatMoney } from "../shared/FormatMoney";
+import { CaseReportCardProps } from "@/types/report";
 
 const CaseReportCard = ({
   sold,
