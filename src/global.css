@@ -4,11 +4,11 @@
 
 @font-face {
   font-family: "bukra";
-  src: url("/fonts/UNIQAIDAR_BUKRA 002.ttf");
+  src: url("/fonts/UNIQAIDAR_BUKRA 002.TTF");
 }
 @font-face {
   font-family: "bukra_bold";
-  src: url("/fonts/UNIQAIDAR_BUKRA 003.ttf");
+  src: url("/fonts/UNIQAIDAR_BUKRA 003.TTF");
 }
 
 /* Smooth scrolling for a better experience */
