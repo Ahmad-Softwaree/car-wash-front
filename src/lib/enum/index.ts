@@ -24,10 +24,9 @@ export type ENUM_TYPES =
   | "CAR_TYPE_FILTER_PARAM"
   | "CAR_MODEL_FILTER_PARAM"
   | "SERVICE_FILTER_PARAM"
+
   //FIREBASE
   | "ITEM_BUCKET"
-  | "USER_BUCKET"
-  | "CUSTOMER_BUCKET"
 
   //PARTS
   | "USERS_PART"
@@ -93,9 +92,7 @@ export const ENUMs: { [key in ENUM_TYPES]: key | string | number } = {
   SERVICE_FILTER_PARAM: "service",
 
   //FIREBASE
-  ITEM_BUCKET: "item",
-  USER_BUCKET: "user",
-  CUSTOMER_BUCKET: "client",
+  ITEM_BUCKET: "items",
 
   //PARTS
   USERS_PART: "بەکارهێنەران",

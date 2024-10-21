@@ -42,6 +42,7 @@ const ItemForm = ({
   state = "insert",
   onClose,
 }: GlobalFormProps & FormFinalOperation) => {
+  const [removeOldImage, setRemoveOldImage] = useState<boolean>(false);
   const { state: globalState } = useGlobalContext();
   const form = useRef<FormHandle>(null);
   const { mutateAsync, isPending } = useAddItem();
@@ -61,6 +62,7 @@ const ItemForm = ({
     handleSubmit,
     reset,
     resetField,
+    getValues,
     watch,
     formState: { errors },
   } = useForm<AddItemInputs & ImageTypeInForm>({});
@@ -108,6 +110,17 @@ const ItemForm = ({
     });
     setQuantityInput("");
   };
+
+  console.log(getValues("image"));
+
+  let show_image_input = !globalState.oldData
+    ? !watch("image") || (watch("image") && !watch("image")[0])
+    : globalState.oldData.image_url == ""
+    ? !watch("image") || (watch("image") && !watch("image")[0])
+    : globalState.oldData.image_url != ""
+    ? !watch("image") ||
+      (watch("image") && !watch("image")[0] && removeOldImage)
+    : null;
 
   return (
     <Form
@@ -294,61 +307,82 @@ const ItemForm = ({
             </InputGroup>
           </div>
 
-          <InputGroup error={errors.image} className="w-full space-y-2">
-            <Label
-              className="mb-1 block text-sm font-medium !dark-light"
-              htmlFor={`item_image`}
-            >
-              وێنە
-            </Label>
-            <Label className="flex w-full cursor-pointer appearance-none items-center justify-center rounded-md border-2 border-dashed border-gray-200 p-6 transition-all hover:border-primary-300">
-              <div className="space-y-1 text-center">
-                <div className="mx-auto inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    className="h-6 w-6 text-gray-500"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
-                    />
-                  </svg>
+          {show_image_input && (
+            <InputGroup error={errors.image} className="w-full space-y-2">
+              <Label
+                className="mb-1 block text-sm font-medium !dark-light"
+                htmlFor={`item_image`}
+              >
+                وێنە
+              </Label>
+              <Label className="flex w-full cursor-pointer appearance-none items-center justify-center rounded-md border-2 border-dashed border-gray-200 p-6 transition-all hover:border-primary-300">
+                <div className="space-y-1 text-center">
+                  <div className="mx-auto inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      className="h-6 w-6 text-gray-500"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
+                      />
+                    </svg>
+                  </div>
+                  <div className="dark-light">
+                    <a href="#" className="font-medium dark-light ">
+                      وێنە داگرە
+                    </a>{" "}
+                    یان وێنەکە لێرە دابنێ
+                  </div>
+                  <p className="text-sm text-gray-500 font-poppins">
+                    SVG, PNG, JPG or GIF (max. 800x400px)
+                  </p>
                 </div>
-                <div className="dark-light">
-                  <a href="#" className="font-medium dark-light ">
-                    وێنە داگرە
-                  </a>{" "}
-                  یان وێنەکە لێرە دابنێ
-                </div>
-                <p className="text-sm text-gray-500 font-poppins">
-                  SVG, PNG, JPG or GIF (max. 800x400px)
-                </p>
-              </div>
-              <Input
-                className="sr-only"
-                id="item_image"
-                type="file"
-                {...register("image")}
-                name="image"
-              />
-            </Label>
-          </InputGroup>
-          {watch("image") && watch("image")[0] && (
+                <Input
+                  className="sr-only"
+                  id="item_image"
+                  type="file"
+                  {...register("image")}
+                  name="image"
+                />
+              </Label>
+            </InputGroup>
+          )}
+          {watch("image") && watch("image")![0] && (
             <div className="w-full relative">
               <CircleX
                 className="bg-secondary-100 rounded-md absolute -right-2 -top-2 z-10 text-red-500 cursor-pointer w-[30px] h-[30px]"
-                onClick={() => resetField("image")}
+                onClick={() => {
+                  resetField("image");
+                  setRemoveOldImage(false);
+                }}
               />
-              <Image image={watch("image")[0]} />
+              <Image
+                className="h-[300px] w-full object-cover"
+                image={watch("image")[0]}
+              />
             </div>
           )}
           {globalState.oldData?.image_url && !watch("image") && (
             <Image image={globalState.oldData?.image_url} />
+          )}
+
+          {globalState.oldData?.image_url && !removeOldImage && (
+            <div className="w-full relative">
+              <CircleX
+                className="bg-secondary-100 rounded-md absolute -right-2 -top-2 z-10 text-red-500 cursor-pointer w-[30px] h-[30px]"
+                onClick={() => setRemoveOldImage(true)}
+              />
+              <Image
+                className="h-[300px] w-full object-cover"
+                image={globalState.oldData?.image_url}
+              />
+            </div>
           )}
         </div>
         {state == "update" && (

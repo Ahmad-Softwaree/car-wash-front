@@ -159,17 +159,19 @@ export const useUpdatePrinterState = (id: Id) => {
   return useMutation({
     mutationFn: async (): Promise<UpdatePrinterQ> => updatePrinterState(id),
     onSuccess: (data: UpdatePrinterQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
-      return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYs.PRINTERS],
-      });
     },
     onError: (error: NestError) => {
       return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.PRINTERS],
+      });
     },
   });
 };
@@ -181,11 +183,16 @@ export const useDeletePrinter = () => {
   return useMutation({
     mutationFn: (ids: Id[]): Promise<DeletePrinterQ> => deletePrinter(ids),
     onSuccess: (data: DeletePrinterQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
@@ -197,9 +204,6 @@ export const useDeletePrinter = () => {
         queryKey: [QUERY_KEYs.PRINTERS],
       });
     },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
-    },
   });
 };
 export const useRestorePrinter = () => {
@@ -210,11 +214,16 @@ export const useRestorePrinter = () => {
   return useMutation({
     mutationFn: (ids: Id[]): Promise<DeletePrinterQ> => restorePrinter(ids),
     onSuccess: (data: DeletePrinterQ) => {
-      toast({
+      return toast({
         title: "سەرکەوتووبوو",
         description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
         alertType: "success",
       });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
+    onSettled: () => {
       dispatch({
         type: CONTEXT_TYPEs.CHECK,
         payload: [],
@@ -225,9 +234,6 @@ export const useRestorePrinter = () => {
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEYs.DELETED_PRINTERS],
       });
-    },
-    onError: (error: NestError) => {
-      return generateNestErrors(error, toast);
     },
   });
 };

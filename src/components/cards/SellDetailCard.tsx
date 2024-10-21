@@ -16,7 +16,6 @@ import { Table, Td, Th, THead, Tr } from "../ui";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 import TBody from "../ui/TBody";
-import TFoot from "../ui/TFoot";
 import SellItemCard from "./SellItemCard";
 import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import { ENUMs } from "@/lib/enum";
@@ -30,8 +29,6 @@ const SellDetailCard = ({
   discount,
   created_by,
   updated_by,
-  date,
-  onClose,
 }: FormFinalOperation & SellCardProps) => {
   const { deleted_page } = useCheckDeletedPage();
   const [isDelete, setIsDelete] = useState<boolean>(false);

@@ -279,7 +279,10 @@ const ItemDetailCard = ({
       {image_url && image_url != "" && (
         <div className="w-full flex flex-col gap-2 px-3">
           <p>وێنە</p>
-          <Image image={image_url} />
+          <Image
+            className="w-full max-w-xl h-[400px] object-cover"
+            image={image_url}
+          />
         </div>
       )}
     </div>
