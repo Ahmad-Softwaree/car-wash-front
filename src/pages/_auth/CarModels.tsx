@@ -18,7 +18,6 @@ import TBody from "@/components/ui/TBody";
 import { Table, Td, Th, THead, Tr } from "@/components/ui";
 
 import Input from "@/components/ui/Input";
-import { InputGroup } from "@chakra-ui/react";
 
 import { CONTEXT_TYPEs } from "@/context/types";
 import { useGlobalContext } from "@/context/GlobalContext";
@@ -26,7 +25,6 @@ import { useSearchParams } from "react-router-dom";
 import { ENUMs } from "@/lib/enum";
 
 import DeleteModal from "@/components/ui/DeleteModal";
-import TFoot from "@/components/ui/TFoot";
 import CustomClose from "@/components/shared/CustomClose";
 import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import DeleteChip from "@/components/shared/DeleteChip";
@@ -36,6 +34,7 @@ import AddButton from "@/components/shared/AddButton";
 import RestoreModal from "@/components/ui/RestoreModal";
 import Loading from "@/components/ui/Loading";
 import { TailSpin } from "react-loader-spinner";
+import InputGroup from "@/components/ui/InputGroup";
 
 const CarModels = () => {
   const { deleted_page } = useCheckDeletedPage();

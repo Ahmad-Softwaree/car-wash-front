@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "bun vite",
-    "build": "bun vite build",
-    "serve": "bun vite preview"
+    "dev": "bunx --bun vite",
+    "build": "vite build",
+    "serve": "vite preview"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",

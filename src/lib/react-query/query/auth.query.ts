@@ -23,6 +23,7 @@ export const useGetAuth = () => {
   return useQuery({
     queryKey: [QUERY_KEYs.AUTH],
     queryFn: (): Promise<GetAuthQ> => getAuth(toast, dispatch, navigate),
+    retry: 1,
   });
 };
 export const useLogin = () => {

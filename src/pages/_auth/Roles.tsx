@@ -18,7 +18,7 @@ import TBody from "@/components/ui/TBody";
 import { Table, Td, Th, THead, Tr } from "@/components/ui";
 
 import Input from "@/components/ui/Input";
-import { InputGroup } from "@chakra-ui/react";
+import InputGroup from "@/components/ui/InputGroup";
 
 import { CONTEXT_TYPEs } from "@/context/types";
 import { useGlobalContext } from "@/context/GlobalContext";
