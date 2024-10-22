@@ -16,6 +16,8 @@ import {
   UpdateSellF,
   UpdateSellItemQ,
   UpdateSellQ,
+  Sell,
+  SellItem,
 } from "@/types/sell";
 import {
   Filter,
@@ -148,20 +150,18 @@ export const getSell = async (
   }
 };
 
-export const getSellPrint = async (
+export const sellPrint = async (
   toast: ToastType,
-  sell_id: Id,
-  where: "pos" | "items"
-): Promise<Blob | null> => {
+  sell_id: Id
+): Promise<{ sell: Sell; sellItems: SellItem[] }> => {
   try {
-    const { data } = await pdfFileAuthApi.get(
-      `${URLs.GET_SELL_PRINT}/${sell_id}/${where}`
-    );
-    const pdfData = new Uint8Array(data);
-    const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
-    return pdfBlob;
+    const { data } = await authApi.post<{
+      sell: Sell;
+      sellItems: SellItem[];
+    }>(`${URLs.GET_SELL_PRINT}/${sell_id}`);
+    return data;
   } catch (error: any) {
-    throw generateNestErrors(error, toast);
+    throw error;
   }
 };
 export const getSellItems = async (

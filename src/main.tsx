@@ -6,12 +6,16 @@ import Context from "./context/Context.js";
 import { Toaster } from "./components/ui/toaster.js";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import SellPdf from "./components/pdf/SellPdf.js";
+import SellReportPdf from "./components/pdf/SellReportPdf.js";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   //<React.StrictMode>
   <QueryProvider>
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Context>
         <Toaster />
+        <SellPdf />
+        <SellReportPdf />
         <App />
       </Context>
     </LocalizationProvider>

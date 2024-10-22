@@ -1,15 +1,9 @@
 import { SellCardProps } from "@/types/sell";
-import { useState } from "react";
-import Dialog from "../shared/Dialog";
-import { useGetSellPrint } from "@/lib/react-query/query/sell.query";
+
 import { useGlobalContext } from "@/context/GlobalContext";
 import { Td, Tr } from "../ui";
 
-import { useSearchParams } from "react-router-dom";
-import { ENUMs } from "@/lib/enum";
-
 import { formatDateToDDMMYY } from "@/lib/functions";
-import PrintModal from "../ui/PrintModal";
 import { formatMoney } from "../shared/FormatMoney";
 
 const SellProfitCard = ({
@@ -22,12 +16,9 @@ const SellProfitCard = ({
   total_sell_price,
   total_purchase_price,
 }: SellCardProps) => {
-  const [searchParam, setSearchParam] = useSearchParams();
-  const [isPrint, setIsPrint] = useState<boolean>(false);
   const {
     state: { checked },
   } = useGlobalContext();
-  let sell_id_param = searchParam.get(ENUMs.SELL_PARAM as string);
 
   return (
     <>
@@ -92,20 +83,6 @@ const SellProfitCard = ({
           </p>
         </Td>
       </Tr>
-      {isPrint && (
-        <Dialog
-          className="!p-5 rounded-md"
-          maxWidth={500}
-          maxHeight={`90%`}
-          isOpen={isPrint}
-          onClose={() => setIsPrint(false)}
-        >
-          <PrintModal
-            printFn={() => useGetSellPrint(Number(sell_id_param) || id || 0)}
-            onClose={() => setIsPrint(false)}
-          />
-        </Dialog>
-      )}
     </>
   );
 };

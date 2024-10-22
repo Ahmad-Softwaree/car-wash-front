@@ -5,7 +5,7 @@ import Dialog from "../shared/Dialog";
 import DeleteModal from "../ui/DeleteModal";
 import {
   useDeleteSell,
-  useGetSellPrint,
+  useSellPrint,
 } from "@/lib/react-query/query/sell.query";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
@@ -17,16 +17,13 @@ import Chip from "@mui/joy/Chip";
 import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import RestoreModal from "../ui/RestoreModal";
 import SellDetailCard from "./SellDetailCard";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ENUMs } from "@/lib/enum";
 import SellRestoreConfirm from "./SellRestoreConfirm";
 import CustomClose from "../shared/CustomClose";
 import { formatDateToDDMMYY } from "@/lib/functions";
-import PrintModal from "../ui/PrintModal";
 import useCheckReportPage from "@/hooks/useCheckReportPage";
 import { formatMoney } from "../shared/FormatMoney";
-import POSModal from "../ui/POSModal";
-import { useGetConfigs } from "@/lib/react-query/query/config.query";
 
 const SellCard = ({
   discount,
@@ -37,23 +34,21 @@ const SellCard = ({
   index = -1,
   total_sell_price,
 }: SellCardProps) => {
-  const { data: config } = useGetConfigs();
   const navigate = useNavigate();
   const { deleted_page } = useCheckDeletedPage();
   const { report_page } = useCheckReportPage();
-  const [searchParam, setSearchParam] = useSearchParams();
   const [detail, setDetail] = useState<boolean>(false);
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const [isRestore, setIsRestore] = useState<boolean>(false);
   const [isConfirm, setIsConfirm] = useState<boolean>(false);
-  const [isPrint, setIsPrint] = useState<boolean>(false);
+
+  const { mutateAsync: print } = useSellPrint(id);
 
   const {
     dispatch,
     state: { checked },
   } = useGlobalContext();
   const { mutateAsync, isPending } = useDeleteSell();
-  let sell_id_param = searchParam.get(ENUMs.SELL_PARAM as string);
   return (
     <>
       <Tr
@@ -140,7 +135,7 @@ const SellCard = ({
                     variant="soft"
                   >
                     <Chip
-                      onClick={() => setIsPrint(true)}
+                      onClick={() => print()}
                       variant="soft"
                       color="warning"
                     >
@@ -216,31 +211,7 @@ const SellCard = ({
           </>
         )}
       </Tr>
-      {isPrint && (
-        <Dialog
-          className="!p-5 rounded-md"
-          maxWidth={500}
-          maxHeight={`90%`}
-          isOpen={isPrint}
-          onClose={() => setIsPrint(false)}
-        >
-          {config?.items_print_modal ? (
-            <PrintModal
-              printFn={() =>
-                useGetSellPrint(Number(sell_id_param) || id || 0, "items")
-              }
-              onClose={() => setIsPrint(false)}
-            />
-          ) : (
-            <POSModal
-              printFn={() =>
-                useGetSellPrint(Number(sell_id_param) || id || 0, "items")
-              }
-              onClose={() => setIsPrint(false)}
-            />
-          )}
-        </Dialog>
-      )}
+
       {isDelete && (
         <Dialog
           className="!p-5 rounded-md"

@@ -9,6 +9,8 @@ import {
   GetSellsQ,
   RestoreSelfDeletedSellItemQ,
   RestoreSellQ,
+  Sell,
+  SellItem,
   UpdateItemInSellF,
   UpdateSellF,
   UpdateSellItemQ,
@@ -31,7 +33,7 @@ import {
   getSelfDeletedSellItems,
   getSell,
   getSellItems,
-  getSellPrint,
+  sellPrint,
   getSells,
   increaseItemInSell,
   restoreSelfDeletedSellItem,
@@ -160,14 +162,22 @@ export const useGetSell = (sell_id: Id) => {
     retry: 0,
   });
 };
-export function useGetSellPrint(sell_id: Id, where: "pos" | "items") {
+export function useSellPrint(sell_id: Id) {
   const { toast } = useToast();
-
-  return useQuery({
-    queryKey: [QUERY_KEYs.SELL_PRINT],
-    queryFn: (): Promise<Blob | null> => getSellPrint(toast, sell_id, where),
-    enabled: !!sell_id,
-    retry: 0,
+  const { dispatch } = useGlobalContext();
+  return useMutation({
+    mutationFn: (): Promise<{ sell: Sell; sellItems: SellItem[] }> =>
+      sellPrint(toast, sell_id),
+    onSuccess: (data: { sell: Sell; sellItems: SellItem[] }) => {
+      console.log(data);
+      return dispatch({
+        type: CONTEXT_TYPEs.SELL_PRINT_DATA,
+        payload: data,
+      });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
   });
 }
 export const useGetSellItems = (sell_id: Id) => {

@@ -18,7 +18,6 @@ import {
   RefetchOptions,
 } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { Employee } from "./employee";
 import { Toast, ToasterToast } from "@/components/ui/use-toast";
 import { Customer } from "./customer";
 import { Role } from "./role";
@@ -31,7 +30,7 @@ import { Service } from "./service";
 import { Sell, SellItem } from "./sell";
 import { Reservation } from "./reservation";
 import { Backup } from "./backup";
-import { CaseReport } from "./report";
+import { CaseReport, SellReportData, SellReportInfo } from "./report";
 
 export type GlobalFormProps = {
   state?: "update" | "insert";
@@ -271,7 +270,6 @@ export type MaybeImageTypeInDatabase = {
   image_url?: string;
   image_name?: string;
 };
-export type ComboboxExtendTypes = Employee;
 
 export type ReactSetterExtendTypes = string;
 
@@ -279,16 +277,19 @@ export type ReactSetter<T extends ReactSetterExtendTypes> = React.Dispatch<
   React.SetStateAction<T>
 >;
 
-export type ComboboxProps<T extends ComboboxExtendTypes> = {
-  onSelect: (id: Id, setHolder: ReactSetter<string>, one: T) => void;
-  data: T[] | undefined;
-};
-
 export type GlobalStateType = {
   oldData: any;
   checked: any;
   check_type: "all" | "one";
   theme: "dark" | "light";
+  sellPrintData: {
+    sell: Sell | null;
+    sellItems: SellItem[] | [];
+  };
+  sellReportData: {
+    sell: SellReportData[] | [];
+    info: SellReportInfo | null;
+  };
 };
 export type GlobalPayload<T> = {
   oldData: T;

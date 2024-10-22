@@ -1,5 +1,5 @@
 import { useToast } from "@/components/ui/use-toast";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import { QUERY_KEYs } from "../key";
 import { GetSellsQ } from "@/types/sell";
 import {
@@ -58,11 +58,12 @@ import {
   kogaMovementPrint,
   kogaNullPrint,
   reservationPrint,
-  sellPrint,
+  sellReportPrint,
 } from "../actions/report.action";
 import {
   Filter,
   From,
+  NestError,
   Page,
   PaginationReturnType,
   Search,
@@ -88,9 +89,13 @@ import {
   KogaMovementReportInfo,
   KogaNullReportInfo,
   ReservationReportInfo,
+  SellReportData,
   SellReportInfo,
 } from "@/types/report";
 import { GetReservationsQ } from "@/types/reservation";
+import { useGlobalContext } from "@/context/GlobalContext";
+import { CONTEXT_TYPEs } from "@/context/types";
+import { generateNestErrors } from "@/lib/functions";
 
 //SELL REPORT
 export const useGetSellReport = (from: From, to: To, userFilter: Filter) => {
@@ -151,18 +156,28 @@ export const useGetSellReportInformationSearch = (search: Search) => {
     enabled: typeof search === "string" && search.trim() !== "",
   });
 };
-export const useSellPrint = (
+export const useSellReportPrint = (
   search: Search,
   from: From,
   to: To,
   userFilter: Filter
 ) => {
   const { toast } = useToast();
-  return useQuery({
-    queryKey: [QUERY_KEYs.SELL_PRINT_DATA],
-    queryFn: (): Promise<Blob | null> =>
-      sellPrint(toast, search, from, to, userFilter),
-    retry: 0,
+  const { dispatch } = useGlobalContext();
+  return useMutation({
+    mutationFn: (): Promise<{
+      sell: SellReportData[];
+      info: SellReportInfo;
+    }> => sellReportPrint(search, from, to, userFilter),
+    onSuccess: (data: { sell: SellReportData[]; info: SellReportInfo }) => {
+      return dispatch({
+        type: CONTEXT_TYPEs.SELL_REPORT_PRINT_DATA,
+        payload: data,
+      });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
   });
 };
 

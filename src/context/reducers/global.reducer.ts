@@ -7,6 +7,14 @@ export const globalState: GlobalStateType = {
   checked: [],
   check_type: "one",
   theme: (localStorage.getItem("theme") as "dark" | "light") || "dark",
+  sellPrintData: {
+    sell: null,
+    sellItems: [],
+  },
+  sellReportData: {
+    sell: [],
+    info: null,
+  },
 };
 
 export const globalReducer = (
@@ -19,6 +27,16 @@ export const globalReducer = (
       return {
         ...state,
         oldData: payload,
+      };
+    case CONTEXT_TYPEs.SELL_PRINT_DATA:
+      return {
+        ...state,
+        sellPrintData: payload,
+      };
+    case CONTEXT_TYPEs.SELL_REPORT_PRINT_DATA:
+      return {
+        ...state,
+        sellReportData: payload,
       };
     case CONTEXT_TYPEs.CHECK:
       var result = state.checked;

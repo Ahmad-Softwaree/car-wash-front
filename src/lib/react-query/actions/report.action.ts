@@ -1,5 +1,5 @@
 import { authApi, pdfFileAuthApi } from "@/lib/config/api.config";
-import { downloadFile, generateNestErrors } from "@/lib/functions";
+import { generateNestErrors } from "@/lib/functions";
 import { URLs } from "@/lib/url";
 import { GetExpensesQ } from "@/types/expense";
 import {
@@ -30,6 +30,7 @@ import {
   KogaMovementReportInfo,
   KogaNullReportInfo,
   ReservationReportInfo,
+  SellReportData,
   SellReportInfo,
 } from "@/types/report";
 import { GetReservationsQ } from "@/types/reservation";
@@ -106,26 +107,26 @@ export const getSellReportInformationSearch = async (
   }
 };
 
-export const sellPrint = async (
-  toast: ToastType,
+export const sellReportPrint = async (
   search: Search,
   from: From,
   to: To,
   userFilter: Filter
-): Promise<Blob | null> => {
+): Promise<{ sell: SellReportData[]; info: SellReportInfo }> => {
   try {
-    const { data } = await pdfFileAuthApi.get<any>(
+    const { data } = await authApi.post<{
+      sell: SellReportData[];
+      info: SellReportInfo;
+    }>(
       `${URLs.SELL_PRINT_DATA}?search=${search != "" ? search : ""}&from=${
         from != "" ? from : ""
       }&to=${to != "" ? to : ""}&userFilter=${
         userFilter != "" ? userFilter : ""
       }`
     );
-    const pdfData = new Uint8Array(data);
-    const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
-    return pdfBlob;
+    return data;
   } catch (error: any) {
-    throw generateNestErrors(error, toast);
+    throw error;
   }
 };
 

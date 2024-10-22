@@ -15,7 +15,6 @@ import { useEffect, useMemo, useState } from "react";
 import { formatMoney } from "@/components/shared/FormatMoney";
 import { Filter, Printer } from "lucide-react";
 import { Badge, Button, Chip } from "@mui/joy";
-import PrintModal from "@/components/ui/PrintModal";
 import Dialog from "@/components/shared/Dialog";
 import Loading from "@/components/ui/Loading";
 import { TailSpin } from "react-loader-spinner";
@@ -24,10 +23,7 @@ import FilterModal from "@/components/shared/FilterModal";
 import { ItemQuantityHistory } from "@/types/items";
 import ItemMovementCard from "@/components/cards/ItemMovementCard";
 import { useGetConfigs } from "@/lib/react-query/query/config.query";
-import POSModal from "@/components/ui/POSModal";
 const KogaMovementReportList = () => {
-  const { data: config } = useGetConfigs();
-
   const [searchParam, setSearchParam] = useSearchParams();
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string);
   let from = searchParam.get(ENUMs.FROM_PARAM as string);
@@ -35,7 +31,6 @@ const KogaMovementReportList = () => {
   let item_type = searchParam.get(ENUMs.ITEM_TYPE_PARAM as string);
   let user = searchParam.get(ENUMs.USER_FILTER_PARAM as string);
 
-  const [print, setPrint] = useState<boolean>(false);
   const [filter, setFilter] = useState<boolean>(false);
 
   const {
@@ -108,12 +103,7 @@ const KogaMovementReportList = () => {
           </Button>
         )}
         <Chip variant="soft" color="warning">
-          <Printer
-            onClick={() => {
-              setPrint(true);
-            }}
-            className="w-11 h-11 p-2 cursor-pointer"
-          />
+          <Printer className="w-11 h-11 p-2 cursor-pointer" />
         </Chip>
       </div>
       <Pagination<ItemQuantityHistory[]>
@@ -254,44 +244,7 @@ const KogaMovementReportList = () => {
           );
         }}
       </Pagination>
-      {print && (
-        <Dialog
-          className="!p-5 rounded-md"
-          maxWidth={1500}
-          height={`90%`}
-          maxHeight={1000}
-          isOpen={print}
-          onClose={() => setPrint(false)}
-        >
-          {config?.report_print_modal ? (
-            <PrintModal
-              printFn={() =>
-                useKogaMovementPrint(
-                  item_type || "",
-                  search || "",
-                  from || "",
-                  to || "",
-                  user || ""
-                )
-              }
-              onClose={() => setPrint(false)}
-            />
-          ) : (
-            <POSModal
-              printFn={() =>
-                useKogaMovementPrint(
-                  item_type || "",
-                  search || "",
-                  from || "",
-                  to || "",
-                  user || ""
-                )
-              }
-              onClose={() => setPrint(false)}
-            />
-          )}
-        </Dialog>
-      )}
+
       {filter && (
         <Dialog
           className="!p-5 rounded-md"

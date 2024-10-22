@@ -15,14 +15,11 @@ import Input from "@/components/ui/Input";
 import InputGroup from "@/components/ui/InputGroup";
 import Loading from "@/components/ui/Loading";
 import MyButton from "@/components/ui/MyButton";
-import POSModal from "@/components/ui/POSModal";
-import PrintModal from "@/components/ui/PrintModal";
 import TBody from "@/components/ui/TBody";
 import { useToast } from "@/components/ui/use-toast";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 import { ENUMs } from "@/lib/enum";
-import { useGetConfigs } from "@/lib/react-query/query/config.query";
 import {
   useGetItems,
   useSearchItems,
@@ -34,7 +31,7 @@ import {
   useDeleteSell,
   useGetSell,
   useGetSellItems,
-  useGetSellPrint,
+  useSellPrint,
   useUpdateSell,
 } from "@/lib/react-query/query/sell.query";
 import { Id } from "@/types/global";
@@ -42,13 +39,11 @@ import { Item, ItemCard, ItemInformation } from "@/types/items";
 import { SellItem } from "@/types/sell";
 import { Badge, Button } from "@mui/joy";
 import { Calculator, CirclePlus, Filter, Printer, Trash2 } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { TailSpin } from "react-loader-spinner";
 import { useSearchParams } from "react-router-dom";
 
 const CreatePsula = () => {
-  const { data: config } = useGetConfigs();
-
   const { toast } = useToast();
   const [calculate, setCalculate] = useState<boolean>(false);
   const [searchParam, setSearchParam] = useSearchParams();
@@ -72,10 +67,11 @@ const CreatePsula = () => {
     Number(sell_id_param)
   );
 
+  const { mutateAsync: print } = useSellPrint(Number(sell_id_param));
+
   const { mutateAsync: create, isPending: createPending } = useAddSell();
   const { mutateAsync: deleteSell, isPending: deletePending } = useDeleteSell();
   const [isDelete, setIsDelete] = useState<boolean>(false);
-  const [isPrint, setIsPrint] = useState<boolean>(false);
 
   const [isItemDelete, setIsItemDelete] = useState<boolean>(false);
   const { mutateAsync: deleteItemInSell, isPending: deleteItemInSellPending } =
@@ -465,7 +461,7 @@ const CreatePsula = () => {
                       <CirclePlus className="w-7 h-7 p-1 cursor-pointer" />
                     </Button>
                     <Button
-                      onClick={() => setIsPrint(true)}
+                      onClick={() => print()}
                       className="flex flex-row justify-center items-center gap-2 col-span-1 !rounded-none h-[100px]"
                       variant="soft"
                       color="primary"
@@ -508,27 +504,7 @@ const CreatePsula = () => {
           />
         </Dialog>
       )}
-      {isPrint && (
-        <Dialog
-          className="!p-5 rounded-md"
-          maxWidth={500}
-          maxHeight={`90%`}
-          isOpen={isPrint}
-          onClose={() => setIsPrint(false)}
-        >
-          {config?.pos_print_modal ? (
-            <PrintModal
-              printFn={() => useGetSellPrint(Number(sell_id_param) || 0, "pos")}
-              onClose={() => setIsPrint(false)}
-            />
-          ) : (
-            <POSModal
-              printFn={() => useGetSellPrint(Number(sell_id_param) || 0, "pos")}
-              onClose={() => setIsPrint(false)}
-            />
-          )}
-        </Dialog>
-      )}
+
       {isItemDelete && (
         <Dialog
           className="!p-5 rounded-md"
