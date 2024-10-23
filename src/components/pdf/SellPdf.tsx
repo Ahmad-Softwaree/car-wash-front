@@ -15,16 +15,6 @@ const SellPdf = () => {
     state: { user },
   } = useAuthContext();
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      window.close();
-    };
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
-
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth() + 1;
