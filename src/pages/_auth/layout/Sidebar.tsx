@@ -3,7 +3,7 @@ import Card from "@mui/joy/Card";
 import Divider from "@mui/joy/Divider";
 import Chip from "@mui/joy/Chip";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import React, {
+import {
   Dispatch,
   ReactElement,
   SetStateAction,
@@ -62,15 +62,7 @@ export const sideLinks: SideLink[] = [
     }`,
     type: "backup",
   },
-  {
-    id: crypto.randomUUID() as string,
-    icon: <HardDrive />,
-    name: ENUMs.SERVER_BACKUP_PART as string,
-    link: `/${ENUMs.BACKUP_SECTION as string}/${
-      ENUMs.SERVER_BACKUP_PART as string
-    }`,
-    type: "backup",
-  },
+
   //GENERAL
   {
     id: crypto.randomUUID() as string,

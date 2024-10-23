@@ -25,7 +25,6 @@ import KogaReport from "@/pages/_auth/KogaReport";
 import ProfitReport from "@/pages/_auth/ProfitReport";
 import ExpenseReport from "@/pages/_auth/ExpenseReport";
 import CaseReport from "@/pages/_auth/CaseReport";
-import VultrBackups from "@/pages/_auth/VultrBackups";
 import ReservationReport from "@/pages/_auth/ReservationReport";
 import Config from "@/pages/_auth/Config";
 import ItemLess from "@/pages/_auth/LessItem";
@@ -75,16 +74,6 @@ const router = createBrowserRouter(
               <CheckPart
                 part={[ENUMs.NORMAL_BACKUP_PART as string]}
                 Component={Backups}
-              />
-            }
-          />
-          <Route
-            path={ENUMs.SERVER_BACKUP_PART as string}
-            errorElement={<Error />}
-            element={
-              <CheckPart
-                part={[ENUMs.SERVER_BACKUP_PART as string]}
-                Component={VultrBackups}
               />
             }
           />
