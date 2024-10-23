@@ -22,7 +22,7 @@ import CustomClose from "@/components/shared/CustomClose";
 import FilterModal from "@/components/shared/FilterModal";
 import { ItemKoga } from "@/types/items";
 import ItemKogaReportCard from "@/components/cards/ItemKogaReportCard";
-import { useGetConfigs } from "@/lib/react-query/query/config.query";
+
 const KogaNullReportList = () => {
   const [searchParam, setSearchParam] = useSearchParams();
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string);
@@ -30,7 +30,11 @@ const KogaNullReportList = () => {
   let user = searchParam.get(ENUMs.USER_FILTER_PARAM as string);
 
   const [filter, setFilter] = useState<boolean>(false);
-
+  const { mutateAsync: print } = useKogaNullPrint(
+    item_type || "",
+    search || "",
+    user || ""
+  );
   const {
     data: reportData,
     isLoading,
@@ -90,7 +94,7 @@ const KogaNullReportList = () => {
             سڕینەوەی فلتەر
           </Button>
         )}
-        <Chip variant="soft" color="warning">
+        <Chip onClick={() => print()} variant="soft" color="warning">
           <Printer className="w-11 h-11 p-2 cursor-pointer" />
         </Chip>
       </div>
@@ -196,7 +200,7 @@ const KogaNullReportList = () => {
               </div>
               {!loading && reportData && searchReportData && (
                 <div className="w-full flex flex-col justify-center items-center z-[100]  table-dark-light   default-border p-2 gap-5">
-                  <div className="w-full flex flex-row justify-evenly items-center">
+                  <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
                     <p>
                       کۆی ژمارەی کاڵا:{" "}
                       {!isSearched
@@ -211,7 +215,7 @@ const KogaNullReportList = () => {
                         : formatMoney(searchReportData?.total_item_quantity)}
                     </p>
                   </div>
-                  <div className="w-full flex flex-row justify-evenly items-center">
+                  <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
                     <p>
                       کۆی دانەی فرۆشراو :{" "}
                       {!isSearched
@@ -232,7 +236,7 @@ const KogaNullReportList = () => {
                           )}
                     </p>
                   </div>
-                  <div className="w-full flex flex-row justify-evenly items-center">
+                  <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
                     <p>
                       کۆی نرخی کڕاو :{" "}
                       {!isSearched
@@ -247,7 +251,7 @@ const KogaNullReportList = () => {
                         : formatMoney(searchReportData?.total_sell_price)}
                     </p>
                   </div>
-                  <div className="w-full flex flex-row justify-evenly items-center">
+                  <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
                     <p>
                       کۆی تێچوو :{" "}
                       {!isSearched
@@ -255,7 +259,7 @@ const KogaNullReportList = () => {
                         : formatMoney(searchReportData?.total_cost)}
                     </p>
                   </div>
-                  <div className="w-full flex flex-row justify-evenly items-center">
+                  <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
                     ژمارەی داتا {allData.length}
                   </div>
                 </div>

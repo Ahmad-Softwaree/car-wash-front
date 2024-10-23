@@ -30,7 +30,31 @@ import { Service } from "./service";
 import { Sell, SellItem } from "./sell";
 import { Reservation } from "./reservation";
 import { Backup } from "./backup";
-import { CaseReport, SellReportData, SellReportInfo } from "./report";
+import {
+  BillProfitReportData,
+  BillProfitReportInfo,
+  CaseReport,
+  CaseReportData,
+  CaseReportInfo,
+  ExpenseReportData,
+  ExpenseReportInfo,
+  ItemProfitReportData,
+  ItemProfitReportInfo,
+  ItemReportData,
+  ItemReportInfo,
+  KogaAllReportData,
+  KogaAllReportInfo,
+  KogaLessReportData,
+  KogaLessReportInfo,
+  KogaMovementReportData,
+  KogaMovementReportInfo,
+  KogaNullReportData,
+  KogaNullReportInfo,
+  ReservationReportData,
+  ReservationReportInfo,
+  SellReportData,
+  SellReportInfo,
+} from "./report";
 
 export type GlobalFormProps = {
   state?: "update" | "insert";
@@ -130,12 +154,6 @@ export type To = undefined | string;
 export type SearchString = string | number;
 
 export type DeleteModalProps = {
-  onClose: () => void;
-  finalOperator?: () => void;
-  deleteFunction: any;
-  loading: boolean;
-};
-export type PrinterStateModalProps = {
   onClose: () => void;
   finalOperator?: () => void;
   deleteFunction: any;
@@ -289,6 +307,46 @@ export type GlobalStateType = {
   sellReportData: {
     sell: SellReportData[] | [];
     info: SellReportInfo | null;
+  };
+  itemReportData: {
+    item: ItemReportData[] | [];
+    info: ItemReportInfo | null;
+  };
+  kogaAllReportData: {
+    item: KogaAllReportData[] | [];
+    info: KogaAllReportInfo | null;
+  };
+  kogaNullReportData: {
+    item: KogaNullReportData[] | [];
+    info: KogaNullReportInfo | null;
+  };
+  kogaLessReportData: {
+    item: KogaLessReportData[] | [];
+    info: KogaLessReportInfo | null;
+  };
+  kogaMovementReportData: {
+    item: KogaMovementReportData[] | [];
+    info: KogaMovementReportInfo | null;
+  };
+  billProfitReportData: {
+    sell: BillProfitReportData[] | [];
+    info: BillProfitReportInfo | null;
+  };
+  itemProfitReportData: {
+    item: ItemProfitReportData[] | [];
+    info: ItemProfitReportInfo | null;
+  };
+  expenseReportData: {
+    info: ExpenseReportInfo | null;
+    expense: ExpenseReportData[] | [];
+  };
+  caseReportData: {
+    data: CaseReportData[] | [];
+    info: CaseReportInfo | null;
+  };
+  reservationReportData: {
+    reservations: ReservationReportData[] | [];
+    info: ReservationReportInfo | null;
   };
 };
 export type GlobalPayload<T> = {

@@ -118,7 +118,12 @@ export type ItemProfitReportInfo = {
   total_profit: number;
   total_cost: number;
 };
-export type ItemProfitReportData = SellItem & { total_quantity: number };
+export type ItemProfitReportData = SellItem & {
+  total_quantity: number;
+  item_barcode: string;
+  type_id: number;
+  type_name: string;
+};
 
 export type ExpenseReportInfo = {
   total_price: number;

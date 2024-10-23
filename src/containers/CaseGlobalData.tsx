@@ -64,18 +64,18 @@ const CaseGlobalData = () => {
 
       {!isLoading && data && (
         <div className="w-full flex flex-col justify-center items-center z-[100]  table-dark-light   default-border p-2 gap-5">
-          <div className="w-full flex flex-row justify-evenly items-center">
+          <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
             <p>پارەی سەرەتای ناو قاصە : {formatMoney(data?.total_money)}</p>
           </div>
-          <div className="w-full flex flex-row justify-evenly items-center">
+          <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
             <p>کۆی فرۆشتن : {formatMoney(data?.total_sell)}</p>
           </div>
 
-          <div className="w-full flex flex-row justify-evenly items-center">
+          <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
             <p>کۆی خەرجی : {formatMoney(data?.total_expense)}</p>
           </div>
 
-          <div className="w-full flex flex-row justify-evenly items-center">
+          <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
             <p>کۆی ئێستای ناو قاصە : {formatMoney(data?.remain_money)}</p>
           </div>
         </div>

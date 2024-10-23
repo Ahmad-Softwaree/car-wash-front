@@ -9,7 +9,7 @@ export function formatMoney(value: any): string {
 }
 const FormatMoney = ({ children, ...props }: FormatMoneyProps) => {
   return (
-    <p {...props} className={cn(props.className, ["w-fit"])}>
+    <p {...props} className={cn(props.className, ["w-full"])}>
       {formatMoney(children)}
     </p>
   );

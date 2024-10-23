@@ -2,20 +2,18 @@ import { useGlobalContext } from "@/context/GlobalContext";
 import { SellItem } from "@/types/sell";
 import { formatMoney } from "../shared/FormatMoney";
 import { useAuthContext } from "@/context/AuthContext";
-import { Dispatch, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { posStyle } from "@/lib/config/pdf.config";
-import { GlobalStateType } from "@/types/global";
-import { AuthStateType } from "@/types/auth";
 
 const SellPdf = () => {
   const printRef = useRef<HTMLDivElement>(null);
 
   const {
     state: { sellPrintData },
-  }: { state: GlobalStateType; dispatch: Dispatch<any> } = useGlobalContext();
+  } = useGlobalContext();
   const {
     state: { user },
-  }: { state: AuthStateType; dispatch: Dispatch<any> } = useAuthContext();
+  } = useAuthContext();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -79,7 +77,7 @@ const SellPdf = () => {
     user && (
       <div ref={printRef} id="sell_pdf" className="hidden pos">
         <p className="username">وەصڵی فرۆشتن</p>
-        <h1>غەسلی ڕەها</h1>
+        <h1>{import.meta.env.VITE_COMPANY_NAME}</h1>
 
         <div className="info_black">
           <p>بەرواری وەصڵ : {formattedDate}</p>

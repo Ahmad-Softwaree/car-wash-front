@@ -16,18 +16,21 @@ const SellReport = () => {
     <>
       <Container
         as={`div`}
-        className="w-full gap-10 flex flex-col justify-start items-start">
+        className="w-full gap-10 flex flex-col justify-start items-start"
+      >
         <Tabs
           defaultValue={0}
           value={index}
           onChange={(event, value) => setIndex(value as number)}
           className="w-full !dark-light"
-          aria-label="Flex auto tabs">
+          aria-label="Flex auto tabs"
+        >
           <TabList
             sx={{
               gap: "10px",
             }}
-            tabFlex="auto">
+            tabFlex="auto"
+          >
             <Tab
               sx={{
                 borderColor: "gray",
@@ -39,7 +42,8 @@ const SellReport = () => {
                 "&.Mui-selected": {
                   color: theme === "dark" ? "black" : "black", // Active text color
                 },
-              }}>
+              }}
+            >
               لیستی پسوڵەکان
             </Tab>
             <Tab
@@ -53,7 +57,8 @@ const SellReport = () => {
                 "&.Mui-selected": {
                   color: theme === "dark" ? "black" : "black", // Active text color
                 },
-              }}>
+              }}
+            >
               لیستی کاڵا فرۆشراوەکان
             </Tab>
           </TabList>

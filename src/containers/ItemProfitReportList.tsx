@@ -32,7 +32,13 @@ const ItemProfitReportList = () => {
   let user = searchParam.get(ENUMs.USER_FILTER_PARAM as string);
 
   const [filter, setFilter] = useState<boolean>(false);
-
+  const { mutateAsync: print } = useItemProfitPrint(
+    item_filter || "",
+    from || "",
+    to || "",
+    search || "",
+    user || ""
+  );
   const {
     data: reportData,
     isLoading,
@@ -103,7 +109,7 @@ const ItemProfitReportList = () => {
             سڕینەوەی فلتەر
           </Button>
         )}
-        <Chip variant="soft" color="warning">
+        <Chip onClick={() => print()} variant="soft" color="warning">
           <Printer className="w-11 h-11 p-2 cursor-pointer" />
         </Chip>
       </div>
@@ -162,7 +168,7 @@ const ItemProfitReportList = () => {
                         <p className="pr-1">#</p>
                       </Th>
                       <Th className="text-center text-sm !p-4">
-                        <p className="pr-3 table-head-border">ژمارەی وەصڵ</p>
+                        <p className="pr-3 table-head-border">ژ.وەصڵ</p>
                       </Th>
                       <Th className="text-center text-sm !p-4">
                         <p className="pr-3 table-head-border">ناوی کاڵا</p>
@@ -223,7 +229,7 @@ const ItemProfitReportList = () => {
               </div>
               {!loading && reportData && searchReportData && (
                 <div className="w-full flex flex-col justify-center items-center z-[100]  table-dark-light   default-border p-2 gap-5">
-                  <div className="w-full flex flex-row justify-evenly items-center">
+                  <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
                     <p>
                       کۆی ژمارەی کاڵا :{" "}
                       {!isSearched
@@ -238,7 +244,7 @@ const ItemProfitReportList = () => {
                         : formatMoney(searchReportData?.total_quantity)}
                     </p>
                   </div>
-                  <div className="w-full flex flex-row justify-evenly items-center">
+                  <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
                     <p>
                       کۆی نرخی فرۆشتن :{" "}
                       {!isSearched
@@ -253,7 +259,7 @@ const ItemProfitReportList = () => {
                         : formatMoney(searchReportData?.total_purchase_price)}
                     </p>
                   </div>
-                  <div className="w-full flex flex-row justify-evenly items-center">
+                  <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
                     <p>
                       کۆی گشتی تێچوو :{" "}
                       {!isSearched

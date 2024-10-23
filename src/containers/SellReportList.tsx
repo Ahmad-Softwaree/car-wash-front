@@ -156,7 +156,7 @@ const SellReportList = () => {
                         <p className="pr-1">#</p>
                       </Th>
                       <Th className="text-center text-sm !p-4">
-                        <p className="pr-3 table-head-border">ژمارەی وەصڵ</p>
+                        <p className="pr-3 table-head-border">ژ.وەصڵ</p>
                       </Th>
                       <Th className="text-center text-sm !p-4">
                         <p className="pr-3 table-head-border">بەروار</p>
@@ -194,7 +194,7 @@ const SellReportList = () => {
               </div>
               {!loading && reportData && searchReportData && (
                 <div className="w-full flex flex-col justify-center items-center z-[100]  table-dark-light   default-border p-2 gap-5">
-                  <div className="w-full flex flex-row justify-evenly items-center">
+                  <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
                     <p>
                       کۆی ژمارەی پسولە :{" "}
                       {!isSearched
@@ -209,7 +209,7 @@ const SellReportList = () => {
                         : formatMoney(searchReportData?.total_sell_price)}
                     </p>
                   </div>
-                  <div className="w-full flex flex-row justify-evenly items-center">
+                  <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
                     <p>
                       کۆی داشکاندنی پسولەکان :{" "}
                       {!isSearched
@@ -230,7 +230,7 @@ const SellReportList = () => {
                           )}
                     </p>
                   </div>
-                  <div className="w-full flex flex-row justify-evenly items-center">
+                  <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
                     ژمارەی داتا {allData.length}
                   </div>
                 </div>

@@ -29,7 +29,10 @@ export const GlobalContextProvider = ({
   );
 };
 
-export const useGlobalContext = () => {
+export const useGlobalContext = (): {
+  state: GlobalStateType;
+  dispatch: Dispatch<any>;
+} => {
   const context = useContext(GlobalContext);
 
   if (context === undefined) {

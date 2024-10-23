@@ -277,9 +277,7 @@ const Sells = () => {
                             <p className="pr-1">#</p>
                           </Th>
                           <Th className="text-center text-sm !p-4">
-                            <p className="pr-3 table-head-border">
-                              ژمارەی وەصڵ
-                            </p>
+                            <p className="pr-3 table-head-border">ژ.وەصڵ</p>
                           </Th>
                           <Th className="text-center text-sm !p-4">
                             <p className="pr-3 table-head-border">بەروار</p>
@@ -402,7 +400,7 @@ const Sells = () => {
                           <p className="pr-3 table-head-border">ناوی کاڵا</p>
                         </Th>
                         <Th className="text-center text-sm !p-4">
-                          <p className="pr-3 table-head-border">ژمارەی وەصڵ</p>
+                          <p className="pr-3 table-head-border">ژ.وەصڵ</p>
                         </Th>
                         <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">عدد</p>

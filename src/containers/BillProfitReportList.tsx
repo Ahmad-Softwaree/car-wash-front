@@ -3,6 +3,7 @@ import { Table, Td, Th, THead, Tr } from "@/components/ui";
 import TBody from "@/components/ui/TBody";
 import { useSearchParams } from "react-router-dom";
 import {
+  useBillProfitPrint,
   useGetBillProfitReport,
   useGetBillProfitReportInformation,
   useGetBillProfitReportInformationSearch,
@@ -29,7 +30,12 @@ const BillProfitReportList = () => {
   let user = searchParam.get(ENUMs.USER_FILTER_PARAM as string);
 
   const [filter, setFilter] = useState<boolean>(false);
-
+  const { mutateAsync: print } = useBillProfitPrint(
+    from || "",
+    to || "",
+    search || "",
+    user || ""
+  );
   const {
     data: reportData,
     isLoading,
@@ -91,7 +97,7 @@ const BillProfitReportList = () => {
             سڕینەوەی فلتەر
           </Button>
         )}
-        <Chip variant="soft" color="warning">
+        <Chip onClick={() => print()} variant="soft" color="warning">
           <Printer className="w-11 h-11 p-2 cursor-pointer" />
         </Chip>
       </div>
@@ -148,7 +154,7 @@ const BillProfitReportList = () => {
                         <p className="pr-1">#</p>
                       </Th>
                       <Th className="text-center text-sm !p-4">
-                        <p className="pr-3 table-head-border">ژمارەی وەصڵ</p>
+                        <p className="pr-3 table-head-border">ژ.وەصڵ</p>
                       </Th>
                       <Th className="text-center text-sm !p-4">
                         <p className="pr-3 table-head-border">بەروار</p>
@@ -196,7 +202,7 @@ const BillProfitReportList = () => {
               </div>
               {!loading && reportData && searchReportData && (
                 <div className="w-full flex flex-col justify-center items-center z-[100]  table-dark-light   default-border p-2 gap-5">
-                  <div className="w-full flex flex-row justify-evenly items-center">
+                  <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
                     <p>
                       کۆی پسولە :{" "}
                       {!isSearched
@@ -218,7 +224,7 @@ const BillProfitReportList = () => {
                         : formatMoney(searchReportData?.total_purchase_price)}
                     </p>
                   </div>
-                  <div className="w-full flex flex-row justify-evenly items-center">
+                  <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
                     <p>
                       کۆی داشکاندنی پسولە :{" "}
                       {!isSearched
@@ -239,7 +245,7 @@ const BillProfitReportList = () => {
                           )}
                     </p>
                   </div>
-                  <div className="w-full flex flex-row justify-evenly items-center">
+                  <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
                     <p>
                       کۆی قازانجی پسوڵە :{" "}
                       {!isSearched
@@ -247,7 +253,7 @@ const BillProfitReportList = () => {
                         : formatMoney(searchReportData?.total_profit)}
                     </p>
                   </div>
-                  <div className="w-full flex flex-row justify-evenly items-center">
+                  <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
                     ژمارەی داتا {allData.length}
                   </div>
                 </div>

@@ -227,16 +227,7 @@ const Backups = () => {
           >
             باکئەپی خزمەتگوزاریەکان
           </button>
-          <button
-            onClick={() => setEntityName("printer")}
-            disabled={isFetching}
-            className="p-2 px-4 rounded-md bg-sky-500 text-white text-sm opacity-70 transition-all duration-200 hover:opacity-100 disabled:!opacity-60 disabled:hover:!opacity-60 disabled:cursor-not-allowed"
-            name="printer"
-            title="printer"
-            id="printer"
-          >
-            باکئەپی پرنتەرەکان
-          </button>
+        
           <button
             onClick={() => setEntityName("item_quantity_history")}
             disabled={isFetching}

@@ -109,7 +109,7 @@ const Profile = () => {
                 </InputAddon>
 
                 <Input
-                  value={user.phone}
+                  value={user?.phone}
                   name="name"
                   disabled
                   type="text"
@@ -143,7 +143,7 @@ const Profile = () => {
                 </InputAddon>
 
                 <Input
-                  value={user.username}
+                  value={user?.username}
                   disabled
                   name="name"
                   type="text"
@@ -185,7 +185,7 @@ const Profile = () => {
                 </InputAddon>
 
                 <Input
-                  value={user.role_name}
+                  value={user?.role_name}
                   disabled
                   type="text"
                   dir="ltr"

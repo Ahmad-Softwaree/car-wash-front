@@ -50,7 +50,7 @@ const ItemSellReportCard = ({
           </p>
         </Td>
 
-        <Td className="!p-3 flex flex-row justify-start items-center gap-1">
+        <Td className="!p-3 flex flex-row justify-center items-center gap-1">
           <Chip
             variant="soft"
             color={Number(quantity) < 30 ? "danger" : "neutral"}

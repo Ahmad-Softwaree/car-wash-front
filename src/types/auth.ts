@@ -1,5 +1,5 @@
 import { Dispatch } from "react";
-import { Id, ImageTypeInForm, MaybeImageTypeInDatabase, Token } from "./global";
+import { Id, Token } from "./global";
 import { Part } from "./part";
 
 export type User = {

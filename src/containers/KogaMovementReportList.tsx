@@ -22,7 +22,6 @@ import CustomClose from "@/components/shared/CustomClose";
 import FilterModal from "@/components/shared/FilterModal";
 import { ItemQuantityHistory } from "@/types/items";
 import ItemMovementCard from "@/components/cards/ItemMovementCard";
-import { useGetConfigs } from "@/lib/react-query/query/config.query";
 const KogaMovementReportList = () => {
   const [searchParam, setSearchParam] = useSearchParams();
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string);
@@ -32,7 +31,13 @@ const KogaMovementReportList = () => {
   let user = searchParam.get(ENUMs.USER_FILTER_PARAM as string);
 
   const [filter, setFilter] = useState<boolean>(false);
-
+  const { mutateAsync: print } = useKogaMovementPrint(
+    item_type || "",
+    from || "",
+    to || "",
+    search || "",
+    user || ""
+  );
   const {
     data: reportData,
     isLoading,
@@ -102,7 +107,7 @@ const KogaMovementReportList = () => {
             سڕینەوەی فلتەر
           </Button>
         )}
-        <Chip variant="soft" color="warning">
+        <Chip onClick={() => print()} variant="soft" color="warning">
           <Printer className="w-11 h-11 p-2 cursor-pointer" />
         </Chip>
       </div>
@@ -204,7 +209,7 @@ const KogaMovementReportList = () => {
               </div>
               {!loading && reportData && searchReportData && (
                 <div className="w-full flex flex-col justify-center items-center z-[100]  table-dark-light   default-border p-2 gap-5">
-                  <div className="w-full flex flex-row justify-evenly items-center">
+                  <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
                     <p>
                       کۆی ژمارەی کاڵا:{" "}
                       {!isSearched
@@ -219,7 +224,7 @@ const KogaMovementReportList = () => {
                         : formatMoney(searchReportData?.total_item_quantity)}
                     </p>
                   </div>
-                  <div className="w-full flex flex-row justify-evenly items-center">
+                  <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
                     {" "}
                     <p>
                       کۆی نرخی کڕین :{" "}
@@ -235,7 +240,7 @@ const KogaMovementReportList = () => {
                     </p>
                   </div>
 
-                  <div className="w-full flex flex-row justify-evenly items-center">
+                  <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
                     ژمارەی داتا {allData.length}
                   </div>
                 </div>

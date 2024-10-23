@@ -3,20 +3,29 @@ import { formatMoney } from "../shared/FormatMoney";
 import { useAuthContext } from "@/context/AuthContext";
 import { useEffect } from "react";
 import { pdfStyle } from "@/lib/config/pdf.config";
-import { SellReportData } from "@/types/report";
+import {
+  BillProfitReportData,
+  ItemReportData,
+  KogaAllReportData,
+} from "@/types/report";
 import { formatDateToDDMMYY, timestampToDateString } from "@/lib/functions";
 
-const SellReportPdf = () => {
+const BillProfitReportPdf = () => {
   const {
-    state: { sellReportData },
+    state: { billProfitReportData },
   } = useGlobalContext();
+
   const {
     state: { user },
   } = useAuthContext();
 
   useEffect(() => {
-    if (sellReportData.sell && sellReportData.sell.length !== 0 && user) {
-      const printDiv = document.getElementById("sell_report_pdf");
+    if (
+      billProfitReportData.sell &&
+      billProfitReportData.sell.length !== 0 &&
+      user
+    ) {
+      const printDiv = document.getElementById("bill_profit_report_pdf");
 
       if (printDiv) {
         const newWindow = window.open("", "", `width=1500`);
@@ -37,44 +46,50 @@ const SellReportPdf = () => {
         newWindow?.close();
       }
     }
-  }, [sellReportData, user]);
+  }, [billProfitReportData, user]);
 
   return (
-    sellReportData.info &&
-    sellReportData.sell.length != 0 &&
+    billProfitReportData.info &&
+    billProfitReportData.sell.length != 0 &&
     user && (
-      <div id="sell_report_pdf" className="hidden inner_div">
-        <p className="username">ڕاپۆرتی لیستی پسوڵەکان</p>
+      <div id="bill_profit_report_pdf" className="hidden inner_div">
+        <p className="username">ڕاپۆرتی قازانج - پسوڵە</p>
         <h1>{import.meta.env.VITE_COMPANY_NAME}</h1>
 
         <div className="info_black">
           <div className="infoRight">
             <p>
               کۆی داشکاندنی پسوڵەکان‌ :
-              {formatMoney(sellReportData.info.total_sell_discount)}
+              {formatMoney(billProfitReportData.info.total_sell_discount)}
             </p>
             <p>
               کۆی دوای داشکاندن :
               {formatMoney(
-                sellReportData.info.total_sell_price -
-                  sellReportData.info.total_sell_discount
+                billProfitReportData.info.total_sell_price -
+                  billProfitReportData.info.total_sell_discount
               )}
+            </p>
+            <p>
+              کۆی قازانج :{formatMoney(billProfitReportData.info.total_profit)}
             </p>
           </div>
           <div className="infoLeft">
             <p>
-              کۆی ژمارەی پسوڵە : {formatMoney(sellReportData.info.sell_count)}
+              کۆی ژمارەی پسوڵە :{" "}
+              {formatMoney(billProfitReportData.info.sell_count)}
             </p>
             <p>
               کۆی گشتی نرخی پسوڵەکان :
-              {formatMoney(sellReportData.info.total_sell_price)}
+              {formatMoney(billProfitReportData.info.total_sell_price)}
             </p>
           </div>
         </div>
         <table>
           <thead>
             <tr>
-              <th>نرخی دوای داشکاندن</th>
+              <th>کۆی قازانجی پسوڵە</th>
+              <th>کۆی تێچووی پسوڵە</th>
+              <th>نرخ دوای داشکاندن</th>
               <th>داشکاندن</th>
               <th>کۆی گشتی</th>
               <th>بەروار</th>
@@ -82,8 +97,17 @@ const SellReportPdf = () => {
             </tr>
           </thead>
           <tbody id="table-body">
-            {sellReportData?.sell.map((val: SellReportData) => (
+            {billProfitReportData?.sell.map((val: BillProfitReportData) => (
               <tr key={val.id}>
+                <td>
+                  {formatMoney(
+                    val.total_sell_price -
+                      val.discount -
+                      val.total_purchase_price
+                  )}
+                </td>
+
+                <td>{formatMoney(val.total_purchase_price)}</td>
                 <td>{formatMoney(val.total_sell_price - val.discount)}</td>
                 <td>{formatMoney(val.discount)}</td>
                 <td>{formatMoney(val.total_sell_price)}</td>
@@ -108,4 +132,4 @@ const SellReportPdf = () => {
   );
 };
 
-export default SellReportPdf;
+export default BillProfitReportPdf;

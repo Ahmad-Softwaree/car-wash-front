@@ -1,7 +1,7 @@
-import { authApi, pdfFileAuthApi } from "@/lib/config/api.config";
+import { authApi } from "@/lib/config/api.config";
 import { generateNestErrors } from "@/lib/functions";
 import { URLs } from "@/lib/url";
-import { GetExpensesQ } from "@/types/expense";
+import { Expense, GetExpensesQ } from "@/types/expense";
 import {
   Filter,
   From,
@@ -16,25 +16,38 @@ import {
   GetItemQuantityHistoriesReportQ,
   GetItemsQ,
   GetItemsReportQ,
+  Item,
+  ItemQuantityHistory,
 } from "@/types/items";
 import {
+  BillProfitReportData,
   BillProfitReportInfo,
+  CaseReport,
+  CaseReportData,
   CaseReportInfo,
+  ExpenseReportData,
   ExpenseReportInfo,
   GetCasesQ,
   GlobalCaseInfo,
+  ItemProfitReportData,
   ItemProfitReportInfo,
+  ItemReportData,
   ItemReportInfo,
+  KogaAllReportData,
   KogaAllReportInfo,
+  KogaLessReportData,
   KogaLessReportInfo,
+  KogaMovementReportData,
   KogaMovementReportInfo,
+  KogaNullReportData,
   KogaNullReportInfo,
+  ReservationReportData,
   ReservationReportInfo,
   SellReportData,
   SellReportInfo,
 } from "@/types/report";
-import { GetReservationsQ } from "@/types/reservation";
-import { GetSellsQ } from "@/types/sell";
+import { GetReservationsQ, Reservation } from "@/types/reservation";
+import { GetSellsQ, Sell, SellItem } from "@/types/sell";
 
 //SELL REPORT
 
@@ -76,7 +89,6 @@ export const getSellReportInformation = async (
     throw generateNestErrors(error, toast);
   }
 };
-
 export const getSellReportSearch = async (
   toast: ToastType,
 
@@ -176,7 +188,6 @@ export const getItemReportInformation = async (
     throw generateNestErrors(error, toast);
   }
 };
-
 export const getItemReportSearch = async (
   toast: ToastType,
   search: Search
@@ -207,26 +218,26 @@ export const getItemReportInformationSearch = async (
 };
 
 export const itemPrint = async (
-  toast: ToastType,
   search: Search,
   filter: Filter,
   from: From,
   to: To,
   userFilter: Filter
-): Promise<Blob | null> => {
+): Promise<{ item: ItemReportData[]; info: ItemReportInfo }> => {
   try {
-    const { data } = await pdfFileAuthApi.get<any>(
+    const { data } = await authApi.post<{
+      item: ItemReportData[];
+      info: ItemReportInfo;
+    }>(
       `${URLs.ITEM_PRINT_DATA}?search=${search != "" ? search : ""}&from=${
         from != "" ? from : ""
-      }&to=${to != "" ? to : ""}&userFilter=${
-        userFilter != "" ? userFilter : ""
-      }&filter=${filter != "" ? filter : ""}`
+      }&filter=${filter != "" ? filter : ""}&to=${
+        to != "" ? to : ""
+      }&userFilter=${userFilter != "" ? userFilter : ""}`
     );
-    const pdfData = new Uint8Array(data);
-    const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
-    return pdfBlob;
+    return data;
   } catch (error: any) {
-    throw generateNestErrors(error, toast);
+    throw error;
   }
 };
 
@@ -299,24 +310,27 @@ export const getKogaAllReportInformationSearch = async (
 };
 
 export const kogaAllPrint = async (
-  toast: ToastType,
   search: Search,
   filter: Filter,
   userFilter: Filter
-): Promise<Blob | null> => {
+): Promise<{
+  item: KogaAllReportData[];
+  info: KogaAllReportInfo;
+}> => {
   try {
-    const { data } = await pdfFileAuthApi.get<any>(
+    const { data } = await authApi.post<{
+      item: KogaAllReportData[];
+      info: KogaAllReportInfo;
+    }>(
       `${URLs.KOGA_ALL_PRINT_DATA}?search=${
         search != "" ? search : ""
       }&filter=${filter != "" ? filter : ""}&userFilter=${
         userFilter != "" ? userFilter : ""
       }`
     );
-    const pdfData = new Uint8Array(data);
-    const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
-    return pdfBlob;
+    return data;
   } catch (error: any) {
-    throw generateNestErrors(error, toast);
+    throw error;
   }
 };
 
@@ -392,24 +406,27 @@ export const getKogaNullReportInformationSearch = async (
 };
 
 export const kogaNullPrint = async (
-  toast: ToastType,
   search: Search,
   filter: Filter,
   userFilter: Filter
-): Promise<Blob | null> => {
+): Promise<{
+  item: KogaNullReportData[];
+  info: KogaNullReportInfo;
+}> => {
   try {
-    const { data } = await pdfFileAuthApi.get<any>(
+    const { data } = await authApi.post<{
+      item: KogaNullReportData[];
+      info: KogaNullReportInfo;
+    }>(
       `${URLs.KOGA_NULL_PRINT_DATA}?search=${
         search != "" ? search : ""
       }&filter=${filter != "" ? filter : ""}&userFilter=${
         userFilter != "" ? userFilter : ""
       }`
     );
-    const pdfData = new Uint8Array(data);
-    const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
-    return pdfBlob;
+    return data;
   } catch (error: any) {
-    throw generateNestErrors(error, toast);
+    throw error;
   }
 };
 
@@ -485,24 +502,27 @@ export const getKogaLessReportInformationSearch = async (
 };
 
 export const kogaLessPrint = async (
-  toast: ToastType,
   search: Search,
   filter: Filter,
   userFilter: Filter
-): Promise<Blob | null> => {
+): Promise<{
+  item: KogaLessReportData[];
+  info: KogaLessReportInfo;
+}> => {
   try {
-    const { data } = await pdfFileAuthApi.get<any>(
+    const { data } = await authApi.post<{
+      item: KogaLessReportData[];
+      info: KogaLessReportInfo;
+    }>(
       `${URLs.KOGA_LESS_PRINT_DATA}?search=${
         search != "" ? search : ""
       }&filter=${filter != "" ? filter : ""}&userFilter=${
         userFilter != "" ? userFilter : ""
       }`
     );
-    const pdfData = new Uint8Array(data);
-    const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
-    return pdfBlob;
+    return data;
   } catch (error: any) {
-    throw generateNestErrors(error, toast);
+    throw error;
   }
 };
 
@@ -584,28 +604,30 @@ export const getKogaMovementReportInformationSearch = async (
     throw generateNestErrors(error, toast);
   }
 };
-
 export const kogaMovementPrint = async (
-  toast: ToastType,
-  filter: Filter,
   search: Search,
+  filter: Filter,
   from: From,
   to: To,
   userFilter: Filter
-): Promise<Blob | null> => {
+): Promise<{
+  item: KogaMovementReportData[];
+  info: KogaMovementReportInfo;
+}> => {
   try {
-    const { data } = await pdfFileAuthApi.get<any>(
+    const { data } = await authApi.post<{
+      item: KogaMovementReportData[];
+      info: KogaMovementReportInfo;
+    }>(
       `${URLs.KOGA_MOVEMENT_PRINT_DATA}?search=${
         search != "" ? search : ""
-      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}&userFilter=${
-        userFilter != "" ? userFilter : ""
-      }&filter=${filter != "" ? filter : ""}`
+      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}&filter=${
+        filter != "" ? filter : ""
+      }&userFilter=${userFilter != "" ? userFilter : ""}`
     );
-    const pdfData = new Uint8Array(data);
-    const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
-    return pdfBlob;
+    return data;
   } catch (error: any) {
-    throw generateNestErrors(error, toast);
+    throw error;
   }
 };
 
@@ -685,25 +707,28 @@ export const getBillProfitReportInformationSearch = async (
 };
 
 export const billProfitPrint = async (
-  toast: ToastType,
   search: Search,
   from: From,
   to: To,
   userFilter: Filter
-): Promise<Blob | null> => {
+): Promise<{
+  sell: BillProfitReportData[];
+  info: BillProfitReportInfo;
+}> => {
   try {
-    const { data } = await pdfFileAuthApi.get<any>(
+    const { data } = await authApi.post<{
+      sell: BillProfitReportData[];
+      info: BillProfitReportInfo;
+    }>(
       `${URLs.BILL_PROFIT_PRINT_DATA}?search=${
         search != "" ? search : ""
       }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}&userFilter=${
         userFilter != "" ? userFilter : ""
       }`
     );
-    const pdfData = new Uint8Array(data);
-    const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
-    return pdfBlob;
+    return data;
   } catch (error: any) {
-    throw generateNestErrors(error, toast);
+    throw error;
   }
 };
 
@@ -786,26 +811,29 @@ export const getItemProfitReportInformationSearch = async (
 };
 
 export const itemProfitPrint = async (
-  toast: ToastType,
   search: Search,
   filter: Filter,
   from: From,
   to: To,
   userFilter: Filter
-): Promise<Blob | null> => {
+): Promise<{
+  item: ItemProfitReportData[];
+  info: ItemProfitReportInfo;
+}> => {
   try {
-    const { data } = await pdfFileAuthApi.get<any>(
+    const { data } = await authApi.post<{
+      item: ItemProfitReportData[];
+      info: ItemProfitReportInfo;
+    }>(
       `${URLs.ITEM_PROFIT_PRINT_DATA}?search=${
         search != "" ? search : ""
-      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}&userFilter=${
-        userFilter != "" ? userFilter : ""
-      }&filter=${filter != "" ? filter : ""}`
+      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}&filter=${
+        filter != "" ? filter : ""
+      }&userFilter=${userFilter != "" ? userFilter : ""}`
     );
-    const pdfData = new Uint8Array(data);
-    const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
-    return pdfBlob;
+    return data;
   } catch (error: any) {
-    throw generateNestErrors(error, toast);
+    throw error;
   }
 };
 
@@ -886,26 +914,29 @@ export const getExpenseReportInformationSearch = async (
 };
 
 export const expenseReportPrint = async (
-  toast: ToastType,
   search: Search,
   filter: Filter,
   from: From,
   to: To,
   userFilter: Filter
-): Promise<Blob | null> => {
+): Promise<{
+  info: ExpenseReportInfo;
+  expense: ExpenseReportData[];
+}> => {
   try {
-    const { data } = await pdfFileAuthApi.get<any>(
+    const { data } = await authApi.post<{
+      info: ExpenseReportInfo;
+      expense: ExpenseReportData[];
+    }>(
       `${URLs.EXPENSE_PRINT_DATA}?search=${search != "" ? search : ""}&from=${
         from != "" ? from : ""
-      }&to=${to != "" ? to : ""}&userFilter=${
-        userFilter != "" ? userFilter : ""
-      }&filter=${filter != "" ? filter : ""}`
+      }&to=${to != "" ? to : ""}&filter=${
+        filter != "" ? filter : ""
+      }&userFilter=${userFilter != "" ? userFilter : ""}`
     );
-    const pdfData = new Uint8Array(data);
-    const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
-    return pdfBlob;
+    return data;
   } catch (error: any) {
-    throw generateNestErrors(error, toast);
+    throw error;
   }
 };
 
@@ -980,26 +1011,29 @@ export const getCaseReportInformationSearch = async (
   }
 };
 
-export const casePrint = async (
-  toast: ToastType,
+export const caseReportPrint = async (
   search: Search,
   from: From,
   to: To,
   userFilter: Filter
-): Promise<Blob | null> => {
+): Promise<{
+  data: CaseReportData[];
+  info: CaseReportInfo;
+}> => {
   try {
-    const { data } = await pdfFileAuthApi.get<any>(
+    const { data } = await authApi.post<{
+      data: CaseReportData[];
+      info: CaseReportInfo;
+    }>(
       `${URLs.CASE_PRINT_DATA}?search=${search != "" ? search : ""}&from=${
         from != "" ? from : ""
       }&to=${to != "" ? to : ""}&userFilter=${
         userFilter != "" ? userFilter : ""
       }`
     );
-    const pdfData = new Uint8Array(data);
-    const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
-    return pdfBlob;
+    return data;
   } catch (error: any) {
-    throw generateNestErrors(error, toast);
+    throw error;
   }
 };
 
@@ -1119,8 +1153,7 @@ export const getReservationReportInformationSearch = async (
   }
 };
 
-export const reservationPrint = async (
-  toast: ToastType,
+export const reservationReportPrint = async (
   search: Search,
   from: From,
   to: To,
@@ -1129,25 +1162,27 @@ export const reservationPrint = async (
   carTypeFilter: Filter,
   serviceFilter: Filter,
   userFilter: Filter
-): Promise<Blob | null> => {
+): Promise<{
+  reservations: ReservationReportData[];
+  info: ReservationReportInfo;
+}> => {
   try {
-    const { data } = await pdfFileAuthApi.get<any>(
+    const { data } = await authApi.post<{
+      reservations: ReservationReportData[];
+      info: ReservationReportInfo;
+    }>(
       `${URLs.RESERVATION_PRINT_DATA}?search=${
         search != "" ? search : ""
-      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}&colorFilter=${
-        colorFilter != "" ? colorFilter : ""
-      }&carModelFilter=${
+      }&from=${from != "" ? from : ""}&to=${to != "" ? to : ""}&userFilter=${
+        userFilter != "" ? userFilter : ""
+      }&colorFilter=${colorFilter != "" ? colorFilter : ""}&carModelFilter=${
         carModelFilter != "" ? carModelFilter : ""
       }&carTypeFilter=${
         carTypeFilter != "" ? carTypeFilter : ""
-      }&serviceFilter=${serviceFilter != "" ? serviceFilter : ""}&userFilter=${
-        userFilter != "" ? userFilter : ""
-      }`
+      }&serviceFilter=${serviceFilter != "" ? serviceFilter : ""}`
     );
-    const pdfData = new Uint8Array(data);
-    const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
-    return pdfBlob;
+    return data;
   } catch (error: any) {
-    throw generateNestErrors(error, toast);
+    throw error;
   }
 };

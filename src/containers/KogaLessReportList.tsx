@@ -21,7 +21,6 @@ import CustomClose from "@/components/shared/CustomClose";
 import FilterModal from "@/components/shared/FilterModal";
 import { ItemKoga } from "@/types/items";
 import ItemLessReportCard from "@/components/cards/KogaLessReportCard";
-import { useGetConfigs } from "@/lib/react-query/query/config.query";
 const KogaLessReportList = () => {
   const [searchParam, setSearchParam] = useSearchParams();
   let search = searchParam.get(ENUMs.SEARCH_PARAM as string);
@@ -29,7 +28,11 @@ const KogaLessReportList = () => {
   let user = searchParam.get(ENUMs.USER_FILTER_PARAM as string);
 
   const [filter, setFilter] = useState<boolean>(false);
-
+  const { mutateAsync: print } = useKogaLessPrint(
+    item_type || "",
+    search || "",
+    user || ""
+  );
   const {
     data: reportData,
     isLoading,
@@ -89,7 +92,7 @@ const KogaLessReportList = () => {
             سڕینەوەی فلتەر
           </Button>
         )}
-        <Chip variant="soft" color="warning">
+        <Chip onClick={() => print()} variant="soft" color="warning">
           <Printer className="w-11 h-11 p-2 cursor-pointer" />
         </Chip>
       </div>
@@ -191,7 +194,7 @@ const KogaLessReportList = () => {
               </div>
               {!loading && reportData && searchReportData && (
                 <div className="w-full flex flex-col justify-center items-center z-[100]  table-dark-light   default-border p-2 gap-5">
-                  <div className="w-full flex flex-row justify-evenly items-center">
+                  <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
                     <p>
                       کۆی ژمارەی کاڵا:{" "}
                       {!isSearched
@@ -200,7 +203,7 @@ const KogaLessReportList = () => {
                     </p>
                   </div>
 
-                  <div className="w-full flex flex-row justify-evenly items-center">
+                  <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
                     ژمارەی داتا {allData.length}
                   </div>
                 </div>

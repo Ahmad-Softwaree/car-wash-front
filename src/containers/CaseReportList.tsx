@@ -33,6 +33,13 @@ const CaseReportList = () => {
 
   const [filter, setFilter] = useState<boolean>(false);
 
+  const { mutateAsync: print } = useCasePrint(
+    from || "",
+    to || "",
+    search || "",
+    user || ""
+  );
+
   const {
     data: reportData,
     isLoading,
@@ -94,7 +101,7 @@ const CaseReportList = () => {
             سڕینەوەی فلتەر
           </Button>
         )}
-        <Chip variant="soft" color="warning">
+        <Chip onClick={() => print()} variant="soft" color="warning">
           <Printer className="w-11 h-11 p-2 cursor-pointer" />
         </Chip>
       </div>
@@ -178,7 +185,7 @@ const CaseReportList = () => {
               </div>
               {!loading && reportData && searchReportData && (
                 <div className="w-full flex flex-col justify-center items-center z-[100]  table-dark-light   default-border p-2 gap-5">
-                  <div className="w-full flex flex-row justify-evenly items-center">
+                  <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
                     <p>
                       کۆی دانەی فرۆشراو :{" "}
                       {!isSearched
@@ -193,7 +200,7 @@ const CaseReportList = () => {
                         : formatMoney(searchReportData?.total_sell_price)}
                     </p>
                   </div>
-                  <div className="w-full flex flex-row justify-evenly items-center">
+                  <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
                     ژمارەی داتا {allData.length}
                   </div>
                 </div>

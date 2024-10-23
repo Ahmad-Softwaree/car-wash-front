@@ -23,7 +23,6 @@ import {
   ChevronRight,
   CircleDollarSign,
   CircleMinus,
-  ClipboardPlus,
   Database,
   DatabaseBackup,
   Gauge,
@@ -36,7 +35,6 @@ import {
   PackageSearch,
   Palette,
   Presentation,
-  Printer,
   Receipt,
   ReceiptText,
   UserCog,
@@ -346,13 +344,7 @@ export const sideLinks: SideLink[] = [
     }`,
     type: "setting",
   },
-  {
-    id: crypto.randomUUID() as string,
-    icon: <Printer />,
-    name: ENUMs.PRINTER_PART as string,
-    link: `/${ENUMs.SETTING_SECTION as string}/${ENUMs.PRINTER_PART as string}`,
-    type: "setting",
-  },
+
   {
     id: crypto.randomUUID() as string,
     icon: <Bolt />,
@@ -479,7 +471,7 @@ const Sidebar = ({
 }) => {
   const location = useLocation();
 
-  const { data, isLoading } = useGetFirebaseSize();
+  const { data } = useGetFirebaseSize();
   const totalStorageLimit = 5 * 1024 * 1024 * 1024; // 5 GB in bytes
   const [emptyStorage, setEmptyStorage] = useState<number>();
   useEffect(() => {
@@ -519,7 +511,7 @@ const Sidebar = ({
     state: { user },
   } = useAuthContext();
 
-  let userParts: string[] = user?.parts.map(
+  let userParts: string[] | undefined = user?.parts.map(
     (val: Part, _index: number) => val.name
   );
   const Item = ({
@@ -575,7 +567,7 @@ const Sidebar = ({
             className="w-full !bg-primary-600 !border-2 !border-solid !border-primary-300 !border-opacity-40 !flex !flex-row !justify-center !items-center !gap-5"
           >
             <Image
-              image="/images/logo.jpg"
+              image={import.meta.env.VITE_COMPANY_LOGO}
               className="w-10 h-10 rounded-full"
             />
             <p className="!text-sm !text-white !font-bukra">

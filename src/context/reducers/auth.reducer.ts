@@ -9,13 +9,13 @@ export const authState: AuthStateType = {
 export const authReducer = (
   state: AuthStateType = authState,
   action: AuthActionType
-) => {
+): AuthStateType => {
   const { type, payload } = action;
   switch (type) {
     case CONTEXT_TYPEs.SET_USER:
       return {
         ...state,
-        user: payload?.user,
+        user: payload ? payload.user : null,
         token: payload?.token ? payload?.token : state.token,
       };
     case CONTEXT_TYPEs.REMOVE_USER:

@@ -1,7 +1,5 @@
 import Customers from "@/pages/_auth/Customers";
 import CheckPart from "@/providers/CheckPart";
-import { lazy } from "react";
-
 import {
   Navigate,
   Route,
@@ -27,26 +25,18 @@ import KogaReport from "@/pages/_auth/KogaReport";
 import ProfitReport from "@/pages/_auth/ProfitReport";
 import ExpenseReport from "@/pages/_auth/ExpenseReport";
 import CaseReport from "@/pages/_auth/CaseReport";
-import Printers from "@/pages/_auth/Printers";
 import VultrBackups from "@/pages/_auth/VultrBackups";
 import ReservationReport from "@/pages/_auth/ReservationReport";
 import Config from "@/pages/_auth/Config";
 import ItemLess from "@/pages/_auth/LessItem";
-const RootLayout = lazy(() => import("@/pages/_root/RootLayout"));
-const AuthRouterProvider = lazy(() => import("@/providers/AuthRouterProvider"));
-const UserNullRouterProvider = lazy(
-  () => import("@/providers/UserNullRouterProvider")
-);
-
-const Login = lazy(() => import("@/pages/_root/Login"));
-const NotFound = lazy(() => import("@/pages/NotFound"));
-const Error = lazy(() => import("@/pages/Error"));
-
-const Expense = lazy(() => import("@/pages/_auth/Expense"));
-const Users = lazy(() => import("@/pages/_auth/Users"));
-
-const Home = lazy(() => import("@/pages/_auth/Home"));
-const AuthLayout = lazy(() => import("@/pages/_auth/layout/AuthLayout"));
+import { Error, NotFound } from "@/pages";
+import { AuthRouterProvider, UserNullRouterProvider } from "@/providers";
+import RootLayout from "@/pages/_root/RootLayout";
+import { Login } from "@/pages/_root";
+import AuthLayout from "@/pages/_auth/layout/AuthLayout";
+import Home from "@/pages/_auth/Home";
+import Expenses from "@/pages/_auth/Expense";
+import Users from "@/pages/_auth/Users";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -164,7 +154,7 @@ const router = createBrowserRouter(
             element={
               <CheckPart
                 part={[ENUMs.EXPENSE_PART as string]}
-                Component={Expense}
+                Component={Expenses}
               />
             }
           />
@@ -333,16 +323,6 @@ const router = createBrowserRouter(
               />
             }
           />
-          <Route
-            path={ENUMs.PRINTER_PART as string}
-            errorElement={<Error />}
-            element={
-              <CheckPart
-                part={[ENUMs.PRINTER_PART as string]}
-                Component={Printers}
-              />
-            }
-          />
         </Route>
         {/* DELETED */}
         <Route path={ENUMs.DELETED_SECTION as string} errorElement={<Error />}>
@@ -420,7 +400,7 @@ const router = createBrowserRouter(
                   ENUMs.EXPENSE_PART as string,
                   ENUMs.DELETED_SECTION as string,
                 ]}
-                Component={Expense}
+                Component={Expenses}
               />
             }
           />
@@ -450,19 +430,7 @@ const router = createBrowserRouter(
               />
             }
           />
-          <Route
-            path={ENUMs.PRINTER_PART as string}
-            errorElement={<Error />}
-            element={
-              <CheckPart
-                part={[
-                  ENUMs.PRINTER_PART as string,
-                  ENUMs.DELETED_SECTION as string,
-                ]}
-                Component={Printers}
-              />
-            }
-          />
+
           <Route
             path={ENUMs.CAR_MODEL_PART as string}
             errorElement={<Error />}

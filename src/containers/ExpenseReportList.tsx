@@ -33,6 +33,14 @@ const ExpenseReportList = () => {
 
   const [filter, setFilter] = useState<boolean>(false);
 
+  const { mutateAsync: print } = useExpensePrint(
+    expense_type || "",
+    from || "",
+    to || "",
+    search || "",
+    user || ""
+  );
+
   const {
     data: reportData,
     isLoading,
@@ -103,7 +111,7 @@ const ExpenseReportList = () => {
             سڕینەوەی فلتەر
           </Button>
         )}
-        <Chip variant="soft" color="warning">
+        <Chip onClick={() => print()} variant="soft" color="warning">
           <Printer className="w-11 h-11 p-2 cursor-pointer" />
         </Chip>
       </div>
@@ -195,7 +203,7 @@ const ExpenseReportList = () => {
               </div>
               {!loading && reportData && searchReportData && (
                 <div className="w-full flex flex-col justify-center items-center z-[100]  table-dark-light   default-border p-2 gap-5">
-                  <div className="w-full flex flex-row justify-evenly items-center">
+                  <div className="w-full flex flex-row justify-evenly items-center flex-wrap text-center">
                     {" "}
                     <p>
                       کۆی خەرجی :{" "}

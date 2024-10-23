@@ -4,7 +4,7 @@ import { QUERY_KEYs } from "../key";
 import { GetSellsQ } from "@/types/sell";
 import {
   billProfitPrint,
-  casePrint,
+  caseReportPrint,
   expenseReportPrint,
   getBillProfitReport,
   getBillProfitReportInformation,
@@ -57,7 +57,7 @@ import {
   kogaLessPrint,
   kogaMovementPrint,
   kogaNullPrint,
-  reservationPrint,
+  reservationReportPrint,
   sellReportPrint,
 } from "../actions/report.action";
 import {
@@ -74,25 +74,38 @@ import {
   GetItemQuantityHistoriesReportQ,
   GetItemsQ,
   GetItemsReportQ,
+  Item,
+  ItemQuantityHistory,
 } from "@/types/items";
-import { GetExpensesQ } from "@/types/expense";
+import { Expense, GetExpensesQ } from "@/types/expense";
 import {
+  BillProfitReportData,
   BillProfitReportInfo,
+  CaseReport,
+  CaseReportData,
   CaseReportInfo,
+  ExpenseReportData,
   ExpenseReportInfo,
   GetCasesQ,
   GlobalCaseInfo,
+  ItemProfitReportData,
   ItemProfitReportInfo,
+  ItemReportData,
   ItemReportInfo,
+  KogaAllReportData,
   KogaAllReportInfo,
+  KogaLessReportData,
   KogaLessReportInfo,
+  KogaMovementReportData,
   KogaMovementReportInfo,
+  KogaNullReportData,
   KogaNullReportInfo,
+  ReservationReportData,
   ReservationReportInfo,
   SellReportData,
   SellReportInfo,
 } from "@/types/report";
-import { GetReservationsQ } from "@/types/reservation";
+import { GetReservationsQ, Reservation } from "@/types/reservation";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { CONTEXT_TYPEs } from "@/context/types";
 import { generateNestErrors } from "@/lib/functions";
@@ -256,11 +269,21 @@ export const useItemPrint = (
   userFilter: Filter
 ) => {
   const { toast } = useToast();
-  return useQuery({
-    queryKey: [QUERY_KEYs.ITEM_PRINT_DATA],
-    queryFn: (): Promise<Blob | null> =>
-      itemPrint(toast, search, filter, from, to, userFilter),
-    retry: 0,
+  const { dispatch } = useGlobalContext();
+  return useMutation({
+    mutationFn: (): Promise<{
+      item: ItemReportData[];
+      info: ItemReportInfo;
+    }> => itemPrint(search, filter, from, to, userFilter),
+    onSuccess: (data: { item: ItemReportData[]; info: ItemReportInfo }) => {
+      return dispatch({
+        type: CONTEXT_TYPEs.ITEM_REPORT_PRINT_DATA,
+        payload: data,
+      });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
   });
 };
 
@@ -323,16 +346,29 @@ export const useGetKogaAllReportInformationSearch = (search: Search) => {
   });
 };
 export const useKogaAllPrint = (
-  search: Search,
   filter: Filter,
+  search: Search,
   userFilter: Filter
 ) => {
   const { toast } = useToast();
-  return useQuery({
-    queryKey: [QUERY_KEYs.KOGA_ALL_PRINT_DATA],
-    queryFn: (): Promise<Blob | null> =>
-      kogaAllPrint(toast, search, filter, userFilter),
-    retry: 0,
+  const { dispatch } = useGlobalContext();
+  return useMutation({
+    mutationFn: (): Promise<{
+      item: KogaAllReportData[];
+      info: KogaAllReportInfo;
+    }> => kogaAllPrint(search, filter, userFilter),
+    onSuccess: (data: {
+      item: KogaAllReportData[];
+      info: KogaAllReportInfo;
+    }) => {
+      return dispatch({
+        type: CONTEXT_TYPEs.KOGA_ALL_REPORT_DATA,
+        payload: data,
+      });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
   });
 };
 
@@ -395,19 +431,31 @@ export const useGetKogaNullReportInformationSearch = (search: Search) => {
   });
 };
 export const useKogaNullPrint = (
-  search: Search,
   filter: Filter,
+  search: Search,
   userFilter: Filter
 ) => {
   const { toast } = useToast();
-  return useQuery({
-    queryKey: [QUERY_KEYs.KOGA_NULL_PRINT_DATA],
-    queryFn: (): Promise<Blob | null> =>
-      kogaNullPrint(toast, search, filter, userFilter),
-    retry: 0,
+  const { dispatch } = useGlobalContext();
+  return useMutation({
+    mutationFn: (): Promise<{
+      item: KogaNullReportData[];
+      info: KogaNullReportInfo;
+    }> => kogaNullPrint(search, filter, userFilter),
+    onSuccess: (data: {
+      item: KogaNullReportData[];
+      info: KogaNullReportInfo;
+    }) => {
+      return dispatch({
+        type: CONTEXT_TYPEs.KOGA_NULL_REPORT_DATA,
+        payload: data,
+      });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
   });
 };
-
 //KOGA LESS REPORT
 
 export const useGetKogaLessReport = (filter: Filter, userFilter: Filter) => {
@@ -467,16 +515,29 @@ export const useGetKogaLessReportInformationSearch = (search: Search) => {
   });
 };
 export const useKogaLessPrint = (
-  search: Search,
   filter: Filter,
+  search: Search,
   userFilter: Filter
 ) => {
   const { toast } = useToast();
-  return useQuery({
-    queryKey: [QUERY_KEYs.KOGA_LESS_PRINT_DATA],
-    queryFn: (): Promise<Blob | null> =>
-      kogaLessPrint(toast, search, filter, userFilter),
-    retry: 0,
+  const { dispatch } = useGlobalContext();
+  return useMutation({
+    mutationFn: (): Promise<{
+      item: KogaLessReportData[];
+      info: KogaLessReportInfo;
+    }> => kogaLessPrint(search, filter, userFilter),
+    onSuccess: (data: {
+      item: KogaLessReportData[];
+      info: KogaLessReportInfo;
+    }) => {
+      return dispatch({
+        type: CONTEXT_TYPEs.KOGA_LESS_REPORT_DATA,
+        payload: data,
+      });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
   });
 };
 
@@ -550,17 +611,30 @@ export const useGetKogaMovementReportInformationSearch = (search: Search) => {
 };
 export const useKogaMovementPrint = (
   filter: Filter,
-  search: Search,
   from: From,
   to: To,
+  search: Search,
   userFilter: Filter
 ) => {
   const { toast } = useToast();
-  return useQuery({
-    queryKey: [QUERY_KEYs.KOGA_MOVEMENT_PRINT_DATA],
-    queryFn: (): Promise<Blob | null> =>
-      kogaMovementPrint(toast, filter, search, from, to, userFilter),
-    retry: 0,
+  const { dispatch } = useGlobalContext();
+  return useMutation({
+    mutationFn: (): Promise<{
+      item: KogaMovementReportData[];
+      info: KogaMovementReportInfo;
+    }> => kogaMovementPrint(search, filter, from, to, userFilter),
+    onSuccess: (data: {
+      item: KogaMovementReportData[];
+      info: KogaMovementReportInfo;
+    }) => {
+      return dispatch({
+        type: CONTEXT_TYPEs.KOGA_MOVEMENT_REPORT_DATA,
+        payload: data,
+      });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
   });
 };
 
@@ -629,20 +703,32 @@ export const useGetBillProfitReportInformationSearch = (search: Search) => {
   });
 };
 export const useBillProfitPrint = (
-  search: Search,
   from: From,
   to: To,
+  search: Search,
   userFilter: Filter
 ) => {
   const { toast } = useToast();
-  return useQuery({
-    queryKey: [QUERY_KEYs.BILL_PROFIT_PRINT_DATA],
-    queryFn: (): Promise<Blob | null> =>
-      billProfitPrint(toast, search, from, to, userFilter),
-    retry: 0,
+  const { dispatch } = useGlobalContext();
+  return useMutation({
+    mutationFn: (): Promise<{
+      sell: BillProfitReportData[];
+      info: BillProfitReportInfo;
+    }> => billProfitPrint(search, from, to, userFilter),
+    onSuccess: (data: {
+      sell: BillProfitReportData[];
+      info: BillProfitReportInfo;
+    }) => {
+      return dispatch({
+        type: CONTEXT_TYPEs.BILL_PROFIT_REPORT_DATA,
+        payload: data,
+      });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
   });
 };
-
 //ITEM_PROFIT_REPORT
 
 export const useGetItemProfitReport = (
@@ -712,17 +798,30 @@ export const useGetItemProfitReportInformationSearch = (search: Search) => {
 };
 export const useItemProfitPrint = (
   filter: Filter,
-  search: Search,
   from: From,
   to: To,
+  search: Search,
   userFilter: Filter
 ) => {
   const { toast } = useToast();
-  return useQuery({
-    queryKey: [QUERY_KEYs.ITEM_PRINT_DATA],
-    queryFn: (): Promise<Blob | null> =>
-      itemProfitPrint(toast, search, filter, from, to, userFilter),
-    retry: 0,
+  const { dispatch } = useGlobalContext();
+  return useMutation({
+    mutationFn: (): Promise<{
+      item: ItemProfitReportData[];
+      info: ItemProfitReportInfo;
+    }> => itemProfitPrint(search, filter, from, to, userFilter),
+    onSuccess: (data: {
+      item: ItemProfitReportData[];
+      info: ItemProfitReportInfo;
+    }) => {
+      return dispatch({
+        type: CONTEXT_TYPEs.ITEM_PROFIT_REPORT_DATA,
+        payload: data,
+      });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
   });
 };
 
@@ -795,20 +894,32 @@ export const useGetExpenseReportInformationSearch = (search: Search) => {
 };
 export const useExpensePrint = (
   filter: Filter,
-  search: Search,
   from: From,
   to: To,
+  search: Search,
   userFilter: Filter
 ) => {
   const { toast } = useToast();
-  return useQuery({
-    queryKey: [QUERY_KEYs.EXPENSE_PRINT_DATA],
-    queryFn: (): Promise<Blob | null> =>
-      expenseReportPrint(toast, search, filter, from, to, userFilter),
-    retry: 0,
+  const { dispatch } = useGlobalContext();
+  return useMutation({
+    mutationFn: (): Promise<{
+      info: ExpenseReportInfo;
+      expense: ExpenseReportData[];
+    }> => expenseReportPrint(search, filter, from, to, userFilter),
+    onSuccess: (data: {
+      info: ExpenseReportInfo;
+      expense: ExpenseReportData[];
+    }) => {
+      return dispatch({
+        type: CONTEXT_TYPEs.EXPENSE_REPORT_DATA,
+        payload: data,
+      });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
   });
 };
-
 //CASE_REPORT
 export const useGetCaseReport = (from: From, to: To, userFilter: Filter) => {
   const { toast } = useToast();
@@ -869,17 +980,27 @@ export const useGetCaseReportInformationSearch = (search: Search) => {
   });
 };
 export const useCasePrint = (
-  search: Search,
   from: From,
   to: To,
+  search: Search,
   userFilter: Filter
 ) => {
   const { toast } = useToast();
-  return useQuery({
-    queryKey: [QUERY_KEYs.CASE_PRINT_DATA],
-    queryFn: (): Promise<Blob | null> =>
-      casePrint(toast, search, from, to, userFilter),
-    retry: 0,
+  const { dispatch } = useGlobalContext();
+  return useMutation({
+    mutationFn: (): Promise<{
+      data: CaseReportData[];
+      info: CaseReportInfo;
+    }> => caseReportPrint(search, from, to, userFilter),
+    onSuccess: (data: { data: CaseReportData[]; info: CaseReportInfo }) => {
+      return dispatch({
+        type: CONTEXT_TYPEs.CASE_REPORT_DATA,
+        payload: data,
+      });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
   });
 };
 
@@ -990,11 +1111,13 @@ export const useReservationPrint = (
   userFilter: Filter
 ) => {
   const { toast } = useToast();
-  return useQuery({
-    queryKey: [QUERY_KEYs.RESERVATION_PRINT_DATA],
-    queryFn: (): Promise<Blob | null> =>
-      reservationPrint(
-        toast,
+  const { dispatch } = useGlobalContext();
+  return useMutation({
+    mutationFn: (): Promise<{
+      reservations: ReservationReportData[];
+      info: ReservationReportInfo;
+    }> =>
+      reservationReportPrint(
         search,
         from,
         to,
@@ -1004,6 +1127,17 @@ export const useReservationPrint = (
         serviceFilter,
         userFilter
       ),
-    retry: 0,
+    onSuccess: (data: {
+      reservations: ReservationReportData[];
+      info: ReservationReportInfo;
+    }) => {
+      return dispatch({
+        type: CONTEXT_TYPEs.RESERVATION_REPORT_DATA,
+        payload: data,
+      });
+    },
+    onError: (error: NestError) => {
+      return generateNestErrors(error, toast);
+    },
   });
 };

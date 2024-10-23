@@ -3,20 +3,21 @@ import { formatMoney } from "../shared/FormatMoney";
 import { useAuthContext } from "@/context/AuthContext";
 import { useEffect } from "react";
 import { pdfStyle } from "@/lib/config/pdf.config";
-import { SellReportData } from "@/types/report";
+import { ItemReportData, SellReportData } from "@/types/report";
 import { formatDateToDDMMYY, timestampToDateString } from "@/lib/functions";
 
-const SellReportPdf = () => {
+const ItemReportPdf = () => {
   const {
-    state: { sellReportData },
+    state: { itemReportData },
   } = useGlobalContext();
+
   const {
     state: { user },
   } = useAuthContext();
 
   useEffect(() => {
-    if (sellReportData.sell && sellReportData.sell.length !== 0 && user) {
-      const printDiv = document.getElementById("sell_report_pdf");
+    if (itemReportData.item && itemReportData.item.length !== 0 && user) {
+      const printDiv = document.getElementById("item_report_pdf");
 
       if (printDiv) {
         const newWindow = window.open("", "", `width=1500`);
@@ -37,60 +38,65 @@ const SellReportPdf = () => {
         newWindow?.close();
       }
     }
-  }, [sellReportData, user]);
+  }, [itemReportData, user]);
 
   return (
-    sellReportData.info &&
-    sellReportData.sell.length != 0 &&
+    itemReportData.info &&
+    itemReportData.item.length != 0 &&
     user && (
-      <div id="sell_report_pdf" className="hidden inner_div">
-        <p className="username">ڕاپۆرتی لیستی پسوڵەکان</p>
+      <div id="item_report_pdf" className="hidden inner_div">
+        <p className="username">ڕاپۆرتی لیستی کاڵاکان</p>
         <h1>{import.meta.env.VITE_COMPANY_NAME}</h1>
 
         <div className="info_black">
           <div className="infoRight">
             <p>
-              کۆی داشکاندنی پسوڵەکان‌ :
-              {formatMoney(sellReportData.info.total_sell_discount)}
+              کۆی نرخی فرۆشتن :{formatMoney(itemReportData.info.total_price)}
             </p>
             <p>
-              کۆی دوای داشکاندن :
-              {formatMoney(
-                sellReportData.info.total_sell_price -
-                  sellReportData.info.total_sell_discount
-              )}
+              کۆی گشتی نرخی فرۆشراو :
+              {formatMoney(itemReportData.info.total_sell_price)}
             </p>
           </div>
           <div className="infoLeft">
             <p>
-              کۆی ژمارەی پسوڵە : {formatMoney(sellReportData.info.sell_count)}
+              کۆی ژمارەی کاڵا : {formatMoney(itemReportData.info.total_count)}
             </p>
             <p>
-              کۆی گشتی نرخی پسوڵەکان :
-              {formatMoney(sellReportData.info.total_sell_price)}
+              کۆی دانەی فرۆشراو :{formatMoney(itemReportData.info.total_sell)}
             </p>
           </div>
         </div>
         <table>
           <thead>
             <tr>
-              <th>نرخی دوای داشکاندن</th>
-              <th>داشکاندن</th>
-              <th>کۆی گشتی</th>
               <th>بەروار</th>
+              <th>کۆی گشتی</th>
+              <th>نرخی فرۆشتن</th>
+              <th>دانەی فرۆشراو</th>
+              <th>جۆری کاڵا</th>
+              <th>بارکۆد</th>
+              <th>ناوی کاڵا</th>
               <th>ژ.وەصڵ</th>
             </tr>
           </thead>
           <tbody id="table-body">
-            {sellReportData?.sell.map((val: SellReportData) => (
+            {itemReportData?.item.map((val: ItemReportData) => (
               <tr key={val.id}>
-                <td>{formatMoney(val.total_sell_price - val.discount)}</td>
-                <td>{formatMoney(val.discount)}</td>
-                <td>{formatMoney(val.total_sell_price)}</td>
                 {val.created_at && (
                   <td>{formatDateToDDMMYY(val.created_at.toString())}</td>
                 )}
-                <td>{val.id}</td>
+
+                <td>{formatMoney(val.item_sell_price * val.quantity)}</td>
+                <td>{formatMoney(val.item_sell_price)}</td>
+                <td>{formatMoney(val.quantity)}</td>
+
+                <td>{val.type_name}</td>
+                <td>{val.item_barcode}</td>
+
+                <td>{val.item_name}</td>
+
+                <td>{val.sell_id}</td>
               </tr>
             ))}
           </tbody>
@@ -108,4 +114,4 @@ const SellReportPdf = () => {
   );
 };
 
-export default SellReportPdf;
+export default ItemReportPdf;

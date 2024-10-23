@@ -7,7 +7,7 @@ import {
   useReducer,
 } from "react";
 import { authReducer, authState } from "./reducers/auth.reducer";
-import { AuthContextType, AuthStateType } from "@/types";
+import { AuthContextType, AuthStateType } from "@/types/auth";
 
 export const AuthContext: Context<any> = createContext<AuthContextType | null>(
   null
@@ -30,7 +30,10 @@ export const AuthContextProvider = ({
   );
 };
 
-export const useAuthContext = () => {
+export const useAuthContext = (): {
+  state: AuthStateType;
+  dispatch: Dispatch<any>;
+} => {
   const context = useContext(AuthContext);
 
   if (context === undefined) {
