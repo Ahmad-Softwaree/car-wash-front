@@ -21,8 +21,7 @@ import { formateDateToYMDHM } from "@/lib/functions";
 import Textarea from "../ui/Textarea";
 
 const ReservationDetailCard = ({
-  customer_first_name,
-  customer_last_name,
+  customer_name,
   color_name,
   car_model_name,
   car_type_name,
@@ -71,7 +70,7 @@ const ReservationDetailCard = ({
             </InputAddon>
 
             <Input
-              value={customer_first_name + " " + customer_last_name}
+              value={customer_name}
               name="customer_name"
               disabled
               type="text"

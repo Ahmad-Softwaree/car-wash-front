@@ -3,8 +3,7 @@ import { Id } from "./global";
 export type Reservation = {
   id: number;
   customer_id: number;
-  customer_first_name: string;
-  customer_last_name: string;
+  customer_name: string;
   color_id: number;
   color_name: string;
   service_id: number;
@@ -18,6 +17,7 @@ export type Reservation = {
   updated_by: string;
   price: number;
   date_time: Date | string;
+  car_number: string;
   created_at?: Date | null;
   updated_at?: Date | null;
   deleted?: boolean;
@@ -35,10 +35,11 @@ export type PanelReservation = {
 
 export type ReservationCardProps = Reservation & { index?: number };
 export type AddReservationInputs = {
-  color_id: Id;
-  car_type_id: Id;
+  color_id?: Id;
+  car_type_id?: Id;
   service_id: Id;
-  car_model_id: Id;
+  car_number: string;
+  car_model_id?: Id;
   customer_id: Id;
   date_time: Date | string;
   time: Date | string;

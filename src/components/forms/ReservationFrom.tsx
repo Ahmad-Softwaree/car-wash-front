@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Form from "@/components/ui/Form";
 import {
   FormFinalOperation,
@@ -88,13 +88,23 @@ const ReservationForm = ({
     try {
       const transformedData = {
         ...data,
-        color_id: Number(data.color_id),
+        color_id:
+          data.color_id && data.color_id != 0
+            ? Number(data.color_id)
+            : undefined,
         service_id: Number(data.service_id),
         customer_id: Number(data.customer_id),
-        car_model_id: Number(data.car_model_id),
-        car_type_id: Number(data.car_type_id),
+        car_model_id:
+          data.car_model_id && data.car_model_id != 0
+            ? Number(data.car_model_id)
+            : undefined,
+        car_type_id:
+          data.car_type_id && data.car_type_id != 0
+            ? Number(data.car_type_id)
+            : undefined,
         price: Number(data.price),
       };
+      console.log(data.color_id);
       if (state == "insert")
         await mutateAsync({
           ...transformedData,
@@ -118,8 +128,7 @@ const ReservationForm = ({
         car_type_name,
         car_model_name,
         color_name,
-        customer_first_name,
-        customer_last_name,
+        customer_name,
         service_name,
         id,
         ...others
@@ -128,6 +137,12 @@ const ReservationForm = ({
       setValue("date_time", formateDateToYMDHM(others.date_time));
     }
   }, [state, globalState]);
+
+  useEffect(() => {
+    if (customers && state == "insert") {
+      setValue("customer_id", customers[0].id);
+    }
+  }, [customers]);
   return (
     <>
       <Form
@@ -166,50 +181,24 @@ const ReservationForm = ({
                   />
                 </InputGroup>
               </div>
-
-              <div className=" col-span-full md:col-span-1 w-full flex flex-col gap-2">
+              <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
                 <Label className="w-full text-sm  flex flex-row gap-2">
-                  <p>ڕەنگ</p>
+                  <p>ژ.ئۆتۆمبێل</p>
                   <Required />
                 </Label>{" "}
-                <div className="w-full flex flex-row justify-start items-center gap-3">
-                  <InputGroup
-                    error={errors.color_id}
-                    className="w-full space-y-2  text-input col-span-full md:col-span-1"
-                  >
-                    <Select
-                      title="color_id"
-                      {...register("color_id", { required: true })}
-                      name="color_id"
-                      id="color_id"
-                      className="w-full bg-transparent !text-sm"
-                    >
-                      <Option className="!text-sm dark-light" value={""}>
-                        ڕەنگ هەڵبژێرە
-                      </Option>
-                      {colors.map((val: Color, _index: number) => (
-                        <Option
-                          className="!text-sm dark-light"
-                          key={val.id}
-                          value={val.id}
-                        >
-                          {val.name}
-                        </Option>
-                      ))}
-                    </Select>
-                  </InputGroup>
-
-                  <Chip
-                    sx={{
-                      borderRadius: "2px",
-                    }}
-                    onClick={() => setIsAddColor(true)}
-                    variant="soft"
-                    color="success"
-                  >
-                    <Plus className="w-4 h-4 cursor-pointer" />
-                  </Chip>
-                </div>
+                <InputGroup
+                  error={errors.car_number}
+                  className="w-full space-y-2  text-input col-span-full md:col-span-1"
+                >
+                  <Input
+                    type="text"
+                    {...register("car_number", { required: true })}
+                    name="car_number"
+                    placeholder="ژ.ئۆتۆمبێل"
+                    className="w-full text-sm"
+                    aria-invalid={errors.car_number ? "true" : "false"}
+                  />
+                </InputGroup>
               </div>
 
               <div className=" col-span-full md:col-span-1 w-full flex flex-col gap-2">
@@ -238,7 +227,7 @@ const ReservationForm = ({
                           key={val.id}
                           value={val.id}
                         >
-                          {val.first_name} - {val.last_name}
+                          {val.name}
                         </Option>
                       ))}
                     </Select>
@@ -256,97 +245,6 @@ const ReservationForm = ({
                   </Chip>
                 </div>
               </div>
-
-              <div className=" col-span-full md:col-span-1 w-full flex flex-col gap-2">
-                <Label className="w-full text-sm  flex flex-row gap-2">
-                  <p>جۆری ئۆتۆمبێل</p>
-                  <Required />
-                </Label>{" "}
-                <div className="w-full flex flex-row justify-start items-center gap-3">
-                  <InputGroup
-                    error={errors.car_type_id}
-                    className="w-full space-y-2  text-input col-span-full md:col-span-1"
-                  >
-                    <Select
-                      title="car_type_id"
-                      {...register("car_type_id", { required: true })}
-                      name="car_type_id"
-                      id="car_type_id"
-                      className="w-full bg-transparent !text-sm"
-                    >
-                      <Option className="!text-sm dark-light" value={""}>
-                        جۆری ئۆتۆمبێل هەڵبژێرە
-                      </Option>
-                      {carTypes.map((val: CarType, _index: number) => (
-                        <Option
-                          className="!text-sm dark-light"
-                          key={val.id}
-                          value={val.id}
-                        >
-                          {val.name}
-                        </Option>
-                      ))}
-                    </Select>
-                  </InputGroup>
-
-                  <Chip
-                    sx={{
-                      borderRadius: "2px",
-                    }}
-                    onClick={() => setIsAddCarType(true)}
-                    variant="soft"
-                    color="success"
-                  >
-                    <Plus className="w-4 h-4 cursor-pointer" />
-                  </Chip>
-                </div>
-              </div>
-
-              <div className=" col-span-full md:col-span-1 w-full flex flex-col gap-2">
-                <Label className="w-full text-sm  flex flex-row gap-2">
-                  <p>مۆدێلی ئۆتۆمبێل</p>
-                  <Required />
-                </Label>{" "}
-                <div className="w-full flex flex-row justify-start items-center gap-3">
-                  <InputGroup
-                    error={errors.car_model_id}
-                    className="w-full space-y-2  text-input col-span-full md:col-span-1"
-                  >
-                    <Select
-                      title="car_model_id"
-                      {...register("car_model_id", { required: true })}
-                      name="car_model_id"
-                      id="car_model_id"
-                      className="w-full bg-transparent !text-sm"
-                    >
-                      <Option className="!text-sm dark-light" value={""}>
-                        مۆدێلی ئۆتۆمبێل هەڵبژێرە
-                      </Option>
-                      {carModels.map((val: CarModel, _index: number) => (
-                        <Option
-                          className="!text-sm dark-light"
-                          key={val.id}
-                          value={val.id}
-                        >
-                          {val.name}
-                        </Option>
-                      ))}
-                    </Select>
-                  </InputGroup>
-
-                  <Chip
-                    sx={{
-                      borderRadius: "2px",
-                    }}
-                    onClick={() => setIsAddCarModel(true)}
-                    variant="soft"
-                    color="success"
-                  >
-                    <Plus className="w-4 h-4 cursor-pointer" />
-                  </Chip>
-                </div>
-              </div>
-
               <div className=" col-span-full md:col-span-1 w-full flex flex-col gap-2">
                 <Label className="w-full text-sm  flex flex-row gap-2">
                   <p>خزمەتگوزاری</p>
@@ -362,6 +260,19 @@ const ReservationForm = ({
                       {...register("service_id", { required: true })}
                       name="service_id"
                       id="service_id"
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                        const selectedService = services.find(
+                          (val: Service) => val.id == Number(e.target.value)
+                        );
+
+                        console.log(selectedService);
+
+                        if (selectedService) {
+                          setValue("price", selectedService.price || 0);
+                        } else {
+                          setValue("price", 0); // or handle the case when no service is found
+                        }
+                      }}
                       className="w-full bg-transparent !text-sm"
                     >
                       <Option className="!text-sm dark-light" value={""}>
@@ -415,6 +326,137 @@ const ReservationForm = ({
                   />
                 </InputGroup>
               </div>
+              <div className=" col-span-full md:col-span-1 w-full flex flex-col gap-2">
+                <Label className="w-full text-sm  flex flex-row gap-2">
+                  <p>جۆری ئۆتۆمبێل</p>
+                </Label>{" "}
+                <div className="w-full flex flex-row justify-start items-center gap-3">
+                  <InputGroup
+                    error={errors.car_type_id}
+                    className="w-full space-y-2  text-input col-span-full md:col-span-1"
+                  >
+                    <Select
+                      title="car_type_id"
+                      {...register("car_type_id")}
+                      name="car_type_id"
+                      id="car_type_id"
+                      className="w-full bg-transparent !text-sm"
+                    >
+                      <Option className="!text-sm dark-light" value={""}>
+                        جۆری ئۆتۆمبێل هەڵبژێرە
+                      </Option>
+                      {carTypes.map((val: CarType, _index: number) => (
+                        <Option
+                          className="!text-sm dark-light"
+                          key={val.id}
+                          value={val.id}
+                        >
+                          {val.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </InputGroup>
+
+                  <Chip
+                    sx={{
+                      borderRadius: "2px",
+                    }}
+                    onClick={() => setIsAddCarType(true)}
+                    variant="soft"
+                    color="success"
+                  >
+                    <Plus className="w-4 h-4 cursor-pointer" />
+                  </Chip>
+                </div>
+              </div>
+
+              <div className=" col-span-full md:col-span-1 w-full flex flex-col gap-2">
+                <Label className="w-full text-sm  flex flex-row gap-2">
+                  <p>مۆدێلی ئۆتۆمبێل</p>
+                </Label>{" "}
+                <div className="w-full flex flex-row justify-start items-center gap-3">
+                  <InputGroup
+                    error={errors.car_model_id}
+                    className="w-full space-y-2  text-input col-span-full md:col-span-1"
+                  >
+                    <Select
+                      title="car_model_id"
+                      {...register("car_model_id")}
+                      name="car_model_id"
+                      id="car_model_id"
+                      className="w-full bg-transparent !text-sm"
+                    >
+                      <Option className="!text-sm dark-light" value={""}>
+                        مۆدێلی ئۆتۆمبێل هەڵبژێرە
+                      </Option>
+                      {carModels.map((val: CarModel, _index: number) => (
+                        <Option
+                          className="!text-sm dark-light"
+                          key={val.id}
+                          value={val.id}
+                        >
+                          {val.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </InputGroup>
+
+                  <Chip
+                    sx={{
+                      borderRadius: "2px",
+                    }}
+                    onClick={() => setIsAddCarModel(true)}
+                    variant="soft"
+                    color="success"
+                  >
+                    <Plus className="w-4 h-4 cursor-pointer" />
+                  </Chip>
+                </div>
+              </div>
+              <div className=" col-span-full md:col-span-1 w-full flex flex-col gap-2">
+                <Label className="w-full text-sm  flex flex-row gap-2">
+                  <p>ڕەنگ</p>
+                </Label>{" "}
+                <div className="w-full flex flex-row justify-start items-center gap-3">
+                  <InputGroup
+                    error={errors.color_id}
+                    className="w-full space-y-2  text-input col-span-full md:col-span-1"
+                  >
+                    <Select
+                      title="color_id"
+                      {...register("color_id")}
+                      name="color_id"
+                      id="color_id"
+                      className="w-full bg-transparent !text-sm"
+                    >
+                      <Option className="!text-sm dark-light" value={""}>
+                        ڕەنگ هەڵبژێرە
+                      </Option>
+                      {colors.map((val: Color, _index: number) => (
+                        <Option
+                          className="!text-sm dark-light"
+                          key={val.id}
+                          value={val.id}
+                        >
+                          {val.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </InputGroup>
+
+                  <Chip
+                    sx={{
+                      borderRadius: "2px",
+                    }}
+                    onClick={() => setIsAddColor(true)}
+                    variant="soft"
+                    color="success"
+                  >
+                    <Plus className="w-4 h-4 cursor-pointer" />
+                  </Chip>
+                </div>
+              </div>
+
               <div className="flex flex-col justify-start items-start gap-2  w-full h-full">
                 <Label
                   htmlFor="note"

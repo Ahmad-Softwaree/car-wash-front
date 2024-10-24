@@ -77,10 +77,7 @@ const Home = () => {
                   >
                     {formatMoney(val.price)} IQD
                   </p>
-                  <p className="font-bold text-md">
-                    {val.customer_first_name}
-                    {"  "} {val.customer_last_name}
-                  </p>
+                  <p className="font-bold text-md">{val.customer_name}</p>
                 </div>
               ))}
             </div>

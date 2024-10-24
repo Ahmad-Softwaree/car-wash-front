@@ -174,11 +174,9 @@ const Customers = () => {
                           <p className="pr-1">#</p>
                         </Th>
                         <Th className="text-center text-sm !p-4">
-                          <p className="pr-3 table-head-border">ناوی یەکەم</p>
+                          <p className="pr-3 table-head-border">ناو</p>
                         </Th>
-                        <Th className="text-center text-sm !p-4">
-                          <p className="pr-3 table-head-border">ناوی دووەم</p>
-                        </Th>
+
                         <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">
                             ژمارە تەلەفۆن

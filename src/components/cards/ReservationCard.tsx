@@ -32,8 +32,7 @@ import CompleteModal from "../ui/CompleteModal";
 import FormatMoney from "../shared/FormatMoney";
 
 const ReservationCard = ({
-  customer_first_name,
-  customer_last_name,
+  customer_name,
   color_name,
   car_model_name,
   car_type_name,
@@ -116,7 +115,7 @@ const ReservationCard = ({
         </Td>
         <Td className="!p-3">
           <p className="text-center font-light font-bukra text-sm">
-            {customer_first_name} {customer_last_name}
+            {customer_name}
           </p>
         </Td>
         <Td className="!p-3">
@@ -235,8 +234,7 @@ const ReservationCard = ({
                     dispatch({
                       type: CONTEXT_TYPEs.SET_OLD_DATA,
                       payload: {
-                        customer_first_name,
-                        customer_last_name,
+                        customer_name,
                         color_name,
                         car_model_name,
                         car_type_name,
@@ -304,8 +302,7 @@ const ReservationCard = ({
             updated_by={updated_by}
             created_by={created_by}
             completed={completed}
-            customer_first_name={customer_first_name}
-            customer_last_name={customer_last_name}
+            customer_name={customer_name}
             color_name={color_name}
             service_name={service_name}
             car_type_name={car_type_name}

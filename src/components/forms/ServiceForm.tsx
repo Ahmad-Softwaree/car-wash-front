@@ -38,8 +38,9 @@ const ServiceForm = ({
   } = useForm<AddServiceInputs>({});
   const onSubmit: SubmitHandler<AddServiceInputs> = async (data) => {
     try {
-      if (state == "insert") await add(data);
-      else await update(data);
+      let formData = { ...data, price: Number(data.price) };
+      if (state == "insert") await add(formData);
+      else await update(formData);
       form.current?.clear();
       if (onClose) onClose();
     } catch (error) {}
@@ -72,6 +73,26 @@ const ServiceForm = ({
           />
         </InputGroup>
       </div>
+      <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
+        <Label className="w-full text-sm  flex flex-row gap-2">
+          <p>نرخ</p>
+          <Required />
+        </Label>{" "}
+        <InputGroup
+          error={errors.price}
+          className="w-full space-y-2  text-input col-span-full md:col-span-1"
+        >
+          <Input
+            type="text"
+            {...register("price", { required: true })}
+            name="price"
+            placeholder="نرخ"
+            className="w-full text-sm"
+            aria-invalid={errors.price ? "true" : "false"}
+          />
+        </InputGroup>
+      </div>
+
       <MyButton
         loading={loading}
         name="addUserButton"

@@ -2,8 +2,7 @@ import { Id } from "./global";
 
 export type Customer = {
   id: number;
-  first_name: string;
-  last_name: string;
+  name: string;
   phone: string;
   updated_by: string;
   created_by: string;
@@ -14,8 +13,7 @@ export type Customer = {
 
 export type CustomerCardProps = Customer & { index?: number };
 export type AddCustomerInputs = {
-  first_name: string;
-  last_name: string;
+  name: string;
   phone: string;
 };
 

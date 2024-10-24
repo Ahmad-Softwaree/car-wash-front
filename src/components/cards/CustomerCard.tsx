@@ -21,8 +21,7 @@ import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import RestoreModal from "../ui/RestoreModal";
 
 const CustomerCard = ({
-  first_name,
-  last_name,
+  name,
   phone,
   id,
   updated_by,
@@ -88,15 +87,9 @@ const CustomerCard = ({
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-center font-light font-bukra text-sm">
-            {first_name}
-          </p>
+          <p className="text-center font-light font-bukra text-sm">{name}</p>
         </Td>
-        <Td className="!p-3">
-          <p className="text-center font-light font-bukra text-sm">
-            {last_name}
-          </p>
-        </Td>
+
         <Td className="!p-3">
           <p className="text-center font-light font-bukra text-sm">{phone}</p>
         </Td>
@@ -138,8 +131,7 @@ const CustomerCard = ({
                     dispatch({
                       type: CONTEXT_TYPEs.SET_OLD_DATA,
                       payload: {
-                        first_name,
-                        last_name,
+                        name,
                         phone,
                         id,
                         ...others,
@@ -200,8 +192,7 @@ const CustomerCard = ({
             id={id}
             updated_by={updated_by}
             created_by={created_by}
-            first_name={first_name}
-            last_name={last_name}
+            name={name}
             phone={phone}
             {...others}
             onClose={() => setDetail(false)}

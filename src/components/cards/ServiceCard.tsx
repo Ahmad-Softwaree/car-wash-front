@@ -18,8 +18,15 @@ import Chip from "@mui/joy/Chip";
 import CustomClose from "../shared/CustomClose";
 import useCheckDeletedPage from "@/hooks/useCheckDeletedPage";
 import RestoreModal from "../ui/RestoreModal";
+import { formatMoney } from "../shared/FormatMoney";
 
-const ServiceCard = ({ name, id, index = -1, ...others }: ServiceCardProps) => {
+const ServiceCard = ({
+  name,
+  id,
+  price,
+  index = -1,
+  ...others
+}: ServiceCardProps) => {
   const { deleted_page } = useCheckDeletedPage();
 
   const [update, setUpdate] = useState<boolean>(false);
@@ -77,7 +84,12 @@ const ServiceCard = ({ name, id, index = -1, ...others }: ServiceCardProps) => {
           </p>
         </Td>
         <Td className="!p-3">
-          <p className="text-right font-light font-bukra text-sm">{name}</p>
+          <p className="text-center font-light font-bukra text-sm">{name}</p>
+        </Td>
+        <Td className="!p-3">
+          <p className="text-center font-light font-bukra text-sm">
+            {formatMoney(price)}
+          </p>
         </Td>
 
         <Td className="!p-3 cup flex flex-row gap-2 justify-center">
@@ -109,6 +121,7 @@ const ServiceCard = ({ name, id, index = -1, ...others }: ServiceCardProps) => {
                       type: CONTEXT_TYPEs.SET_OLD_DATA,
                       payload: {
                         name,
+                        price,
                         id,
                         ...others,
                       },

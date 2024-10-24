@@ -69,47 +69,24 @@ const CustomerForm = ({
         <>
           <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
             <Label
-              htmlFor="first_name"
+              htmlFor="name"
               className="w-full text-sm  flex flex-row gap-2"
             >
-              <p>ناوی یەکەم</p>
+              <p>ناو</p>
               <Required />
             </Label>{" "}
             <InputGroup
-              error={errors.first_name}
+              error={errors.name}
               className="w-full space-y-2  text-input col-span-full md:col-span-1"
             >
               <Input
-                id="first_name"
+                id="name"
                 type="text"
-                {...register("first_name", { required: true })}
-                name="first_name"
-                placeholder="ناوی یەکەم"
+                {...register("name", { required: true })}
+                name="name"
+                placeholder="ناو"
                 className="w-full text-sm"
-                aria-invalid={errors.first_name ? "true" : "false"}
-              />
-            </InputGroup>
-          </div>
-          <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
-            <Label
-              htmlFor="last_name"
-              className="w-full text-sm  flex flex-row gap-2"
-            >
-              <p>ناوی دووەم</p>
-              <Required />
-            </Label>{" "}
-            <InputGroup
-              error={errors.last_name}
-              className="w-full space-y-2  text-input col-span-full md:col-span-1"
-            >
-              <Input
-                type="text"
-                {...register("last_name", { required: true })}
-                id="last_name"
-                name="last_name"
-                placeholder="ناوی دووەم"
-                className="w-full text-sm"
-                aria-invalid={errors.last_name ? "true" : "false"}
+                aria-invalid={errors.name ? "true" : "false"}
               />
             </InputGroup>
           </div>

@@ -9,8 +9,7 @@ import Input from "../ui/Input";
 
 const CustomerDetailCard = ({
   onClose,
-  first_name,
-  last_name,
+  name,
   created_by,
   updated_by,
   phone,
@@ -25,7 +24,7 @@ const CustomerDetailCard = ({
       <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap md:flex-nowrap px-3">
         <div className="w-full md:w-1/2 flex flex-col gap-2">
           <Label className="w-full text-sm  flex flex-row gap-2">
-            <p>ناوی سەرەتا</p>
+            <p>ناو</p>
           </Label>
           <InputGroup className="w-full text-input 0">
             <InputAddon className="w-[20%] md:w-[10%]">
@@ -33,8 +32,8 @@ const CustomerDetailCard = ({
             </InputAddon>
 
             <Input
-              value={first_name}
-              name="first_name"
+              value={name}
+              name="name"
               disabled
               type="text"
               dir="ltr"
@@ -42,29 +41,6 @@ const CustomerDetailCard = ({
             />
           </InputGroup>
         </div>
-
-        <div className="w-full md:w-1/2 flex flex-col gap-2">
-          <Label className="w-full text-sm  flex flex-row gap-2">
-            <p> ژمارە تەلەفۆن</p>
-          </Label>
-          <InputGroup className="w-full text-input 0">
-            <InputAddon className="w-[20%] md:w-[10%]">
-              <Phone />
-            </InputAddon>
-
-            <Input
-              value={last_name}
-              name="last_name"
-              disabled
-              type="text"
-              dir="ltr"
-              className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:!font-bukra text-xs md:!text-sm placeholder:!text-sm"
-            />
-          </InputGroup>
-        </div>
-      </div>
-
-      <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap md:flex-nowrap px-3">
         <div className="w-full md:w-1/2 flex flex-col gap-2">
           <Label className="w-full text-sm  flex flex-row gap-2">
             <p>ژمارە تەلەفۆن</p>
@@ -85,6 +61,7 @@ const CustomerDetailCard = ({
           </InputGroup>
         </div>
       </div>
+
       <div className="w-full flex flex-row justify-start items-center gap-5 flex-wrap md:flex-nowrap px-3">
         <div className="w-full md:w-1/2 flex flex-col gap-2">
           <Label className="w-full text-sm  flex flex-row gap-2">

@@ -92,9 +92,7 @@ const ReservationReportPdf = () => {
                   <td>{formatMoney(val.service_name)}</td>
                   <td>{formateDateToYMDHM(val.date_time as string)}</td>
 
-                  <td>
-                    {val.customer_first_name} {"  "} {val.customer_last_name}
-                  </td>
+                  <td>{val.customer_name}</td>
 
                   <td>{val.price}</td>
                 </tr>

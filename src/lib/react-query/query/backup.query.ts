@@ -10,12 +10,11 @@ import {
   backupEntity,
   getBackups,
   getTableNames,
-  getVultrBackups,
 } from "../actions/backup.action";
 import { QUERY_KEYs } from "../key";
 import { Filter, From, Page, PaginationReturnType, To } from "@/types/global";
 import { ENUMs } from "@/lib/enum";
-import { GetBackupsQ, GetVultrBackupsQ } from "@/types/backup";
+import { GetBackupsQ } from "@/types/backup";
 
 export const useGetTableNames = () => {
   const { toast } = useToast();
@@ -51,15 +50,6 @@ export const useBackupEntity = (entityName: string) => {
     queryKey: [QUERY_KEYs.BACKUP],
     queryFn: (): Promise<Blob> => backupEntity(entityName, toast, queryClient),
     enabled: false,
-    retry: 0,
-  });
-};
-
-export const useGetVultrBackups = () => {
-  const { toast } = useToast();
-  return useQuery({
-    queryKey: [QUERY_KEYs.VULTR_BACKUPS],
-    queryFn: (): Promise<GetVultrBackupsQ> => getVultrBackups(toast),
     retry: 0,
   });
 };

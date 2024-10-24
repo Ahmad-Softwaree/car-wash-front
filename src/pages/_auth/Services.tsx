@@ -168,6 +168,9 @@ const Services = () => {
                         <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">ناو</p>
                         </Th>
+                        <Th className="text-center text-sm !p-4">
+                          <p className="pr-3 table-head-border">نرخ</p>
+                        </Th>
 
                         <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">کرادرەکان</p>

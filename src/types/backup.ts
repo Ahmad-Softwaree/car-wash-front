@@ -13,17 +13,3 @@ export type Backup = {
 export type GetBackupsQ = Backup[];
 
 export type BackupCardProps = Backup & { index?: number };
-
-export type VultrBackup = {
-  id: Id;
-  description: string;
-  size: number;
-  status: string;
-  od_id: number;
-  app_id: number;
-  date_created: Date | null;
-};
-
-export type GetVultrBackupsQ = VultrBackup[];
-
-export type VultrBackupCardProps = VultrBackup & { index?: number };
