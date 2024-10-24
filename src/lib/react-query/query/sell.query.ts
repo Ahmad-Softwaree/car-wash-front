@@ -169,7 +169,6 @@ export function useSellPrint(sell_id: Id) {
     mutationFn: (): Promise<{ sell: Sell; sellItems: SellItem[] }> =>
       sellPrint(toast, sell_id),
     onSuccess: (data: { sell: Sell; sellItems: SellItem[] }) => {
-      console.log(data);
       return dispatch({
         type: CONTEXT_TYPEs.SELL_PRINT_DATA,
         payload: data,

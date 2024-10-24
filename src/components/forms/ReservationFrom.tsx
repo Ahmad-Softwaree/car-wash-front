@@ -21,7 +21,7 @@ import MyButton from "../ui/MyButton";
 import { AddReservationInputs } from "@/types/reservation";
 import { Color } from "@/types/color";
 import { useGetColorsSelection } from "@/lib/react-query/query/color.query";
-import { Plus } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { useGlobalContext } from "@/context/GlobalContext";
 
 import { Chip } from "@mui/joy";
@@ -115,7 +115,6 @@ const ReservationForm = ({
             : undefined,
         price: Number(data.price),
       };
-      console.log(data.color_id);
       if (state == "insert")
         await mutateAsync({
           ...transformedData,
@@ -192,8 +191,6 @@ const ReservationForm = ({
                         const selectedService = services.find(
                           (val: Service) => val.id == Number(e.target.value)
                         );
-
-                        console.log(selectedService);
 
                         if (selectedService) {
                           setValue("price", selectedService.price || 0);
