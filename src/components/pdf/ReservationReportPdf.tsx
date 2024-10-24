@@ -77,6 +77,7 @@ const ReservationReportPdf = () => {
               <th>مۆدێلی ئۆتۆمبێل</th>
 
               <th>جۆری ئۆتۆمبێل</th>
+              <th>ژمارەی ئۆتۆمبێل</th>
 
               <th>خزمەتگوزاری</th>
               <th>بەروار و کات</th>
@@ -89,11 +90,12 @@ const ReservationReportPdf = () => {
             {reservationReportData?.reservations.map(
               (val: ReservationReportData) => (
                 <tr key={val.id}>
-                  <td>{formatMoney(val.color_name)}</td>
-                  <td>{formatMoney(val.car_model_name)}</td>
-                  <td>{formatMoney(val.car_type_name)}</td>
+                  <td>{val.color_name}</td>
+                  <td>{val.car_model_name}</td>
+                  <td>{val.car_type_name}</td>
+                  <td>{val.car_number}</td>
 
-                  <td>{formatMoney(val.service_name)}</td>
+                  <td>{val.service_name}</td>
                   <td>{formateDateToYMDHM(val.date_time as string)}</td>
 
                   <td>{val.customer_name}</td>
