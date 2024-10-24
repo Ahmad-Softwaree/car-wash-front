@@ -4,8 +4,11 @@ import { formatMoney } from "../shared/FormatMoney";
 import { useAuthContext } from "@/context/AuthContext";
 import { useEffect, useRef } from "react";
 import { posStyle } from "@/lib/config/pdf.config";
+import { useGetCompanyInfo } from "@/lib/react-query/query/config.query";
 
 const SellPdf = () => {
+  const { data: info } = useGetCompanyInfo();
+
   const printRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -67,7 +70,9 @@ const SellPdf = () => {
     user && (
       <div ref={printRef} id="sell_pdf" className="hidden pos">
         <p className="username">وەصڵی فرۆشتن</p>
-        <h1>{import.meta.env.VITE_COMPANY_NAME}</h1>
+        <h1>
+          {info?.image_url != "" ? info?.image_url : "/images/ap-soft.jpg"}
+        </h1>
 
         <div className="info_black">
           <p>بەرواری وەصڵ : {formattedDate}</p>

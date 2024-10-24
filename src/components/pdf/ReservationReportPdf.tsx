@@ -5,8 +5,11 @@ import { useEffect } from "react";
 import { pdfStyle } from "@/lib/config/pdf.config";
 import { CaseReportData, ReservationReportData } from "@/types/report";
 import { formateDateToYMDHM, timestampToDateString } from "@/lib/functions";
+import { useGetCompanyInfo } from "@/lib/react-query/query/config.query";
 
 const ReservationReportPdf = () => {
+  const { data: info } = useGetCompanyInfo();
+
   const {
     state: { reservationReportData },
   } = useGlobalContext();
@@ -50,7 +53,9 @@ const ReservationReportPdf = () => {
     user && (
       <div id="reservations_report_pdf" className="hidden inner_div">
         <p className="username">ڕاپۆرتی نۆرەکان</p>
-        <h1>{import.meta.env.VITE_COMPANY_NAME}</h1>
+        <h1>
+          {info?.image_url != "" ? info?.image_url : "/images/ap-soft.jpg"}
+        </h1>
 
         <div className="info_black">
           <div className="infoRight">

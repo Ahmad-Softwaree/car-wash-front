@@ -3,14 +3,13 @@ import { formatMoney } from "../shared/FormatMoney";
 import { useAuthContext } from "@/context/AuthContext";
 import { useEffect } from "react";
 import { pdfStyle } from "@/lib/config/pdf.config";
-import {
-  BillProfitReportData,
-  ItemReportData,
-  KogaAllReportData,
-} from "@/types/report";
+import { BillProfitReportData } from "@/types/report";
 import { formatDateToDDMMYY, timestampToDateString } from "@/lib/functions";
+import { useGetCompanyInfo } from "@/lib/react-query/query/config.query";
 
 const BillProfitReportPdf = () => {
+  const { data: info } = useGetCompanyInfo();
+
   const {
     state: { billProfitReportData },
   } = useGlobalContext();
@@ -54,7 +53,9 @@ const BillProfitReportPdf = () => {
     user && (
       <div id="bill_profit_report_pdf" className="hidden inner_div">
         <p className="username">ڕاپۆرتی قازانج - پسوڵە</p>
-        <h1>{import.meta.env.VITE_COMPANY_NAME}</h1>
+        <h1>
+          {info?.image_url != "" ? info?.image_url : "/images/ap-soft.jpg"}
+        </h1>
 
         <div className="info_black">
           <div className="infoRight">

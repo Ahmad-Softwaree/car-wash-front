@@ -5,8 +5,11 @@ import { useEffect } from "react";
 import { pdfStyle } from "@/lib/config/pdf.config";
 import { SellReportData } from "@/types/report";
 import { formatDateToDDMMYY, timestampToDateString } from "@/lib/functions";
+import { useGetCompanyInfo } from "@/lib/react-query/query/config.query";
 
 const SellReportPdf = () => {
+  const { data: info } = useGetCompanyInfo();
+
   const {
     state: { sellReportData },
   } = useGlobalContext();
@@ -45,7 +48,9 @@ const SellReportPdf = () => {
     user && (
       <div id="sell_report_pdf" className="hidden inner_div">
         <p className="username">ڕاپۆرتی لیستی پسوڵەکان</p>
-        <h1>{import.meta.env.VITE_COMPANY_NAME}</h1>
+        <h1>
+          {info?.image_url != "" ? info?.image_url : "/images/ap-soft.jpg"}
+        </h1>
 
         <div className="info_black">
           <div className="infoRight">

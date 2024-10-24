@@ -5,8 +5,11 @@ import { useEffect } from "react";
 import { pdfStyle } from "@/lib/config/pdf.config";
 import { KogaLessReportData, KogaMovementReportData } from "@/types/report";
 import { timestampToDateString } from "@/lib/functions";
+import { useGetCompanyInfo } from "@/lib/react-query/query/config.query";
 
 const KogaMovementReportPdf = () => {
+  const { data: info } = useGetCompanyInfo();
+
   const {
     state: { kogaMovementReportData },
   } = useGlobalContext();
@@ -50,7 +53,9 @@ const KogaMovementReportPdf = () => {
     user && (
       <div id="koga_movement_report_pdf" className="hidden inner_div">
         <p className="username">ڕاپۆرتی کۆگا - جوڵەی کاڵا</p>
-        <h1>{import.meta.env.VITE_COMPANY_NAME}</h1>
+        <h1>
+          {info?.image_url != "" ? info?.image_url : "/images/ap-soft.jpg"}
+        </h1>
 
         <div className="info_black">
           <div className="infoRight">
