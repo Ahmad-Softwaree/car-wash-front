@@ -23,6 +23,7 @@ import Textarea from "../ui/Textarea";
 const ReservationDetailCard = ({
   customer_name,
   color_name,
+  car_number,
   car_model_name,
   car_type_name,
   service_name,
@@ -54,6 +55,25 @@ const ReservationDetailCard = ({
               type="text"
               dir="ltr"
               placeholder="ناو"
+              className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:!font-bukra text-xs md:!text-sm placeholder:!text-sm"
+            />
+          </InputGroup>
+        </div>
+        <div className="w-full md:w-1/2 flex flex-col gap-2">
+          <Label className="w-full text-sm  flex flex-row gap-2">
+            <p>ژمارەی ئۆتۆمبێل</p>
+          </Label>
+          <InputGroup className="w-full text-input 0">
+            <InputAddon className="w-[20%] md:w-[10%]">
+              <Car />
+            </InputAddon>
+
+            <Input
+              value={car_number}
+              name="car_number"
+              disabled
+              type="text"
+              dir="ltr"
               className="placeholder:text-right w-[80%] md:w-[90%] font-poppins placeholder:!font-bukra text-xs md:!text-sm placeholder:!text-sm"
             />
           </InputGroup>

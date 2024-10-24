@@ -410,13 +410,13 @@ const CreatePsula = () => {
                           کۆی مەواد : {totalItems}
                         </p>
                         <p className="text-center text-xs">
-                          کۆی گشتی : {sellTotal} IQD
+                          کۆی گشتی : {sellTotal}
                         </p>
                         <p className="text-center text-xs">
-                          داشکاندن : {formatMoney(sell?.discount)} IQD
+                          داشکاندن : {formatMoney(sell?.discount)}
                         </p>
                         <p className="text-center text-xs">
-                          کۆی گشتی دوای داشکان : {sellTotalAfterDiscount} IQD
+                          کۆی گشتی دوای داشکان : {sellTotalAfterDiscount}
                         </p>
                       </>
                     )}

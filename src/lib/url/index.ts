@@ -111,6 +111,7 @@ export type URLS =
   | "ADD_ITEM"
   | "GET_ITEM_BY_ID"
   | "UPDATE_ITEM"
+  | "DELETE_ITEM_IMAGE"
   | "DELETE_ITEM"
   | "COUNT_ITEM"
   | "SEARCH_ITEMS"
@@ -348,6 +349,7 @@ export const URLs: { [key in URLS]: string } = {
   //ITEM
   GET_ITEM_BY_ID: `${API}/item`,
   UPDATE_ITEM: `${API}/item`,
+  DELETE_ITEM_IMAGE: `${API}/item/delete_image`,
   DELETE_ITEM: `${API}/item`,
   RESTORE_ITEM: `${API}/item/restore`,
   CHANGE_ITEM_QUANTITY: `${API}/item/change_quantity`,

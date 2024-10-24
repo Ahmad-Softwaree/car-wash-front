@@ -8,8 +8,6 @@ import {
   GetItemsQ,
   UpdateItemQ,
   UpdateItemWithFirebaseImage,
-  CountItemF,
-  CountItemQ,
 } from "@/types/items";
 import {
   Filter,
@@ -170,6 +168,17 @@ export const updateItem = async (
     throw error;
   }
 };
+
+export const deleteItemImage = async (id: Id): Promise<UpdateItemQ> => {
+  try {
+    const { data, status } = await authApi.put<UpdateItemQ>(
+      `${URLs.DELETE_ITEM_IMAGE}/${id}`
+    );
+    return data;
+  } catch (error: any) {
+    throw error;
+  }
+};
 export const changeItemQuantity = async (
   form: {
     quantity: number;
@@ -196,9 +205,7 @@ export const deleteItem = async (ids: Id[]): Promise<DeleteItemQ> => {
       if (index > 0) {
         await new Promise((resolve) => setTimeout(resolve, 1000)); // Adjust the timeout duration as needed
       }
-      const { data, status } = await authApi.delete(
-        `${URLs.DELETE_ITEM}/${id}`
-      );
+      await authApi.delete(`${URLs.DELETE_ITEM}/${id}`);
       return id;
     } catch (error) {
       throw error;
@@ -219,7 +226,7 @@ export const restoreItem = async (ids: Id[]): Promise<DeleteItemQ> => {
       if (index > 0) {
         await new Promise((resolve) => setTimeout(resolve, 1000)); // Adjust the timeout duration as needed
       }
-      const { data, status } = await authApi.put(`${URLs.RESTORE_ITEM}/${id}`);
+      await authApi.put(`${URLs.RESTORE_ITEM}/${id}`);
       return id;
     } catch (error) {
       throw error;

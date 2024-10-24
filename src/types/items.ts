@@ -59,11 +59,7 @@ export type UpdateItemWithFirebaseImage = AddItemInputs &
 export type CountItemF = {
   count: number;
 };
-export type UpdateItemF = AddItemInputs &
-  ImageTypeInForm & {
-    old_image_url?: string;
-    old_image_name?: string;
-  };
+export type UpdateItemF = AddItemInputs & ImageTypeInForm;
 
 export type GetItemsQ = Item[];
 

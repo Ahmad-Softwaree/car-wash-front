@@ -56,7 +56,7 @@ const Home = () => {
                   <h1 className="text-lg">قازانجی نۆرە</h1>
                 </div>
                 <h1 className="text-lg">
-                  {formatMoney(data.total_reservation_price)} IQD
+                  {formatMoney(data.total_reservation_price)}
                 </h1>
               </div>
             </article>
@@ -75,7 +75,7 @@ const Home = () => {
                         : "text-white"
                     }`}
                   >
-                    {formatMoney(val.price)} IQD
+                    {formatMoney(val.price)}
                   </p>
                   <p className="font-bold text-md">{val.customer_name}</p>
                 </div>
@@ -91,7 +91,7 @@ const Home = () => {
                   <h1 className="text-lg">قازانجی گشت مامەڵەکان</h1>
                 </div>
                 <h1 className="text-lg">
-                  {formatMoney(data.total_sell_price)} IQD
+                  {formatMoney(data.total_sell_price)}
                 </h1>
               </div>
             </article>
@@ -111,7 +111,7 @@ const Home = () => {
                           : "text-white"
                       }`}
                     >
-                      {formatMoney(val.total_sell_price)} IQD
+                      {formatMoney(val.total_sell_price)}
                     </p>
                   )}
                   <p className="font-bold text-md">{val.id}</p>

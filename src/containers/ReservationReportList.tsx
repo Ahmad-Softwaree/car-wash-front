@@ -193,6 +193,11 @@ const ReservationReportList = () => {
                         <p className="pr-3 table-head-border">خزمەتگوزاری</p>
                       </Th>
                       <Th className="text-center text-sm !p-4">
+                        <p className="pr-3 table-head-border">
+                          ژمارەی ئۆتۆمبێل
+                        </p>
+                      </Th>
+                      <Th className="text-center text-sm !p-4">
                         <p className="pr-3 table-head-border">جۆری ئۆتۆمبێل</p>
                       </Th>
                       <Th className="text-center text-sm !p-4">

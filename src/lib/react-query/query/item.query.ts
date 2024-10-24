@@ -37,6 +37,7 @@ import {
   changeItemQuantity,
   getLessItems,
   searchLessItems,
+  deleteItemImage,
 } from "../actions/item.action";
 import { ENUMs } from "@/lib/enum";
 import { generateNestErrors } from "@/lib/functions";
@@ -188,7 +189,7 @@ export const useAddItem = () => {
         let the_image_url = "";
         let the_image_name = "";
 
-        if (form.image[0]) {
+        if (form.image && form.image[0]) {
           const {
             image_url,
             image_name,
@@ -242,15 +243,8 @@ export const useUpdateItem = (id: Id) => {
   return useMutation({
     mutationFn: async (form: UpdateItemF): Promise<UpdateItemQ> => {
       let imageRef: StorageReference | null = null;
-      let oldImageRef: StorageReference | null = null;
-
-      //if new image uploaded -> delete old -> upload new
 
       if (form.image && form.image[0]) {
-        if (form.old_image_url != "") {
-          oldImageRef = ref(firebaseStorage, form.old_image_url);
-          await deleteImage(oldImageRef, toast);
-        }
         try {
           const {
             image_url,
@@ -265,9 +259,8 @@ export const useUpdateItem = (id: Id) => {
           imageRef = ref;
           let { image, ...others } = form;
           let finalForm = { image_url, image_name, ...others };
-          let { old_image_name, old_image_url, ...final } = finalForm;
 
-          const result = await updateItem(final, id);
+          const result = await updateItem(finalForm, id);
 
           return result;
         } catch (error: any) {
@@ -277,14 +270,36 @@ export const useUpdateItem = (id: Id) => {
           throw error;
         }
       } else {
-        let image_url = form.old_image_url;
-        let image_name = form.old_image_name;
-        let finalForm = { image_url, image_name, ...form };
-        let { old_image_name, old_image_url, image, ...final } = finalForm;
-
+        let { image, ...final } = form;
         return await updateItem(final, id);
       }
     },
+    onSuccess: (data: UpdateItemQ) => {
+      return toast({
+        title: "سەرکەوتووبوو",
+        description: "کردارەکە بەسەرکەوتووی ئەنجام درا",
+      });
+    },
+    onError: (error: NestError) => {
+      throw generateNestErrors(error, toast);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.ITEM_BY_ID, id],
+      });
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYs.ITEMS],
+      });
+    },
+  });
+};
+
+export const useDeleteItemImage = (id: Id) => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (): Promise<UpdateItemQ> => deleteItemImage(id),
     onSuccess: (data: UpdateItemQ) => {
       return toast({
         title: "سەرکەوتووبوو",

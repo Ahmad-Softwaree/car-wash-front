@@ -18,7 +18,6 @@ export const authApi: AxiosInstance = axios.create({
       Authorization: `Bearer ${getCookie({ name: ENUMs.COOKIE_NAME })}`,
     },
   },
-
   withCredentials: true,
 });
 

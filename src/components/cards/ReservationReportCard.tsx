@@ -16,6 +16,7 @@ const ReservationReportCard = ({
   price,
   note,
   date_time,
+  car_number,
   created_by,
   updated_by,
   id,
@@ -33,7 +34,7 @@ const ReservationReportCard = ({
         </Td>{" "}
         <Td className="!p-3">
           <p className="text-center font-light font-bukra text-sm flex flex-row gap-1">
-            <FormatMoney>{price}</FormatMoney> IQD
+            <FormatMoney>{price}</FormatMoney>
           </p>
         </Td>
         <Td className="!p-3">
@@ -50,6 +51,13 @@ const ReservationReportCard = ({
           <Chip variant="soft" color={"neutral"}>
             <p className="!font-bukra text-center font-light  text-xs">
               {service_name}
+            </p>
+          </Chip>
+        </Td>
+        <Td className="!p-3">
+          <Chip variant="soft" color={"neutral"}>
+            <p className="!font-bukra text-center font-light  text-xs">
+              {car_number}
             </p>
           </Chip>
         </Td>

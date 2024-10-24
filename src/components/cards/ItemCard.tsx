@@ -147,13 +147,13 @@ const ItemCard = ({
 
         <Td className="!p-3">
           <p className="text-center font-light font-bukra text-sm flex flex-row gap-1">
-            <FormatMoney>{item_sell_price}</FormatMoney> IQD
+            <FormatMoney>{item_sell_price}</FormatMoney>
           </p>
         </Td>
 
         <Td className="!p-3">
           <p className="text-center font-light font-bukra text-sm flex flex-rwo gap-1">
-            <FormatMoney>{item_purchase_price}</FormatMoney> IQD
+            <FormatMoney>{item_purchase_price}</FormatMoney>
           </p>
         </Td>
 

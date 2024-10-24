@@ -84,6 +84,17 @@ const ReservationForm = ({
     formState: { errors },
   } = useForm<AddReservationInputs>({});
 
+  const getCurrentDateTime = () => {
+    const now = new Date();
+    const offset = now.getTimezoneOffset() * 60000;
+    const localTime = new Date(now.getTime() - offset);
+    return localTime.toISOString().slice(0, 16);
+  };
+
+  useEffect(() => {
+    if (state == "insert") setValue("date_time", getCurrentDateTime());
+  }, []);
+
   const onSubmit: SubmitHandler<AddReservationInputs> = async (data) => {
     try {
       const transformedData = {
@@ -162,89 +173,6 @@ const ReservationForm = ({
             </Loading>
           ) : colors && carModels && carTypes && services && customers ? (
             <>
-              <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
-                <Label className="w-full text-sm  flex flex-row gap-2">
-                  <p>نرخ</p>
-                  <Required />
-                </Label>{" "}
-                <InputGroup
-                  error={errors.price}
-                  className="w-full space-y-2  text-input col-span-full md:col-span-1"
-                >
-                  <Input
-                    type="text"
-                    {...register("price", { required: true })}
-                    name="price"
-                    placeholder="نرخ"
-                    className="w-full text-sm"
-                    aria-invalid={errors.price ? "true" : "false"}
-                  />
-                </InputGroup>
-              </div>
-              <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
-                <Label className="w-full text-sm  flex flex-row gap-2">
-                  <p>ژ.ئۆتۆمبێل</p>
-                  <Required />
-                </Label>{" "}
-                <InputGroup
-                  error={errors.car_number}
-                  className="w-full space-y-2  text-input col-span-full md:col-span-1"
-                >
-                  <Input
-                    type="text"
-                    {...register("car_number", { required: true })}
-                    name="car_number"
-                    placeholder="ژ.ئۆتۆمبێل"
-                    className="w-full text-sm"
-                    aria-invalid={errors.car_number ? "true" : "false"}
-                  />
-                </InputGroup>
-              </div>
-
-              <div className=" col-span-full md:col-span-1 w-full flex flex-col gap-2">
-                <Label className="w-full text-sm  flex flex-row gap-2">
-                  <p>موشتەری</p>
-                  <Required />
-                </Label>{" "}
-                <div className="w-full flex flex-row justify-start items-center gap-3">
-                  <InputGroup
-                    error={errors.customer_id}
-                    className="w-full space-y-2  text-input col-span-full md:col-span-1"
-                  >
-                    <Select
-                      title="customer_id"
-                      {...register("customer_id", { required: true })}
-                      name="customer_id"
-                      id="customer_id"
-                      className="w-full bg-transparent !text-sm"
-                    >
-                      <Option className="!text-sm dark-light" value={""}>
-                        موشتەری هەڵبژێرە
-                      </Option>
-                      {customers.map((val: Customer, _index: number) => (
-                        <Option
-                          className="!text-sm dark-light"
-                          key={val.id}
-                          value={val.id}
-                        >
-                          {val.name}
-                        </Option>
-                      ))}
-                    </Select>
-                  </InputGroup>
-
-                  <Chip
-                    sx={{
-                      borderRadius: "2px",
-                    }}
-                    onClick={() => setIsAddCustomer(true)}
-                    variant="soft"
-                    color="success"
-                  >
-                    <Plus className="w-4 h-4 cursor-pointer" />
-                  </Chip>
-                </div>
-              </div>
               <div className=" col-span-full md:col-span-1 w-full flex flex-col gap-2">
                 <Label className="w-full text-sm  flex flex-row gap-2">
                   <p>خزمەتگوزاری</p>
@@ -302,6 +230,69 @@ const ReservationForm = ({
                   </Chip>
                 </div>
               </div>
+              <div className=" col-span-full md:col-span-1 w-full flex flex-col gap-2">
+                <Label className="w-full text-sm  flex flex-row gap-2">
+                  <p>موشتەری</p>
+                  <Required />
+                </Label>{" "}
+                <div className="w-full flex flex-row justify-start items-center gap-3">
+                  <InputGroup
+                    error={errors.customer_id}
+                    className="w-full space-y-2  text-input col-span-full md:col-span-1"
+                  >
+                    <Select
+                      title="customer_id"
+                      {...register("customer_id", { required: true })}
+                      name="customer_id"
+                      id="customer_id"
+                      className="w-full bg-transparent !text-sm"
+                    >
+                      <Option className="!text-sm dark-light" value={""}>
+                        موشتەری هەڵبژێرە
+                      </Option>
+                      {customers.map((val: Customer, _index: number) => (
+                        <Option
+                          className="!text-sm dark-light"
+                          key={val.id}
+                          value={val.id}
+                        >
+                          {val.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </InputGroup>
+
+                  <Chip
+                    sx={{
+                      borderRadius: "2px",
+                    }}
+                    onClick={() => setIsAddCustomer(true)}
+                    variant="soft"
+                    color="success"
+                  >
+                    <Plus className="w-4 h-4 cursor-pointer" />
+                  </Chip>
+                </div>
+              </div>
+              <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
+                <Label className="w-full text-sm  flex flex-row gap-2">
+                  <p>نرخ</p>
+                  <Required />
+                </Label>{" "}
+                <InputGroup
+                  error={errors.price}
+                  className="w-full space-y-2  text-input col-span-full md:col-span-1"
+                >
+                  <Input
+                    type="text"
+                    {...register("price", { required: true })}
+                    name="price"
+                    placeholder="نرخ"
+                    className="w-full text-sm"
+                    aria-invalid={errors.price ? "true" : "false"}
+                  />
+                </InputGroup>
+              </div>
 
               <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
                 <Label
@@ -323,6 +314,24 @@ const ReservationForm = ({
                     placeholder="بەروار و کات"
                     className="w-full text-sm"
                     aria-invalid={errors.date_time ? "true" : "false"}
+                  />
+                </InputGroup>
+              </div>
+              <div className="col-span-full md:col-span-1 w-full flex flex-col gap-2">
+                <Label className="w-full text-sm  flex flex-row gap-2">
+                  <p>ژ.ئۆتۆمبێل</p>
+                </Label>{" "}
+                <InputGroup
+                  error={errors.car_number}
+                  className="w-full space-y-2  text-input col-span-full md:col-span-1"
+                >
+                  <Input
+                    type="text"
+                    {...register("car_number", { required: true })}
+                    name="car_number"
+                    placeholder="ژ.ئۆتۆمبێل"
+                    className="w-full text-sm"
+                    aria-invalid={errors.car_number ? "true" : "false"}
                   />
                 </InputGroup>
               </div>

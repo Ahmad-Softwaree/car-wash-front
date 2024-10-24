@@ -38,6 +38,7 @@ const ReservationCard = ({
   car_type_name,
   service_name,
   price,
+  car_number,
   note,
   date_time,
   created_by,
@@ -110,7 +111,7 @@ const ReservationCard = ({
         </Td>{" "}
         <Td className="!p-3">
           <p className="text-center font-light font-bukra text-sm flex flex-row gap-1">
-            <FormatMoney>{price}</FormatMoney> IQD
+            <FormatMoney>{price}</FormatMoney>
           </p>
         </Td>
         <Td className="!p-3">
@@ -127,6 +128,13 @@ const ReservationCard = ({
           <Chip variant="soft" color={"neutral"}>
             <p className="!font-bukra text-center font-light  text-xs">
               {service_name}
+            </p>
+          </Chip>
+        </Td>
+        <Td className="!p-3">
+          <Chip variant="soft" color={"neutral"}>
+            <p className="!font-bukra text-center font-light  text-xs">
+              {car_number}
             </p>
           </Chip>
         </Td>
@@ -235,6 +243,7 @@ const ReservationCard = ({
                       type: CONTEXT_TYPEs.SET_OLD_DATA,
                       payload: {
                         customer_name,
+                        car_number,
                         color_name,
                         car_model_name,
                         car_type_name,
@@ -300,6 +309,7 @@ const ReservationCard = ({
           <ReservationDetailCard
             id={id}
             updated_by={updated_by}
+            car_number={car_number}
             created_by={created_by}
             completed={completed}
             customer_name={customer_name}
