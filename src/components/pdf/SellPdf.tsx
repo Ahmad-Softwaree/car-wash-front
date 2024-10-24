@@ -70,9 +70,7 @@ const SellPdf = () => {
     user && (
       <div ref={printRef} id="sell_pdf" className="hidden pos">
         <p className="username">وەصڵی فرۆشتن</p>
-        <h1>
-          {info?.image_url != "" ? info?.image_url : "/images/ap-soft.jpg"}
-        </h1>
+        <h1>{info?.name}</h1>
 
         <div className="info_black">
           <p>بەرواری وەصڵ : {formattedDate}</p>

@@ -53,9 +53,7 @@ const ExpenseReportPdf = () => {
     user && (
       <div id="expense_report_pdf" className="hidden inner_div">
         <p className="username">ڕاپۆرتی خەرجی</p>
-        <h1>
-          {info?.image_url != "" ? info?.image_url : "/images/ap-soft.jpg"}
-        </h1>
+        <h1>{info?.name}</h1>
 
         <div className="info_black">
           <div className="infoRight"></div>
