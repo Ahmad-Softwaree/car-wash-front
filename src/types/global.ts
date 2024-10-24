@@ -269,7 +269,6 @@ export type Token = string;
 export type RouterProviderType = {
   Component: ElementType;
 };
-export type ChakraUIProviderType = PropsWithChildren<{}>;
 
 export type InfoTypeProps = PropsWithChildren<{
   title: string;
