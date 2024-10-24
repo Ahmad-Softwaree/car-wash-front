@@ -36,6 +36,7 @@ import AuthLayout from "@/pages/_auth/layout/AuthLayout";
 import Home from "@/pages/_auth/Home";
 import Expenses from "@/pages/_auth/Expense";
 import Users from "@/pages/_auth/Users";
+import CompanyInfo from "@/pages/_auth/CompanyInfo";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -225,6 +226,16 @@ const router = createBrowserRouter(
 
         {/* SETTING */}
         <Route path={ENUMs.SETTING_SECTION as string} errorElement={<Error />}>
+          <Route
+            path={ENUMs.COMPANY_INFO_PART as string}
+            errorElement={<Error />}
+            element={
+              <CheckPart
+                part={[ENUMs.COMPANY_INFO_PART as string]}
+                Component={CompanyInfo}
+              />
+            }
+          />
           <Route
             path={ENUMs.CONFIG_PART as string}
             errorElement={<Error />}

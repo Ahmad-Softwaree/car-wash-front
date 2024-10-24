@@ -228,7 +228,11 @@ export type URLS =
 
   //CONFIG
   | "GET_CONFIGS"
-  | "UPDATE_CONFIG";
+  | "UPDATE_CONFIG"
+  | "GET_COMPANY_INFO"
+  | "UPDATE_COMPANY_INFO"
+  | "INSERT_COMPANY_IMAGE"
+  | "DELETE_COMPANY_IMAGE";
 
 export const URLs: { [key in URLS]: string } = {
   //USER
@@ -505,4 +509,8 @@ export const URLs: { [key in URLS]: string } = {
 
   GET_CONFIGS: `${API}/config`,
   UPDATE_CONFIG: `${API}/config`,
+  GET_COMPANY_INFO: `${API}/config/company_info`,
+  UPDATE_COMPANY_INFO: `${API}/config/company_info`,
+  INSERT_COMPANY_IMAGE: `${API}/config/insert_image`,
+  DELETE_COMPANY_IMAGE: `${API}/config/delete_image`,
 };

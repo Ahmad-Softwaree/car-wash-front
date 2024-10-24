@@ -33,6 +33,9 @@ const ReservationReportCard = ({
           </p>
         </Td>{" "}
         <Td className="!p-3">
+          <p className="text-center font-light font-poppins text-sm">{id}</p>
+        </Td>{" "}
+        <Td className="!p-3">
           <p className="text-center font-light font-bukra text-sm flex flex-row gap-1">
             <FormatMoney>{price}</FormatMoney>
           </p>

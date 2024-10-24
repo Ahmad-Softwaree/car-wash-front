@@ -79,6 +79,7 @@ const ReservationReportPdf = () => {
               <th>بەروار و کات</th>
               <th>ناوی موشتەری</th>
               <th>نرخ</th>
+              <th>ژ.نۆرە</th>
             </tr>
           </thead>
           <tbody id="table-body">
@@ -95,6 +96,7 @@ const ReservationReportPdf = () => {
                   <td>{val.customer_name}</td>
 
                   <td>{val.price}</td>
+                  <td>{val.id}</td>
                 </tr>
               )
             )}

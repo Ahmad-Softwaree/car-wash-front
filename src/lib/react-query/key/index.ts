@@ -161,13 +161,14 @@ export type QUERY_KEYS =
   | "RESERVATION_PRINT_DATA"
 
   //CONFIG
-  | "CONFIGS";
+  | "CONFIGS"
+  | "COMPANY_INFO";
 
 export const QUERY_KEYs: { [key in QUERY_KEYS]: key } = {
   //CONFIG
 
   CONFIGS: "CONFIGS",
-
+  COMPANY_INFO: "COMPANY_INFO",
   //USER
   USERS: "USERS",
   SEARCH_USERS: "SEARCH_USERS",

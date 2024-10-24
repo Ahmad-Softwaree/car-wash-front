@@ -27,7 +27,6 @@ import {
   DatabaseBackup,
   Gauge,
   HandCoins,
-  HardDrive,
   Images,
   Key,
   LoaderPinwheel,
@@ -50,6 +49,7 @@ import { SideLink } from "@/types/global";
 import { ENUMs } from "@/lib/enum";
 import { CardContent, CircularProgress } from "@mui/joy";
 import { useGetFirebaseSize } from "@/lib/react-query/query/firebase.query";
+import { useGetCompanyInfo } from "@/lib/react-query/query/config.query";
 
 export const sideLinks: SideLink[] = [
   //BACKUP
@@ -344,6 +344,15 @@ export const sideLinks: SideLink[] = [
     link: `/${ENUMs.SETTING_SECTION as string}/${ENUMs.CONFIG_PART as string}`,
     type: "setting",
   },
+  {
+    id: crypto.randomUUID() as string,
+    icon: <Bolt />,
+    name: ENUMs.COMPANY_INFO_PART as string,
+    link: `/${ENUMs.SETTING_SECTION as string}/${
+      ENUMs.COMPANY_INFO_PART as string
+    }`,
+    type: "setting",
+  },
   //DELETED
   {
     id: crypto.randomUUID() as string,
@@ -462,6 +471,7 @@ const Sidebar = ({
   setShrink: Dispatch<SetStateAction<boolean>>;
 }) => {
   const location = useLocation();
+  const { data: info } = useGetCompanyInfo();
 
   const { data } = useGetFirebaseSize();
   const totalStorageLimit = 5 * 1024 * 1024 * 1024; // 5 GB in bytes
@@ -527,7 +537,6 @@ const Sidebar = ({
       )
     );
   };
-
   return (
     <>
       {!expand && (
@@ -559,11 +568,13 @@ const Sidebar = ({
             className="w-full !bg-primary-600 !border-2 !border-solid !border-primary-300 !border-opacity-40 !flex !flex-row !justify-center !items-center !gap-5"
           >
             <Image
-              image={import.meta.env.VITE_COMPANY_LOGO}
+              image={
+                info?.image_url != "" ? info?.image_url : "/images/ap-soft.jpg"
+              }
               className="w-10 h-10 rounded-full"
             />
             <p className="!text-sm !text-white !font-bukra text-nowrap">
-              {import.meta.env.VITE_COMPANY_NAME}
+              {info?.name}
             </p>
             <AlignJustify
               onClick={() => {

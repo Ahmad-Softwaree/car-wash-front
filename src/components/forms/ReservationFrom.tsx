@@ -327,7 +327,7 @@ const ReservationForm = ({
                 >
                   <Input
                     type="text"
-                    {...register("car_number", { required: true })}
+                    {...register("car_number")}
                     name="car_number"
                     placeholder="ژ.ئۆتۆمبێل"
                     className="w-full text-sm"

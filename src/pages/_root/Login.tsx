@@ -1,8 +1,11 @@
 import LoginForm from "@/components/forms/LoginForm";
 import Container from "@/components/ui/Container";
 import Image from "@/components/ui/Image";
+import { useGetCompanyInfo } from "@/lib/react-query/query/config.query";
 
 export default function Login() {
+  const { data: info } = useGetCompanyInfo();
+
   return (
     <Container
       as={`div`}
@@ -14,7 +17,9 @@ export default function Login() {
           width={200}
           loading="lazy"
           className="object-contain rounded-full"
-          image={import.meta.env.VITE_COMPANY_LOGO}
+          image={
+            info?.image_url != "" ? info?.image_url : "/images/ap-soft.jpg"
+          }
           alt="circle"
         />
         <h1 className="text-center font-bukra font-bold text-3xl">

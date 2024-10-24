@@ -27,6 +27,7 @@ export type ENUM_TYPES =
 
   //FIREBASE
   | "ITEM_BUCKET"
+  | "DEFAULT_BUCKET"
 
   //PARTS
   | "USERS_PART"
@@ -54,7 +55,7 @@ export type ENUM_TYPES =
   | "SELL_PART"
   | "NORMAL_BACKUP_PART"
   | "SERVER_BACKUP_PART"
-  | "PRINTER_PART"
+  | "COMPANY_INFO_PART"
 
   //SECTIONS
   | "MANAGE_SECTION"
@@ -93,6 +94,7 @@ export const ENUMs: { [key in ENUM_TYPES]: key | string | number } = {
 
   //FIREBASE
   ITEM_BUCKET: "items",
+  DEFAULT_BUCKET: "default",
 
   //PARTS
   USERS_PART: "بەکارهێنەران",
@@ -106,6 +108,7 @@ export const ENUMs: { [key in ENUM_TYPES]: key | string | number } = {
   RESERVATION_REPORT_PART: "ڕاپۆرتی نۆرەکان",
   CONFIG_PART: "ڕێکخستن",
   LESS_ITEM_PART: "مەوادی کەمبوو",
+  COMPANY_INFO_PART: "زانیاری کۆمپانیا",
 
   EXPENSE_TYPE_PART: "جۆرەکانی خەرجی",
   ROLE_PART: "ڕۆڵەکان",
@@ -121,7 +124,6 @@ export const ENUMs: { [key in ENUM_TYPES]: key | string | number } = {
   SELL_PART: "پسولەکان",
   NORMAL_BACKUP_PART: "باکئەپی ئاسایی",
   SERVER_BACKUP_PART: "باکئەپی سێرڤەر",
-  PRINTER_PART: "پرنتەرەکان",
 
   //SECTIONS
 

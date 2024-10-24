@@ -259,6 +259,9 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
                           <p className="pr-1">#</p>
                         </Th>
                         <Th className="text-center text-sm !p-4">
+                          <p className="pr-1">ژ.نۆرە</p>
+                        </Th>
+                        <Th className="text-center text-sm !p-4">
                           <p className="pr-3 table-head-border">نرخ</p>
                         </Th>
                         <Th className="text-center text-sm !p-4">
@@ -305,7 +308,11 @@ const ReservationModal = ({ onClose }: { onClose: () => void }) => {
                     <TBody className="w-full ">
                       <>
                         {allData?.map((val: Reservation, index: number) => (
-                          <ReservationCard key={val.id} {...val} />
+                          <ReservationCard
+                            index={index}
+                            key={val.id}
+                            {...val}
+                          />
                         ))}
 
                         {!isFetchingNextPage && hasNextPage && !isSearched && (
