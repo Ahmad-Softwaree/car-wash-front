@@ -562,7 +562,7 @@ const Sidebar = ({
               image={import.meta.env.VITE_COMPANY_LOGO}
               className="w-10 h-10 rounded-full"
             />
-            <p className="!text-sm !text-white !font-bukra">
+            <p className="!text-sm !text-white !font-bukra text-nowrap">
               {import.meta.env.VITE_COMPANY_NAME}
             </p>
             <AlignJustify
